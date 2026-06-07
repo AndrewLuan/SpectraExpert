@@ -1,0 +1,2437 @@
+{
+  "dataset_meta": {
+    "title": "Nakamoto Empirical Rules for Spectral-to-Structural Transition Reasoning",
+    "source": "Infrared and Raman Spectra of Inorganic and Coordination Compounds, 6th Ed. by Kazuo Nakamoto (Part A, Chapter 2)",
+    "total_rules": 181,
+    "categories": [
+      "selection_rules",
+      "frequency_trends",
+      "geometry_determination",
+      "group_frequencies",
+      "charge_and_oxidation_effects",
+      "substituent_effects",
+      "isotope_effects",
+      "environmental_effects",
+      "force_constant_correlations",
+      "metal_ligand_vibrations",
+      "cluster_vibrations",
+      "special_topics"
+    ],
+    "date_extracted": "2026-06-04"
+  },
+  "rules": [
+    {
+      "id": "SEL-001",
+      "category": "selection_rules",
+      "rule": "Mutual Exclusion Rule: For centrosymmetric molecules, vibrations that are IR-active are Raman-inactive, and vice versa",
+      "molecular_systems": [
+        "All centrosymmetric point groups (D\u221eh, D2h, D4h, D6h, Oh, Ih, etc.)"
+      ],
+      "spectral_details": "IR and Raman spectra are complementary \u2014 bands appear in one but not the other",
+      "confidence": "definitive",
+      "chapter_section": "2.2, 2.4.1, 2.6.3, 2.8.1",
+      "notes": "Key test for presence of inversion center. Exception: violation can occur due to dynamic effects, electronic degeneracy, or symmetry lowering in condensed phases"
+    },
+    {
+      "id": "SEL-002",
+      "category": "selection_rules",
+      "rule": "For linear X\u2083 (D\u221eh) molecules: \u03bd\u2081 (symmetric stretch) is Raman-active only; \u03bd\u2082 (bend) and \u03bd\u2083 (asymmetric stretch) are IR-active only",
+      "molecular_systems": [
+        "CO\u2082",
+        "CS\u2082",
+        "linear triatomic molecules"
+      ],
+      "spectral_details": "\u03bd\u2081: Raman only; \u03bd\u2082, \u03bd\u2083: IR only",
+      "confidence": "definitive",
+      "chapter_section": "2.2"
+    },
+    {
+      "id": "SEL-003",
+      "category": "selection_rules",
+      "rule": "For linear XYZ (C\u221ev) molecules: all three vibrations (\u03bd\u2081=\u03bd(XY), \u03bd\u2082=\u03b4, \u03bd\u2083=\u03bd(YZ)) are both IR- and Raman-active",
+      "molecular_systems": [
+        "HCN",
+        "NNO",
+        "OCS",
+        "HArF"
+      ],
+      "spectral_details": "All three modes active in both IR and Raman",
+      "confidence": "definitive",
+      "chapter_section": "2.2",
+      "notes": "Loss of inversion center makes all modes active"
+    },
+    {
+      "id": "SEL-004",
+      "category": "selection_rules",
+      "rule": "For bent XY\u2082 (C2v) and bent XYZ (Cs) molecules: all three normal modes are both IR- and Raman-active",
+      "molecular_systems": [
+        "H\u2082O",
+        "SO\u2082",
+        "NO\u2082",
+        "ozone O\u2083",
+        "bent triatomic molecules"
+      ],
+      "spectral_details": "\u03bd\u2081(sym stretch, A\u2081), \u03bd\u2082(bend, A\u2081), \u03bd\u2083(asym stretch, B\u2081) \u2014 all active in both",
+      "confidence": "definitive",
+      "chapter_section": "2.2"
+    },
+    {
+      "id": "SEL-005",
+      "category": "selection_rules",
+      "rule": "For planar XY\u2083 (D3h) molecules: \u03bd\u2081(A\u2081\u2032) is Raman-active only; \u03bd\u2082(A\u2082\u2033) is IR-active only; \u03bd\u2083(E\u2032) and \u03bd\u2084(E\u2032) are both IR- and Raman-active",
+      "molecular_systems": [
+        "BF\u2083",
+        "CO\u2083\u00b2\u207b",
+        "NO\u2083\u207b",
+        "SO\u2083",
+        "BH\u2083"
+      ],
+      "spectral_details": "IR shows: \u03bd\u2082, \u03bd\u2083, \u03bd\u2084; Raman shows: \u03bd\u2081, \u03bd\u2083, \u03bd\u2084",
+      "confidence": "definitive",
+      "chapter_section": "2.4.1",
+      "notes": "Contrast with pyramidal XY\u2083 (C3v) where all 4 modes are both IR- and Raman-active"
+    },
+    {
+      "id": "SEL-006",
+      "category": "selection_rules",
+      "rule": "For pyramidal XY\u2083 (C3v) molecules: all four normal modes (\u03bd\u2081-\u03bd\u2084) are both IR- and Raman-active",
+      "molecular_systems": [
+        "NH\u2083",
+        "PH\u2083",
+        "AsH\u2083",
+        "SbH\u2083",
+        "NF\u2083",
+        "PCl\u2083"
+      ],
+      "spectral_details": "\u03bd\u2081(A\u2081, sym str), \u03bd\u2082(A\u2081, sym bend), \u03bd\u2083(E, asym str), \u03bd\u2084(E, asym bend) \u2014 all IR+Raman active",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "SEL-007",
+      "category": "selection_rules",
+      "rule": "For tetrahedral XY\u2084 (Td) molecules: \u03bd\u2081(A\u2081) and \u03bd\u2082(E) are Raman-active only; \u03bd\u2083(F\u2082) and \u03bd\u2084(F\u2082) are both IR- and Raman-active",
+      "molecular_systems": [
+        "CH\u2084",
+        "SiH\u2084",
+        "NH\u2084\u207a",
+        "SO\u2084\u00b2\u207b",
+        "ClO\u2084\u207b",
+        "BF\u2084\u207b",
+        "MX\u2084 tetrahedral ions"
+      ],
+      "spectral_details": "IR active: \u03bd\u2083, \u03bd\u2084; Raman active: \u03bd\u2081, \u03bd\u2082, \u03bd\u2083, \u03bd\u2084",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "SEL-008",
+      "category": "selection_rules",
+      "rule": "For square-planar XY\u2084 (D4h) molecules: \u03bd\u2081(A\u2081g), \u03bd\u2082(B\u2081g), \u03bd\u2084(B\u2082g) are Raman-active; \u03bd\u2083(A\u2082u), \u03bd\u2086(Eu), \u03bd\u2087(Eu) are IR-active; \u03bd\u2085(B\u2082u) is inactive",
+      "molecular_systems": [
+        "XeF\u2084",
+        "PdCl\u2084\u00b2\u207b",
+        "PtCl\u2084\u00b2\u207b",
+        "AuCl\u2084\u207b",
+        "square-planar complexes"
+      ],
+      "spectral_details": "Raman: \u03bd\u2081, \u03bd\u2082, \u03bd\u2084; IR: \u03bd\u2083, \u03bd\u2086, \u03bd\u2087; \u03bd\u2085 inactive (observed by INS)",
+      "confidence": "definitive",
+      "chapter_section": "2.6.3",
+      "notes": "\u03bd\u2085 can be observed by inelastic neutron scattering (INS)"
+    },
+    {
+      "id": "SEL-009",
+      "category": "selection_rules",
+      "rule": "For octahedral XY\u2086 (Oh) molecules: \u03bd\u2081(A\u2081g), \u03bd\u2082(Eg), \u03bd\u2085(F\u2082g) are Raman-active; \u03bd\u2083(F\u2081u), \u03bd\u2084(F\u2081u) are IR-active; \u03bd\u2086(F\u2082u) is inactive",
+      "molecular_systems": [
+        "SF\u2086",
+        "UF\u2086",
+        "MF\u2086\u00b3\u207b/\u00b2\u207b",
+        "MCl\u2086\u00b3\u207b/\u00b2\u207b",
+        "hexahalogeno complexes"
+      ],
+      "spectral_details": "Raman: \u03bd\u2081, \u03bd\u2082, \u03bd\u2085; IR: \u03bd\u2083, \u03bd\u2084; \u03bd\u2086 inactive (observed by INS)",
+      "confidence": "definitive",
+      "chapter_section": "2.8.1"
+    },
+    {
+      "id": "SEL-010",
+      "category": "selection_rules",
+      "rule": "Icosahedral C\u2086\u2080 (Ih): only 4 F\u2081u vibrations are IR-active; only 2 A_g and 8 H_g vibrations are Raman-active. Mutual exclusion rule holds",
+      "molecular_systems": [
+        "C\u2086\u2080 fullerene",
+        "endohedral fullerenes"
+      ],
+      "spectral_details": "IR bands at 1428, 1182, 577, 527 cm\u207b\u00b9; Raman bands at 1575, 1469, 1427, 1250, 1100, 774, 711, 496, 436, 273 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.2"
+    },
+    {
+      "id": "FRQ-001",
+      "category": "frequency_trends",
+      "rule": "Bond order-frequency correlation: Higher bond order \u2192 higher vibrational frequency",
+      "molecular_systems": [
+        "O\u2082\u207a (2.5) > O\u2082 (2.0) > O\u2082\u207b (1.5) > O\u2082\u00b2\u207b (1.0)",
+        "N\u2082 > N\u2082\u207a",
+        "CO\u207a > CO"
+      ],
+      "spectral_details": "O\u2082\u207a: 1876 cm\u207b\u00b9; O\u2082: 1580 cm\u207b\u00b9; O\u2082\u207b: 1094 cm\u207b\u00b9; O\u2082\u00b2\u207b: 791/736 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1",
+      "notes": "Bond order, bond distance, bond energy, and vibrational frequency are all correlated. As bond order decreases, distance increases, energy decreases, frequency decreases."
+    },
+    {
+      "id": "FRQ-002",
+      "category": "frequency_trends",
+      "rule": "Mass effect within periodic table group: heavier central atom \u2192 lower frequency for corresponding vibration",
+      "molecular_systems": [
+        "Li\u2082(351) > Na\u2082(159) > K\u2082(93) > Rb\u2082(57) > Cs\u2082(42 cm\u207b\u00b9)",
+        "H\u2082O > H\u2082S > H\u2082Se > H\u2082Te"
+      ],
+      "spectral_details": "\u03bd ranges: Li\u2082 351 \u2192 Cs\u2082 42 cm\u207b\u00b9 (diatomics)",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1, 2.8.1.1",
+      "notes": "Applies within same group of periodic table. For hydrides: H\u2082O ~3756 > H\u2082S ~2627 > H\u2082Se ~2358 > H\u2082Te ~2072 cm\u207b\u00b9"
+    },
+    {
+      "id": "FRQ-003",
+      "category": "frequency_trends",
+      "rule": "Across-period frequency trend for hydrides: frequency increases from left to right across periodic table",
+      "molecular_systems": [
+        "HB(~2366) < HC(2860) < HN(~3300) < HO(3735) < HF(4139 cm\u207b\u00b9)"
+      ],
+      "spectral_details": "Increasing frequency trend across period",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1"
+    },
+    {
+      "id": "FRQ-004",
+      "category": "frequency_trends",
+      "rule": "Halogen frequency trend: M-F > M-Cl > M-Br > M-I for all types of metal-halogen stretching vibrations",
+      "molecular_systems": [
+        "All MX\u2099 compounds (tetrahedral, octahedral, pyramidal, etc.)"
+      ],
+      "spectral_details": "Ratio \u03bd(MBr)/\u03bd(MCl) \u2248 0.76 for \u03bd\u2083, \u2248 0.61 for \u03bd\u2081; \u03bd(MI)/\u03bd(MCl) \u2248 0.62 for \u03bd\u2083, \u2248 0.42 for \u03bd\u2081",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1, 2.8.1.3",
+      "notes": "These ratios are remarkably consistent across all compound types and useful for band assignment"
+    },
+    {
+      "id": "FRQ-005",
+      "category": "frequency_trends",
+      "rule": "Anharmonicity is largest for light molecules and decreases with mass",
+      "molecular_systems": [
+        "Diatomic molecules"
+      ],
+      "spectral_details": "H\u2082: x\u2091\u03c9\u2091 = 117.91 cm\u207b\u00b9; Cs\u2082: x\u2091\u03c9\u2091 = 0.08 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1"
+    },
+    {
+      "id": "FRQ-006",
+      "category": "frequency_trends",
+      "rule": "For XY\u2084 tetrahedral molecules: trend \u03bd\u2083 > \u03bd\u2081 and \u03bd\u2084 > \u03bd\u2082 holds for majority of compounds",
+      "molecular_systems": [
+        "Tetrahedral MX\u2084",
+        "tetrahedral oxoanions MO\u2084\u207f\u207b"
+      ],
+      "spectral_details": "Asymmetric stretches (\u03bd\u2083) are higher than symmetric stretches (\u03bd\u2081); asymmetric bends (\u03bd\u2084) higher than symmetric bends (\u03bd\u2082)",
+      "confidence": "high",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "FRQ-007",
+      "category": "frequency_trends",
+      "rule": "For octahedral XY\u2086 molecules: stretching frequency order is \u03bd\u2081 > \u03bd\u2083 or \u03bd\u2083 > \u03bd\u2081 (depends on compound); bending order is \u03bd\u2084 > \u03bd\u2085 > \u03bd\u2086 in most cases",
+      "molecular_systems": [
+        "Hexahalogeno compounds MF\u2086, MCl\u2086\u207f\u207b"
+      ],
+      "spectral_details": "\u03bd\u2081 > \u03bd\u2083 for many but not all compounds; \u03bd\u2084 > \u03bd\u2085 > \u03bd\u2086 for bending modes",
+      "confidence": "high",
+      "chapter_section": "2.8.1"
+    },
+    {
+      "id": "FRQ-008",
+      "category": "frequency_trends",
+      "rule": "For trigonal-bipyramidal XY\u2085: equatorial stretching frequencies > axial stretching frequencies. Trend: \u03bd\u2085 > \u03bd\u2083 > \u03bd\u2081 > \u03bd\u2082",
+      "molecular_systems": [
+        "PF\u2085",
+        "AsF\u2085",
+        "SbF\u2085",
+        "PCl\u2085",
+        "trigonal-bipyramidal molecules"
+      ],
+      "spectral_details": "\u03bd\u2085 (asym equatorial stretch) > \u03bd\u2083 (asym axial stretch) > \u03bd\u2081 (sym equatorial) > \u03bd\u2082 (sym axial)",
+      "confidence": "high",
+      "chapter_section": "2.7.1",
+      "notes": "Equatorial bonds are stronger than axial bonds in TBP structures"
+    },
+    {
+      "id": "FRQ-009",
+      "category": "frequency_trends",
+      "rule": "For tetragonal-pyramidal XY\u2085: axial stretching frequency (\u03bd\u2081) is higher than equatorial stretching frequencies (\u03bd\u2082, \u03bd\u2084, \u03bd\u2087) \u2014 opposite to TBP trend",
+      "molecular_systems": [
+        "IF\u2085",
+        "BrF\u2085",
+        "ClF\u2085",
+        "SbF\u2085\u00b2\u207b",
+        "tetragonal-pyramidal molecules"
+      ],
+      "spectral_details": "\u03bd\u2081(axial) > \u03bd\u2082, \u03bd\u2084, \u03bd\u2087(equatorial)",
+      "confidence": "high",
+      "chapter_section": "2.7.2"
+    },
+    {
+      "id": "FRQ-010",
+      "category": "frequency_trends",
+      "rule": "For diatomic XY molecules: frequency decreases when bonding electrons are removed; increases when antibonding electrons are removed",
+      "molecular_systems": [
+        "N\u2082(2359) > N\u2082\u207a(2207); As\u2082(429) > As\u2082\u207a(315); CO\u207a(2214) > CO(2170)"
+      ],
+      "spectral_details": "Bonding MO removal: \u03bd decreases; Antibonding MO removal: \u03bd increases",
+      "confidence": "definitive",
+      "chapter_section": "2.1.2",
+      "notes": "Interpretable via simple molecular orbital theory"
+    },
+    {
+      "id": "GEO-001",
+      "category": "geometry_determination",
+      "rule": "Distinguishing linear vs bent XY\u2082: \u03bd\u2081 is IR-inactive for linear (D\u221eh) but IR-active for bent (C2v). In practice, many bent molecules have bond angles 95-170\u00b0",
+      "molecular_systems": [
+        "XY\u2082 metal halides: BeF\u2082(linear), CaF\u2082(bent), SrF\u2082(bent), BaF\u2082(bent)"
+      ],
+      "spectral_details": "Linear: \u03bd\u2081 IR-inactive, \u03bd\u2082+\u03bd\u2083 IR-active; Bent: \u03bd\u2081+\u03bd\u2082+\u03bd\u2083 all IR-active",
+      "confidence": "high",
+      "chapter_section": "2.2.1",
+      "notes": "Caution: matrix effects can change structure (NiCl\u2082 is linear in Ar but bent ~130\u00b0 in N\u2082 matrices)"
+    },
+    {
+      "id": "GEO-002",
+      "category": "geometry_determination",
+      "rule": "Distinguishing pyramidal (C3v) vs planar (D3h) XY\u2083: pyramidal shows 2 stretching bands (\u03bd\u2081 A\u2081 + \u03bd\u2083 E) in IR; planar shows 1 stretching band (\u03bd\u2083 E\u2032) in IR",
+      "molecular_systems": [
+        "NH\u2083 (pyramidal) vs BF\u2083 (planar)",
+        "XO\u2083\u207f\u207b ions"
+      ],
+      "spectral_details": "Pyramidal: both \u03bd\u2081(sym) and \u03bd\u2083(asym) IR-active; Planar: only \u03bd\u2083(E\u2032) IR-active, \u03bd\u2081(A\u2081\u2032) Raman only",
+      "confidence": "definitive",
+      "chapter_section": "2.4.1",
+      "notes": "This is the key spectroscopic test for tautomerism (e.g., SO\u2083\u00b2\u207b pyramidal vs SO\u2083 planar)"
+    },
+    {
+      "id": "GEO-003",
+      "category": "geometry_determination",
+      "rule": "Distinguishing trigonal-bipyramidal (D3h) vs tetragonal-pyramidal (C4v) XY\u2085: TBP has 2 IR-active stretches; TP has 3 IR-active stretches",
+      "molecular_systems": [
+        "PF\u2085 (TBP) vs IF\u2085 (TP)",
+        "SbF\u2085\u00b2\u207b"
+      ],
+      "spectral_details": "TBP: \u03bd\u2083(A\u2082\u2033) and \u03bd\u2085(E\u2032) IR-active; TP: \u03bd\u2081(A\u2081), \u03bd\u2082(A\u2081), \u03bd\u2087(E) IR-active",
+      "confidence": "high",
+      "chapter_section": "2.7",
+      "notes": "In practice, band overlapping can make counting difficult. Additional criterion: TBP has equatorial > axial frequency; TP has axial > equatorial"
+    },
+    {
+      "id": "GEO-004",
+      "category": "geometry_determination",
+      "rule": "Bond angle calculation in YXY from isotopic frequency ratio: use \u03bd\u2083/\u03bd\u2083\u2032 ratio with isotopic substitution at X",
+      "molecular_systems": [
+        "YXY-type triatomic molecules"
+      ],
+      "spectral_details": "\u03bd\u0303\u2083\u2032/\u03bd\u0303\u2083 = \u221a[(M_X + M_X\u2032 + M_Y(1-cos\u03b1))/(M_X\u2032(M_X + M_Y(1-cos\u03b1)))]",
+      "confidence": "high",
+      "chapter_section": "2.2.1",
+      "notes": "Example: NiF\u2082 bond angle calculated as 154-167\u00b0 from isotopic data"
+    },
+    {
+      "id": "GEO-005",
+      "category": "geometry_determination",
+      "rule": "For X\u2082Y\u2084 (ethane-like) molecules: trans (C2h) shows 6 IR fundamentals, gauche (C2) shows 12 IR fundamentals",
+      "molecular_systems": [
+        "N\u2082F\u2084",
+        "N\u2082H\u2084",
+        "P\u2082H\u2084",
+        "P\u2082F\u2084",
+        "P\u2082Cl\u2084"
+      ],
+      "spectral_details": "Counting IR-active fundamentals distinguishes conformers",
+      "confidence": "high",
+      "chapter_section": "2.10.1",
+      "notes": "N\u2082H\u2084 is pure gauche in all states; P\u2082H\u2084 is gauche in gas but trans in solid"
+    },
+    {
+      "id": "GEO-006",
+      "category": "geometry_determination",
+      "rule": "For X\u2082Y\u2084 (B\u2082X\u2084-type) molecules: D2h (planar) vs D2d (staggered) distinguished by number of IR fundamentals: 8 for D2, 5 for D2d",
+      "molecular_systems": [
+        "B\u2082F\u2084",
+        "B\u2082Cl\u2084",
+        "B\u2082Br\u2084"
+      ],
+      "spectral_details": "D2h: mutual exclusion rule holds (inversion center); D2d: no inversion center",
+      "confidence": "high",
+      "chapter_section": "2.10.1",
+      "notes": "B\u2082F\u2084 and B\u2082Cl\u2084 are staggered in gas/liquid, planar in solid; B\u2082Br\u2084 staggered in all phases"
+    },
+    {
+      "id": "GEO-007",
+      "category": "geometry_determination",
+      "rule": "Pentagonal-planar XY\u2085 (D5h) structure confirmed by only 3 IR-active and 3 Raman-active bands, vs many more for TBP or TP alternatives",
+      "molecular_systems": [
+        "XeF\u2085\u207b",
+        "IF\u2085\u00b2\u207b"
+      ],
+      "spectral_details": "XeF\u2085\u207b: IR=3 bands, Raman=3 bands (\u03bd\u2081 502, \u03bd\u2083 423, \u03bd\u2084 377 cm\u207b\u00b9)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.7.3"
+    },
+    {
+      "id": "GEO-008",
+      "category": "geometry_determination",
+      "rule": "Cis/trans isomer distinction in octahedral XY\u2084Z\u2082: trans (D4h) gives 3 XY stretches (A1g+B1g+Eu) with Eu IR-active only; cis (C2v) gives 4 XY stretches (2A1+B1+B2) all IR+Raman active",
+      "molecular_systems": [
+        "OsF\u2082Cl\u2084\u00b2\u207b",
+        "octahedral mixed-halogeno complexes"
+      ],
+      "spectral_details": "Trans: fewer bands, mutual exclusion; Cis: more bands, all active",
+      "confidence": "definitive",
+      "chapter_section": "2.8.2"
+    },
+    {
+      "id": "GFQ-001",
+      "category": "group_frequencies",
+      "rule": "O-H stretching: free OH ~3600-3700 cm\u207b\u00b9; H-bonded OH ~3400-3200 cm\u207b\u00b9 (broad); O-H bending ~1600-1650 cm\u207b\u00b9",
+      "molecular_systems": [
+        "H\u2082O",
+        "alcohols",
+        "acids",
+        "hydrogen-bonded systems"
+      ],
+      "spectral_details": "H\u2082O gas: \u03bd\u2081 3657, \u03bd\u2082 1595, \u03bd\u2083 3756 cm\u207b\u00b9; liquid: 3450, 1640, 3615 cm\u207b\u00b9; ice: 3400, 1620, 3220 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.4",
+      "notes": "H-bonding lowers \u03bd(OH) stretch and raises \u03b4(OH) bend. Liquid water shows isosbestic point at 3403 cm\u207b\u00b9 in Raman"
+    },
+    {
+      "id": "GFQ-002",
+      "category": "group_frequencies",
+      "rule": "N-H stretching: ~3300-3400 cm\u207b\u00b9 (NH\u2083 gas: \u03bd\u2081 3414, \u03bd\u2083 3336 cm\u207b\u00b9); N-H bending: ~1600-1650 cm\u207b\u00b9 (\u03bd\u2082), ~930-970 cm\u207b\u00b9 (\u03bd\u2084)",
+      "molecular_systems": [
+        "NH\u2083",
+        "amines",
+        "ammonium salts"
+      ],
+      "spectral_details": "NH\u2083 gas: \u03bd\u2081 3414, \u03bd\u2082 1627.5/931.6 (inversion doublet), \u03bd\u2083 3337, \u03bd\u2084 968 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-003",
+      "category": "group_frequencies",
+      "rule": "C-H stretching: ~2900-3100 cm\u207b\u00b9; C-H bending: ~1300-1500 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CH\u2084",
+        "hydrocarbons"
+      ],
+      "spectral_details": "CH\u2084: \u03bd\u2081 2917, \u03bd\u2082 1534, \u03bd\u2083 3019, \u03bd\u2084 1306 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-004",
+      "category": "group_frequencies",
+      "rule": "Si-H stretching: ~2100-2200 cm\u207b\u00b9; Si-H bending: ~900-1000 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SiH\u2084",
+        "silanes"
+      ],
+      "spectral_details": "SiH\u2084: \u03bd\u2081 2180, \u03bd\u2082 970, \u03bd\u2083 2183, \u03bd\u2084 910 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-005",
+      "category": "group_frequencies",
+      "rule": "S-H stretching: ~2550-2620 cm\u207b\u00b9; S-H bending: ~1180 cm\u207b\u00b9",
+      "molecular_systems": [
+        "H\u2082S",
+        "thiols"
+      ],
+      "spectral_details": "H\u2082S gas: \u03bd\u2081 2615, \u03bd\u2082 1183, \u03bd\u2083 2627 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.4"
+    },
+    {
+      "id": "GFQ-006",
+      "category": "group_frequencies",
+      "rule": "B-H terminal stretching: ~2500-2600 cm\u207b\u00b9; B-H bridging stretching: ~2100-2200 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Boranes",
+        "borohydride complexes"
+      ],
+      "spectral_details": "Terminal \u03bd(BH): 2500-2600 cm\u207b\u00b9; Bridging \u03bd(BH): 2100-2200 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.13"
+    },
+    {
+      "id": "GFQ-007",
+      "category": "group_frequencies",
+      "rule": "P-H stretching: ~2300-2420 cm\u207b\u00b9 (PH\u2083: \u03bd\u2081 2327, \u03bd\u2083 2421 cm\u207b\u00b9)",
+      "molecular_systems": [
+        "PH\u2083",
+        "phosphines"
+      ],
+      "spectral_details": "PH\u2083: \u03bd\u2082 992/990 (inversion), \u03bd\u2084 1121 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-008",
+      "category": "group_frequencies",
+      "rule": "N\u2261N (triple bond) stretching: ~2300-2400 cm\u207b\u00b9 (N\u2082: 2359, N\u2082\u207a: 2207 cm\u207b\u00b9); N=N (double): ~1550 cm\u207b\u00b9; N-N (single): ~1000 cm\u207b\u00b9",
+      "molecular_systems": [
+        "N\u2082",
+        "azides",
+        "diazenes"
+      ],
+      "spectral_details": "N\u2261N: ~2300-2400; N=N: ~1550; N-N: ~1000 cm\u207b\u00b9 (approximate ranges)",
+      "confidence": "high",
+      "chapter_section": "2.1.1, 2.5.2"
+    },
+    {
+      "id": "GFQ-009",
+      "category": "group_frequencies",
+      "rule": "C\u2261N (nitrile) stretching: ~2100-2250 cm\u207b\u00b9; C\u2261P stretching: ~1540-1565 cm\u207b\u00b9",
+      "molecular_systems": [
+        "HCN",
+        "ClCN",
+        "BrCN",
+        "ICN",
+        "cyanides",
+        "CH\u2083C\u2261P"
+      ],
+      "spectral_details": "HCN: \u03bd\u2081 3311, \u03bd\u2082 712, \u03bd\u2083 2097 cm\u207b\u00b9; CH\u2083C\u2261P: ~1543-1565 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.6"
+    },
+    {
+      "id": "GFQ-010",
+      "category": "group_frequencies",
+      "rule": "C\u2261C (triple bond) stretching: ~1700-2200 cm\u207b\u00b9 (C\u2082: ~1757 cm\u207b\u00b9 matrix); C=C (double): ~1500-1680 cm\u207b\u00b9; C-C (single): ~1000-1300 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Carbon clusters C\u2099 (n=2-13)",
+        "fullerenes",
+        "diamond",
+        "graphite"
+      ],
+      "spectral_details": "C\u2082: 1757-1845 cm\u207b\u00b9; C\u2086\u2080 A_g(2): 1469 cm\u207b\u00b9; Diamond: 1332 cm\u207b\u00b9; Graphite: 1575 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.14.1-2.14.6"
+    },
+    {
+      "id": "GFQ-011",
+      "category": "group_frequencies",
+      "rule": "C=O (carbonyl) stretching: ~1700 cm\u207b\u00b9 for normal ketones; lower (~1600 cm\u207b\u00b9 or below) for aromatic/unsaturated systems",
+      "molecular_systems": [
+        "CO\u2082",
+        "carbonyl compounds",
+        "carbon oxide anions"
+      ],
+      "spectral_details": "CO\u2082: \u03bd\u2083 2349 cm\u207b\u00b9 (antisym); Normal ketones ~1700 cm\u207b\u00b9; Aromatic C\u2099O\u2099\u00b2\u207b rings: <1600 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.14.7"
+    },
+    {
+      "id": "GFQ-012",
+      "category": "group_frequencies",
+      "rule": "U=O (uranyl) stretching: ~860-960 cm\u207b\u00b9; relationship with U=O distance: R = 9141(\u03bd\u0303\u2083)\u207b\u00b2/\u00b3 + 80.4 (in pm)",
+      "molecular_systems": [
+        "UO\u2082\u00b2\u207a",
+        "PuO\u2082\u00b2\u207a",
+        "AmO\u2082\u00b2\u207a",
+        "actinyl ions"
+      ],
+      "spectral_details": "UO\u2082\u00b2\u207a \u03bd\u2083: ~950 cm\u207b\u00b9; PuO\u2082\u00b2\u207a \u03bd\u2083: 962 cm\u207b\u00b9; AmO\u2082\u00b2\u207a \u03bd\u2083: 939 cm\u207b\u00b9; (U\u2074VO\u2082)\u00b2\u207a \u03bd\u2083: 895 \u2192 (U\u2075VO\u2082)\u207a: 770 cm\u207b\u00b9 on reduction",
+      "confidence": "high",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "GFQ-013",
+      "category": "group_frequencies",
+      "rule": "SiO\u2084 tetrahedra in silicates: \u03bd\u2081(A\u2081) 750-830 cm\u207b\u00b9; \u03bd\u2082(E) 300-400 cm\u207b\u00b9; \u03bd\u2083(F\u2082) 800-1000 cm\u207b\u00b9; \u03bd\u2084(F\u2082) 450-600 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Silicates",
+        "quartz",
+        "silica glass"
+      ],
+      "spectral_details": "Distinguish structural units by \u03bd(Si-O): 4 terminal O ~850, 3 terminal ~900, 2 terminal ~950-1000, 1 terminal ~1050-1100 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.15.2"
+    },
+    {
+      "id": "GFQ-014",
+      "category": "group_frequencies",
+      "rule": "Nitrosyl (NO) stretching: strongly dependent on charge. NO\u207a ~2273, NO ~1880, NO\u207b ~1358-1374, (NO)\u2082\u207b ~886 cm\u207b\u00b9",
+      "molecular_systems": [
+        "NO and its ions",
+        "nitrosyl complexes"
+      ],
+      "spectral_details": "NO\u207a(solid): 2273; NO(matrix): 1880; NO\u207b: 1358-1374 (matrix); (NO)\u2082\u207b: 886 cm\u207b\u00b9 (matrix)",
+      "confidence": "high",
+      "chapter_section": "2.1.2, 2.2.2"
+    },
+    {
+      "id": "GFQ-015",
+      "category": "group_frequencies",
+      "rule": "Fullerene C\u2086\u2080 characteristic modes: IR-active at 1428, 1182, 577, 527 cm\u207b\u00b9; Raman-active pentagonal pinching mode (A_g) at 1469 cm\u207b\u00b9, radial breathing (A_g) at 496 cm\u207b\u00b9",
+      "molecular_systems": [
+        "C\u2086\u2080",
+        "endohedral fullerenes",
+        "C\u2087\u2080"
+      ],
+      "spectral_details": "Doping shifts A_g(2) from 1469 \u2192 1452 (K\u2083C\u2086\u2080), 1448 (Rb\u2083C\u2086\u2080) cm\u207b\u00b9. Each electron transferred shifts ~7 cm\u207b\u00b9 down",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.2-2.14.4"
+    },
+    {
+      "id": "GFQ-016",
+      "category": "group_frequencies",
+      "rule": "Carbon nanotube radial breathing mode (RBM): \u03bd(RBM) is inversely proportional to tube diameter. \u03bd ~ 186 cm\u207b\u00b9 for d ~ 1.4 nm",
+      "molecular_systems": [
+        "Single-walled carbon nanotubes (SWNT)",
+        "armchair, zigzag, chiral"
+      ],
+      "spectral_details": "\u03bd(RBM) = A/d + B (A ~234 cm\u207b\u00b9\u00b7nm). Strong resonance enhancement at specific excitation wavelengths",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.5"
+    },
+    {
+      "id": "CHG-001",
+      "category": "charge_and_oxidation_effects",
+      "rule": "Higher oxidation state of central atom \u2192 higher stretching frequency for the same molecular type",
+      "molecular_systems": [
+        "VF\u2086\u207b > VF\u2086\u00b2\u207b > VF\u2086\u00b3\u207b",
+        "WCl\u2086 > WCl\u2086\u207b > WCl\u2086\u00b2\u207b",
+        "AlF\u2086\u00b3\u207b < SiF\u2086\u00b2\u207b < PF\u2086\u207b < SF\u2086"
+      ],
+      "spectral_details": "VF\u2086\u207b: \u03bd\u2081 676, \u03bd\u2083 646; VF\u2086\u00b2\u207b: \u03bd\u2081 584, \u03bd\u2083 578; VF\u2086\u00b3\u207b: \u03bd\u2081 533, \u03bd\u2083 511 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.8.1.2"
+    },
+    {
+      "id": "CHG-002",
+      "category": "charge_and_oxidation_effects",
+      "rule": "Fe oxidation state effect on Fe-X frequency: \u03bd(FeX\u2084\u207b) / \u03bd(FeX\u2084\u00b2\u207b) \u2248 1.32 for X=Cl, Br",
+      "molecular_systems": [
+        "FeCl\u2084\u207b vs FeCl\u2084\u00b2\u207b",
+        "FeBr\u2084\u207b vs FeBr\u2084\u00b2\u207b"
+      ],
+      "spectral_details": "\u03bd\u2083(FeCl\u2084\u207b) ~378, \u03bd\u2083(FeCl\u2084\u00b2\u207b) ~286 cm\u207b\u00b9; ratio \u2248 1.32",
+      "confidence": "high",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "CHG-003",
+      "category": "charge_and_oxidation_effects",
+      "rule": "For tetrahedral oxoanions MO\u2084\u207f\u207b: \u03bd\u2081/\u03bd\u2083 ratio increases with (1) increasing negative charge for same central atom, (2) increasing mass of central atom for same charge, (3) increasing negative charge for isoelectronic ions",
+      "molecular_systems": [
+        "MnO\u2084\u207b < MnO\u2084\u00b2\u207b < MnO\u2084\u00b3\u207b",
+        "PO\u2084\u00b3\u207b < AsO\u2084\u00b3\u207b",
+        "ReO\u2084\u207b < WO\u2084\u00b2\u207b"
+      ],
+      "spectral_details": "\u03bd\u2081/\u03bd\u2083 increases systematically with charge and mass",
+      "confidence": "high",
+      "chapter_section": "2.6.1",
+      "notes": "Very useful for making correct \u03bd\u2081/\u03bd\u2083 assignments in tetraoxoanions"
+    },
+    {
+      "id": "CHG-004",
+      "category": "charge_and_oxidation_effects",
+      "rule": "Removing bonding electrons \u2192 frequency decrease; removing antibonding electrons \u2192 frequency increase (diatomics)",
+      "molecular_systems": [
+        "N\u2082(2359) > N\u2082\u207a(2207)",
+        "O\u2082(1580) < O\u2082\u207a(1876)"
+      ],
+      "spectral_details": "N\u2082: losing bonding e\u207b decreases \u03bd; O\u2082: losing antibonding e\u207b increases \u03bd",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1"
+    },
+    {
+      "id": "CHG-005",
+      "category": "charge_and_oxidation_effects",
+      "rule": "For NH\u2084\u207a in ammonium halides: \u03bd(NH\u2084\u207a) decreases and \u03b4(NH\u2084\u207a) increases as N-H\u00b7\u00b7\u00b7X hydrogen bond weakens in order X = F > Cl > Br > I",
+      "molecular_systems": [
+        "NH\u2084F",
+        "NH\u2084Cl",
+        "NH\u2084Br",
+        "NH\u2084I"
+      ],
+      "spectral_details": "\u03bd(NH) becomes lower; \u03b4(NH) becomes higher from F to I",
+      "confidence": "high",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "SUB-001",
+      "category": "substituent_effects",
+      "rule": "In BH\u2084\u207b, GaH\u2084\u207b, AlH\u2084\u207b series (group IIIB): unusual trend \u03bd\u2081(BH\u2084\u207b 2270) > \u03bd\u2081(GaH\u2084\u207b 1807) > \u03bd\u2081(AlH\u2084\u207b 1757 cm\u207b\u00b9) \u2014 does not follow simple mass trend",
+      "molecular_systems": [
+        "BH\u2084\u207b",
+        "AlH\u2084\u207b",
+        "GaH\u2084\u207b"
+      ],
+      "spectral_details": "\u03bd\u2081: BH\u2084\u207b 2270 > GaH\u2084\u207b 1807 > AlH\u2084\u207b 1757 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "SUB-002",
+      "category": "substituent_effects",
+      "rule": "Mixed halogen systems: stretching frequencies are additive and characteristic. For mixed complexes, ratios \u03bd(MBr)/\u03bd(MCl) \u2248 0.76 and \u03bd(MI)/\u03bd(MCl) \u2248 0.62 for \u03bd\u2083",
+      "molecular_systems": [
+        "Mixed-halogeno tetrahedral and octahedral complexes"
+      ],
+      "spectral_details": "Average ratios across many compounds provide reliable band assignment guide",
+      "confidence": "high",
+      "chapter_section": "2.6.1, 2.8.1.3"
+    },
+    {
+      "id": "SUB-003",
+      "category": "substituent_effects",
+      "rule": "For SiF\u2099Cl\u2084\u208b\u2099, SiCl\u2099Br\u2084\u208b\u2099 series: each stretching vibration appears at characteristic frequency determined by the specific M-X bond (e.g., SiF 910, SiCl 587, SiBr 486, SiI 333 cm\u207b\u00b9 in SiFClBrI)",
+      "molecular_systems": [
+        "SiFClBrI",
+        "SiF\u2099Cl\u2084\u208b\u2099",
+        "mixed halogen complexes"
+      ],
+      "spectral_details": "SiF 910, SiCl 587, SiBr 486, SiI 333 cm\u207b\u00b9 in SiFClBrI",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.6.2"
+    },
+    {
+      "id": "SUB-004",
+      "category": "substituent_effects",
+      "rule": "Terminal vs bridging M-X stretching: terminal frequencies are higher than bridging frequencies. Ratio \u03bd(bridge)/\u03bd(terminal) ranges from 0.74 to 0.61",
+      "molecular_systems": [
+        "Al\u2082X\u2086",
+        "Ga\u2082X\u2086",
+        "Fe\u2082X\u2086",
+        "bridged X\u2082Y\u2086 molecules"
+      ],
+      "spectral_details": "Terminal stretching ~1.3-1.6\u00d7 bridging stretching frequencies",
+      "confidence": "high",
+      "chapter_section": "2.10.2"
+    },
+    {
+      "id": "SUB-005",
+      "category": "substituent_effects",
+      "rule": "M-O-M bridge angle correlation: \u03bd\u2090(MO) is at least 215 cm\u207b\u00b9 higher than \u03bd\u209b(MO). This separation increases as M-O-M angle increases",
+      "molecular_systems": [
+        "M\u2082O\u2087\u207f\u207b pyrosilicate-type ions",
+        "V\u2082O\u2087\u2074\u207b",
+        "Cr\u2082O\u2087\u00b2\u207b"
+      ],
+      "spectral_details": "For V\u2082O\u2087: \u0394 = [(\u03bd\u2090-\u03bd\u209b)/(\u03bd\u2090+\u03bd\u209b)]\u00d7100 = -38.79 + 0.39\u03b1 (where \u03b1 is M-O-M angle)",
+      "confidence": "high",
+      "chapter_section": "2.11.1"
+    },
+    {
+      "id": "ISO-001",
+      "category": "isotope_effects",
+      "rule": "Isotope shifts in diatomic molecules: \u03bd(HX)/\u03bd(DX) \u2248 \u221a2 \u2248 1.414 for hydrides/deuterides",
+      "molecular_systems": [
+        "H/D isotopic pairs in all molecular types"
+      ],
+      "spectral_details": "H\u2082O \u2192 D\u2082O: \u03bd\u2081 3657\u21922671, \u03bd\u2082 1595\u21921178, \u03bd\u2083 3756\u21922788 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.1, 2.2.4",
+      "notes": "Isotope substitution is the most powerful tool for band assignment"
+    },
+    {
+      "id": "ISO-002",
+      "category": "isotope_effects",
+      "rule": "Chlorine isotope pattern in tetrahedral and octahedral MCl\u2099 compounds: 5-peak pattern from \u00b3\u2075Cl/\u00b3\u2077Cl (75.4%/24.6%) mixture. Isotope shift per mass unit \u2248 3.8 cm\u207b\u00b9 for Cl in MCl\u2084",
+      "molecular_systems": [
+        "MCl\u2084 (M=Si, Ge, Sn)",
+        "MCl\u2086\u207f\u207b"
+      ],
+      "spectral_details": "5-peak pattern with approximately known relative intensities from statistical distribution",
+      "confidence": "high",
+      "chapter_section": "2.6.1",
+      "notes": "For SnCl\u2084 with 10 Sn isotopes, 50 bands expected. Using isotopically pure \u00b9\u00b9\u2076SnCl\u2084 gives clean 5-peak Cl pattern"
+    },
+    {
+      "id": "ISO-003",
+      "category": "isotope_effects",
+      "rule": "\u00b9\u2070B/\u00b9\u00b9B isotope effect (natural 19.8%/80.2%): useful for band assignment in boron compounds",
+      "molecular_systems": [
+        "Boranes",
+        "borates",
+        "BF\u2083",
+        "BCl\u2083",
+        "boron halides"
+      ],
+      "spectral_details": "B-isotope shifts help identify B-containing modes. Boron isotopes produce characteristic splitting patterns",
+      "confidence": "high",
+      "chapter_section": "2.4.1, 2.13"
+    },
+    {
+      "id": "ISO-004",
+      "category": "isotope_effects",
+      "rule": "Carbon isotope scrambling (\u00b9\u00b2C/\u00b9\u00b3C) for determining structure: number of isotopomer peaks in IR identifies molecular geometry (linear vs cyclic vs TBP)",
+      "molecular_systems": [
+        "Carbon clusters C\u2085, C\u2085\u207a"
+      ],
+      "spectral_details": "C\u2085 linear: 20 isotopomer peaks; C\u2085 TBP: 12 peaks; C\u2085 cyclic: 8 peaks. Linear confirmed by 20 observed peaks",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.1"
+    },
+    {
+      "id": "ISO-005",
+      "category": "isotope_effects",
+      "rule": "\u00b2\u00b3\u2075U/\u00b2\u00b3\u2078U isotope shift in UF\u2086: only 0.604 cm\u207b\u00b9. High-resolution cold-jet technique required to resolve",
+      "molecular_systems": [
+        "UF\u2086"
+      ],
+      "spectral_details": "\u00b2\u00b3\u2075UF\u2086 Q-branch lies between R(5) and R(6) of \u00b2\u00b3\u2078UF\u2086. Used for laser isotope separation",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.11"
+    },
+    {
+      "id": "ENV-001",
+      "category": "environmental_effects",
+      "rule": "Hydrogen bonding: lowers X-H stretching frequency (broadens band), raises X-H bending frequency",
+      "molecular_systems": [
+        "H\u2082O (gas \u2192 liquid \u2192 ice)",
+        "NH\u2083",
+        "HF",
+        "alcohols"
+      ],
+      "spectral_details": "H\u2082O: gas \u03bd\u2081 3657\u2192liquid 3450\u2192ice 3400 cm\u207b\u00b9 (stretch decreases); \u03b4: gas 1595\u2192liquid 1640\u2192ice 1620 cm\u207b\u00b9 (bend increases)",
+      "confidence": "definitive",
+      "chapter_section": "2.2.4"
+    },
+    {
+      "id": "ENV-002",
+      "category": "environmental_effects",
+      "rule": "Matrix effects: vibrational frequencies differ depending on matrix gas (Ne, Ar, Kr, N\u2082). Structure may also change (e.g., NiCl\u2082 linear in Ar, bent ~130\u00b0 in N\u2082)",
+      "molecular_systems": [
+        "Matrix-isolated molecules"
+      ],
+      "spectral_details": "CaF\u2082 bond angle: 139\u00b0 (Kr) \u2192 143\u00b0 (Ne) \u2192 156\u00b0 (N\u2082 matrix)",
+      "confidence": "high",
+      "chapter_section": "2.2.1",
+      "notes": "Structural data from matrix must be interpreted with caution"
+    },
+    {
+      "id": "ENV-003",
+      "category": "environmental_effects",
+      "rule": "Pressure effects: high pressure can distort tetrahedral ions toward square-planar; increase stretching frequencies due to bond shortening",
+      "molecular_systems": [
+        "Distorted tetrahedral CuCl\u2084\u00b2\u207b",
+        "Re\u2082Cl\u2088\u00b2\u207b"
+      ],
+      "spectral_details": "\u03bd(Re-Re) at 15 GPa: 272 \u2192 357 cm\u207b\u00b9 (shift +85 cm\u207b\u00b9)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.6.1, 2.11.2"
+    },
+    {
+      "id": "ENV-004",
+      "category": "environmental_effects",
+      "rule": "Solution vs solid state: \u03bd\u2081 and \u03bd\u2083 often too close in Raman spectra of solids but separate in solution. \u03bd\u2082 and \u03bd\u2084 may merge",
+      "molecular_systems": [
+        "K\u2082SO\u2084",
+        "tetrahedral oxoanions"
+      ],
+      "spectral_details": "Raman: \u03bd\u2082 stronger than \u03bd\u2084 in MO\u2084\u207f\u207b; \u03bd\u2084 often hidden by \u03bd\u2082",
+      "confidence": "high",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "ENV-005",
+      "category": "environmental_effects",
+      "rule": "Site symmetry lowering in crystalline state: degenerate vibrations (\u03bd\u2083, \u03bd\u2084) can split into two or three components due to crystal field effects",
+      "molecular_systems": [
+        "MX\u2084 tetrahedral ions in crystals",
+        "MX\u2086 octahedral ions in crystals"
+      ],
+      "spectral_details": "Splitting magnitude provides information about site symmetry",
+      "confidence": "high",
+      "chapter_section": "2.6.1, 2.8.1.7"
+    },
+    {
+      "id": "ENV-006",
+      "category": "environmental_effects",
+      "rule": "Temperature-dependent isomer equilibria: shifts between different molecular structures observable via frequency changes (e.g., XeF\u2086 three electronic isomers)",
+      "molecular_systems": [
+        "XeF\u2086",
+        "N\u2082O\u2084 (planar D2h \u2194 twisted D2d \u2194 iso form)"
+      ],
+      "spectral_details": "XeF\u2086 IR stretching bands change with temperature due to shift in isomer equilibrium",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.10, 2.16.1"
+    },
+    {
+      "id": "FRC-001",
+      "category": "force_constant_correlations",
+      "rule": "Force constant-bond distance correlation for U=O: Jones derived relationship between U=O stretching force constant and U=O distance",
+      "molecular_systems": [
+        "UO\u2082\u00b2\u207a and related actinyl ions"
+      ],
+      "spectral_details": "U=O distance R(pm) = 9141(\u03bd\u0303\u2083)\u207b\u00b2/\u00b3 + 80.4, or R = 10650(\u03bd\u0303\u2081)\u207b\u00b2/\u00b3 + 57.5",
+      "confidence": "high",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "FRC-002",
+      "category": "force_constant_correlations",
+      "rule": "Empirical relationship between \u03bd\u2090(M-Cl) and M-Cl distance in planar Pt(II) and Pd(II) complexes: [\u03bd\u2090(M-Cl)]\u00b2 = P/(R(M-Cl)-1.6)\u00b3",
+      "molecular_systems": [
+        "Pt(II) and Pd(II) chloride complexes"
+      ],
+      "spectral_details": "P = 38988 for Pt(II), 41440 for Pd(II); R in \u00c5, \u03bd in cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.6.3"
+    },
+    {
+      "id": "FRC-003",
+      "category": "force_constant_correlations",
+      "rule": "Trend within X\u2084\u2074\u207b (tetrahedral) and isoelectronic Y\u2084: \u03bd(X\u2084\u2074\u207b)/\u03bd(Y\u2084) \u2248 0.77",
+      "molecular_systems": [
+        "Si\u2084\u2074\u207b/P\u2084",
+        "Ge\u2084\u2074\u207b/As\u2084",
+        "Sn\u2084\u2074\u207b/Sb\u2084"
+      ],
+      "spectral_details": "Based on this ratio, Pb\u2084\u2074\u207b predicted: \u03bd\u2081 115, \u03bd\u2082 69, \u03bd\u2083 93 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.5.1"
+    },
+    {
+      "id": "FRC-004",
+      "category": "force_constant_correlations",
+      "rule": "Metal-oxygen stretching force constants in M\u2086O\u2081\u2089\u2078\u207b clusters: ratio of terminal:bridging:central \u2248 6:3:1",
+      "molecular_systems": [
+        "Nb\u2086O\u2081\u2089\u2078\u207b",
+        "Ta\u2086O\u2081\u2089\u2078\u207b"
+      ],
+      "spectral_details": "Terminal ~5.66, bridging ~2.92, central ~0.91 mdyn/\u00c5",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.12"
+    },
+    {
+      "id": "VIB-001",
+      "category": "metal_ligand_vibrations",
+      "rule": "Metal-metal stretching in clusters: strong Raman bands at low frequencies (100-400 cm\u207b\u00b9). Under resonance conditions, overtones of \u03bd(M-M) dominate spectra",
+      "molecular_systems": [
+        "Re\u2082Cl\u2088\u00b2\u207b",
+        "Mo\u2082Cl\u2088\u2074\u207b",
+        "Re\u2082F\u2088\u00b2\u207b",
+        "M\u2082X\u2088\u207f\u207b clusters"
+      ],
+      "spectral_details": "\u03bd(Re-Re): F 320, Cl 272, Br 277, I 258 cm\u207b\u00b9 (irregular halogen dependence)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.11.2"
+    },
+    {
+      "id": "VIB-002",
+      "category": "metal_ligand_vibrations",
+      "rule": "M-M stretching in excited electronic state can be lower (bonding\u2192antibonding excitation) or higher (antibonding\u2192bonding excitation) than ground state",
+      "molecular_systems": [
+        "Re\u2082Cl\u2088\u00b2\u207b",
+        "metal-metal bonded dimers"
+      ],
+      "spectral_details": "Re\u2082Cl\u2088\u00b2\u207b: \u03bd(Re-Re) ground 272 \u2192 excited 204 cm\u207b\u00b9 (electron promoted from bonding d to antibonding d*)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.11.2"
+    },
+    {
+      "id": "VIB-003",
+      "category": "metal_ligand_vibrations",
+      "rule": "Metal carbonyl \u03bd(CO) vibrations: terminal CO ~2000-2130 cm\u207b\u00b9; bridging CO ~1800-1860 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Metal carbonyls",
+        "carbonyl clusters"
+      ],
+      "spectral_details": "Terminal \u03bd(CO): ~2000-2130; Bridging \u03bd(CO): ~1800-1860 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.6, 2.12"
+    },
+    {
+      "id": "VIB-004",
+      "category": "metal_ligand_vibrations",
+      "rule": "Dioxygen (O\u2082) ligand vibrations depend on charge state: O\u2082\u207a ~1876, O\u2082 ~1580, O\u2082\u207b ~1094, O\u2082\u00b2\u207b ~791/736 cm\u207b\u00b9. Used to identify ligand type in coordination compounds",
+      "molecular_systems": [
+        "Superoxo (O\u2082\u207b) and peroxo (O\u2082\u00b2\u207b) complexes"
+      ],
+      "spectral_details": "\u03bd(O-O): O\u2082\u207a ~1876, O\u2082 ~1580, O\u2082\u207b ~1094, O\u2082\u00b2\u207b ~791-736 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.1.2"
+    },
+    {
+      "id": "CRY-001",
+      "category": "cluster_vibrations",
+      "rule": "B\u2086X\u2086\u00b2\u207b ions (Oh symmetry): B-B vibrations are insensitive to halogen; B-X vibrations are sensitive. Only 4 IR-active (F\u2081u) and 3 Raman-active (A\u2081g+E_g+F\u2082g) for B\u2086 skeleton",
+      "molecular_systems": [
+        "B\u2086Cl\u2086\u00b2\u207b",
+        "B\u2086Br\u2086\u00b2\u207b",
+        "B\u2086I\u2086\u00b2\u207b"
+      ],
+      "spectral_details": "B-B modes relatively constant, B-X modes shift with halogen (Cl\u2192Br\u2192I)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.13"
+    },
+    {
+      "id": "CRY-002",
+      "category": "cluster_vibrations",
+      "rule": "For icosahedral B\u2081\u2082X\u2081\u2082\u00b2\u207b (Ih): only 3 F\u2081u IR-active, and only 2 A_g + 4 H_g Raman-active out of 66 normal modes",
+      "molecular_systems": [
+        "B\u2081\u2082X\u2081\u2082\u00b2\u207b (X=Cl, Br, I, H)"
+      ],
+      "spectral_details": "Very simple IR/Raman spectra despite 24 atoms due to extremely high symmetry",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.13"
+    },
+    {
+      "id": "CRY-003",
+      "category": "cluster_vibrations",
+      "rule": "Small carbon clusters C\u2099 (n=2-13): neutral clusters are predominantly linear (except C\u2086 which can be cyclic). C\u2099\u207b anions have markedly lower frequencies than neutrals",
+      "molecular_systems": [
+        "C\u2083, C\u2084, C\u2085, C\u2086, C\u2087, C\u2088, C\u2089, C\u2081\u2081, C\u2081\u2083"
+      ],
+      "spectral_details": "C\u2085\u207b stretching is 332 cm\u207b\u00b9 lower than C\u2085; C\u2087\u207b is 394 cm\u207b\u00b9 lower than C\u2087",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.1"
+    },
+    {
+      "id": "CRY-004",
+      "category": "cluster_vibrations",
+      "rule": "Sulfur clusters S\u2099 (n=6-12): neutral molecules take puckered ring structures; anions S\u2099\u00b2\u207b (n=4-6) take open-chain structures",
+      "molecular_systems": [
+        "S\u2086, S\u2087, S\u2088, S\u2089, S\u2081\u2082",
+        "S\u2084\u00b2\u207b, S\u2085\u00b2\u207b, S\u2086\u00b2\u207b"
+      ],
+      "spectral_details": "Neutral: ring (puckered); Anions: open chain",
+      "confidence": "high",
+      "chapter_section": "2.18.1"
+    },
+    {
+      "id": "SPC-001",
+      "category": "special_topics",
+      "rule": "Inversion doubling in pyramidal XH\u2083: each vibrational level splits into positive and negative components. Transitions between different signs are IR-allowed; same sign are Raman-allowed",
+      "molecular_systems": [
+        "NH\u2083",
+        "ND\u2083",
+        "PH\u2083"
+      ],
+      "spectral_details": "NH\u2083 ground state inversion splitting: ~0.79 cm\u207b\u00b9 (microwave). \u03bd\u2082: 931.6/968.1 cm\u207b\u00b9 doublet",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "SPC-002",
+      "category": "special_topics",
+      "rule": "Fermi resonance: when a fundamental and overtone/combination have similar frequencies and same symmetry, they mix and split. The higher-frequency band gains intensity",
+      "molecular_systems": [
+        "CO\u2082 (\u03bd\u2081 and 2\u03bd\u2082)",
+        "CCl\u2084",
+        "various"
+      ],
+      "spectral_details": "CO\u2082: \u03bd\u2081 expected ~1337 but 2\u03bd\u2082(\u223c1337) Fermi resonance gives bands at 1285 and 1388 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.2",
+      "notes": "Important consideration in band assignment. The unperturbed frequency can be calculated"
+    },
+    {
+      "id": "SPC-003",
+      "category": "special_topics",
+      "rule": "Resonance Raman (RR) enhancement: when excitation wavelength matches electronic absorption, vibrational modes coupled to the electronic transition are strongly enhanced, producing overtone progressions",
+      "molecular_systems": [
+        "Colored tetrahedral ions (CrO\u2084\u00b2\u207b, MnO\u2084\u207b, MoS\u2084\u00b2\u207b)",
+        "M\u2082X\u2088\u207f\u207b clusters",
+        "metalloporphyrins"
+      ],
+      "spectral_details": "RR shows n\u03bd\u2081 (n=1-9) progressions. Mode selectivity reveals which bonds are involved in electronic transition",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1, 2.11.2"
+    },
+    {
+      "id": "SPC-004",
+      "category": "special_topics",
+      "rule": "Jahn-Teller effect in octahedral d\u00b9 and d\u00b2 hexafluorides: combination bands (\u03bd\u2081+\u03bd\u2083) and (\u03bd\u2082+\u03bd\u2083) show anomalous broadening",
+      "molecular_systems": [
+        "TcF\u2086 (d\u00b9)",
+        "ReF\u2086 (d\u00b9)",
+        "RuF\u2086 (d\u00b2)",
+        "OsF\u2086 (d\u00b2)"
+      ],
+      "spectral_details": "Broadening of (\u03bd\u2082+\u03bd\u2083) and (\u03bd\u2081+\u03bd\u2083) combination bands in IR; no splitting of fundamentals",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.10"
+    },
+    {
+      "id": "SPC-005",
+      "category": "special_topics",
+      "rule": "Anomalous polarization in resonance Raman: for octahedral d\u2075 ions (e.g., IrCl\u2086\u00b2\u207b), all Raman bands can show anomalous polarization due to electronic degeneracy",
+      "molecular_systems": [
+        "IrCl\u2086\u00b2\u207b",
+        "IrBr\u2086\u00b2\u207b"
+      ],
+      "spectral_details": "Depolarization ratios deviate from normal values. Antisymmetric part of Raman tensor from d\u2075 electronic degeneracy",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.9"
+    },
+    {
+      "id": "SPC-006",
+      "category": "special_topics",
+      "rule": "Electronic structure effect on \u03bd\u2083 in octahedral [MCl\u2086]\u00b3\u207b: occupation of antibonding e_g orbitals drastically lowers \u03bd\u2083 (Fe\u00b3\u207a d\u2075 < Cr\u00b3\u207a d\u00b3)",
+      "molecular_systems": [
+        "CrCl\u2086\u00b3\u207b (d\u00b3)",
+        "MnCl\u2086\u00b3\u207b (d\u2074, Jahn-Teller)",
+        "FeCl\u2086\u00b3\u207b (d\u2075, high-spin)"
+      ],
+      "spectral_details": "\u03bd\u2083: Cr\u00b3\u207a 315 > Mn\u00b3\u207a 342 (J-T distorted, extra splitting) > Fe\u00b3\u207a 248 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.8.1.4"
+    },
+    {
+      "id": "SPC-007",
+      "category": "special_topics",
+      "rule": "Group frequency charts provide characteristic absorption regions for common functional groups in phosphorus, sulfur, and boron compounds",
+      "molecular_systems": [
+        "Phosphorus compounds (\u03bd(PH), \u03bd(PO), \u03bd(PX))",
+        "Sulfur compounds",
+        "Boron compounds (\u03bd(BH), \u03bd(BO), \u03bd(BX))"
+      ],
+      "spectral_details": "See Appendix VIII of Nakamoto for complete group frequency charts",
+      "confidence": "high",
+      "chapter_section": "2.17, 2.18, 2.13"
+    },
+    {
+      "id": "TRN-001",
+      "category": "frequency_trends",
+      "rule": "For pyramidal XY\u2083 halogeno compounds: trend \u03bd\u2081 > \u03bd\u2083 and \u03bd\u2082 > \u03bd\u2084 (opposite to neutral XH\u2083 molecules where \u03bd\u2083 > \u03bd\u2081 and \u03bd\u2084 > \u03bd\u2082)",
+      "molecular_systems": [
+        "PCl\u2083",
+        "AsCl\u2083",
+        "SbCl\u2083",
+        "NF\u2083",
+        "PF\u2083"
+      ],
+      "spectral_details": "Halogeno: \u03bd\u2081 > \u03bd\u2083, \u03bd\u2082 > \u03bd\u2084; Hydrides: \u03bd\u2083 > \u03bd\u2081, \u03bd\u2084 > \u03bd\u2082",
+      "confidence": "high",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "TRN-002",
+      "category": "frequency_trends",
+      "rule": "In XY\u2082 triatomic molecules: trend \u03bd\u2083 > \u03bd\u2081 holds for majority; exceptions occur for some bent molecules",
+      "molecular_systems": [
+        "XY\u2082 metal halides"
+      ],
+      "spectral_details": "\u03bd\u2083 (asymmetric stretch) usually higher than \u03bd\u2081 (symmetric stretch)",
+      "confidence": "high",
+      "chapter_section": "2.2.1"
+    },
+    {
+      "id": "TRN-003",
+      "category": "frequency_trends",
+      "rule": "For octahedral XY\u2086: \u03bd\u2081(AlF\u2086\u00b3\u207b 541) > \u03bd\u2081(GaF\u2086\u00b3\u207b 535) > \u03bd\u2081(InF\u2086\u00b3\u207b 497) > \u03bd\u2081(TlF\u2086\u00b3\u207b 478) \u2014 \u03bd\u2081 shows force constant trend directly since central atom is stationary in this mode",
+      "molecular_systems": [
+        "AlF\u2086\u00b3\u207b",
+        "GaF\u2086\u00b3\u207b",
+        "InF\u2086\u00b3\u207b",
+        "TlF\u2086\u00b3\u207b"
+      ],
+      "spectral_details": "\u03bd\u2081 trend: Al > Ga > In > Tl (force constant dominance); \u03bd\u2083 trend: same order (mass + force constant combined)",
+      "confidence": "high",
+      "chapter_section": "2.8.1.1"
+    },
+    {
+      "id": "TRN-004",
+      "category": "frequency_trends",
+      "rule": "For tetrahedral MO\u2084\u207f\u207b series: \u03bd\u2081 and \u03bd\u2083 trends depend on central atom, charge, and period. The n\u2081/n\u2083 ratio is diagnostic for correct assignment",
+      "molecular_systems": [
+        "PO\u2084\u00b3\u207b",
+        "SO\u2084\u00b2\u207b",
+        "ClO\u2084\u207b",
+        "VO\u2084\u00b3\u207b",
+        "CrO\u2084\u00b2\u207b",
+        "MnO\u2084\u207b"
+      ],
+      "spectral_details": "\u03bd\u2081/\u03bd\u2083 increases with negative charge and central atom mass",
+      "confidence": "high",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GEO-009",
+      "category": "geometry_determination",
+      "rule": "Distinction between cis/trans isomers in X\u2082Y\u2082 molecules: cis (C2v) vs trans (C2h). \u03bd\u2086 vibration is IR-inactive and Raman-depolarized in planar but IR-active and Raman-polarized in nonplanar",
+      "molecular_systems": [
+        "N\u2082F\u2082",
+        "N\u2082O\u2082\u00b2\u207b",
+        "H\u2082O\u2082"
+      ],
+      "spectral_details": "\u03bd\u2086: IR and Raman behavior distinguishes cis-planar (C2v), trans-planar (C2h), and nonplanar (C2)",
+      "confidence": "high",
+      "chapter_section": "2.5.2"
+    },
+    {
+      "id": "GEO-010",
+      "category": "geometry_determination",
+      "rule": "Planar (D2h) vs twisted (D2) X\u2082H\u2084: D2h has IR/Raman mutual exclusion; D2 (nonplanar) does not",
+      "molecular_systems": [
+        "B\u2082H\u2084",
+        "B\u2082F\u2084",
+        "B\u2082Cl\u2084",
+        "N\u2082O\u2084"
+      ],
+      "spectral_details": "Selection rule test: D2h \u2192 inversion center \u2192 mutual exclusion; D2 \u2192 no inversion center",
+      "confidence": "high",
+      "chapter_section": "2.10.1"
+    },
+    {
+      "id": "GEO-011",
+      "category": "geometry_determination",
+      "rule": "D3h (staggered) vs D3h\u2032 (eclipsed) for ethane-like X\u2082Y\u2086: D3d has E_u IR-active + E_g Raman-active; D3h has E\u2032 both IR and Raman active",
+      "molecular_systems": [
+        "Si\u2082Cl\u2086",
+        "Si\u2082F\u2086",
+        "ethane-type molecules"
+      ],
+      "spectral_details": "Si\u2082Cl\u2086 controversy: D3d vs D3h resolved by observing \u03bd\u2088 and \u03bd\u2089 weakly in Raman (violation for D3d, allowed for D3h\u2032/G\u2083\u2086)",
+      "confidence": "high",
+      "chapter_section": "2.10.4"
+    },
+    {
+      "id": "SUB-006",
+      "category": "substituent_effects",
+      "rule": "In M\u2082X\u2089 (triple-bridged) clusters: terminal stretching ~340-430 cm\u207b\u00b9; bridging stretching ~200-320 cm\u207b\u00b9. Terminal/bridging ratio ~1.3-1.5",
+      "molecular_systems": [
+        "Ti\u2082Cl\u2089\u207b",
+        "Cr\u2082Cl\u2089\u00b3\u207b",
+        "W\u2082Cl\u2089\u00b3\u207b",
+        "Ir\u2082Cl\u2089\u00b3\u207b"
+      ],
+      "spectral_details": "Terminal and bridging mode frequencies are characteristic and well-separated",
+      "confidence": "high",
+      "chapter_section": "2.11.3"
+    },
+    {
+      "id": "SUB-007",
+      "category": "substituent_effects",
+      "rule": "In M\u2082X\u2081\u2080 (edge-sharing bioctahedra): terminal vibrations: 320-370 cm\u207b\u00b9; bridging vibrations: 250-280 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Nb\u2082Cl\u2081\u2080",
+        "Re\u2082Cl\u2081\u2080\u00b2\u207b",
+        "Os\u2082Cl\u2081\u2080",
+        "W\u2082Cl\u2081\u2080\u00b2\u207b"
+      ],
+      "spectral_details": "Terminal/bridging mode separation useful for structure confirmation",
+      "confidence": "high",
+      "chapter_section": "2.11.4"
+    },
+    {
+      "id": "ENV-007",
+      "category": "environmental_effects",
+      "rule": "Adduct formation with HF: H-bonded vs anti-H-bonded complexes can be distinguished by \u03bd(HF) shifts. UF\u2086-HF at 3848 cm\u207b\u00b9; UF\u2086-FH at 3903 cm\u207b\u00b9",
+      "molecular_systems": [
+        "UF\u2086-HF",
+        "WF\u2086-HF",
+        "octahedral fluoride adducts"
+      ],
+      "spectral_details": "H-bonded: HF stretch lower; anti-H-bonded: HF stretch higher (closer to free HF)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.8"
+    },
+    {
+      "id": "CRY-005",
+      "category": "cluster_vibrations",
+      "rule": "Octahedral metal clusters [M\u2086X\u2088Y\u2086]\u00b2\u207b (M=Mo, W): \u03bd(M-M) ~200-300 cm\u207b\u00b9, force constant 1.2-1.5 mdyn/\u00c5. Two Raman-active (A\u2081g, E_g) and one IR-active (F\u2081u) M-M modes",
+      "molecular_systems": [
+        "(Mo\u2086Cl\u2088)Y\u2086\u00b2\u207b",
+        "(W\u2086Cl\u2088)Y\u2086\u00b2\u207b",
+        "metal cluster compounds"
+      ],
+      "spectral_details": "\u03bd(Mo-Mo) below 300 cm\u207b\u00b9; force constants 1.2-1.5 mdyn/\u00c5",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.12"
+    },
+    {
+      "id": "CRY-006",
+      "category": "cluster_vibrations",
+      "rule": "Nb\u2086Cl\u2081\u2082 cluster: \u03bd(Nb-Nb) assigned at ~140 cm\u207b\u00b9. Force constant < 0.3 mdyn/\u00c5 \u2014 much weaker than Mo/W clusters",
+      "molecular_systems": [
+        "Nb\u2086Cl\u2081\u2082",
+        "Ta\u2086Cl\u2081\u2082"
+      ],
+      "spectral_details": "\u03bd(M-M) very low; may be too low to observe in some cases",
+      "confidence": "high",
+      "chapter_section": "2.12"
+    },
+    {
+      "id": "SPC-008",
+      "category": "special_topics",
+      "rule": "Diamond Raman: single sharp band at 1332 cm\u207b\u00b9 (F\u2082g, triply degenerate). Used as pressure sensor in diamond anvil cells. Type I vs II diamond distinguished by IR absorption",
+      "molecular_systems": [
+        "Diamond (C\u221e)"
+      ],
+      "spectral_details": "Raman: 1332 cm\u207b\u00b9; IR: type I ~2000 + ~1200 cm\u207b\u00b9; type II ~2000 cm\u207b\u00b9 only",
+      "confidence": "definitive",
+      "chapter_section": "2.14.6"
+    },
+    {
+      "id": "SPC-009",
+      "category": "special_topics",
+      "rule": "Graphite Raman: single band at 1575 cm\u207b\u00b9 (E\u2082g). No IR bands (inactive due to D6h symmetry)",
+      "molecular_systems": [
+        "Graphite"
+      ],
+      "spectral_details": "Raman: 1575 cm\u207b\u00b9; IR: none (intersheet interaction negligible for vibrational analysis)",
+      "confidence": "definitive",
+      "chapter_section": "2.14.6"
+    },
+    {
+      "id": "GEO-012",
+      "category": "geometry_determination",
+      "rule": "Small silicon clusters Si\u2099: counting Raman-active fundamentals identifies geometry (e.g., Si\u2084 planar rhombus D2h: 3 Raman; Si\u2086 distorted octahedron D4h: 5 Raman; Si\u2087 pentagonal bipyramid D5h: 5 Raman)",
+      "molecular_systems": [
+        "Si\u2084",
+        "Si\u2086",
+        "Si\u2087 in N\u2082 matrices"
+      ],
+      "spectral_details": "Compare observed #Raman bands with predicted for each candidate geometry",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.15.1"
+    },
+    {
+      "id": "ENV-008",
+      "category": "environmental_effects",
+      "rule": "Cation effect on anion structure: smaller alkali metal cations favor type II (symmetric) H-bonded anions; larger cations prefer type I (asymmetric). Eg: [FHCl]\u207b ions",
+      "molecular_systems": [
+        "[FHF]\u207b",
+        "[FHCl]\u207b",
+        "[ClHCl]\u207b",
+        "hydrogen bifluoride-type ions"
+      ],
+      "spectral_details": "Type I: \u03bd\u2083(mainly \u03bd(HF)) ~2500 cm\u207b\u00b9; Type II (symmetric): \u03bd\u2083 ~933 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.3"
+    },
+    {
+      "id": "ENV-009",
+      "category": "environmental_effects",
+      "rule": "Raman intensity ordering in octahedral XY\u2086: normally I(\u03bd\u2081) > I(\u03bd\u2082) > I(\u03bd\u2085). Exception: d\u2076 ions (Pt, Pd hexahalides) show I(\u03bd\u2082) > I(\u03bd\u2081) due to nonbonding d electrons",
+      "molecular_systems": [
+        "PtCl\u2086\u00b2\u207b",
+        "PdCl\u2086\u00b2\u207b",
+        "TeCl\u2086\u00b2\u207b",
+        "TeBr\u2086\u00b2\u207b"
+      ],
+      "spectral_details": "Normal: I(\u03bd\u2081) > I(\u03bd\u2082) > I(\u03bd\u2085); Anomalous d\u2076: I(\u03bd\u2082) > I(\u03bd\u2081)",
+      "confidence": "high",
+      "chapter_section": "2.8.1.6"
+    },
+    {
+      "id": "GEO-013",
+      "category": "geometry_determination",
+      "rule": "Trigonal-bipyramidal structure has stronger equatorial bonds than axial bonds (confirmed by force constant calculations). Tetragonal-pyramidal has stronger axial bond",
+      "molecular_systems": [
+        "PF\u2085",
+        "IF\u2085",
+        "trigonal-bipyramidal and tetragonal-pyramidal XY\u2085"
+      ],
+      "spectral_details": "TBP: equatorial force constant > axial; TP: axial > equatorial",
+      "confidence": "high",
+      "chapter_section": "2.7.1-2.7.2"
+    },
+    {
+      "id": "GEO-014",
+      "category": "geometry_determination",
+      "rule": "Planar vs T-shaped XY\u2083: T-shaped (C2v) derived from trigonal-bipyramidal with 2 lone pairs. Three stretching modes expected vs one for planar D3h",
+      "molecular_systems": [
+        "ClF\u2083",
+        "BrF\u2083",
+        "XeF\u2083\u207a"
+      ],
+      "spectral_details": "ClF\u2083: \u03bd(XY\u2032) 754/672, \u03bd(XY) B\u2081 683/597, \u03bd(XY) A\u2081 523/547 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.4.1"
+    },
+    {
+      "id": "VIB-005",
+      "category": "metal_ligand_vibrations",
+      "rule": "Polymeric nitrogen (cubic gauche) at high pressure: \u03bd(N-N) at 840 cm\u207b\u00b9 vs molecular N\u2082 at 2400 cm\u207b\u00b9 \u2014 dramatic shift indicates phase change from triple-bonded N\u2082 to single-bonded polymeric N",
+      "molecular_systems": [
+        "Polymeric nitrogen",
+        "N\u2082 at high pressure (>110 GPa)"
+      ],
+      "spectral_details": "Molecular N\u2082: ~2400 cm\u207b\u00b9; Polymeric N (single bonds): ~840 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.1.3"
+    },
+    {
+      "id": "SUB-008",
+      "category": "substituent_effects",
+      "rule": "For XH\u2084\u207a series (group V onium ions): \u03bd(NH\u2084\u207a 3145) > \u03bd(PH\u2084\u207a 2366) > \u03bd(AsH\u2084\u207a 2341) > \u03bd(SbH\u2084\u207a 2061 cm\u207b\u00b9) \u2014 decreases with central atom mass",
+      "molecular_systems": [
+        "NH\u2084\u207a",
+        "PH\u2084\u207a",
+        "AsH\u2084\u207a",
+        "SbH\u2084\u207a"
+      ],
+      "spectral_details": "\u03bd\u2083: NH\u2084\u207a 3145, PH\u2084\u207a 2366, AsH\u2084\u207a 2341, SbH\u2084\u207a 2061 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "FRQ-011",
+      "category": "frequency_trends",
+      "rule": "For carbon clusters C\u2099: neutral linear molecules have characteristic antisymmetric stretching frequencies: C\u2083 2039, C\u2084 1543, C\u2085 2164, C\u2086 1952, C\u2087 2128, C\u2088 2072, C\u2089 2014, C\u2081\u2081 1943, C\u2081\u2083 1809 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Carbon clusters C\u2099 (n=3-13)"
+      ],
+      "spectral_details": "Frequencies alternate depending on number of atoms and their bonding pattern",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.1"
+    },
+    {
+      "id": "GEO-015",
+      "category": "geometry_determination",
+      "rule": "Endohedral fullerene symmetry: violation of mutual exclusion rule and more IR/Raman bands than predicted for Ih symmetry indicates lowering due to metal-cage interaction",
+      "molecular_systems": [
+        "Sc\u2083N@C\u2088\u2080",
+        "Eu@C\u2087\u2084",
+        "Sc\u2082@C\u2088\u2084"
+      ],
+      "spectral_details": "Sc\u2083N@C\u2088\u2080: expected 8 IR + 17 Raman; observed 37 IR + 59 Raman bands \u2192 symmetry lowered to C\u2083 or lower",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.4"
+    },
+    {
+      "id": "SPC-010",
+      "category": "special_topics",
+      "rule": "Isotopic fine structure in C\u2086\u2080: natural \u00b9\u00b3C (1.11%) gives 51% \u00b9\u00b2C\u2086\u2080, 35% \u00b9\u00b2C\u2085\u2089\u00b9\u00b3C, 11% \u00b9\u00b2C\u2085\u2088\u00b9\u00b3C\u2082. The pentagonal pinching A_g mode splits into 1471, 1470, 1469 cm\u207b\u00b9 peaks",
+      "molecular_systems": [
+        "C\u2086\u2080 fullerene"
+      ],
+      "spectral_details": "High-resolution Raman at 30K resolves 3 peaks for the A_g(2) pentagonal pinch mode from isotopomers",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.2"
+    },
+    {
+      "id": "ENV-010",
+      "category": "environmental_effects",
+      "rule": "Free internal rotation in ethane-like X\u2082Y\u2086: low barrier leads to G\u2083\u2086 dynamic group symmetry, allowing normally IR-inactive modes to appear weakly in Raman",
+      "molecular_systems": [
+        "Si\u2082F\u2086"
+      ],
+      "spectral_details": "\u03bd\u2088 and \u03bd\u2089 barely observed in Raman at 308 and 104 cm\u207b\u00b9 (should be IR-only in D3d). Torsional mode overtone ~78 cm\u207b\u00b9 in Raman",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.10.4"
+    },
+    {
+      "id": "VIB-006",
+      "category": "metal_ligand_vibrations",
+      "rule": "KrF\u2082 vibrations shift upon coordination: free KrF\u2082 (\u03bd\u2081 449, \u03bd\u2082 233, \u03bd\u2083 596/580) vs bound KrF\u2082 (\u03bd\u2081 487, \u03bd\u2082 176, \u03bd\u2083 550/542 cm\u207b\u00b9) in OCrF\u2084\u00b7KrF\u2082 adduct",
+      "molecular_systems": [
+        "KrF\u2082 adducts",
+        "noble gas compounds"
+      ],
+      "spectral_details": "Frequency shifts indicate covalent bonding to Lewis acid",
+      "confidence": "high",
+      "chapter_section": "2.7.2"
+    },
+    {
+      "id": "SPC-011",
+      "category": "special_topics",
+      "rule": "Simultaneous transitions (combination bands) between two different molecules in liquid mixtures indicate intermolecular complex formation on vibrational timescale",
+      "molecular_systems": [
+        "CS\u2082 + S\u2082Br\u2082 mixtures"
+      ],
+      "spectral_details": "Combination bands between \u03bd\u2083(CS\u2082) at 1515 cm\u207b\u00b9 and S\u2082Br\u2082 vibrations",
+      "confidence": "high",
+      "chapter_section": "2.5.2"
+    },
+    {
+      "id": "GEO-016",
+      "category": "geometry_determination",
+      "rule": "Square-planar X\u2084\u00b2\u207a cations (D4h): 6 normal modes classified into A1g(R)+B1g(R)+B2g(R)+B2u(inactive)+Eu(IR). Characteristic frequency ranges for S\u2084\u00b2\u207a, Se\u2084\u00b2\u207a, Te\u2084\u00b2\u207a",
+      "molecular_systems": [
+        "S\u2084\u00b2\u207a",
+        "Se\u2084\u00b2\u207a",
+        "Te\u2084\u00b2\u207a"
+      ],
+      "spectral_details": "S\u2084\u00b2\u207a: \u03bd\u2081 584, \u03bd\u2082 371, \u03bd\u2083 598, \u03bd\u2085 542 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.5.1"
+    },
+    {
+      "id": "GFQ-017",
+      "category": "group_frequencies",
+      "rule": "Polymeric nitrogen (cubic gauche): \u03bd(N-N) single bond at 840 cm\u207b\u00b9 vs molecular N\u2261N triple bond at 2400 cm\u207b\u00b9 \u2014 dramatic ~1560 cm\u207b\u00b9 downshift indicates phase change",
+      "molecular_systems": [
+        "Polymeric nitrogen (cubic gauche at >110 GPa, >2000K)"
+      ],
+      "spectral_details": "Molecular N\u2261N: ~2400 cm\u207b\u00b9; Polymeric N-N: ~840 cm\u207b\u00b9 (Raman)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.1.3"
+    },
+    {
+      "id": "GFQ-018",
+      "category": "group_frequencies",
+      "rule": "O\u2082 molecule: \u03bd(O-O) decreases with increasing negative charge: O\u2082\u207a (1876) > O\u2082 (1580) > O\u2082\u207b (1094) > O\u2082\u00b2\u207b (791/736 cm\u207b\u00b9)",
+      "molecular_systems": [
+        "Superoxo (O\u2082\u207b) and peroxo (O\u2082\u00b2\u207b) complexes",
+        "dioxygenyl salts"
+      ],
+      "spectral_details": "\u03bd(O-O): O\u2082\u207a ~1876, O\u2082 ~1580, O\u2082\u207b ~1094, O\u2082\u00b2\u207b ~791-736 cm\u207b\u00b9. Used diagnostically for coordination compounds",
+      "confidence": "definitive",
+      "chapter_section": "2.1.2"
+    },
+    {
+      "id": "GFQ-019",
+      "category": "group_frequencies",
+      "rule": "Actinyl ions MO\u2082\u00b2\u207a: \u03bd\u2083(M=O) for U 969, Pu 962, Am 939 cm\u207b\u00b9. U=O distance correlated via R = 9141(\u03bd\u0303\u2083)\u207b\u00b2/\u00b3 + 80.4 pm",
+      "molecular_systems": [
+        "UO\u2082\u00b2\u207a",
+        "PuO\u2082\u00b2\u207a",
+        "AmO\u2082\u00b2\u207a",
+        "NpO\u2082\u00b2\u207a",
+        "actinyl complexes"
+      ],
+      "spectral_details": "UO\u2082\u00b2\u207a \u03bd\u2083: ~950; PuO\u2082\u00b2\u207a \u03bd\u2083: 962; AmO\u2082\u00b2\u207a \u03bd\u2083: 939 cm\u207b\u00b9. U\u2075\u207aO\u2082\u207a: 770 cm\u207b\u00b9 (reduced from U\u2074\u207aO\u2082\u00b2\u207a at 895 cm\u207b\u00b9)",
+      "confidence": "high",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "GFQ-020",
+      "category": "group_frequencies",
+      "rule": "\u03bd(N\u2261N) of azide (N\u2083\u207b): asymmetric stretch ~2048, symmetric stretch ~1343, bend ~638 cm\u207b\u00b9. \u03bd(N\u2083) in organic azides: asym ~2107, sym ~1060 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Azides",
+        "N\u2083\u207b ion",
+        "organic azides",
+        "O\u2082N-N\u2083"
+      ],
+      "spectral_details": "N\u2083\u207b(solution): \u03bd\u2090 2048, \u03bd\u209b 1343, \u03b4 638 cm\u207b\u00b9; O\u2082N-N\u2083: \u03bd\u2090(N\u2083) 2107, \u03bd\u209b(N\u2083) 1060 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.5, 2.16.1"
+    },
+    {
+      "id": "GFQ-021",
+      "category": "group_frequencies",
+      "rule": "\u03bd(N\u2261N) of N\u2082O: \u03bd\u2081(N\u2261N stretch) ~2277, \u03bd\u2082(bend) ~597, \u03bd\u2083(N=O stretch) ~1300 cm\u207b\u00b9",
+      "molecular_systems": [
+        "N\u2082O",
+        "isotopomers of N\u2082O (\u00b9\u2074N/\u00b9\u2075N, \u00b9\u2076O/\u00b9\u2077O/\u00b9\u2078O)"
+      ],
+      "spectral_details": "NNO: \u03bd\u2081 2277, \u03bd\u2082 596.5, \u03bd\u2083 1300.3 cm\u207b\u00b9 (gas)",
+      "confidence": "definitive",
+      "chapter_section": "2.2.6"
+    },
+    {
+      "id": "GFQ-022",
+      "category": "group_frequencies",
+      "rule": "\u03bd(NO\u2082) for nitro/nitrite groups: NO\u2082\u207b (nitrite) \u03bd\u2090 1327/1286, \u03b4 806 cm\u207b\u00b9; NO\u2082 (neutral) \u03bd\u2090 1610, \u03bd\u209b 1325, \u03b4 752 cm\u207b\u00b9; NO\u2082\u207a (nitronium) \u03bd\u2083 2360, \u03bd\u2081 1396 cm\u207b\u00b9",
+      "molecular_systems": [
+        "NO\u2082\u207b",
+        "NO\u2082",
+        "NO\u2082\u207a",
+        "N\u2082O\u2085 (NO\u2082\u207aNO\u2083\u207b)"
+      ],
+      "spectral_details": "NO\u2082\u207b(bent): \u03bd\u2081 1327, \u03bd\u2082 806, \u03bd\u2083 1286; NO\u2082(bent): \u03bd\u2081 1325, \u03bd\u2082 752, \u03bd\u2083 1610; NO\u2082\u207a(linear): \u03bd\u2081 1396, \u03bd\u2082 570, \u03bd\u2083 2360 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "GFQ-023",
+      "category": "group_frequencies",
+      "rule": "SO\u2082 stretching: \u03bd(S=O) symmetric ~1147, asymmetric ~1351 cm\u207b\u00b9. SO\u2082\u207b (sulfoxylate): \u03bd\u209b ~985, \u03bd\u2090 ~1042 cm\u207b\u00b9. SO\u2083\u00b2\u207b (sulfite, pyramidal): \u03bd\u2081 967, \u03bd\u2083 933 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SO\u2082",
+        "SO\u2083\u00b2\u207b",
+        "SO\u2084\u00b2\u207b",
+        "sulfoxides",
+        "sulfones"
+      ],
+      "spectral_details": "SO\u2082: \u03bd\u2081 1147, \u03bd\u2082 517, \u03bd\u2083 1351 cm\u207b\u00b9; SO\u2083\u00b2\u207b: \u03bd\u2081 967, \u03bd\u2082 620, \u03bd\u2083 933, \u03bd\u2084 469 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.2, 2.3.1"
+    },
+    {
+      "id": "GFQ-024",
+      "category": "group_frequencies",
+      "rule": "PO\u2084\u00b3\u207b (phosphate, tetrahedral): \u03bd\u2081 938, \u03bd\u2082 420, \u03bd\u2083 1017, \u03bd\u2084 567 cm\u207b\u00b9. P=O stretch in O=PX\u2083 ~1290 cm\u207b\u00b9",
+      "molecular_systems": [
+        "PO\u2084\u00b3\u207b",
+        "OPCl\u2083",
+        "OPF\u2083",
+        "phosphates",
+        "phosphoryl compounds"
+      ],
+      "spectral_details": "PO\u2084\u00b3\u207b: \u03bd\u2081 938, \u03bd\u2082 420, \u03bd\u2083 1017, \u03bd\u2084 567 cm\u207b\u00b9; OPCl\u2083: \u03bd(P=O) 1290 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1, 2.6.2"
+    },
+    {
+      "id": "GFQ-025",
+      "category": "group_frequencies",
+      "rule": "SO\u2084\u00b2\u207b (sulfate, tetrahedral): \u03bd\u2081 983, \u03bd\u2082 450, \u03bd\u2083 1105, \u03bd\u2084 611 cm\u207b\u00b9. Distortion to C2v or Cs splits \u03bd\u2083 into 2-3 bands",
+      "molecular_systems": [
+        "SO\u2084\u00b2\u207b",
+        "metal sulfates",
+        "K\u2082SO\u2084"
+      ],
+      "spectral_details": "SO\u2084\u00b2\u207b: \u03bd\u2081 983, \u03bd\u2082 450, \u03bd\u2083 1105, \u03bd\u2084 611 cm\u207b\u00b9. Raman: \u03bd\u2081 strongest, \u03bd\u2082/\u03bd\u2084 often overlap",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-026",
+      "category": "group_frequencies",
+      "rule": "ClO\u2084\u207b (perchlorate, tetrahedral): \u03bd\u2081 928, \u03bd\u2082 459, \u03bd\u2083 1119, \u03bd\u2084 625 cm\u207b\u00b9. ClO\u2083\u207b (chlorate, pyramidal): \u03bd\u2081 933, \u03bd\u2082 608, \u03bd\u2083 977, \u03bd\u2084 477 cm\u207b\u00b9",
+      "molecular_systems": [
+        "ClO\u2084\u207b",
+        "ClO\u2083\u207b",
+        "perchlorate salts",
+        "chlorate salts"
+      ],
+      "spectral_details": "ClO\u2084\u207b: \u03bd\u2081 928, \u03bd\u2082 459, \u03bd\u2083 1119, \u03bd\u2084 625 cm\u207b\u00b9; ClO\u2083\u207b: \u03bd\u2081 933, \u03bd\u2082 608, \u03bd\u2083 977, \u03bd\u2084 477 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1, 2.3.1"
+    },
+    {
+      "id": "GFQ-027",
+      "category": "group_frequencies",
+      "rule": "CO\u2083\u00b2\u207b (carbonate, planar D3h): IR-active \u03bd\u2082 879 (CaCO\u2083 calcite), \u03bd\u2083 1429-1492, \u03bd\u2084 706 cm\u207b\u00b9. Raman: \u03bd\u2081 1087, \u03bd\u2083 1432, \u03bd\u2084 714 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CO\u2083\u00b2\u207b",
+        "CaCO\u2083 (calcite/aragonite)",
+        "NaNO\u2083",
+        "metal carbonates"
+      ],
+      "spectral_details": "CaCO\u2083(calcite): IR \u03bd\u2082 879, \u03bd\u2083 1429-1492, \u03bd\u2084 706; Raman \u03bd\u2081 1087, \u03bd\u2083 1432, \u03bd\u2084 714 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.4.1"
+    },
+    {
+      "id": "GFQ-028",
+      "category": "group_frequencies",
+      "rule": "NO\u2083\u207b (nitrate, planar D3h): IR \u03bd\u2082 828, \u03bd\u2083 1370-1405, \u03bd\u2084 692-705 cm\u207b\u00b9. Raman \u03bd\u2081 ~1049-1068, \u03bd\u2083 ~1385-1390, \u03bd\u2084 ~716-724 cm\u207b\u00b9. \u03bd\u2083 splitting indicates covalently bonded nitrate (C2v)",
+      "molecular_systems": [
+        "NO\u2083\u207b",
+        "KNO\u2083",
+        "NaNO\u2083",
+        "metal nitrates",
+        "uranyl nitrate"
+      ],
+      "spectral_details": "KNO\u2083: IR \u03bd\u2082 828, \u03bd\u2083 1370, \u03bd\u2084 695; Raman \u03bd\u2081 1049, \u03bd\u2083 1390, \u03bd\u2084 716 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.4.1"
+    },
+    {
+      "id": "GFQ-029",
+      "category": "group_frequencies",
+      "rule": "Si=O (silanone) stretching: ~1202 cm\u207b\u00b9 from SiH\u2084 + O\u2083 in Ar matrices; SiO\u2084 tetrahedra in silicates \u03bd\u2081 750-830, \u03bd\u2082 300-400, \u03bd\u2083 800-1000, \u03bd\u2084 450-600 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Silanones",
+        "silicates",
+        "quartz",
+        "silica glass"
+      ],
+      "spectral_details": "Si=O: ~1202 cm\u207b\u00b9 (matrix); Silicate SiO\u2084: \u03bd\u2081 750-830, \u03bd\u2082 300-400, \u03bd\u2083 800-1000, \u03bd\u2084 450-600 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.4.2, 2.15.2"
+    },
+    {
+      "id": "GFQ-030",
+      "category": "group_frequencies",
+      "rule": "CN\u207b (cyanide) stretching: ~2080 cm\u207b\u00b9. C\u2261N in cyanogen halides XCN (X=F, Cl, Br, I): \u03bd(C\u2261N) ranges from 2290 (FCN) to 2188 (ICN) cm\u207b\u00b9",
+      "molecular_systems": [
+        "CN\u207b",
+        "ClCN",
+        "BrCN",
+        "ICN",
+        "FCN",
+        "cyanide complexes"
+      ],
+      "spectral_details": "CN\u207b: ~2080; FCN: 2290; ClCN: 2249; BrCN: 2200; ICN: 2188 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.6"
+    },
+    {
+      "id": "GFQ-031",
+      "category": "group_frequencies",
+      "rule": "OCN\u207b (cyanate): \u03bd(C\u2261N) ~2155, \u03bd(C-O) ~1282/1202, \u03b4(NCO) ~630 cm\u207b\u00b9. SCN\u207b (thiocyanate): \u03bd(C\u2261N) ~2053, \u03bd(C-S) ~748 cm\u207b\u00b9. SeCN\u207b: \u03bd(C\u2261N) ~2070, \u03bd(C-Se) ~558 cm\u207b\u00b9",
+      "molecular_systems": [
+        "OCN\u207b",
+        "SCN\u207b",
+        "SeCN\u207b",
+        "TeCN\u207b",
+        "pseudohalide ions"
+      ],
+      "spectral_details": "OCN\u207b: 2155, 1282/1202, 630; SCN\u207b: 2053, 748; SeCN\u207b: 2070, 558 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.6"
+    },
+    {
+      "id": "GFQ-032",
+      "category": "group_frequencies",
+      "rule": "CS\u2082: \u03bd\u2081 (Raman) 658, \u03bd\u2082 (IR) 397, \u03bd\u2083 (IR) 1533 cm\u207b\u00b9. COS: \u03bd\u2081 859, \u03bd\u2082 520, \u03bd\u2083 2062 cm\u207b\u00b9. CSe\u2082: \u03bd\u2081 369, \u03bd\u2082 313, \u03bd\u2083 1302 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CS\u2082",
+        "COS",
+        "CSe\u2082",
+        "triatomic chalcogen compounds"
+      ],
+      "spectral_details": "CS\u2082: \u03bd\u2081 658, \u03bd\u2082 397, \u03bd\u2083 1533; COS: \u03bd\u2081 859, \u03bd\u2082 520, \u03bd\u2083 2062 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "GFQ-033",
+      "category": "group_frequencies",
+      "rule": "CO (carbon monoxide) stretching: ~2170 cm\u207b\u00b9 (ground state), ~1744 cm\u207b\u00b9 (excited triplet state). CO\u207a ~2214 cm\u207b\u00b9. \u03bd(CO) in metal carbonyls: terminal ~2000-2130, bridging ~1800-1860 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CO",
+        "metal carbonyls",
+        "carbonyl complexes"
+      ],
+      "spectral_details": "CO(ground): 2170, CO(excited): 1744, CO\u207a: 2214 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.1.1, 2.2.6"
+    },
+    {
+      "id": "GFQ-034",
+      "category": "group_frequencies",
+      "rule": "BF\u2083 (planar D3h): \u03bd\u2081 888 (Raman), \u03bd\u2082 719 (IR), \u03bd\u2083 1506 (IR+Raman), \u03bd\u2084 481 (IR+Raman) cm\u207b\u00b9. BCl\u2083: \u03bd\u2081 473, \u03bd\u2082 ~950, \u03bd\u2083 951, \u03bd\u2084 254 cm\u207b\u00b9",
+      "molecular_systems": [
+        "BF\u2083",
+        "BCl\u2083",
+        "BBr\u2083",
+        "BI\u2083",
+        "boron trihalides"
+      ],
+      "spectral_details": "BF\u2083: \u03bd\u2081 888, \u03bd\u2082 719, \u03bd\u2083 1506, \u03bd\u2084 481 cm\u207b\u00b9. BCl\u2083: \u03bd\u2081 473, \u03bd\u2083 951, \u03bd\u2084 254 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.4.1"
+    },
+    {
+      "id": "GFQ-035",
+      "category": "group_frequencies",
+      "rule": "PF\u2083 (pyramidal C3v): \u03bd\u2081 893, \u03bd\u2082 487, \u03bd\u2083 858, \u03bd\u2084 346 cm\u207b\u00b9. PCl\u2083: \u03bd\u2081 515, \u03bd\u2082 258, \u03bd\u2083 504, \u03bd\u2084 186 cm\u207b\u00b9. Trend: \u03bd\u2081 > \u03bd\u2083 and \u03bd\u2082 > \u03bd\u2084 for halogeno compounds (opposite to hydrides)",
+      "molecular_systems": [
+        "PF\u2083",
+        "PCl\u2083",
+        "PBr\u2083",
+        "PI\u2083",
+        "phosphorus trihalides"
+      ],
+      "spectral_details": "PF\u2083: \u03bd\u2081 893, \u03bd\u2082 487, \u03bd\u2083 858, \u03bd\u2084 346 cm\u207b\u00b9; PCl\u2083: \u03bd\u2081 515, \u03bd\u2082 258, \u03bd\u2083 504, \u03bd\u2084 186 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-036",
+      "category": "group_frequencies",
+      "rule": "AsF\u2083 (pyramidal C3v): \u03bd\u2081 739, \u03bd\u2082 337, \u03bd\u2083 699, \u03bd\u2084 262 cm\u207b\u00b9. AsCl\u2083: \u03bd\u2081 417, \u03bd\u2082 193, \u03bd\u2083 391, \u03bd\u2084 150 cm\u207b\u00b9. \u03bd(SbCl\u2083): \u03bd\u2081 381, \u03bd\u2083 359, \u03bd\u2084 122 cm\u207b\u00b9",
+      "molecular_systems": [
+        "AsF\u2083",
+        "AsCl\u2083",
+        "SbCl\u2083",
+        "SbBr\u2083",
+        "group V trihalides"
+      ],
+      "spectral_details": "AsF\u2083: \u03bd\u2081 739, \u03bd\u2082 337, \u03bd\u2083 699, \u03bd\u2084 262 cm\u207b\u00b9; SbCl\u2083: \u03bd\u2081 381, \u03bd\u2083 359, \u03bd\u2084 122 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-037",
+      "category": "group_frequencies",
+      "rule": "BF\u2084\u207b (tetrahedral): \u03bd\u2081 777, \u03bd\u2082 360, \u03bd\u2083 1070, \u03bd\u2084 533 cm\u207b\u00b9. BCl\u2084\u207b: \u03bd\u2081 406, \u03bd\u2082 192, \u03bd\u2083 722, \u03bd\u2084 278 cm\u207b\u00b9. \u03bd\u2083 strongly halogen-dependent",
+      "molecular_systems": [
+        "BF\u2084\u207b",
+        "BCl\u2084\u207b",
+        "BBr\u2084\u207b",
+        "BI\u2084\u207b",
+        "tetrahaloborate ions"
+      ],
+      "spectral_details": "BF\u2084\u207b: \u03bd\u2081 777, \u03bd\u2082 360, \u03bd\u2083 1070, \u03bd\u2084 533; BCl\u2084\u207b: \u03bd\u2081 406, \u03bd\u2082 192, \u03bd\u2083 722, \u03bd\u2084 278 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-038",
+      "category": "group_frequencies",
+      "rule": "NH\u2084\u207a (tetrahedral Td): \u03bd\u2081 3040, \u03bd\u2082 1680, \u03bd\u2083 3145, \u03bd\u2084 1400 cm\u207b\u00b9. \u03bd(NH\u2084\u207a) decreases with weaker H-bonding to counterion (F\u2192Cl\u2192Br\u2192I)",
+      "molecular_systems": [
+        "NH\u2084\u207a",
+        "NH\u2084F",
+        "NH\u2084Cl",
+        "NH\u2084Br",
+        "NH\u2084I",
+        "ammonium salts"
+      ],
+      "spectral_details": "NH\u2084\u207a: \u03bd\u2081 3040, \u03bd\u2082 1680, \u03bd\u2083 3145, \u03bd\u2084 1400 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-039",
+      "category": "group_frequencies",
+      "rule": "CH\u2084: \u03bd\u2081 2917, \u03bd\u2082 1534, \u03bd\u2083 3019, \u03bd\u2084 1306 cm\u207b\u00b9. SiH\u2084: \u03bd\u2081 2180, \u03bd\u2082 970, \u03bd\u2083 2183, \u03bd\u2084 910 cm\u207b\u00b9. GeH\u2084: \u03bd\u2081 2106, \u03bd\u2082 931, \u03bd\u2083 2114, \u03bd\u2084 819 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CH\u2084",
+        "SiH\u2084",
+        "GeH\u2084",
+        "SnH\u2084",
+        "group IV hydrides"
+      ],
+      "spectral_details": "CH\u2084: 2917, 1534, 3019, 1306; SiH\u2084: 2180, 970, 2183, 910; GeH\u2084: 2106, 931, 2114, 819 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-040",
+      "category": "group_frequencies",
+      "rule": "\u03bd(Si-F) in SiF\u2084: \u03bd\u2081 801, \u03bd\u2082 264, \u03bd\u2083 1030, \u03bd\u2084 389 cm\u207b\u00b9. \u03bd(Si-Cl) in SiCl\u2084: \u03bd\u2081 423, \u03bd\u2082 145, \u03bd\u2083 617, \u03bd\u2084 220 cm\u207b\u00b9. \u03bd(SiBr\u2084): \u03bd\u2081 247, \u03bd\u2082 85, \u03bd\u2083 494, \u03bd\u2084 134 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SiF\u2084",
+        "SiCl\u2084",
+        "SiBr\u2084",
+        "SiI\u2084",
+        "silicon tetrahalides"
+      ],
+      "spectral_details": "SiF\u2084: \u03bd\u2081 801, \u03bd\u2082 264, \u03bd\u2083 1030, \u03bd\u2084 389; SiCl\u2084: \u03bd\u2081 423, \u03bd\u2082 145, \u03bd\u2083 617, \u03bd\u2084 220 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-041",
+      "category": "group_frequencies",
+      "rule": "\u03bd(M-Cl) in octahedral MCl\u2086\u207f\u207b: general order \u03bd\u2081 > \u03bd\u2083, \u03bd\u2084 > \u03bd\u2085 > \u03bd\u2086. Representative: SF\u2086 \u03bd\u2081 775, \u03bd\u2083 939 cm\u207b\u00b9; UF\u2086 \u03bd\u2081 667, \u03bd\u2083 628 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SF\u2086",
+        "UF\u2086",
+        "SeF\u2086",
+        "TeF\u2086",
+        "MoF\u2086",
+        "hexafluorides"
+      ],
+      "spectral_details": "SF\u2086: \u03bd\u2081 775, \u03bd\u2082 643, \u03bd\u2083 939, \u03bd\u2084 614, \u03bd\u2085 524, \u03bd\u2086 347 cm\u207b\u00b9 (\u03bd\u2086 from INS)",
+      "confidence": "definitive",
+      "chapter_section": "2.8.1"
+    },
+    {
+      "id": "GFQ-042",
+      "category": "group_frequencies",
+      "rule": "PF\u2085 (trigonal-bipyramidal D3h): equatorial \u03bd\u2085(E\u2032) 944, axial \u03bd\u2083(A\u2082\u2033) 575, \u03bd\u2081(A\u2081\u2032) 817, \u03bd\u2082(A\u2081\u2032) 740 cm\u207b\u00b9. Equatorial > axial trend",
+      "molecular_systems": [
+        "PF\u2085",
+        "PCl\u2085",
+        "AsF\u2085",
+        "SbF\u2085",
+        "trigonal-bipyramidal molecules"
+      ],
+      "spectral_details": "PF\u2085: \u03bd\u2081 817(A\u2081\u2032), \u03bd\u2082 740(A\u2081\u2032), \u03bd\u2083 575(A\u2082\u2033), \u03bd\u2084 575(A\u2082\u2033), \u03bd\u2085 944(E\u2032), \u03bd\u2086 300(E\u2033), \u03bd\u2087 520(E\u2032), \u03bd\u2088 175(E\u2033) cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.7.1"
+    },
+    {
+      "id": "GFQ-043",
+      "category": "group_frequencies",
+      "rule": "IF\u2085 (tetragonal-pyramidal C4v): axial \u03bd\u2081(A\u2081) ~709, equatorial stretches \u03bd\u2082(A\u2081) ~649, \u03bd\u2087(E) ~635, \u03bd\u2088(E) ~373, \u03bd\u2089(E) ~231 cm\u207b\u00b9. Axial > equatorial",
+      "molecular_systems": [
+        "IF\u2085",
+        "BrF\u2085",
+        "ClF\u2085",
+        "XeF\u2085\u207a",
+        "tetragonal-pyramidal XY\u2085"
+      ],
+      "spectral_details": "IF\u2085: \u03bd\u2081 709(A\u2081), \u03bd\u2082 649(A\u2081), \u03bd\u2083 383(A\u2081), \u03bd\u2084 313(B\u2081), \u03bd\u2085 298(B\u2082), \u03bd\u2086 189(B\u2082), \u03bd\u2087 635(E), \u03bd\u2088 373(E), \u03bd\u2089 231(E) cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.7.2"
+    },
+    {
+      "id": "GFQ-044",
+      "category": "group_frequencies",
+      "rule": "XeF\u2084 (square-planar D4h): Raman \u03bd\u2081 505(A\u2081g), \u03bd\u2082 524(B\u2081g), \u03bd\u2084 245(B\u2082g); IR \u03bd\u2083 714(A\u2082u), \u03bd\u2086 372(Eu), \u03bd\u2087 170(Eu) cm\u207b\u00b9",
+      "molecular_systems": [
+        "XeF\u2084",
+        "noble gas fluorides"
+      ],
+      "spectral_details": "Raman: \u03bd\u2081 505, \u03bd\u2082 524, \u03bd\u2084 245; IR: \u03bd\u2083 714, \u03bd\u2086 372, \u03bd\u2087 170 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.6.3"
+    },
+    {
+      "id": "GFQ-045",
+      "category": "group_frequencies",
+      "rule": "\u03bd(Sn-Cl) in SnCl\u2084: \u03bd\u2081 369, \u03bd\u2082 95, \u03bd\u2083 408, \u03bd\u2084 126 cm\u207b\u00b9. \u03bd(Sn-Br) in SnBr\u2084: \u03bd\u2081 222, \u03bd\u2082 59, \u03bd\u2083 284, \u03bd\u2084 86 cm\u207b\u00b9. \u03bd(Sn-I) in SnI\u2084: \u03bd\u2081 148, \u03bd\u2082 42, \u03bd\u2083 210, \u03bd\u2084 63 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SnCl\u2084",
+        "SnBr\u2084",
+        "SnI\u2084",
+        "SnX\u2084 tetrahalides"
+      ],
+      "spectral_details": "SnCl\u2084: 369/95/408/126; SnBr\u2084: 222/59/284/86; SnI\u2084: 148/42/210/63 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-046",
+      "category": "group_frequencies",
+      "rule": "CCl\u2084: \u03bd\u2081 460, \u03bd\u2082 214, \u03bd\u2083 792/765, \u03bd\u2084 314 cm\u207b\u00b9. CF\u2084: \u03bd\u2081 908, \u03bd\u2082 435, \u03bd\u2083 1283, \u03bd\u2084 631 cm\u207b\u00b9. CBr\u2084: \u03bd\u2081 267, \u03bd\u2082 123, \u03bd\u2083 672, \u03bd\u2084 183 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CF\u2084",
+        "CCl\u2084",
+        "CBr\u2084",
+        "CI\u2084",
+        "carbon tetrahalides"
+      ],
+      "spectral_details": "CF\u2084: \u03bd\u2081 908, \u03bd\u2082 435, \u03bd\u2083 1283, \u03bd\u2084 631; CCl\u2084: \u03bd\u2081 460, \u03bd\u2082 214, \u03bd\u2083 792/765, \u03bd\u2084 314 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-047",
+      "category": "group_frequencies",
+      "rule": "BeCl\u2082 (linear): \u03bd\u2081 390(R), \u03bd\u2082 250(IR), \u03bd\u2083 1135(IR) cm\u207b\u00b9. CaF\u2082 (bent): \u03bd\u2081 485, \u03bd\u2082 163, \u03bd\u2083 554 cm\u207b\u00b9. ZnCl\u2082 (linear): \u03bd\u2081 352, \u03bd\u2082 103/100, \u03bd\u2083 503 cm\u207b\u00b9",
+      "molecular_systems": [
+        "BeF\u2082",
+        "BeCl\u2082",
+        "MgF\u2082",
+        "CaF\u2082",
+        "ZnCl\u2082",
+        "HgCl\u2082",
+        "group II dihalides"
+      ],
+      "spectral_details": "BeCl\u2082(linear): \u03bd\u2081 390, \u03bd\u2082 250, \u03bd\u2083 1135; CaF\u2082(bent): \u03bd\u2081 485, \u03bd\u2082 163, \u03bd\u2083 554 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.1"
+    },
+    {
+      "id": "GFQ-048",
+      "category": "group_frequencies",
+      "rule": "H\u2082O librational modes: libration 1000-330 cm\u207b\u00b9, restricted translation 170 and 60 cm\u207b\u00b9. O-H\u00b7O distance correlation: shorter distance \u2192 lower \u03bd(OH), broader band",
+      "molecular_systems": [
+        "Liquid water",
+        "ice",
+        "hydrated crystals"
+      ],
+      "spectral_details": "Librations: 1000-330 cm\u207b\u00b9; restricted translations: 170, 60 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.4"
+    },
+    {
+      "id": "GFQ-049",
+      "category": "group_frequencies",
+      "rule": "Boron hydrides: terminal \u03bd(BH) ~2600-2500, bridging \u03bd(B-H-B) ~2200-2100 cm\u207b\u00b9. \u03bd(Ga-H) terminal ~2005-1982, bridging ~1435-1315. \u03bd(B-H) in NH\u2083BH\u2083 ~2340 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Boranes",
+        "gallaborane",
+        "BH\u2084\u207b",
+        "borohydride complexes"
+      ],
+      "spectral_details": "Terminal BH: 2600-2500; Bridging BH: 2200-2100; Ga-H terminal: 2005-1982; Ga-H bridge: 1435-1315 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.13"
+    },
+    {
+      "id": "GFQ-050",
+      "category": "group_frequencies",
+      "rule": "\u03bd(H\u2082O) of hydration in crystal hydrates: coordinated H\u2082O \u03bd(OH) ~3500-3200 cm\u207b\u00b9, \u03b4(HOH) ~1650-1600 cm\u207b\u00b9. M-OH\u2082 rocking ~900-600 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Crystal water",
+        "aquo complexes",
+        "hydrated salts"
+      ],
+      "spectral_details": "H\u2082O stretch ~3500-3200, bend ~1650-1600, rock ~900-600 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.4"
+    },
+    {
+      "id": "GFQ-051",
+      "category": "group_frequencies",
+      "rule": "H\u2083O\u207a (hydronium): \u03bd\u2081 3385, \u03bd\u2082 1095, \u03bd\u2083 3470, \u03bd\u2084 1700 cm\u207b\u00b9 (liquid SO\u2082). Characteristic bands confirm formulation of acid hydrates as (H\u2083O\u207a)(MX\u2099\u207b)",
+      "molecular_systems": [
+        "H\u2083O\u207a",
+        "hydrated acids",
+        "H\u2083O\u207aPtCl\u2086\u00b2\u207b"
+      ],
+      "spectral_details": "H\u2083O\u207a: \u03bd\u2081 ~3385, \u03bd\u2082 ~1095, \u03bd\u2083 ~3470, \u03bd\u2084 ~1700 (in SO\u2082) cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-052",
+      "category": "group_frequencies",
+      "rule": "Si=Si double bond stretching: ~589 cm\u207b\u00b9 for trans-RClSi=SiClR. Si=C double bond: ~985 cm\u207b\u00b9. C\u2261P triple bond: ~1543-1565 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Disilenes R\u2082Si=SiR\u2082",
+        "silaethenes",
+        "phosphaalkynes"
+      ],
+      "spectral_details": "Si=Si: ~589; Si=C: ~985; C\u2261P: 1543-1565 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.15.1, 2.17.6"
+    },
+    {
+      "id": "GFQ-053",
+      "category": "group_frequencies",
+      "rule": "\u03bd(Re-Re) in [Re\u2082X\u2088]\u00b2\u207b clusters: F 320, Cl 272, Br 277, I 258 cm\u207b\u00b9. \u03bd(Os-Os) ~285-287 cm\u207b\u00b9. Under pressure at 15 GPa: \u03bd(Re-Re) shifts from 272 \u2192 357 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Re\u2082Cl\u2088\u00b2\u207b",
+        "Re\u2082Br\u2088\u00b2\u207b",
+        "Re\u2082I\u2088\u00b2\u207b",
+        "Re\u2082F\u2088\u00b2\u207b",
+        "Os\u2082X\u2088\u00b2\u207b",
+        "metal-metal quadruple bonds"
+      ],
+      "spectral_details": "\u03bd(Re-Re): F 320, Cl 272, Br 277, I 258 cm\u207b\u00b9; \u03bd(Os-Os): Cl 285, Br 287, I 270 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.11.2"
+    },
+    {
+      "id": "GFQ-054",
+      "category": "group_frequencies",
+      "rule": "\u03bd(Mo-Mo) in [Mo\u2086X\u2088Y\u2086]\u00b2\u207b clusters: below 300 cm\u207b\u00b9, force constants 1.2-1.5 mdyn/\u00c5. \u03bd(Nb-Nb) in Nb\u2086Cl\u2081\u2082: ~140 cm\u207b\u00b9, force constant < 0.3 mdyn/\u00c5",
+      "molecular_systems": [
+        "(Mo\u2086Cl\u2088)Y\u2086\u00b2\u207b",
+        "(W\u2086Cl\u2088)Y\u2086\u00b2\u207b",
+        "Nb\u2086Cl\u2081\u2082",
+        "Ta\u2086Cl\u2081\u2082",
+        "metal clusters"
+      ],
+      "spectral_details": "\u03bd(Mo-Mo) <300; \u03bd(Nb-Nb) ~140 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.12"
+    },
+    {
+      "id": "GFQ-055",
+      "category": "group_frequencies",
+      "rule": "\u03bd(Mo=O): terminal at 940-930 cm\u207b\u00b9, \u03bd(Mo-Mo) at 200-150 cm\u207b\u00b9 in Mo\u2086O\u2081\u2089\u00b2\u207b derivatives. \u03bd(O-O) of side-on peroxide: 885 and 550 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Mo\u2086O\u2081\u2089\u00b2\u207b",
+        "molybdenum oxides",
+        "metal peroxo complexes"
+      ],
+      "spectral_details": "Mo=O: 940-930; Mo-Mo: 200-150; O-O(peroxo): 885, 550 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.12"
+    },
+    {
+      "id": "GFQ-056",
+      "category": "group_frequencies",
+      "rule": "\u03bd(S-S) in polysulfides: S-S ~490-460 cm\u207b\u00b9 (chelate). \u03bd(S-S) in S\u2088 ring: ~475-465 cm\u207b\u00b9. \u03bd(Se-Se): Se\u2082 513, Se\u2083(bent) 350, Se\u2084(trans) 345, Se\u2084(cis) 370, Se\u2088 ~260-260 cm\u207b\u00b9",
+      "molecular_systems": [
+        "S\u2088",
+        "polysulfides",
+        "Se\u2099 clusters",
+        "Se\u2088",
+        "chalcogen rings"
+      ],
+      "spectral_details": "S-S: ~490-460; Se-Se: 513\u2192350\u2192345\u2192370 cm\u207b\u00b9 (n=2,3,4trans,4cis)",
+      "confidence": "high",
+      "chapter_section": "2.18.1, 2.18.7"
+    },
+    {
+      "id": "GFQ-057",
+      "category": "group_frequencies",
+      "rule": "Te=C (telluroketone): \u03bd(Te=C) at 1240 cm\u207b\u00b9. Te\u2082\u00b2\u207a chain: IR bands at 396, 126, 65 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Te=CF\u2082",
+        "telluroketones",
+        "Te\u2087\u00b2\u207a polymer"
+      ],
+      "spectral_details": "\u03bd(Te=C): 1240 cm\u207b\u00b9; Te\u2087\u00b2\u207a IR: 396, 126, 65 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.18.7"
+    },
+    {
+      "id": "GFQ-058",
+      "category": "group_frequencies",
+      "rule": "CF\u2083 group vibrations: \u03bd(C-F) 1277-1024, \u03b4\u209b(CF\u2083) 750-739, \u03b4\u2090(CF\u2083) 546, \u03c1(CF\u2083) 247 cm\u207b\u00b9. CF\u2082 in difluorodioxirane: \u03bd\u209b(CF\u2082) 918, \u03b4(CF\u2082) 511, \u03bd\u2090(CF\u2082) 1260 cm\u207b\u00b9",
+      "molecular_systems": [
+        "CF\u2083ICl\u2082",
+        "CF\u2082O\u2082",
+        "trifluoromethyl compounds",
+        "fluorocarbons"
+      ],
+      "spectral_details": "CF\u2083: \u03bd 1277-1024, \u03b4\u209b 750-739, \u03b4\u2090 546, \u03c1 247 cm\u207b\u00b9; CF\u2082: \u03bd\u209b 918, \u03b4 511, \u03bd\u2090 1260 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.4.1, 2.19"
+    },
+    {
+      "id": "GFQ-059",
+      "category": "group_frequencies",
+      "rule": "ICl\u2082\u207b stretching: \u03bd\u209b 292, \u03bd\u2090 265, \u03b4 160-145 cm\u207b\u00b9. I\u2083\u207b (linear): \u03bd\u2081 116, \u03bd\u2082 56/42, \u03bd\u2083 125 cm\u207b\u00b9. IBr\u2082\u207b: \u03bd\u209b 163, \u03bd\u2090 193 cm\u207b\u00b9. Terminal I-Br: 231, 215 cm\u207b\u00b9",
+      "molecular_systems": [
+        "ICl\u2082\u207b",
+        "IBr\u2082\u207b",
+        "I\u2083\u207b",
+        "polyiodides",
+        "halogen anions"
+      ],
+      "spectral_details": "ICl\u2082\u207b: \u03bd\u209b 292, \u03bd\u2090 265, \u03b4 ~152; I\u2083\u207b: \u03bd\u2081 116, \u03bd\u2082 56/42/\u03bd\u2083 125 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.19, 2.2.3"
+    },
+    {
+      "id": "GFQ-060",
+      "category": "group_frequencies",
+      "rule": "Cr-O-Cr bridge: \u03bd\u209b(Cr-O-Cr) ~527, \u03b4 ~230 cm\u207b\u00b9. In divanadates: \u0394 = [(\u03bd\u2090-\u03bd\u209b)/(\u03bd\u2090+\u03bd\u209b)]\u00d7100 = -38.79 + 0.39\u03b1 relates to M-O-M angle \u03b1",
+      "molecular_systems": [
+        "Cr\u2082O\u2087\u00b2\u207b",
+        "V\u2082O\u2087\u2074\u207b",
+        "M\u2082O\u2087\u207f\u207b pyrosalts"
+      ],
+      "spectral_details": "Cr-O-Cr: \u03bd\u209b 527, \u03b4 230 cm\u207b\u00b9; V-O-V bridge angle correlation available",
+      "confidence": "high",
+      "chapter_section": "2.11.1"
+    },
+    {
+      "id": "GFQ-061",
+      "category": "group_frequencies",
+      "rule": "Diamond: single sharp Raman band at 1332 cm\u207b\u00b9 (F\u2082g). IR absorptions: type I ~2000 + ~1200 cm\u207b\u00b9 (N\u2082 defects + multiphonon), type II ~2000 cm\u207b\u00b9 only",
+      "molecular_systems": [
+        "Diamond",
+        "type I/II diamond",
+        "diamond anvil cell"
+      ],
+      "spectral_details": "Raman: 1332 cm\u207b\u00b9 (pressure calibrant 0-15 GPa). C-H doped: 2834 cm\u207b\u00b9 (IR)",
+      "confidence": "definitive",
+      "chapter_section": "2.14.6"
+    },
+    {
+      "id": "GFQ-062",
+      "category": "group_frequencies",
+      "rule": "Graphite: single Raman band at 1575 cm\u207b\u00b9 (E\u2082g). No IR bands (D6h symmetry). \u03bd(RBM) of SWNT ~186 cm\u207b\u00b9 for d~1.4 nm, inversely proportional to diameter",
+      "molecular_systems": [
+        "Graphite",
+        "single-walled carbon nanotubes (SWNT)"
+      ],
+      "spectral_details": "Graphite Raman: 1575 cm\u207b\u00b9. SWNT RBM: \u03bd ~ 234/d (nm\u207b\u00b9)",
+      "confidence": "definitive",
+      "chapter_section": "2.14.5-2.14.6"
+    },
+    {
+      "id": "GFQ-063",
+      "category": "group_frequencies",
+      "rule": "Nitrile imide CBS: \u03bd(CBS) at 1800 cm\u207b\u00b9. Carbon suboxide C\u2083O\u2082: \u03bd\u2090(C=O) ~2290 cm\u207b\u00b9. Carbon oxide anions C\u2099O\u2099\u00b2\u207b: \u03bd(C=O) below 1600 cm\u207b\u00b9 (aromatic ring stabilization)",
+      "molecular_systems": [
+        "F\u2083C-C\u2261B-SF\u2083",
+        "carbon suboxide",
+        "carbon oxide rings"
+      ],
+      "spectral_details": "\u03bd(CBS): 1800; normal C=O: ~1700; aromatic C\u2099O\u2099\u00b2\u207b: <1600 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.14.7"
+    },
+    {
+      "id": "GFQ-064",
+      "category": "group_frequencies",
+      "rule": "Hydrogen bifluoride [F-H-F]\u207b: linear symmetric. \u03bd\u2083(asym stretch) ~1450, \u03bd\u2082(bend) ~1233, \u03bd\u2081(sym stretch) ~596-603 cm\u207b\u00b9. [F-H-Cl]\u207b type I (asym): \u03bd\u2083 ~2500, type II (sym): \u03bd\u2083 ~933 cm\u207b\u00b9",
+      "molecular_systems": [
+        "[FHF]\u207b",
+        "[FHCl]\u207b",
+        "[ClHCl]\u207b",
+        "hydrogen bonded anions"
+      ],
+      "spectral_details": "Type I (asymmetric H): \u03bd\u2083 ~2500; Type II (symmetric H): \u03bd\u2083 ~933 cm\u207b\u00b9; [FHF]\u207b: \u03bd\u2081 596-603, \u03bd\u2082 1233, \u03bd\u2083 1450 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.3"
+    },
+    {
+      "id": "GFQ-065",
+      "category": "group_frequencies",
+      "rule": "Sulfur-nitrogen heterocycles: S\u2082N\u2082 \u03bd(SN) ~880-930 cm\u207b\u00b9. Tetrasulfur tetranitride S\u2084N\u2084 (D2d): cage structure, \u03bd(SN) ~700-900, \u03bd(SS) ~300-500 cm\u207b\u00b9",
+      "molecular_systems": [
+        "S\u2082N\u2082",
+        "S\u2084N\u2084",
+        "(SNH)\u2084",
+        "sulfur nitrides"
+      ],
+      "spectral_details": "(SNH)\u2084 (C4v): SN stretch 800-700, \u03b4(SNH) ~1350, \u03bd(NH) ~3250 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.18.4"
+    },
+    {
+      "id": "GFQ-066",
+      "category": "group_frequencies",
+      "rule": "\u03bd(P-O-P) bridge in pyrophosphates: \u03bd\u2090(P-O-P) ~915, \u03bd\u209b ~730, \u03b4 ~94 cm\u207b\u00b9. Also applicable to As\u2082O\u2087\u2074\u207b, S\u2082O\u2087\u00b2\u207b, V\u2082O\u2087\u2074\u207b, Cr\u2082O\u2087\u00b2\u207b with systematic shifts",
+      "molecular_systems": [
+        "P\u2082O\u2087\u2074\u207b",
+        "As\u2082O\u2087\u2074\u207b",
+        "S\u2082O\u2087\u00b2\u207b",
+        "V\u2082O\u2087\u2074\u207b",
+        "Cr\u2082O\u2087\u00b2\u207b",
+        "M\u2082O\u2087\u207f\u207b ions"
+      ],
+      "spectral_details": "\u03bd\u2090(P-O-P): 915; \u03bd\u209b: 730; \u03b4: 94 cm\u207b\u00b9. Other M\u2082O\u2087: systematic variations",
+      "confidence": "high",
+      "chapter_section": "2.11.1"
+    },
+    {
+      "id": "GFQ-067",
+      "category": "group_frequencies",
+      "rule": "AlO\u2084 vibrations in aluminosilicates: \u03bd(Al-O) ~750-650 cm\u207b\u00b9. Framework silicates (zeolites): characteristic Al-O + Si-O combined bands in this region",
+      "molecular_systems": [
+        "Zeolites",
+        "aluminosilicates",
+        "Al-containing glasses"
+      ],
+      "spectral_details": "\u03bd(Al-O): 750-650 cm\u207b\u00b9 (in addition to SiO\u2084 bands)",
+      "confidence": "high",
+      "chapter_section": "2.15.2"
+    },
+    {
+      "id": "GFQ-068",
+      "category": "group_frequencies",
+      "rule": "Diazene N\u2082H\u2082: cis form \u03bd(N-H) 3116/3025, \u03b4 1347/1304 cm\u207b\u00b9; trans form \u03bd(N-H) 3109, \u03b4 1333 cm\u207b\u00b9. N\u2082F\u2082: cis \u03bd(N=N) 1525, \u03bd(N-F) 896/952; trans \u03bd(N=N) 1522, \u03bd(N-F) 1010/990 cm\u207b\u00b9",
+      "molecular_systems": [
+        "N\u2082H\u2082",
+        "N\u2082F\u2082",
+        "diazene isomers"
+      ],
+      "spectral_details": "cis-N\u2082H\u2082: \u03bd(NH) 3116/3025, \u03b4 1347/1304; trans: \u03bd(NH) 3109, \u03b4 1333 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.5.2"
+    },
+    {
+      "id": "GFQ-069",
+      "category": "group_frequencies",
+      "rule": "H\u2082O\u2082: \u03bd(OH) 3607/3608, \u03bd(OO) 1394, \u03b4(HOO) 864/1266, torsion 317 cm\u207b\u00b9. H\u2082O\u2082 nonplanar C2 with dihedral ~90\u00b0",
+      "molecular_systems": [
+        "H\u2082O\u2082",
+        "D\u2082O\u2082",
+        "hydrogen peroxide"
+      ],
+      "spectral_details": "H\u2082O\u2082: \u03bd(OH) 3607/3608, \u03bd(OO) 1394, \u03b4 864/1266, torsion 317 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.5.2"
+    },
+    {
+      "id": "GFQ-070",
+      "category": "group_frequencies",
+      "rule": "C\u2083O\u2082 (carbon suboxide): linear O=C=C=C=O, \u03bd\u2083(C=O) ~2290 cm\u207b\u00b9. C\u2086\u2080Br\u2082\u2084: \u03bd(C=C) IR at 1688, 1641, 1610 cm\u207b\u00b9; Raman at 1690, 1675, 1654, 1631, 1607 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Carbon suboxides",
+        "C\u2086\u2080 halide derivatives"
+      ],
+      "spectral_details": "C\u2083O\u2082: \u03bd\u2083 2290; C\u2086\u2080Br\u2082\u2084 \u03bd(C=C): IR 1688/1641/1610, Raman 1690/1675/1654/1631/1607 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.14.2, 2.14.7"
+    },
+    {
+      "id": "GFQ-071",
+      "category": "group_frequencies",
+      "rule": "Sc-N stretching in Sc\u2083N@C\u2088\u2080: \u03bd\u2090(E\u2032) 599, \u03bd\u209b(A\u2081\u2032) 411, \u03b4(E\u2032) 210 cm\u207b\u00b9 (Raman). \u03bd\u2090 ~597 cm\u207b\u00b9 (IR). On Sc\u2192Y substitution: shifts to 707, 429, 194 cm\u207b\u00b9",
+      "molecular_systems": [
+        "Sc\u2083N@C\u2088\u2080",
+        "Y\u2083N@C\u2088\u2080",
+        "trimetallic nitride fullerenes"
+      ],
+      "spectral_details": "\u03bd\u2090: 599\u2192707; \u03bd\u209b: 411\u2192429; \u03b4: 210\u2192194 cm\u207b\u00b9 (Sc\u2192Y substitution)",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.4"
+    },
+    {
+      "id": "GFQ-072",
+      "category": "group_frequencies",
+      "rule": "Metal-cage vibrations in endohedral fullerenes: Sc\u2082@C\u2088\u2084 \u03bd(Sc-C) ~250 cm\u207b\u00b9; Raman cage-modes at 133, 108, 78, 48 cm\u207b\u00b9 for Sc\u2083N@C\u2088\u2080 (translational/rotational modes)",
+      "molecular_systems": [
+        "Sc\u2082@C\u2088\u2084",
+        "Sc\u2083N@C\u2088\u2080",
+        "Eu@C\u2087\u2084",
+        "endohedral fullerenes"
+      ],
+      "spectral_details": "Sc-C stretch ~250, \u03b4 ~140-70 cm\u207b\u00b9; Eu@C\u2087\u2084 cage-mode 123 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.14.4"
+    },
+    {
+      "id": "GFQ-073",
+      "category": "group_frequencies",
+      "rule": "SiC (silicon carbide) clusters: SiC\u2084 linear ~2038 cm\u207b\u00b9; Si\u2082C\u2082 rhombic \u03bd(Si-C) ~800-1000; Si\u2083C linear; Si\u2083C\u2082 rhomboidal; Si\u2082C\u2083 pentagonal. Si\u2085H\u2081\u2080 and Si\u2086H\u2081\u2082 silanes: nonplanar SiH\u2082 rings",
+      "molecular_systems": [
+        "SiC clusters",
+        "silanes",
+        "Si\u2085H\u2081\u2080",
+        "Si\u2086H\u2081\u2082"
+      ],
+      "spectral_details": "SiC\u2084: ~2038; Si\u2082C\u2082: \u03bd(Si-C) 800-1000 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.15.1"
+    },
+    {
+      "id": "GFQ-074",
+      "category": "group_frequencies",
+      "rule": "\u03bd(OF) in FOOF (dioxygen difluoride): \u03bd(O-F) at 376/586 cm\u207b\u00b9, \u03bd(O-O) ~1500 cm\u207b\u00b9. \u03bd(Cl-O) in ClO\u2082: \u03bd\u2081 945, \u03bd\u2082 449, \u03bd\u2083 1108 cm\u207b\u00b9. BrO\u2082: \u03bd\u2081 796, \u03bd\u2082 317, \u03bd\u2083 845 cm\u207b\u00b9",
+      "molecular_systems": [
+        "FOOF",
+        "ClO\u2082",
+        "BrO\u2082",
+        "halogen dioxides"
+      ],
+      "spectral_details": "ClO\u2082: \u03bd\u2081 945, \u03bd\u2082 449, \u03bd\u2083 1108; BrO\u2082: \u03bd\u2081 796, \u03bd\u2082 317, \u03bd\u2083 845 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.2"
+    },
+    {
+      "id": "GFQ-075",
+      "category": "group_frequencies",
+      "rule": "O\u2083 (ozone): \u03bd\u2081 1104, \u03bd\u2082 700, \u03bd\u2083 1040 cm\u207b\u00b9. O\u2083\u207b (ozonide): \u03bd\u2081 1020, \u03bd\u2082 620, \u03bd\u2083 816 cm\u207b\u00b9 (bent C2v). All three modes IR+Raman active",
+      "molecular_systems": [
+        "O\u2083",
+        "O\u2083\u207b",
+        "ozone, ozonide ion"
+      ],
+      "spectral_details": "O\u2083: \u03bd\u2081 1104, \u03bd\u2082 700, \u03bd\u2083 1040 cm\u207b\u00b9; O\u2083\u207b: \u03bd\u2081 1020, \u03bd\u2082 620, \u03bd\u2083 816 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.2.5"
+    },
+    {
+      "id": "GFQ-076",
+      "category": "group_frequencies",
+      "rule": "HArF (first neutral argon compound): \u03bd(H-Ar) 1969.5, \u03b4(H-Ar-F) 687.0, \u03bd(Ar-F) 435.7 cm\u207b\u00b9 (Ar matrix, 7.5K). HKrF: \u03bd(H-Kr) 1950, \u03bd(Kr-F) 415 cm\u207b\u00b9",
+      "molecular_systems": [
+        "HArF",
+        "HKrF",
+        "noble gas hydrides"
+      ],
+      "spectral_details": "HArF: H-Ar 1969.5, \u03b4 687.0, Ar-F 435.7 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.2.6"
+    },
+    {
+      "id": "GFQ-077",
+      "category": "group_frequencies",
+      "rule": "Halonium ions: \u03bd(OH\u2082\u207a) in H\u2083O\u207a: 3385/3470/1700; \u03bd(NH\u2084\u207a): 3040/3145/1400; \u03bd(SH\u2083\u207a): 2302/2320/1057; \u03bd(SeH\u2083\u207a): 2320/1057; \u03bd(PH\u2084\u207a): 2295/2366/974; \u03bd(AsH\u2084\u207a): 2321/2341/941 cm\u207b\u00b9",
+      "molecular_systems": [
+        "NH\u2084\u207a",
+        "OH\u2083\u207a",
+        "SH\u2083\u207a",
+        "PH\u2084\u207a",
+        "AsH\u2084\u207a",
+        "SbH\u2084\u207a",
+        "onium ions"
+      ],
+      "spectral_details": "NH\u2084\u207a: \u03bd\u2081 3040, \u03bd\u2082 1680, \u03bd\u2083 3145, \u03bd\u2084 1400; PH\u2084\u207a: \u03bd\u2081 2295, \u03bd\u2083 2366, \u03bd\u2084 974 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1, 2.6.1"
+    },
+    {
+      "id": "GFQ-078",
+      "category": "group_frequencies",
+      "rule": "SnX\u2083\u207b (trigonal pyramidal): SnCl\u2083\u207b: \u03bd\u2081 297, \u03bd\u2082 130, \u03bd\u2083 256, \u03bd\u2084 104; SnBr\u2083\u207b: \u03bd\u2081 205, \u03bd\u2082 82, \u03bd\u2083 180, \u03bd\u2084 65; SnI\u2083\u207b: \u03bd\u2081 162, \u03bd\u2082 61, \u03bd\u2083 148, \u03bd\u2084 48 cm\u207b\u00b9",
+      "molecular_systems": [
+        "SnCl\u2083\u207b",
+        "SnBr\u2083\u207b",
+        "SnI\u2083\u207b",
+        "main group trihalide anions"
+      ],
+      "spectral_details": "SnCl\u2083\u207b: \u03bd\u2081 297, \u03bd\u2082 130, \u03bd\u2083 256, \u03bd\u2084 104; SnBr\u2083\u207b: 205/82/180/65; SnI\u2083\u207b: 162/61/148/48 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.3.1"
+    },
+    {
+      "id": "GFQ-079",
+      "category": "group_frequencies",
+      "rule": "C\u2083\u207a cyclopropenium: \u03bd(C-C) at 1790 and 1315, \u03bd(C-Cl) at 733 and 458 cm\u207b\u00b9. In-plane bending 600 and 160, out-of-plane 524 and 190 cm\u207b\u00b9",
+      "molecular_systems": [
+        "C\u2083Cl\u2083\u207a",
+        "cyclopropenium ions"
+      ],
+      "spectral_details": "\u03bd(C-C): 1790, 1315; \u03bd(C-Cl): 733, 458; IP bend: 600, 160; OOP: 524, 190 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.19"
+    },
+    {
+      "id": "GFQ-080",
+      "category": "group_frequencies",
+      "rule": "Polyiodide anions: I\u2083\u207b \u03bd\u2081 125-116, \u03bd\u2082 56-42, \u03bd\u2083 ~125 cm\u207b\u00b9; I\u2085\u207b \u03bd(I-I) ~178/166, \u03bd\u2090 I\u2083 units ~152, \u03bd\u209b ~118 cm\u207b\u00b9; I\u2082 \u03bd ~213 cm\u207b\u00b9. Vibrations strongly depend on cation",
+      "molecular_systems": [
+        "I\u2083\u207b",
+        "I\u2085\u207b",
+        "I\u2087\u207b",
+        "polyiodides",
+        "crown-ether iodides"
+      ],
+      "spectral_details": "I\u2083\u207b: \u03bd\u2081 ~116-125, \u03bd\u2082 56/42, \u03bd\u2083 ~125; I\u2085\u207b: terminal I-I ~178-166, I\u2083\u207b units 152/118 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.2.3, 2.19"
+    },
+    {
+      "id": "GFQ-081",
+      "category": "group_frequencies",
+      "rule": "GeCl\u2084: \u03bd\u2081 397, \u03bd\u2082 125, \u03bd\u2083 459, \u03bd\u2084 171 cm\u207b\u00b9. TiCl\u2084: \u03bd\u2081 389, \u03bd\u2082 114, \u03bd\u2083 498, \u03bd\u2084 136 cm\u207b\u00b9. VCl\u2084: \u03bd\u2081 383, \u03bd\u2082 128, \u03bd\u2083 475, \u03bd\u2084 128/150 cm\u207b\u00b9",
+      "molecular_systems": [
+        "GeCl\u2084",
+        "TiCl\u2084",
+        "VCl\u2084",
+        "transition metal tetrahalides"
+      ],
+      "spectral_details": "GeCl\u2084: 397/125/459/171; TiCl\u2084: 389/114/498/136; VCl\u2084: 383/128/475/150 cm\u207b\u00b9",
+      "confidence": "definitive",
+      "chapter_section": "2.6.1"
+    },
+    {
+      "id": "GFQ-082",
+      "category": "group_frequencies",
+      "rule": "\u03bd(As-O-As) bridge: As\u2082O\u2087\u2074\u207b \u03bd\u2090 ~735, \u03bd\u209b ~550, \u03b4 ~245 cm\u207b\u00b9. S\u2082O\u2087\u00b2\u207b (disulfate): \u03bd\u2090 ~825, \u03bd\u209b ~725, \u03b4 ~182/116 cm\u207b\u00b9. Systematic shift from P\u2192As\u2192S\u2192Se\u2192V\u2192Cr",
+      "molecular_systems": [
+        "As\u2082O\u2087\u2074\u207b",
+        "S\u2082O\u2087\u00b2\u207b",
+        "Se\u2082O\u2087\u00b2\u207b",
+        "V\u2082O\u2087\u2074\u207b",
+        "pyro-salts"
+      ],
+      "spectral_details": "As\u2082O\u2087\u2074\u207b: \u03bd\u2090 735, \u03bd\u209b 550, \u03b4 245; S\u2082O\u2087\u00b2\u207b: \u03bd\u2090 825, \u03bd\u209b 725, \u03b4 182/116 cm\u207b\u00b9",
+      "confidence": "high",
+      "chapter_section": "2.11.1"
+    },
+    {
+      "id": "GFQ-083",
+      "category": "group_frequencies",
+      "rule": "N\u2085\u207a cation (pentanitrogen): V-shaped C2v with \u03bd(N\u2261N) ~2237.6 cm\u207b\u00b9 (IR, N\u2082 matrix). Polymeric N\u2082 phase: Raman peak at 840 cm\u207b\u00b9 (cubic gauche, single N-N bonds)",
+      "molecular_systems": [
+        "N\u2085\u207a",
+        "polymeric nitrogen",
+        "N\u2084\u207a",
+        "high energy density materials"
+      ],
+      "spectral_details": "N\u2085\u207a: \u03bd(N\u2261N) 2234-2238 cm\u207b\u00b9; Polymeric N: \u03bd(N-N) 840 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.1.3"
+    },
+    {
+      "id": "GFQ-084",
+      "category": "group_frequencies",
+      "rule": "Transuranium hexafluorides: NpF\u2086 \u03bd\u2081 654, \u03bd\u2083 624; PuF\u2086 \u03bd\u2081 656, \u03bd\u2083 616; ground and excited electronic state frequencies available. \u00b2\u00b3\u2075U/\u00b2\u00b3\u2078UF\u2086 shift: 0.604 cm\u207b\u00b9",
+      "molecular_systems": [
+        "NpF\u2086",
+        "PuF\u2086",
+        "UF\u2086",
+        "actinide hexafluorides"
+      ],
+      "spectral_details": "UF\u2086: \u03bd\u2081 667, \u03bd\u2083 628; NpF\u2086: \u03bd\u2081 654, \u03bd\u2083 624; PuF\u2086: \u03bd\u2081 656, \u03bd\u2083 616 cm\u207b\u00b9",
+      "confidence": "experimentally_verified",
+      "chapter_section": "2.8.1.5"
+    },
+    {
+      "id": "GFQ-085",
+      "category": "group_frequencies",
+      "rule": "Os-Cl stretching in octahedral Os complexes: region 350-300 cm\u207b\u00b9. Trans-OsF\u2082Cl\u2084\u00b2\u207b: \u03bd(Os-Cl) Eu at ~325, Raman A1g+B1g at ~330-300 cm\u207b\u00b9",
+      "molecular_systems": [
+        "OsF\u2099Cl\u2086\u208b\u2099\u00b2\u207b",
+        "Cs\u2082OsF\u2082Cl\u2084",
+        "mixed halide complexes"
+      ],
+      "spectral_details": "Os-Cl stretch: 350-300 cm\u207b\u00b9 region. Trans: 1 IR + 2 Raman; Cis: 4 IR + 4 Raman",
+      "confidence": "high",
+      "chapter_section": "2.8.2"
+    }
+  ]
+}

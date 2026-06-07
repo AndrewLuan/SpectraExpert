@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*.pth
+*.npy
+*.parquet
+*.csv
+*.tar.*
+*.zst
+*.egg-info/
+dist/
+build/
+.env
+.env.*
+*.key
