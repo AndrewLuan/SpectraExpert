@@ -33,10 +33,8 @@ spectraexpert/          # Core Python package
     llm/                # LLM client backends (Anthropic, OpenAI, dummy)
     prompts/            # Stage 3 prompt templates
   eval/                 # Evaluation harness (all 5 modes)
-
 scripts/                # Data preparation & figure generation
 knowledge_base/         # 181 Nakamoto group-frequency rules (JSON + Markdown)
-results/                # Benchmark result files (JSON) + BENCHMARK_REPORT.md
 paper/fig/              # Paper figures
 ```
 
@@ -91,8 +89,6 @@ python spectraexpert/eval/evaluate.py --mode agentic \
 
 ## Benchmark Results
 
-Full results and analysis: [`results/BENCHMARK_REPORT.md`](results/BENCHMARK_REPORT.md)
-
 | Method | GED (mean) | Tanimoto | Parsed | N |
 |--------|-----------|---------|--------|---|
 | Encoder best@10 | 16.93 | 0.058 | 100% | 211 |
@@ -100,8 +96,6 @@ Full results and analysis: [`results/BENCHMARK_REPORT.md`](results/BENCHMARK_REP
 | LLM+KB O3 | **13.52** | **0.075** | 84% | 50 |
 | Agentic Claude | 16.16 | 0.045 | 100% | 20 |
 | Agentic DeepSeek | 15.73 | 0.063 | 85% | 20 |
-
-*Note: different methods use different test subsets (different molecule sizes); see BENCHMARK_REPORT for size-adjusted analysis.*
 
 Key finding: the agentic pipeline achieves **best-case GED 8.0** on small molecules, while Claude Sonnet 4.6 maintains **100% valid-SMILES output** across all evaluation modes.
 
