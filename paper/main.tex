@@ -1,0 +1,626 @@
+\documentclass[conference]{IEEEtran}
+% 功能概述：本文档是 SpectraExpert 最终稿的唯一 LaTeX 入口，使用 IEEE Conference Template 组织正文、公式、图表和参考文献。
+% 主要职责：逐项重建最终 PDF 中可见的论文内容，并仅进行链接、元数据和 IEEE 默认环境样式等格式性修复。
+% 代码库关系：引用 figures/、references.bib 和未经修改的 IEEEtran.cls；由 latexmk 编译到 build/，稳定产物复制到 ../output/pdf/。
+% 内容锁定：正文、公式、数值、模型名称、参考文献和附录以 DM2092_5291 (2).pdf 为准；旧 LaTeX 只提供结构参考，不得覆盖最终稿内容。
+\usepackage{cite}
+\usepackage[T1]{fontenc}
+
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\hypersetup{
+  hidelinks,
+  pdftitle={SpectraExpert: Expert-Like Reasoning Agent for Spectrum-Based Molecular Identification},
+  pdfauthor={Denghong Luan and Zaifan Lu},
+  pdfsubject={Raman spectrum-based molecular identification},
+  pdfkeywords={Retrieval-augmented reasoning, contrastive learning, raman spectroscopy, molecular identification, large language models}
+}
+
+\begin{document}
+
+
+\title{SpectraExpert: Expert-Like Reasoning Agent for Spectrum-Based Molecular Identification}
+
+\author{\IEEEauthorblockN{Denghong Luan}
+\IEEEauthorblockA{\textit{School of Artificial Intelligence and Data Science} \\
+\textit{University of Science and Technology of China}\\
+Hefei, China \\
+dhluan@mail.ustc.edu.cn
+}
+\and
+\IEEEauthorblockN{Zaifan Lu}
+\IEEEauthorblockA{\textit{School of Physical Science} \\
+\textit{University of Science and Technology of China}\\
+Hefei, China \\
+elenwath\_lzf@mail.ustc.edu.cn}
+
+}
+
+\maketitle
+
+\begin{abstract}
+Identifying molecular structures from Raman spectra is a high-impact applied data mining problem for real-time chemical analysis, yet it remains a difficult inverse task because spectra are noisy, domain-shifted, and only weakly tied to unique structures. We present SpectraExpert, an applied retrieval-analysis-reasoning system that operationalizes the workflow of a human spectroscopist. Given a query Raman spectrum, the framework first retrieves candidate molecules via a contrastive SpectrumTransformer encoder trained on 129,817 QM9S spectra, then matches detected peaks to 181 empirical Nakamoto group-frequency rules, and finally deploys an LLM to evaluate candidates and propose structural modifications guided by spectroscopic evidence. We evaluate five frontier LLMs across four experimental settings on a reproducible zero-shot cross-domain benchmark using a QM9S training database with $\leq 9$ heavy atoms and a ChEMBL test set with up to 21 heavy atoms. Retrieval baselines achieve mean graph edit distance of 16.93 on 211 test samples. On randomly sampled LLM evaluation batches, the agentic pipeline includes individual predictions with GED as low as 8.0, while Claude Sonnet 4.6 maintains 100\% valid-SMILES output in direct and agentic modes and 96\% in knowledge mode. The study provides both an end-to-end application prototype and a benchmark for spectroscopic molecular identification. Our analysis shows that structured-output reliability is the dominant deployment bottleneck, and that the framework delivers interpretable, expert-aligned reasoning inaccessible to retrieval alone.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Retrieval-augmented reasoning, contrastive learning, raman spectroscopy, molecular identification, large language models
+\end{IEEEkeywords}
+
+
+
+\section{Introduction}
+
+Raman spectroscopy~\cite{raman1928change} is a non-destructive analytical technique that probes molecular vibrational modes through inelastic light scattering. Since vibrational frequencies are determined by molecular structures and chemical bonds, Raman spectra provide rich information about the composition and structure of chemical compounds. Each molecule exhibits characteristic spectral signatures, commonly referred to as molecular fingerprints, which enable qualitative identification and quantitative analysis~\cite{handzo2022fingerprint,kudelski2008analytical}. Compared with other analytical techniques, including Mass Spectrometry (MS), Nuclear Magnetic Resonance (NMR), Infrared Spectroscopy (IR), and Ultraviolet--Visible Spectroscopy (UV--Vis), Raman spectroscopy offers several advantages such as minimal sample preparation, compatibility with aqueous environments, high chemical specificity, and the capability for microscopic and in-situ measurements~\cite{rostron2016raman}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/pipeline.pdf}
+    \caption{Illustration of SpectraExpert for identifying unknown chemicals from Raman spectra using a vectorized spectral database and expert knowledge. The system contains three stages: contrastive retrieval, Nakamoto-rule spectral analysis, and guided reasoning.}
+    \label{fig:pipeline}
+\end{figure}
+
+Recent advances in portable Raman instrumentation and Surface-Enhanced Raman Spectroscopy (SERS)~\cite{zhang2005rapid} have significantly reduced the cost and complexity of spectral acquisition, enabling broad deployment in chemistry, biology, environmental monitoring, pharmaceutical analysis, and medical diagnostics~\cite{shipp2017raman}. Related optical and vibrational spectroscopies have also been explored for health monitoring and diagnostic applications~\cite{bunaciu2015applications,liang2021ultrasensitive}. As a result, automatic interpretation of Raman spectra has become increasingly important for real-time and on-site molecular identification. This setting fits the applied data mining agenda: it requires integrating large spectral databases, machine-learned representations, domain knowledge, and reliable decision support in a practical scientific workflow.
+
+Despite its practical importance, identifying molecular structures directly from Raman spectra remains a challenging problem. Raman spectra are influenced by experimental conditions, molecular conformations, and environmental factors, resulting in significant spectral variability. Furthermore, large-scale paired datasets of experimental spectra and molecular structures remain scarce. Consequently, most existing machine learning approaches focus on spectrum prediction, classification, or functional-group identification within narrow domains\cite{zou2023deep,hu2023machine}, while accurate molecular-level identification remains largely unsolved.
+
+Recent progress in Large Language Models (LLMs) has demonstrated remarkable reasoning capabilities across scientific domains. This raises an intriguing question:
+
+\textit{Can LLMs perform expert-level spectroscopic reasoning and accurately identify molecular structures from Raman spectra?}
+
+Our preliminary investigation reveals that directly applying LLMs to Raman identification often leads to unsatisfactory performance for two fundamental reasons.
+
+First, molecular identification is an extremely large search-space problem. Given only spectral observations, an LLM must reason over an enormous number of possible molecular structures. Without suitable constraints, the model frequently produces chemically implausible candidates or hallucinates structures that are inconsistent with the observed spectra.
+
+Second, successful spectroscopic analysis requires domain-specific knowledge that is not reliably encoded in general-purpose LLMs. Human spectroscopists rely heavily on empirical correlations between vibrational modes, characteristic peak regions, and molecular functional groups. LLMs often fail to consistently apply such spectroscopic principles, leading to incorrect structural interpretations.
+
+To address these challenges, we propose SpectraExpert, a retrieval-enhanced reasoning system for molecular identification from Raman spectra. Inspired by the workflow of human spectroscopists, our method decomposes the identification process into three stages. First, a spectral retrieval module narrows the search space by identifying structurally related candidate molecules based on spectral similarity. Second, a Nakamoto-rule spectral analysis stage matches observed peaks to empirical group-frequency rules and highlights discriminative functional-group evidence. Finally, a knowledge-guided reasoning module combines spectroscopic rules, domain knowledge, and structured rationale generation to infer the most plausible molecular structure.
+
+This design significantly reduces hallucinations while improving the utilization of spectroscopy knowledge during reasoning. Rather than generating molecular structures from scratch, SpectraExpert performs structured hypothesis refinement over a small set of chemically plausible candidates, closely mimicking the decision-making process of human experts.
+
+The main applied contributions of this work are summarized as follows:
+
+\begin{itemize}
+\item We formulate Raman-based molecular identification as an applied data mining problem that combines spectral representation learning, candidate retrieval, and expert-guided reasoning for chemical decision support.
+
+\item We propose SpectraExpert, an end-to-end system that integrates spectral retrieval, candidate disambiguation, Nakamoto rule matching, and LLM-guided structural refinement.
+
+\item We construct a reproducible cross-domain benchmark using QM9S~\cite{zou2023deep} for retrieval training and ChEMBL Raman spectra~\cite{liang2025dataset} for evaluation, enabling systematic analysis of generalization under realistic domain shift.
+
+\item Extensive experiments and ablations quantify retrieval quality, structured-output reliability, model compliance, and practical failure modes across five frontier LLMs.
+
+\end{itemize}
+
+Our results suggest that combining retrieval and scientific reasoning provides a promising direction for deploying LLMs in spectroscopy and other scientific inverse problems, while also clarifying the engineering constraints that must be addressed before real-world deployment.
+All code and data are available at \url{https://github.com/AndrewLuan/SpectraExpert}.
+
+\section{Related Work}
+
+\subsection{Retrieval-Based Molecular Identification}
+
+Molecular identification from spectroscopic measurements is a fundamental problem in chemistry, materials science, and life sciences. Traditional machine learning methods often map spectra directly to molecular properties, functional groups, or structures. Deep architectures such as RamanNet~\cite{ibtehaz2023ramannet}, together with larger spectral resources such as the Raman and infrared extension of ChEMBL~\cite{liang2025dataset} and RamanBench~\cite{koddenbrock2026ramanbench}, have advanced data-driven Raman analysis.
+
+However, molecular identification remains a difficult inverse problem: similar structures can produce highly similar spectra, and experimental conditions introduce additional variability. RamanBench further shows that existing models often suffer from limited cross-dataset generalization~\cite{koddenbrock2026ramanbench}. These issues make direct spectrum-to-structure prediction unreliable when the candidate space is large.
+
+Retrieval-based methods reduce this search space before downstream inference. Related retrieval-augmented scientific systems, such as MatExpert~\cite{ICLR2025_7d6850f4}, show that combining retrieval with expert-like reasoning can improve efficiency and reliability in large scientific search spaces. Following this idea, SpectraExpert first retrieves structurally plausible spectral candidates and then performs knowledge-guided reasoning to identify the target molecule.
+
+\subsection{Large Language Models for Scientific Reasoning}
+
+Large Language Models (LLMs) have shown strong capabilities in reasoning, planning, and knowledge-intensive tasks. Chain-of-thought prompting~\cite{wei2022chain} and knowledge-augmented scientific reasoners~\cite{pang2024physics} indicate that intermediate explanations and external domain knowledge can improve complex scientific problem solving.
+
+Tool-augmented LLMs provide an important precedent. MRKL systems decompose tasks across neural and symbolic modules~\cite{karpas2022mrkl}, Toolformer shows that language models can learn when to call external tools~\cite{schick2023toolformer}, and ReAct interleaves reasoning traces with actions~\cite{yao2023react}. In chemistry, domain-specific and tool-augmented LLM systems have been explored for diverse tasks. ChemLLM~\cite{zhang2024chemllm} trains on structured chemical knowledge, ChemCrow~\cite{m2024augmenting} integrates external chemistry tools for synthesis planning, safety checks, and drug-discovery tasks, and autonomous chemistry agents coordinate scientific workflows through iterative reasoning and tool use~\cite{boiko2023autonomous}.
+
+SpectraExpert is related to these systems in its use of tool-like components, but its target and evidence structure are different. ChemCrow delegates to general chemistry tools such as reaction predictors, molecular search utilities, and property calculators; the central challenge is selecting and sequencing tools. SpectraExpert instead solves a spectrum-conditioned inverse problem: the external modules are a learned Raman retriever and a curated Nakamoto rule matcher, and the LLM must reconcile candidate structures with peak-level spectroscopic evidence. This makes the contribution less a general chemistry agent and more a domain-specific data-mining workflow for weakly supervised, cross-domain molecular identification.
+
+These systems also reveal a key limitation: LLM reliability deteriorates when the hypothesis space is large or domain constraints are weakly represented. Spectroscopic molecular identification remains relatively unexplored in this context, because it requires joint reasoning over spectral evidence, candidate structures, and spectroscopy-specific rules. Our work addresses this gap by integrating spectral retrieval and knowledge-guided reasoning for Raman-based molecular identification.
+
+
+\section{Preliminaries}
+
+\subsection{Raman Spectroscopy and Molecular Similarity}
+
+Raman spectroscopy probes molecular vibrational modes through the inelastic scattering of light. From a physical perspective, the vibrational frequencies of a molecule are determined by its atomic composition, chemical bonds, and geometric structure. Consequently, the Raman spectrum can be regarded as a projection of the underlying molecular structure into the spectral domain.
+
+Although the mapping from molecular structure to Raman spectrum is highly complex, a fundamental observation from vibrational spectroscopy is that structurally similar molecules often exhibit similar spectral patterns. Molecules sharing common functional groups or bonding configurations tend to possess related vibrational modes, which produce characteristic peaks in similar spectral regions. For example, compounds containing aromatic rings, carbonyl groups, or hydroxyl groups usually exhibit identifiable spectral signatures associated with these structural motifs.
+
+This property establishes an important relationship between molecular similarity and spectral similarity. While distinct molecules may occasionally generate partially overlapping spectra, compounds with similar structures generally occupy neighboring regions in spectral space. As a result, Raman spectra provide a meaningful basis for retrieving candidate molecules that are structurally related to an unknown target.
+
+However, spectral similarity alone is insufficient for unique molecular identification. Many organic molecules share common functional groups and therefore exhibit highly similar spectral fingerprints. Human spectroscopists typically resolve such ambiguities by comparing subtle peak differences, examining characteristic vibrational regions, and incorporating domain knowledge about molecular structures. This process can be viewed as a sequential hypothesis-refinement procedure: candidate structures are first proposed based on spectral similarity and then progressively eliminated through expert reasoning.
+
+Our method is motivated by this physical and analytical workflow. The retrieval stage exploits the correlation between structural similarity and spectral similarity to narrow the search space, while the reasoning stage analyzes discriminative spectral features and spectroscopic knowledge to distinguish among competing candidates. This design enables the model to mimic the decision-making process of human spectroscopists while maintaining consistency with the underlying physics of Raman spectroscopy.
+
+\subsection{Cheminformatics Evaluation Metrics}
+
+We report molecular similarity using graph edit distance (GED), Tanimoto similarity, exact match, and SMILES validity. GED measures the minimum number of atom or bond edit operations required to transform a predicted molecular graph into the ground-truth graph; lower values indicate closer graph structure. Tanimoto similarity compares molecular fingerprints and emphasizes shared local substructures, following standard chemoinformatics practice based on molecular fingerprints and toolkit canonicalization~\cite{landrum2013rdkit}; higher values indicate greater fingerprint overlap. Exact match is computed only after canonicalization and therefore represents the strictest criterion.
+
+SMILES validity is treated as a reliability gate rather than a primary chemistry achievement. In cheminformatics, generating syntactically valid SMILES is a basic requirement for downstream property prediction, database lookup, or molecular editing. We therefore use the Parsed metric to diagnose whether an LLM can obey the required structured-output interface, while interpreting GED and Tanimoto as the substantive identification metrics.
+
+\subsection{Applied Data-Mining Setting}
+
+The data-mining contribution of this work lies in turning Raman identification into a reproducible retrieval-analysis-reasoning benchmark under domain shift. The training database contains simulated QM9S spectra for small molecules, whereas the evaluation queries are ChEMBL Raman spectra with larger and more application-oriented structures. This separation intentionally stresses cross-domain generalization and prevents the system from succeeding through memorized database overlap.
+
+From a mining perspective, the task combines three operations that are difficult to evaluate in isolation: representation learning over dense spectra, retrieval from a large candidate corpus, and evidence-grounded decision support. From a chemistry perspective, the same setup exposes the gap between syntactic molecular generation and chemically meaningful identification. We therefore position SpectraExpert as a benchmarked application workflow rather than as a claim that LLMs alone solve Raman-based molecular elucidation.
+
+
+
+\section{Method}
+
+\subsection{Problem Formulation}
+
+Given a Raman spectrum of an unknown compound,
+
+$$
+S=\{(w_i,I_i)\}_{i=1}^{N_s},
+$$
+
+where $w_i$ and $I_i$ denote the Raman shift and corresponding intensity at the $i$-th spectral point, our goal is to identify the molecular structure that generated the observed spectrum and predict its corresponding molecular representation, such as a SMILES string.
+
+Formally, let $\mathcal{M}$ denote the space of all candidate molecules. Molecular identification from Raman spectra can be viewed as learning an inverse mapping
+
+$$
+f:\mathcal{S}\rightarrow\mathcal{M},\qquad \hat{M}=f(S),
+$$
+
+where $\mathcal{S}$ denotes the space of Raman spectra and $\hat{M}\in\mathcal{M}$ is the predicted target molecule represented by a SMILES string.
+
+Compared with the forward problem of spectrum prediction, this inverse problem is substantially more challenging. A single molecule deterministically produces a spectrum under given conditions, whereas the reverse mapping is inherently ambiguous. Different molecules may share common functional groups and vibrational modes, leading to highly similar spectral fingerprints. Furthermore, the molecular search space is extremely large, making exhaustive reasoning over all possible structures computationally infeasible.
+
+Human spectroscopists rarely identify compounds by directly inferring a structure from a spectrum. Instead, they typically follow a hierarchical workflow. They first retrieve a small set of compounds exhibiting similar spectral characteristics, then compare discriminative spectral features among candidate structures, and finally apply spectroscopic knowledge and empirical rules to determine the most plausible molecular hypothesis.
+
+Inspired by this expert workflow, we formulate Raman-based molecular identification as a retrieval-enhanced scientific reasoning problem. Rather than directly generating molecular structures from spectra, our objective is to progressively reduce uncertainty through retrieval, candidate refinement, and knowledge-guided reasoning.
+
+
+
+
+
+\subsection{Overview of SpectraExpert}
+
+SpectraExpert decomposes molecular identification from Raman spectra into a three-stage pipeline that mirrors the workflow of a human spectroscopist: (1) a retrieval stage that finds candidate molecules from a spectral database via contrastive representation learning, (2) a Nakamoto-rule spectral analysis stage that matches detected peaks against a structured knowledge base of empirical group-frequency rules, and (3) a reasoning stage where an LLM evaluates candidates, selects the best match, or proposes structural modifications. Figure~\ref{fig:pipeline} provides an overview of the architecture.
+
+
+
+
+
+\subsection{Spectral Representation}
+
+Each input Raman spectrum is a 1D intensity signal over 3501 wavenumber bins spanning 500--4000\,cm$^{-1}$ with a step size of 1\,cm$^{-1}$.
+
+We encode spectra using a 1D Vision Transformer (ViT) adapted for spectral data, which we term the \textit{SpectrumTransformer}.
+
+
+Given an input spectrum $\mathbf{x}\in\mathbb{R}^{L_s}$ with $L_s=3501$, the SpectrumTransformer extracts $N_p=\lfloor(L_s-P)/s\rfloor+1=436$ overlapping patches $\mathbf{p}_i\in\mathbb{R}^{P}$ with patch size $P=16$ and stride $s=8$. Each patch is linearly projected and summed with a learnable positional encoding to form the input token sequence $\mathbf{z}_i^{(0)}=\mathbf{W}_e\mathbf{p}_i+\mathbf{e}_i\in\mathbb{R}^{D}$, where $D=256$. The sequence is processed by an $L_T=6$-layer pre-norm Transformer encoder with $H=8$ attention heads (head dimension $d_h=D/H=32$) and GeLU-activated FFN sublayers, following the standard residual update $\mathbf{Z}^{(\ell)}=\hat{\mathbf{Z}}^{(\ell)}+\operatorname{FFN}(\operatorname{LN}(\hat{\mathbf{Z}}^{(\ell)}))$ where $\hat{\mathbf{Z}}^{(\ell)}=\mathbf{Z}^{(\ell-1)}+\operatorname{MHSA}(\operatorname{LN}(\mathbf{Z}^{(\ell-1)}))$ and attention is computed as $\operatorname{softmax}(\mathbf{Q}\mathbf{K}^{\top}/\sqrt{d_h})\mathbf{V}$. A global average pooling over the final token outputs yields the spectral representation $\mathbf{r}=N_p^{-1}\sum_{i=1}^{N_p}\mathbf{z}_i^{(L_T)}\in\mathbb{R}^{D}$, which is then passed through a SimCLR-style two-layer MLP projection head ($D\to D\to D$, ReLU) and L2-normalized to produce the final embedding $\hat{\mathbf{h}}=\mathbf{h}/\lVert\mathbf{h}\rVert_2\in\mathbb{R}^{256}$. The total number of trainable parameters is 4.99M.
+
+\subsubsection{Contrastive Pretraining}
+
+We train the SpectrumTransformer using the SimCLR framework~\cite{chen2020simple} with the NT-Xent (Normalized Temperature-scaled Cross Entropy) loss.
+
+Unlike the standard SimCLR formulation that uses two augmented views from the same image, we generate positive pairs by applying six identity-preserving spectral augmentations designed to simulate realistic experimental variations without altering the underlying molecular identity:
+
+\begin{enumerate}
+    \item \textbf{Wavenumber shift} ($\pm2$\,cm$^{-1}$ via cubic interpolation): simulates temperature and pressure fluctuations.
+    \item \textbf{Peak broadening} (Gaussian convolution, $\sigma=0.5$--3.0\,cm$^{-1}$): simulates thermal disorder and sample heterogeneity.
+    \item \textbf{Baseline drift} (random polynomial up to third order, maximum amplitude 10\%): simulates fluorescence background and thermal radiation.
+    \item \textbf{Intensity fluctuation} (global multiplicative $\pm5\%$ plus spatially correlated local noise): simulates laser power instability and detector inhomogeneity.
+    \item \textbf{Contaminant peaks} (randomized water bands and narrow spikes, up to 20\% relative intensity): simulates humidity and impurities.
+    \item \textbf{Shot noise} (Poisson-like signal-dependent noise, 0.5\% level): simulates detector read noise.
+\end{enumerate}
+
+For a batch of size $B$, the NT-Xent loss is
+
+\begin{equation}
+\mathcal{L}_{\text{NT-Xent}}
+=
+-\frac{1}{2B}
+\sum_{i=1}^{2B}
+\log
+\frac{
+\exp(\mathrm{sim}(\mathbf{z}_i,\mathbf{z}_i^{+})/\tau)
+}{
+\sum_{j\neq i}^{2B}
+\exp(\mathrm{sim}(\mathbf{z}_i,\mathbf{z}_j)/\tau)
+}
+\end{equation}
+
+where $\mathrm{sim}(\cdot,\cdot)$ denotes cosine similarity, $\tau=0.1$ is the temperature parameter, and $\mathbf{z}_i,\mathbf{z}_i^{+}$ are the normalized embeddings of the two views.
+
+The model is trained with AdamW (learning rate $1\times10^{-4}$, weight decay 0.05), cosine learning-rate scheduling, 5 warmup epochs, a per-GPU micro-batch size of 128, a global per-step batch size of 1024 across 8 GPUs, and an effective batch size of 4096 after four gradient-accumulation steps. Training runs for 80 epochs with early stopping (patience $=10$).
+
+\subsubsection{Database Encoding and Retrieval}
+
+After training, we encode the entire QM9S database of 129,817 spectra using the frozen encoder, producing 256-dimensional L2-normalized embeddings.
+
+Given a query spectrum, we compute its embedding and retrieve the Top-$K$ candidates according to cosine similarity.
+
+The query spectrum is additionally processed using the \texttt{scipy.signal.find\_peaks} algorithm (minimum height 5\% of spectral maximum, minimum prominence 2\% of spectral range, minimum distance 5 pixels) to obtain peak positions, intensities, prominences, and widths.
+
+\subsection{Stage 2: Spectral Analysis with Nakamoto Rules}
+
+\subsubsection{Knowledge Base}
+
+We compiled a structured knowledge base of 181 empirical group-frequency rules by digitizing and organizing group-frequency tables from Nakamoto's authoritative textbook \textit{Infrared and Raman Spectra of Inorganic and Coordination Compounds}~\cite{nakamoto2008infrared} and cross-checking organic functional-group ranges against Socrates' tabulation of characteristic IR and Raman frequencies~\cite{socrates2004infrared}.
+
+Each rule contains:
+
+\begin{itemize}
+    \item A unique identifier (e.g., GFQ-042);
+    \item Functional-group description;
+    \item Characteristic frequency range;
+    \item Confidence level;
+    \item Rule category;
+    \item Additional notes and spectral details.
+\end{itemize}
+
+Rules were normalized into a common schema with fields for rule ID, lower and upper frequency bounds, vibrational mode, functional group, source note, and confidence tag. Confidence tags were assigned during curation from the specificity of the frequency range and whether the source explicitly marks the band as Raman-active. For example, a rule such as GFQ-042 links a characteristic frequency interval to a candidate functional group and is later cited verbatim in the LLM knowledge summary.
+
+\subsubsection{Peak-to-Rule Matching}
+
+For each detected peak at position $p$, we search the knowledge base for rules whose frequency range $[l,h]$ overlaps with the peak within a tolerance of 20\,cm$^{-1}$:
+
+\begin{equation}
+l-20 \le p \le h+20.
+\end{equation}
+
+Rules are deduplicated and sorted according to confidence level.
+
+The coverage score is defined as
+
+\begin{equation}
+c=
+\frac{
+|\text{explained peaks}|
+}{
+|\text{total peaks}|
+}.
+\end{equation}
+
+The rule matcher is used as an evidence generator rather than a hard classifier: a peak may match multiple groups, and absent bands are only weak negative evidence. For each candidate, SpectraExpert summarizes retrieval similarity, explained peaks, unexplained high-confidence rules, and matched rule IDs into an auditable evidence packet passed to the LLM. A concrete trace of this packet is provided in Appendix~A.
+
+\subsubsection{Formatted Knowledge Summary}
+
+The matched rules are assembled into a compact prompt summary containing detected peaks, rule IDs, confidence tags, candidate-level explained/unexplained peaks, and the rule definitions actually used. This design prevents unsupported spectroscopy claims and keeps functional-group assignments traceable.
+
+\subsection{Stage 3: LLM-Guided Reasoning}
+
+\subsubsection{System Prompt and Persona}
+
+The LLM is instructed to act as an expert spectroscopist and to ground every functional-group claim in the supplied Nakamoto rule IDs. Unlike general chemistry agents, this stage does not call reaction planners or property tools; it only reconciles the fixed evidence packet from retrieval and rule matching.
+
+\subsubsection{Structured Rationale Generation}
+
+Given detected peaks, top-$K$ candidates, and matched rules, the LLM performs functional-group identification, candidate evaluation, consensus assessment, and a final decision among \texttt{SELECT}, \texttt{MODIFY}, and \texttt{UNCERTAIN}. The output schema contains the decision, selected index or modified SMILES, confidence, and explanation. Deterministic decoding is used when available, and invalid or unparsable SMILES are counted through the Parsed metric. The decision policy and an example response are detailed in Appendix~A.
+
+\subsubsection{Modification Fallback}
+
+When confidence falls below 0.6, or when the model returns \texttt{UNCERTAIN} or \texttt{MODIFY}, a second prompt asks for local chemical edits to the closest candidate while preserving as much scaffold as possible. The resulting SMILES is canonicalized and validated. We treat this fallback as a stress test of chemistry-aware editing rather than a guaranteed improvement mechanism, and therefore report \texttt{SELECT}/\texttt{MODIFY}/\texttt{UNCERTAIN} breakdowns separately.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Experiments}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=.48\columnwidth]{figures/molecular_complexity.png}\hfill
+\includegraphics[width=.48\columnwidth]{figures/peak_intensity_distribution.png}
+\caption{Statistical characteristics of the QM9S training dataset. Left: distribution of molecular complexity measured by SMILES sequence length, illustrating the structural diversity of molecules contained in the dataset. Right: distribution of maximum Raman peak intensities, showing substantial variation in spectral response strength across different molecular species.}
+\label{fig:qm9s_statistics}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/peak_distribution.jpg}
+\caption{Two-dimensional density distribution of Raman spectra in the QM9S training set. The heatmap is generated by superimposing all spectra after normalization and resampling. High-density regions correspond to frequently occurring vibrational features, revealing the global spectral structure and characteristic Raman-active frequency bands present in the dataset.}
+\label{fig:qm9s_heatmap}
+\end{figure}
+
+\subsection{Datasets and Benchmarks}
+
+Evaluating Raman-based molecular identification requires both large-scale spectral data for representation learning and an independent benchmark for assessing generalization. To support reproducible applied evaluation, we employ two complementary datasets with separated roles: QM9S is used only to build the retrieval database and train the spectral encoder, whereas ChEMBL Raman spectra are reserved for out-of-domain testing.
+
+\paragraph{QM9S Training Dataset.}
+
+The retrieval model is trained using the QM9S dataset, a large-scale quantum chemistry database containing Raman spectra and molecular structures for over one hundred thousand organic molecules. Each sample consists of a molecular representation (SMILES) and a corresponding Raman spectrum represented on a uniform wavenumber grid spanning from 500 to 4000\,cm$^{-1}$ with a resolution of 1\,cm$^{-1}$. The resulting spectrum is therefore represented as a 3501-dimensional intensity vector. Figure~\ref{fig:qm9s_statistics} illustrates the distributions of molecular complexity and spectral intensity within the QM9S dataset.
+
+The primary motivation for using QM9S is its scale and structural diversity. Since contrastive retrieval requires learning a semantically meaningful spectral embedding space, a large number of molecular examples is essential for capturing the relationship between spectral fingerprints and molecular structures. The resulting database serves as the retrieval corpus used in Stage~1 of SpectraExpert. The global spectral distribution of the dataset is visualized in Figure~\ref{fig:qm9s_heatmap}, where several high-density Raman-active regions can be observed.
+
+\paragraph{ChEMBL Raman Evaluation Dataset.}
+
+To evaluate the complete workflow, we adopt the Raman subset from \emph{A Dataset of Raman and Infrared Spectra as an Extension to the ChEMBL}~\cite{liang2025dataset}.
+
+The ChEMBL Raman dataset is used exclusively for evaluation and shares no molecular overlap with the QM9S training set. Since the two datasets originate from distinct molecular collections, they exhibit substantially different structural distributions and spectral characteristics. Consequently, evaluation on the ChEMBL dataset provides a rigorous assessment of whether a Raman identification system can transfer from a curated quantum-chemistry corpus to larger, more application-oriented molecules.
+
+This benchmark is intentionally harder than closed-library spectral search. A domain-specific tool with the exact target spectrum in its library would be expected to win by direct matching, but such a setting does not test molecular inference. Our evaluation instead asks whether a system trained and indexed on small QM9S molecules can provide useful candidate hypotheses, explanations, and edits for out-of-domain ChEMBL targets. This framing is central to the applied data-mining claim: the task measures transfer, retrieval quality, and evidence use under a controlled corpus shift.
+
+\subsection{Experimental Setup}
+
+We evaluate four categories of methods on the SpectraExpert SMILES-from-spectra prediction task. Retrieval methods (KNN, Encoder) retrieve the top-10 database candidates by spectral similarity across all 211 queries in the constructed ChEMBL test set. LLM Direct generates SMILES from spectral peak data alone on a randomly sampled 50-query batch from this test set. LLM Knowledge augments peak data with matched Nakamoto group-frequency rules and is evaluated on a 50-query batch randomly sampled from this test set. Agentic combines retrieval, Nakamoto rule matching, multi-step LLM reasoning, and a structural modification fallback, evaluated on a randomly sampled 20-query batch from the same test set. The LLM batches were sampled from the constructed evaluation set rather than selected by molecule length or difficulty; therefore, aggregate GED values across LLM settings should be interpreted as batch-level results unless the same query batch is used. Model-source citations are shown directly next to model names in the result tables.
+
+Performance is measured by graph edit distance (GED; lower is better), Tanimoto similarity (higher is better), and the fraction of outputs yielding valid, parseable SMILES (Parsed). Generated SMILES are parsed and canonicalized before evaluation; invalid SMILES are excluded from GED and Tanimoto summaries and are instead counted through the Parsed metric. The reported $N$ denotes the number of attempted queries, not the number of valid outputs. GED is computed on molecular graphs after canonicalization using the same unit-cost edit model for all methods; atom labels and bond labels are retained, and implicit hydrogens are used consistently across predictions and ground truth. For retrieval methods, GED is the minimum across the top-10 candidates (best@10); for LLM and agentic methods it is computed from the single predicted SMILES. Exact match denotes equality after molecular-graph canonicalization.
+
+\subsection{Main Results}
+
+Full results are reported in Table~\ref{tab:main_results}. No method achieves any exact matches, reflecting the fundamental difficulty of this cross-domain task (retrieval database: QM9S, $\leq9$ heavy atoms; test set: ChEMBL, up to 21 heavy atoms). The table is placed at the beginning of the Results section to make the complete experimental picture explicit: retrieval baselines, direct LLM generation, knowledge-augmented prompting, and the full agentic pipeline are all reported with GED, median GED, variance, sample count, and parse rate.
+
+The strongest numbers should be interpreted cautiously. The LLM Knowledge row for o3 achieves the lowest valid-only GED on its sampled batch, but it does not use the same query set as the retrieval rows. Conversely, retrieval is evaluated on all 211 queries and therefore provides the most stable estimate of benchmark difficulty. The practical conclusion is not that one LLM universally solves the task, but that rule-grounded prompts can sometimes produce strong hypotheses while structured-output failures and batch variation remain major limitations.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.4pt}
+\caption{Aggregate results across all methods and models. GED$_\mu$, GED$_{50}$, GED$_\sigma$: mean, median, and standard deviation of graph edit distance. Parsed: fraction of predictions yielding valid SMILES. $^\dagger$Parse rate below 0.50; GED computed on valid outputs only. $^\ddagger$Near-zero parse rate; result not meaningful. Evaluation batches differ by method: Retrieval uses all 211 ChEMBL test queries; LLM Direct and LLM Knowledge use randomly sampled 50-query batches; Agentic uses a randomly sampled 20-query batch.}
+\label{tab:main_results}
+\begin{tabular}{llrrrrr}
+\toprule
+Method & Model & GED$_\mu$ & GED$_{50}$ & GED$_\sigma$ & $N$ & Parsed\\
+\midrule
+\multicolumn{7}{l}{\emph{Retrieval}}\\
+Encoder & N/A & 16.93 & 17.0 & 4.63 & 211 & 1.00\\
+KNN & N/A & 17.04 & 17.0 & 3.91 & 211 & 1.00\\
+\midrule
+\multicolumn{7}{l}{\emph{LLM Direct}}\\
+LLM-Direct & GPT-5~\cite{gpt-5}$^\dagger$ & 22.79 & 22.0 & 4.22 & 50 & 0.38\\
+LLM-Direct & o3~\cite{o3_and_o4-mini} & 23.53 & 24.0 & 4.38 & 50 & 0.94\\
+LLM-Direct & Claude-Sonnet-4-6~\cite{claude-sonnet-4-6} & 23.82 & 24.0 & 4.57 & 50 & 1.00\\
+LLM-Direct & Gemini-2.5-Flash~\cite{gemini2-5}$^\dagger$ & 23.90 & 24.5 & 5.49 & 50 & 0.20\\
+LLM-Direct & DeepSeek-v4-Flash~\cite{deepseek2026deepseek}$^\dagger$ & 24.68 & 26.0 & 5.27 & 50 & 0.44\\
+\midrule
+\multicolumn{7}{l}{\emph{LLM Knowledge}}\\
+LLM-Know. & o3~\cite{o3_and_o4-mini} & 13.52 & 14.0 & 5.95 & 50 & 0.84\\
+LLM-Know. & GPT-5~\cite{gpt-5}$^\dagger$ & 14.86 & 16.0 & 5.60 & 50 & 0.42\\
+LLM-Know. & DeepSeek-v4-Flash~\cite{deepseek2026deepseek} & 15.24 & 15.0 & 6.28 & 50 & 0.68\\
+LLM-Know. & Claude-Sonnet-4-6~\cite{claude-sonnet-4-6} & 16.90 & 16.5 & 13.92 & 50 & 0.96\\
+LLM-Know. & Gemini-2.5-Flash~\cite{gemini2-5}$^\dagger$ & 17.70 & 16.5 & 7.00 & 50 & 0.20\\
+\midrule
+\multicolumn{7}{l}{\emph{Agentic}}\\
+Agentic & Gemini-2.5-Flash~\cite{gemini2-5} & 15.67 & 15.0 & 5.03 & 20 & 1.00\\
+Agentic & DeepSeek-v4-Flash~\cite{deepseek2026deepseek} & 15.73 & 17.0 & 3.86 & 20 & 0.85\\
+Agentic & Claude-Sonnet-4-6~\cite{claude-sonnet-4-6} & 16.16 & 15.0 & 4.91 & 20 & 1.00\\
+Agentic & o3~\cite{o3_and_o4-mini} & 18.07 & 18.0 & 5.15 & 20 & 0.95\\
+Agentic & GPT-5~\cite{gpt-5}$^\ddagger$ & 21.00 & 21.0 & 0.00 & 20 & 0.05\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Retrieval Baselines: Encoder vs.\ KNN}
+
+The encoder and KNN retrieval methods perform virtually identically. GED means differ by only 0.11 (16.93 vs.\ 17.04), within noise. The encoder is faster (14.9\,s end-to-end), making it the preferable baseline for downstream comparisons.
+
+\subsection{LLM Direct and LLM Knowledge}
+
+LLM Direct and LLM Knowledge are evaluated on randomly sampled 50-query batches from the same constructed ChEMBL test set. Raw GED values should be interpreted as setting-specific batch summaries; strict paired comparisons require the same query list.
+
+Table~\ref{tab:paired_direct} provides a batch-controlled comparison by evaluating retrieval baselines on the same randomly sampled queries used for LLM Direct. LLM Direct achieves GED values from 22.79 to 24.68, bracketing the retrieval top-1 (Encoder: 24.48) but falling slightly short of the Encoder best@10 oracle (21.98). This confirms that LLMs can leverage functional-group knowledge to propose plausible structures without any database, yet cannot yet surpass a well-tuned retrieval re-ranker on this sampled cross-domain batch.
+
+On the randomly sampled LLM Knowledge batch, o3 achieves GED 13.52 (Table~\ref{tab:main_results}), showing that Nakamoto rule augmentation can produce strong valid-only predictions on sampled ChEMBL queries. Parse rate remains a key differentiator: Claude-Sonnet achieves 96\% compliance with knowledge-augmented prompts vs.\ 20\% for Gemini-2.5-Flash. The counterintuitive Tanimoto result for Gemini (0.000) in LLM Knowledge mode indicates systematic hallucination: its parsed SMILES bear no fingerprint overlap with ground truth despite non-trivial GED values.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Comparison on the 50-query LLM Direct batch randomly sampled from the constructed ChEMBL test set. All methods are evaluated on the same queries; best@10 Tanimoto is omitted because the row is selected by a GED oracle.}
+\label{tab:paired_direct}
+\begin{tabular}{lrr}
+\toprule
+Method & GED$_\mu$ & Tanimoto\\
+\midrule
+LLM-Direct GPT-5~\cite{gpt-5} & 22.79 & 0.125\\
+LLM-Direct o3~\cite{o3_and_o4-mini} & 23.53 & 0.114\\
+LLM-Direct Claude-S-4.6~\cite{claude-sonnet-4-6} & 23.82 & 0.117\\
+Encoder top-1 & 24.48 & 0.058\\
+KNN top-1 & 25.92 & 0.061\\
+Encoder best@10 & 21.98 & --\\
+KNN best@10 & 22.00 & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{SMILES Output Validity}
+
+Parse rates vary substantially across models (Table~\ref{tab:parsing}). Claude-Sonnet-4-6 achieves perfect compliance in direct and agentic modes, whereas Gemini-2.5-Flash fails frequently in unstructured settings. The agentic schema improves Gemini validity (0.20 $\rightarrow$ 1.00) but degrades GPT-5 (0.38 $\rightarrow$ 0.05), confirming that parseability is a necessary interface requirement rather than a standalone measure of chemical accuracy.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Fraction of predictions yielding valid, parseable SMILES by model and method. Higher is better.}
+\label{tab:parsing}
+\begin{tabular}{lrrr}
+\toprule
+Model & Direct & Knowledge & Agentic\\
+\midrule
+Claude-Sonnet-4-6~\cite{claude-sonnet-4-6} & 1.00 & 0.96 & 1.00\\
+o3~\cite{o3_and_o4-mini} & 0.94 & 0.84 & 0.95\\
+DeepSeek-v4-Flash~\cite{deepseek2026deepseek} & 0.44 & 0.68 & 0.85\\
+GPT-5~\cite{gpt-5} & 0.38 & 0.42 & 0.05\\
+Gemini-2.5-Flash~\cite{gemini2-5} & 0.20 & 0.20 & 1.00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Agentic Pipeline}
+
+On the sampled 20-query agentic batch, the full pipeline includes individual predictions with GED as low as 8.0 for Claude, DeepSeek, and o3, showing that reasoning can succeed when retrieval supplies a structurally proximate candidate. Table~\ref{tab:agentic_decisions} shows that SELECTED decisions consistently outperform MODIFIED decisions; the fallback is mainly triggered when the QM9S--ChEMBL domain gap leaves all retrieved candidates structurally distant. Gemini always invokes MODIFY, while GPT-5 is mostly UNCERTAIN in multi-turn use.
+
+A notable negative result is that modification degrades average GED relative to the SELECT path ($+4.86$ for Claude, $+2.98$ for DeepSeek, $+1.23$ for o3), because unconstrained SMILES editing from a poor starting point is itself hard. This highlights the need for calibrated handoffs and chemistry-aware constrained editing in future retrieval-augmented scientific workflows.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Agentic decision breakdown (20 samples). GED values computed on valid predictions only.}
+\label{tab:agentic_decisions}
+\begin{tabular}{lrrrr}
+\toprule
+Model & SELECT ($n$) & GED & MODIFY ($n$) & GED\\
+\midrule
+Claude-Sonnet-4-6~\cite{claude-sonnet-4-6} & 6 & 12.8 & 14 & 17.7\\
+DeepSeek-v4-Flash~\cite{deepseek2026deepseek} & 7 & 14.1 & 10 & 17.1\\
+o3~\cite{o3_and_o4-mini} & 6 & 17.3 & 13 & 18.6\\
+Gemini-2.5-Flash~\cite{gemini2-5} & 0 & N/A & 20 & 15.7\\
+GPT-5~\cite{gpt-5} & 0 & N/A & 1 & N/A\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Summary and Practical Recommendations}
+
+Across all settings, retrieval is the most stable baseline: the encoder achieves mean best@10 GED 16.93 over all 211 queries, and retrieval best@10 remains lower than every direct LLM result on the paired direct batch. LLMs add complementary capabilities rather than replacing retrieval: direct prompting gives zero-shot structures, Nakamoto-rule prompting improves valid-only predictions on sampled batches, and the agentic pipeline provides interpretable rule-grounded traces with individual GED values as low as 8.0. For deployment, Claude Sonnet 4.6 is preferred for structured-output reliability, while o3 gives the best LLM+KB GED on its sampled batch. Overall, SpectraExpert should be read as a benchmarked applied workflow that decomposes a difficult inverse problem into measurable retrieval, rule-matching, and reasoning components under domain shift.
+
+\section{Conclusion}
+
+We presented SpectraExpert, an applied data mining system for Raman-based molecular identification. The framework combines a contrastive SpectrumTransformer retriever, 181 Nakamoto-derived group-frequency rules, and LLM-guided structured reasoning with a conservative modification fallback. Experiments show that the QM9S--ChEMBL domain gap remains severe, but explicit spectroscopic evidence improves interpretability and can improve valid-only GED on sampled batches. Future work should extend the retrieval database to larger molecules and replace unconstrained SMILES editing with chemistry-aware constrained generation.
+
+\begin{thebibliography}{31}
+\bibitem{raman1928change} C.~V. Raman, ``A change of wave-length in light scattering,'' \emph{Nature}, vol. 121, no. 3051, pp. 619--619, 1928.
+\bibitem{handzo2022fingerprint} B. Handzo, J. Peters, and R. Kalyanaraman, ``A fingerprint in a fingerprint: a raman spectral analysis of pharmaceutical ingredients,'' \emph{Spectroscopy}, 2022.
+\bibitem{kudelski2008analytical} A. Kudelski, ``Analytical applications of raman spectroscopy,'' \emph{Talanta}, vol. 76, no. 1, pp. 1--8, 2008.
+\bibitem{rostron2016raman} P. Rostron, S. Gaber, and D. Gaber, ``Raman spectroscopy, review,'' \emph{laser}, vol. 21, p. 24, 2016.
+\bibitem{zhang2005rapid} X. Zhang, M.~A. Young, O. Lyandres, and R.~P. Van Duyne, ``Rapid detection of an anthrax biomarker by surface-enhanced raman spectroscopy,'' \emph{Journal of the American Chemical Society}, vol. 127, no. 12, pp. 4484--4489, 2005.
+\bibitem{shipp2017raman} D.~W. Shipp, F. Sinjab, and I. Notingher, ``Raman spectroscopy: techniques and applications in the life sciences,'' \emph{Advances in Optics and Photonics}, vol. 9, no. 2, pp. 315--428, 2017.
+\bibitem{bunaciu2015applications} A.~A. Bunaciu, V.~D. Hoang, and H.~Y. Aboul-Enein, ``Applications of ft-ir spectrophotometry in cancer diagnostics,'' \emph{Critical reviews in analytical chemistry}, vol. 45, no. 2, pp. 156--165, 2015.
+\bibitem{liang2021ultrasensitive} Q. Liang, Y.-C. Chan, P.~B. Changala, D.~J. Nesbitt, J. Ye, and J. Toscano, ``Ultrasensitive multispecies spectroscopic breath analysis for real-time health monitoring and diagnostics,'' \emph{Proceedings of the National Academy of Sciences}, vol. 118, no. 40, p. e2105063118, 2021.
+\bibitem{zou2023deep} Z. Zou, Y. Zhang, L. Liang, M. Wei, J. Leng, J. Jiang, Y. Luo, and W. Hu, ``A deep learning model for predicting selected organic molecular spectra,'' \emph{Nature Computational Science}, vol. 3, no. 11, pp. 957--964, 2023.
+\bibitem{hu2023machine} W. Hu, T. Hu, B. Li, Z. Zou, T. Zhu, Y. Zhang, J. Jiang, and Y. Luo, ``A machine learning protocol to directly translate molecular infrared or raman spectra into molecular formula,'' \emph{arXiv preprint arXiv:2309.07987}, 2023.
+\bibitem{liang2025dataset} J. Liang, J. Ling, L. Xu, and X. Zhu, ``A dataset of raman and infrared spectra as an extension to the chembl,'' \emph{Scientific Data}, vol. 12, no. 1, p. 939, 2025.
+\bibitem{ibtehaz2023ramannet} N. Ibtehaz, M.~E. Chowdhury, A. Khandakar, S. Kiranyaz, M.~S. Rahman, and S.~M. Zughaier, ``Ramannet: a generalized neural network architecture for raman spectrum analysis,'' \emph{Neural Computing and Applications}, vol. 35, no. 25, pp. 18719--18735, 2023.
+\bibitem{koddenbrock2026ramanbench} M. Koddenbrock, C. Lange, R. Legner, M. J\"ager, M. K\"ogler, M.~N.~C. Bournazou, P. Neubauer, F. Biessmann, and E. Rodner, ``Ramanbench: A large-scale benchmark for machine learning on raman spectroscopy,'' \emph{arXiv preprint arXiv:2605.02003}, 2026.
+\bibitem{ICLR2025_7d6850f4} Q. Ding, S. Miret, and B. Liu, ``Matexpert: Decomposing materials discovery by mimicking human experts,'' in \emph{International Conference on Learning Representations}, Y. Yue, A. Garg, N. Peng, F. Sha, and R. Yu, Eds., vol. 2025, 2025, pp. 50113--50132. [Online]. Available: \url{https://proceedings.iclr.cc/paper_files/paper/2025/file/7d6850f4c82520793f738d98a72aab9d-Paper-Conference.pdf}
+\bibitem{wei2022chain} J. Wei, X. Wang, D. Schuurmans, M. Bosma, F. Xia, E. Chi, Q.~V. Le, D. Zhou et al., ``Chain-of-thought prompting elicits reasoning in large language models,'' \emph{Advances in neural information processing systems}, vol. 35, pp. 24824--24837, 2022.
+\bibitem{pang2024physics} X. Pang, R. Hong, Z. Zhou, F. Lv, X. Yang, Z. Liang, B. Han, and C. Zhang, ``Physics reasoner: Knowledge-augmented reasoning for solving physics problems with large language models,'' \emph{arXiv preprint arXiv:2412.13791}, 2024.
+\bibitem{karpas2022mrkl} E. Karpas, O. Abend, Y. Belinkov, B. Lenz, O. Lieber, N. Ratner, Y. Shoham, H. Bata, Y. Levine, K. Leyton-Brown et al., ``MRKL systems: A modular, neuro-symbolic architecture that combines large language models, external knowledge sources and discrete reasoning,'' \emph{arXiv preprint arXiv:2205.00445}, 2022.
+\bibitem{schick2023toolformer} T. Schick, J. Dwivedi-Yu, R. Dessi, R. Raileanu, M. Lomeli, E. Hambro, L. Zettlemoyer, N. Cancedda, and T. Scialom, ``Toolformer: Language models can teach themselves to use tools,'' \emph{Advances in Neural Information Processing Systems}, vol. 36, pp. 68539--68551, 2023.
+\bibitem{yao2023react} S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao, ``ReAct: Synergizing reasoning and acting in language models,'' in \emph{International Conference on Learning Representations}, 2023.
+\bibitem{zhang2024chemllm} D. Zhang, W. Liu, Q. Tan, J. Chen, H. Yan, Y. Yan, J. Li, W. Huang, X. Yue, W. Ouyang et al., ``ChemLLM: A chemical large language model,'' \emph{arXiv preprint arXiv:2402.06852}, 2024.
+\bibitem{m2024augmenting} A.~M. Bran, S. Cox, O. Schilter, C. Baldassari, A.~D. White, and P. Schwaller, ``Augmenting large language models with chemistry tools,'' \emph{Nature Machine Intelligence}, vol. 6, no. 5, pp. 525--535, 2024.
+\bibitem{boiko2023autonomous} D.~A. Boiko, R. MacKnight, B. Kline, and G. Gomes, ``Autonomous chemical research with large language models,'' \emph{Nature}, vol. 624, no. 7992, pp. 570--578, 2023.
+\bibitem{landrum2013rdkit} G. Landrum, ``RDKit: Open-source cheminformatics,'' \url{https://www.rdkit.org}, 2013.
+\bibitem{chen2020simple} T. Chen, S. Kornblith, M. Norouzi, and G. Hinton, ``A simple framework for contrastive learning of visual representations,'' in \emph{International conference on machine learning}. PMLR, 2020, pp. 1597--1607.
+\bibitem{nakamoto2008infrared} K. Nakamoto, \emph{Infrared and Raman spectra of inorganic and coordination compounds: part A: theory and applications in inorganic chemistry}. John Wiley \& Sons, Incorporated, 2008.
+\bibitem{socrates2004infrared} G. Socrates, \emph{Infrared and Raman characteristic group frequencies: tables and charts}. John Wiley \& Sons, 2004.
+\bibitem{gpt-5} OpenAI, ``GPT-5 system card,'' 2025.
+\bibitem{o3_and_o4-mini} ----, ``OpenAI o3 and o4-mini System Card,'' 2025.
+\bibitem{claude-sonnet-4-6} Anthropic, ``Claude Sonnet 4.6 system card,'' 2026.
+\bibitem{gemini2-5} Google DeepMind, ``Gemini 2.5 technical report,'' 2025.
+\bibitem{deepseek2026deepseek} DeepSeek AI, ``DeepSeek-v4 technical report,'' 2026.
+\end{thebibliography}
+
+\appendices
+\section{SpectraExpert---Full Pipeline Trace}
+
+This appendix gives a complete end-to-end trace of the SpectraExpert agentic pipeline on a held-out ChEMBL test molecule, covering contrastive retrieval, Nakamoto peak matching, and LLM-guided reasoning. The ground truth is revealed only after the Stage~3 decision for evaluation.
+
+\textbf{Case study.} The molecule is 4,4-difluoropiperidine, test-set index \#11 in the ChEMBL held-out set. Its ground-truth SMILES is \texttt{FC1(F)CCCNC1}, with length 12 characters.
+
+\textbf{Stage 1: spectrum encoding and retrieval.} The input Raman spectrum has 3,501 points from 500--4000\,cm$^{-1}$ at 1\,cm$^{-1}$ resolution. SpectrumTransformer maps it to a 256-dimensional L2-normalized embedding, and peaks are extracted by \texttt{scipy.find\_peaks} with minimum height 5\% of the spectral maximum, minimum prominence 2\% of the spectral range, and minimum inter-peak distance 5 pixels. Four peaks are detected:
+
+\begin{center}
+\scriptsize
+\begin{tabular}{rrrr}
+\toprule
+\# & Position (cm$^{-1}$) & Intensity & Prominence\\
+\midrule
+1 & 2996 & 0.1351 & 8.23\\
+2 & 3044 & 0.1094 & 4.97\\
+3 & 3435 & 0.0443 & 2.70\\
+4 & 1468 & 0.0229 & 1.40\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 2996/3044\,cm$^{-1}$ pair dominates the spectrum, 3435\,cm$^{-1}$ is a weak shoulder, and 1468\,cm$^{-1}$ lies in the fingerprint region. Comparing the query embedding against all 129,817 pre-computed QM9S embeddings gives:
+
+\begin{center}
+\tiny
+\begin{tabular}{rlrrr}
+\toprule
+Rank & Candidate SMILES & Cosine & GED vs.\ GT & Tanimoto vs.\ GT\\
+\midrule
+1 & \texttt{CC1CCC2CC2(O)C1} & 0.8521 & 8.0 & 0.059\\
+2 & \texttt{Cc1nn(C)c(=O)o1} & 0.8248 & 15.0 & 0.000\\
+3 & \texttt{OC1CN2CC2C12CC2} & 0.7538 & 14.0 & 0.091\\
+4 & \texttt{C1=CC2OCCC2OC1} & 0.7528 & 15.0 & 0.028\\
+5 & \texttt{O=C1C2CC13NCC3N2} & 0.7459 & 15.0 & 0.081\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+GED and Tanimoto are post-hoc metrics not visible to the pipeline. All candidates are small QM9S molecules ($\leq9$ heavy atoms); rank 1 is a bicyclic alcohol and is the closest retrieved graph to the target (GED $=8$).
+
+\textbf{Stage 2: Nakamoto rule matching.} Each detected peak is matched against 181 group-frequency rules using a $\pm20$\,cm$^{-1}$ tolerance.
+
+\begin{center}
+\tiny
+\begin{tabular}{rlll}
+\toprule
+Peak & Rules & Key assignment & Confidence\\
+\midrule
+2996 & GFQ-003 & sp$^3$ aliphatic C--H stretch, 2900--3100\,cm$^{-1}$ & DEFINITIVE\\
+3044 & GFQ-003 & sp$^3$ aliphatic C--H stretch, 2900--3100\,cm$^{-1}$ & DEFINITIVE\\
+3435 & GFQ-050 & O--H or N--H stretch, 3200--3500\,cm$^{-1}$ & HIGH\\
+1468 & GFQ-003/015/010/064 & C--H bending/scissoring; other assignments possible & DEFINITIVE/HIGH\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Coverage is 1.0: all four peaks match at least one rule. The evidence indicates aliphatic CH$_2$ symmetric/asymmetric stretching, cyclic CH$_2$ scissoring, and an O--H/N--H stretch. This structured summary is passed verbatim to Stage~3.
+
+\textbf{Stage 3: LLM-guided reasoning.} The prompt supplies the detected peak table, five retrieved candidates, cosine scores, and Nakamoto summary to Claude Sonnet 4.6, then requests functional-group identification, candidate evaluation, consensus assessment, and a final decision. The structured rationale assigns 2996/3044\,cm$^{-1}$ to sp$^3$ C--H stretching, 1468\,cm$^{-1}$ to CH$_2$ deformation, and 3435\,cm$^{-1}$ to O--H/N--H. Candidate 1 is preferred because its saturated bicyclic alcohol explains all four peaks and has the highest similarity; the other candidates introduce heteroaromatic, carbonyl, or heterocyclic motifs without improving the spectral fit.
+
+\begin{center}
+\scriptsize
+\begin{tabular}{ll}
+\toprule
+Field & Value\\
+\midrule
+DECISION & SELECT\\
+SELECTED\_INDEX & 1\\
+SELECTED\_SMILES & \texttt{CC1CCC2CC2(O)C1}\\
+CONFIDENCE & 0.72\\
+EXPLANATION & \begin{tabular}[t]{@{}l@{}}Dominant sp$^3$ C--H stretches at 2996/3044\,cm$^{-1}$ and\\
+CH$_2$ bending at 1468\,cm$^{-1}$ support a saturated alicyclic\\
+framework; 3435\,cm$^{-1}$ indicates O--H/N--H; candidate 1\\
+best satisfies all features.\end{tabular}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Because confidence is $0.72\geq0.6$ and the decision is SELECT, the modification fallback is not triggered.
+
+\textbf{Pipeline output and evaluation.}
+
+\begin{center}
+\scriptsize
+\begin{tabular}{ll}
+\toprule
+Field & Value\\
+\midrule
+Predicted SMILES & \texttt{CC1CCC2CC2(O)C1}\\
+Decision / confidence & candidate\_selected / 0.72\\
+Fallback used & No\\
+Ground truth & \texttt{FC1(F)CCCNC1} (4,4-difluoropiperidine)\\
+GED / Tanimoto / exact match & 8 / 0.059 / No\\
+Processing time & $\sim65$\,s for the Stage~3 LLM call\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The predicted bicyclic tertiary alcohol and the true 4,4-difluoropiperidine share saturated ring character. GED $=8$ reflects replacing two F substituents with O--H, replacing the ring N with a bridging C, and changing bicyclic versus monocyclic connectivity. This is the best single-sample result in the 20-sample Claude Sonnet 4.6 agentic evaluation and illustrates the intended operating condition: retrieval finds a close database molecule, the LLM selects it, and no fallback is needed.
+
+\end{document}
