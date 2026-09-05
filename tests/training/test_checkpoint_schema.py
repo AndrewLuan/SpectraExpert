@@ -1,5 +1,6 @@
 """功能概述：验证训练 checkpoint 的版本隔离、严格重建和原子写入契约。
-主要职责：通过真实模型保存/恢复验证权重、优化器与 RNG；篡改配置验证字段级拒绝。
+主要职责：通过真实模型保存/恢复验证权重、优化器与 RNG；篡改配置验证字段级拒绝；
+检查 optimizer 参数对象及 scheduler 归属，拒绝时不改变模型，正确恢复后能更新同一模型。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
@@ -88,3 +89,74 @@ def test_atomic_save_preserves_existing_checkpoint_on_failure(tmp_path, monkeypa
                         DescriptorNormalizer(torch.zeros(15), torch.ones(15)))
     assert path.read_bytes() == b"previous"
     assert sorted(p.name for p in tmp_path.iterdir()) == ["model.pt"]
+
+
+def make_optimizer_checkpoint(tmp_path):
+    model = make_model()
+    optimizer = torch.optim.Adam(model.parameters(), lr=.001)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=.5)
+    sum(parameter.square().sum() for parameter in model.parameters()).backward()
+    optimizer.step()
+    scheduler.step()
+    return save_checkpoint(tmp_path / "trained.pt", model, optimizer, scheduler=scheduler,
+        descriptor_stats=DescriptorNormalizer(torch.zeros(15), torch.ones(15)))
+
+
+def test_optimizer_without_explicit_model_is_rejected(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    optimizer = torch.optim.Adam(make_model().parameters())
+    with pytest.raises(ValueError, match="optimizer.*model"):
+        load_checkpoint(path, optimizer=optimizer)
+    assert not optimizer.state
+
+
+@pytest.mark.parametrize("binding", ["other_model", "external_parameter", "incomplete"])
+def test_optimizer_invalid_parameter_binding_rejected_before_model_mutation(tmp_path, binding):
+    path = make_optimizer_checkpoint(tmp_path)
+    target = make_model()
+    parameters = list(target.parameters())
+    if binding == "other_model":
+        parameters = list(make_model().parameters())
+    elif binding == "external_parameter":
+        parameters.append(torch.nn.Parameter(torch.ones(1)))
+    else:
+        parameters = parameters[:-1]
+    optimizer = torch.optim.Adam(parameters)
+    before = {key: value.clone() for key, value in target.state_dict().items()}
+    with pytest.raises(ValueError, match="optimizer.*parameters"):
+        load_checkpoint(path, model=target, optimizer=optimizer)
+    assert all(torch.equal(before[key], value) for key, value in target.state_dict().items())
+    assert not optimizer.state
+
+
+@pytest.mark.parametrize("binding", ["missing_optimizer", "other_optimizer"])
+def test_scheduler_requires_its_own_explicit_optimizer(tmp_path, binding):
+    path = make_optimizer_checkpoint(tmp_path)
+    target = make_model()
+    optimizer = torch.optim.Adam(target.parameters())
+    other_optimizer = torch.optim.Adam(target.parameters())
+    scheduler = torch.optim.lr_scheduler.StepLR(other_optimizer, step_size=1)
+    before = {key: value.clone() for key, value in target.state_dict().items()}
+    with pytest.raises(ValueError, match="scheduler.*optimizer"):
+        load_checkpoint(path, model=target,
+            optimizer=optimizer if binding == "other_optimizer" else None, scheduler=scheduler)
+    assert all(torch.equal(before[key], value) for key, value in target.state_dict().items())
+    assert scheduler.last_epoch == 0
+
+
+def test_correct_optimizer_scheduler_binding_resumes_and_updates_returned_model(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    target = make_model()
+    optimizer = torch.optim.Adam(target.parameters(), lr=.2)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=.1)
+    restored, _ = load_checkpoint(path, model=target, optimizer=optimizer, scheduler=scheduler)
+    assert restored is target
+    assert optimizer.state
+    assert optimizer.param_groups[0]["lr"] == .0005
+    assert scheduler.last_epoch == 1
+    before = {key: value.clone() for key, value in restored.state_dict().items()}
+    sum(parameter.square().sum() for parameter in restored.parameters()).backward()
+    optimizer.step()
+    scheduler.step()
+    assert optimizer.param_groups[0]["lr"] == .00025
+    assert any(not torch.equal(before[key], value) for key, value in target.state_dict().items())

@@ -1,12 +1,14 @@
 """功能概述：用临时三件套 Parquet 运行单 CPU 的两种训练模式和恢复流程。
 主要职责：fixture 固定分子、光谱和 split；验证 train-only 统计量、graph 梯度更新、
-v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希和空训练保护。
+v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希和空训练保护；恢复到已有
+目录时拒绝 last 内容冲突并保持原文件，同时接受同路径或逐字节相同的 checkpoint。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
 import dataclasses
 import hashlib
 import json
+import shutil
 from datetime import timedelta
 
 import numpy as np
@@ -158,6 +160,39 @@ def test_resume_rejects_existing_best_from_different_mode(tiny_dataset_dir, tmp_
     with pytest.raises(ValueError, match="training_mode"):
         train(dataclasses.replace(first, output_dir=second.output_dir, epochs=2,
                                   resume_from=first.output_dir / "last.pt"))
+
+
+@pytest.mark.parametrize("keep_best", [True, False])
+def test_resume_rejects_conflicting_destination_last_without_writing(tiny_dataset_dir, tmp_path, keep_best):
+    source = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source",
+                              training_mode="spectral_only_v1", epochs=2)
+    destination = dataclasses.replace(source, output_dir=tmp_path / "destination", epochs=3)
+    train(source)
+    train(destination)
+    if not keep_best:
+        (destination.output_dir / "best.pt").unlink()
+    before = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in destination.output_dir.iterdir()}
+    with pytest.raises(ValueError, match="last.pt.*conflict"):
+        train(dataclasses.replace(source, output_dir=destination.output_dir,
+                                  resume_from=source.output_dir / "last.pt"))
+    after = {path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+             for path in destination.output_dir.iterdir()}
+    assert after == before
+
+
+def test_resume_accepts_identical_checkpoint_in_different_directory(tiny_dataset_dir, tmp_path):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source", epochs=2)
+    train(config)
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    for name in ("best.pt", "last.pt"):
+        shutil.copyfile(config.output_dir / name, destination / name)
+    result = train(dataclasses.replace(config, output_dir=destination,
+                                      resume_from=config.output_dir / "last.pt"))
+    assert result["history"] == []
+    assert result["global_steps"] == 4
+    assert (destination / "last.pt").read_bytes() == (config.output_dir / "last.pt").read_bytes()
 
 
 def _ddp_worker(rank, store, config, queue, fail_batch=False, resume=False):

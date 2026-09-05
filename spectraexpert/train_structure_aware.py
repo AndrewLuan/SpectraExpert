@@ -2,6 +2,8 @@
 主要职责：TrainConfig 声明实验参数；train 校验 manifest/source、仅从 train fit normalizer，
 运行增强目标和排除同 identity 的验证 top1_tanimoto early stopping，并写 best/last 原子
 checkpoint 与 JSONL；包含自身候选的结果以 inclusive_ 前缀单独记录。
+恢复到已有目录时，last 必须与来源为同一 resolved 文件或 SHA-256 相同，否则在写入前拒绝；
+这防止已结束的恢复请求返回来源状态，却交付目标目录的其它 epoch 权重。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -266,14 +268,18 @@ def _run(config):
                                     expected_metadata=expected | {"best_score": best, "bad_epochs": 0})
                 if best_destination.exists():
                     load_checkpoint(best_destination, **best_options)
-                else:
+                last_destination = config.output_dir / "last.pt"
+                if (last_destination.exists()
+                        and last_destination.resolve() != config.resume_from.resolve()
+                        and _sha256(last_destination) != _sha256(config.resume_from)):
+                    raise ValueError("resume destination last.pt conflict: differs from resume source")
+                if not best_destination.exists():
                     best_source = config.resume_from.parent / "best.pt"
                     if not best_source.is_file() and payload["bad_epochs"] == 0:
                         best_source = config.resume_from
                     if not best_source.is_file():
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")
                     copy_checkpoint(best_source, best_destination, **best_options)
-                last_destination = config.output_dir / "last.pt"
                 if not last_destination.exists():
                     copy_checkpoint(config.resume_from, last_destination, expected_mode=config.training_mode,
                                     expected_model_config=architecture, expected_metadata=expected)

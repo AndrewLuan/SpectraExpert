@@ -3,6 +3,8 @@
 保存 Python、NumPy、Torch 和 CUDA RNG；save_checkpoint 以同目录临时文件原子替换；
 load_checkpoint 检查字段后恢复模型、可选 optimizer/scheduler 和指定 rank 的 RNG；
 copy_checkpoint 严格验证后原子保留历史 best 的完整 payload。
+_validate_training_bindings 在读取/修改状态前确认 optimizer 只持有目标模型的参数对象，且
+覆盖所有 requires_grad 参数；scheduler 必须绑定同一个显式传入的 optimizer。
 MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
 _atomic_save 在目标目录创建临时文件并在持久化成功后替换目标。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
@@ -146,9 +148,29 @@ def copy_checkpoint(source, destination, **validation_options):
     return _atomic_save(destination, payload)
 
 
+def _validate_training_bindings(model, optimizer, scheduler):
+    if optimizer is not None:
+        if model is None:
+            raise ValueError("optimizer requires an explicitly supplied model")
+        parameters = list(model.parameters())
+        model_ids = {id(parameter) for parameter in parameters}
+        required_ids = {id(parameter) for parameter in parameters if parameter.requires_grad}
+        optimizer_ids = {id(parameter) for group in optimizer.param_groups for parameter in group["params"]}
+        if optimizer_ids - model_ids:
+            raise ValueError("optimizer parameters contain objects outside the supplied model")
+        if required_ids - optimizer_ids:
+            raise ValueError("optimizer parameters do not cover all model requires_grad parameters")
+    if scheduler is not None:
+        if optimizer is None:
+            raise ValueError("scheduler requires an explicitly supplied optimizer")
+        if getattr(scheduler, "optimizer", None) is not optimizer:
+            raise ValueError("scheduler must belong to the supplied optimizer")
+
+
 def load_checkpoint(path, *, model=None, optimizer=None, scheduler=None, device="cpu",
                     expected_mode=None, expected_model_config=None, expected_feature_config=None,
                     expected_metadata=None, restore_rng=False, rank=0):
+    _validate_training_bindings(model, optimizer, scheduler)
     payload = torch.load(path, map_location="cpu", weights_only=False)
     if not isinstance(payload, dict) or payload.get("schema_version") not in MODES:
         raise ValueError("schema_version: unsupported checkpoint; use legacy wrapper for historical files")
