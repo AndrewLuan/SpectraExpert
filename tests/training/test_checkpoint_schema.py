@@ -2,12 +2,14 @@
 主要职责：通过真实模型保存/恢复验证权重、优化器与 RNG；篡改配置验证字段级拒绝；
 检查 optimizer 参数对象及 scheduler 归属，拒绝时不改变模型，正确恢复后能更新同一模型。
 覆盖单/多参数组重复、空 trainable、缺失状态与组布局，递归拒绝加载 hooks 及实例/子类覆盖。
-检查 probe 失败、底层张量复制中断后的三者事务回滚和入口 RNG 保持，以及不可变 checkpoint
+检查调用方对象不被 deepcopy、底层张量复制中断后的三者事务回滚和入口 RNG 保持，以及不可变 checkpoint
 bytes；同时确认梯度、requires_grad 和各子模块训练模式保持不变，故障注入由 pytest 撤销。
 覆盖 nested private/extra-state 和 optimizer/scheduler 恢复扩展的入口拒绝，官方 plateau/组合
 scheduler 的恢复、续跑与回滚；以 fake CUDA RNG 后端验证数量对称预检和不恢复时的入口保护。
 对 root/nested module、optimizer、scheduler/子 scheduler 的五种 copy 协议作实例/子类矩阵，
 确认任何 deepcopy 前拒绝，用户回调未运行，调用方权重/状态与入口 RNG 不变。
+构造/newargs/named_modules 探针确认这些入口不被调用；descriptor、save hooks/extra-state 与
+Parameter 子类静态拒绝；纯数据和张量/scheduler 布局预检在任何调用方状态写入之前完成。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
@@ -306,6 +308,7 @@ def test_standard_application_copy_failure_rolls_back_execution_state_and_rng(tm
     for parameter in model.parameters():
         parameter.grad = torch.ones_like(parameter)
     before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    live_state_views = model.state_dict()
     modes = [module.training for module in model.modules()]
     requires_grad = [parameter.requires_grad for parameter in model.parameters()]
     gradients = [parameter.grad.clone() for parameter in model.parameters()]
@@ -326,6 +329,7 @@ def test_standard_application_copy_failure_rolls_back_execution_state_and_rng(tm
     with pytest.raises(ValueError, match="injected tensor copy"):
         load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
     assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(live_state_views, before[0])
     assert_nested_equal([parameter.grad for parameter in model.parameters()], gradients)
     assert [module.training for module in model.modules()] == modes
     assert [parameter.requires_grad for parameter in model.parameters()] == requires_grad
@@ -354,25 +358,22 @@ def test_registered_load_hooks_are_rejected_without_rng_changes(tmp_path, hook_k
 
 
 @pytest.mark.parametrize("restore", [False, True])
-def test_probe_failure_restores_entry_rng(tmp_path, monkeypatch, restore):
-    import spectraexpert.training.checkpoints as checkpoints
+def test_loading_never_deepcopies_caller_objects(tmp_path, monkeypatch, restore):
     path = make_optimizer_checkpoint(tmp_path)
     model, optimizer, scheduler = training_bundle()
     before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
-    original_deepcopy = checkpoints.copy.deepcopy
-    def fail_probe(value, *args, **kwargs):
-        if isinstance(value, tuple) and len(value) == 3 and isinstance(value[0], torch.nn.Module):
-            random.random()
-            np.random.rand()
-            torch.rand(1)
-            raise RuntimeError("injected probe copy failure")
+    original_deepcopy = copy.deepcopy
+    caller_ids = {id(component) for component in list(model.modules()) + [optimizer, scheduler]}
+    def forbid_objects(value, *args, **kwargs):
+        if id(value) in caller_ids or (isinstance(value, tuple) and any(id(item) in caller_ids for item in value)):
+            raise RuntimeError("caller object copied")
         return original_deepcopy(value, *args, **kwargs)
-    monkeypatch.setattr(checkpoints.copy, "deepcopy", fail_probe)
+    monkeypatch.setattr(copy, "deepcopy", forbid_objects)
     before_rng = capture_rng()
-    with pytest.raises(RuntimeError, match="probe copy failure"):
-        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=restore)
-    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
-    assert_nested_equal(capture_rng(), before_rng)
+    restored, payload = load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=restore)
+    assert restored is model
+    assert_nested_equal(model.state_dict(), payload["model_state_dict"])
+    assert_nested_equal(capture_rng(), payload["rng_states"][0] if restore else before_rng)
 
 
 def test_inference_load_without_rng_restore_preserves_entry_rng_and_execution_flags(tmp_path):
@@ -580,4 +581,176 @@ def test_copy_protocol_extensions_rejected_before_any_copy(tmp_path, owner_kind,
         return value
     assert not hasattr(owner, "copy_hook_ran")
     assert_nested_equal(without_hook([component.state_dict() for component in (model, optimizer, scheduler)]), before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("method", ["__getnewargs_ex__", "__getnewargs__", "__new__", "named_modules"])
+def test_unused_construction_and_traversal_extensions_never_called(tmp_path, method):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    def forbidden(*args, **kwargs):
+        model.extension_called = True
+        raise RuntimeError("construction or traversal extension called")
+    model.__class__ = type("UnusedExtension", (type(model),), {method: forbidden})
+    restored, _ = load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert restored is model
+    assert not hasattr(model, "extension_called")
+
+
+def test_descriptor_method_is_rejected_without_evaluation(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    def forbidden_descriptor(self):
+        model.descriptor_called = True
+        raise RuntimeError("descriptor evaluated")
+    model.__class__ = type("DescriptorLoader", (type(model),), {"load_state_dict": property(forbidden_descriptor)})
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*load_state_dict"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert not hasattr(model, "descriptor_called")
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+def test_parameter_subclass_rejected_without_constructing_it(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    model = make_model()
+    parameter = next(model.parameters())
+    def forbidden_new(*args, **kwargs):
+        raise RuntimeError("Parameter subclass constructed")
+    parameter.__class__ = type("UserParameter", (torch.nn.Parameter,), {"__new__": forbidden_new})
+    before = parameter.detach().clone()
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="parameter.*type"):
+        load_checkpoint(path, model=model)
+    assert torch.equal(parameter, before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("method", ["state_dict", "_save_to_state_dict", "get_extra_state"])
+def test_model_save_extensions_rejected_before_backup(tmp_path, method):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    before = copy.deepcopy(model.state_dict())
+    owner = model.spectrum_encoder.projection[0]
+    def forbidden(*args, **kwargs):
+        owner.save_extension_called = True
+        raise RuntimeError("save extension called")
+    owner.__class__ = type("SaveExtension", (type(owner),), {method: forbidden})
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match=f"unsupported.*{method}"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert not hasattr(owner, "save_extension_called")
+    owner.__class__ = torch.nn.Linear
+    assert_nested_equal(model.state_dict(), before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("kind", ["module_pre", "module_post", "optimizer_pre", "optimizer_post"])
+def test_registered_save_hooks_rejected_before_backup(tmp_path, kind):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    owner = model if kind.startswith("module") else optimizer
+    def forbidden(*args, **kwargs):
+        raise RuntimeError("save hook called")
+    register = owner.register_state_dict_pre_hook if kind.endswith("pre") else owner.register_state_dict_post_hook
+    handle = register(forbidden)
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*hook"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    handle.remove()
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+def test_method_descriptor_is_not_executed_during_static_inspection(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    class LoaderDescriptor:
+        def __get__(self, instance, owner):
+            model.descriptor_called = True
+            raise RuntimeError("class-level descriptor invoked")
+    model.__class__ = type("DescriptorMethod", (type(model),), {"load_state_dict": LoaderDescriptor()})
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*load_state_dict"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert not hasattr(model, "descriptor_called")
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("owner_kind", ["optimizer", "scheduler"])
+def test_non_data_state_rejected_without_copying_user_object(tmp_path, owner_kind):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    class UserState:
+        def __deepcopy__(self, memo):
+            raise RuntimeError("user state copied")
+    user_state = UserState()
+    if owner_kind == "optimizer":
+        optimizer.param_groups[0]["custom"] = user_state
+    else:
+        scheduler.custom = user_state
+    before_model = copy.deepcopy(model.state_dict())
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported state data"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert_nested_equal(model.state_dict(), before_model)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("corruption", ["model_shape", "optimizer_shape", "scheduler_layout"])
+def test_tensor_layout_preflight_rejects_before_any_application(tmp_path, corruption, monkeypatch):
+    path = make_optimizer_checkpoint(tmp_path)
+    payload = torch.load(path, weights_only=False)
+    if corruption == "model_shape":
+        key = next(iter(payload["model_state_dict"]))
+        payload["model_state_dict"][key] = torch.zeros(1)
+    elif corruption == "optimizer_shape":
+        state = next(iter(payload["optimizer_state_dict"]["state"].values()))
+        state["exp_avg"] = torch.zeros(1)
+    else:
+        payload["scheduler_state_dict"]["gamma"] = {"not": "a scalar"}
+    torch.save(payload, path)
+    model, optimizer, scheduler = training_bundle()
+    original_copy = torch.Tensor.copy_
+    ids = {id(parameter) for parameter in model.parameters()}
+    copied_target = False
+    def forbid_target_copy(self, *args, **kwargs):
+        nonlocal copied_target
+        if id(self) in ids:
+            copied_target = True
+            raise RuntimeError("target mutated before layout validation")
+        return original_copy(self, *args, **kwargs)
+    monkeypatch.setattr(torch.Tensor, "copy_", forbid_target_copy)
+    before_rng = capture_rng()
+    expected = "scheduler_state_dict.*layout" if corruption == "scheduler_layout" else "shape"
+    with pytest.raises(ValueError, match=expected):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert not copied_target
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("container", ["parameter_group", "scheduler_children"])
+def test_user_state_containers_rejected_before_iteration(tmp_path, container):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    calls = []
+    if container == "parameter_group":
+        class UserGroup(dict):
+            def items(self):
+                calls.append("items")
+                raise RuntimeError("user container iterated")
+        optimizer.param_groups[0] = UserGroup(optimizer.param_groups[0])
+    else:
+        class UserChildren(list):
+            def __iter__(self):
+                calls.append("iter")
+                raise RuntimeError("user container iterated")
+        scheduler._schedulers = UserChildren()
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*container"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert calls == []
     assert_nested_equal(capture_rng(), before_rng)

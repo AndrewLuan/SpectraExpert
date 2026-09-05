@@ -11,6 +11,8 @@ resume best、已有 best 与 sibling historical best 在物化前均复用 vali
 setup validation 阶段只验证各 rank 来源/模型/元数据/RNG 并准备快照，所有 rank 通过相同
 _phase 错误同步后才进入 setup materialization，由 rank 0 创建目录或原子物化 best/last；
 单 rank 验证失败时全部退出且不写文件，不增加可能与失败路径 collective 错序的单独 barrier。
+materialize_pending_checkpoints 在成功/失败时清除待写列表和循环变量；恢复阶段提取 epoch/step/
+best/normalizer 后删除完整 payload、来源及历史 best 快照，不把大状态带入 epoch 循环。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -123,6 +125,17 @@ def _seed_worker(_worker_id):
     seed = torch.initial_seed() % (2 ** 32)
     random.seed(seed)
     np.random.seed(seed)
+
+
+def materialize_pending_checkpoints(pending):
+    """物化后无论成功失败都清除快照列表，并释放本函数循环变量的引用。"""
+    snapshot = destination = None
+    try:
+        for snapshot, destination in pending:
+            materialize_checkpoint(snapshot, destination)
+    finally:
+        pending.clear()
+        snapshot = destination = None
 
 
 class _ValidationDataset(Dataset):
@@ -288,8 +301,9 @@ def _run(config):
                 best_snapshot = None
                 if best_destination.exists():
                     best_snapshot = read_checkpoint_snapshot(best_destination)
-                    _, best_payload = load_checkpoint(best_snapshot, **best_options)
+                    best_payload = load_checkpoint(best_snapshot, **best_options)[1]
                     validate_best_payload(best_payload)
+                    del best_payload
                 last_destination = config.output_dir / "last.pt"
                 if (last_destination.exists()
                         and _sha256(last_destination) != resume_snapshot.sha256):
@@ -303,14 +317,17 @@ def _run(config):
                     best_source = config.resume_from.parent / "best.pt"
                     if best_source.is_file():
                         historical_snapshot = read_checkpoint_snapshot(best_source)
-                        _, best_payload = load_checkpoint(historical_snapshot, **best_options)
+                        best_payload = load_checkpoint(historical_snapshot, **best_options)[1]
                         validate_best_payload(best_payload)
                         materializations.append((historical_snapshot, best_destination))
+                        del historical_snapshot, best_payload
                     else:
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")
                 materializations.append((resume_snapshot, last_destination))
+                del best_snapshot
             restore_rng_state(payload["rng_states"][rank])
-            del resume_snapshot
+            # epoch/step/best/normalizer 已提取为小型变量，训练循环无需完整 payload 或来源 bytes。
+            del resume_snapshot, payload
         sampler = DistributedSampler(training, num_replicas=world, rank=rank, shuffle=True,
                                      seed=config.seed, drop_last=True) if config.ddp else None
         if sampler is not None and len(sampler) == 0:
@@ -319,8 +336,7 @@ def _run(config):
             shuffle=False, collate_fn=_validation_collate, generator=torch.Generator().manual_seed(config.seed))
     with _phase("setup materialization"):
         if rank == 0:
-            for snapshot, destination in materializations:
-                materialize_checkpoint(snapshot, destination)
+            materialize_pending_checkpoints(materializations)
             config.output_dir.mkdir(parents=True, exist_ok=True)
         materializations.clear()
     wrapped = DistributedDataParallel(model, device_ids=[device.index] if device.type == "cuda" else None,

@@ -8,6 +8,7 @@ v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希�
 已有或 sibling historical best 的分数不一致、NaN、选择键缺失均在写入前拒绝，目录原字节不变。
 两进程 gloo 用固定 CPU topology/fake CUDA RNG 仅破坏 rank 1，确认相同应用错误无 timeout，
 新目录不创建、已有目录的文件名/字节/symlink 类型不变；正常 DDP resume 仍逐参数一致。
+weakref 与训练帧检查确认快照和完整 resume payload 不驻留 epoch 循环；物化失败也清空列表及循环变量。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
@@ -17,6 +18,8 @@ import hashlib
 import json
 import shutil
 import os
+import weakref
+import inspect
 from datetime import timedelta
 
 import numpy as np
@@ -382,6 +385,47 @@ def test_resume_cuda_rng_mismatch_rejected_before_checkpoint_materialization(tin
     with pytest.raises(ValueError, match="rng_states.cuda"):
         train(dataclasses.replace(config, output_dir=destination, resume_from=source))
     assert not destination.exists()
+
+
+def test_resume_releases_snapshots_and_large_payload_before_training(tiny_dataset_dir, tmp_path, monkeypatch):
+    import spectraexpert.train_structure_aware as entry
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source", epochs=2)
+    train(config)
+    references = []
+    original_read = entry.read_checkpoint_snapshot
+    def record_snapshot(*args, **kwargs):
+        snapshot = original_read(*args, **kwargs)
+        references.append(weakref.ref(snapshot))
+        return snapshot
+    original_validate = entry.validate_retrieval
+    def validate_after_release(*args, **kwargs):
+        assert references and all(reference() is None for reference in references)
+        frame = inspect.currentframe().f_back
+        assert "payload" not in frame.f_locals or not any(
+            key in frame.f_locals["payload"] for key in ("model_state_dict", "optimizer_state_dict", "scheduler_state_dict"))
+        return original_validate(*args, **kwargs)
+    monkeypatch.setattr(entry, "read_checkpoint_snapshot", record_snapshot)
+    monkeypatch.setattr(entry, "validate_retrieval", validate_after_release)
+    train(dataclasses.replace(config, output_dir=tmp_path / "destination", epochs=3,
+                              resume_from=config.output_dir / "last.pt"))
+
+
+def test_pending_snapshots_cleared_when_materialization_fails(tmp_path, monkeypatch):
+    import spectraexpert.train_structure_aware as entry
+    from spectraexpert.training.checkpoints import CheckpointSnapshot
+    pending = [(CheckpointSnapshot(b"content"), tmp_path / "last.pt")]
+    def fail(*args, **kwargs):
+        raise OSError("injected materialization failure")
+    monkeypatch.setattr(entry, "materialize_checkpoint", fail)
+    with pytest.raises(OSError) as caught:
+        entry.materialize_pending_checkpoints(pending)
+    assert pending == []
+    traceback = caught.value.__traceback__
+    while traceback:
+        if traceback.tb_frame.f_code.co_name == "materialize_pending_checkpoints":
+            assert traceback.tb_frame.f_locals["snapshot"] is None
+            assert traceback.tb_frame.f_locals["destination"] is None
+        traceback = traceback.tb_next
 
 
 def _ddp_worker(rank, store, config, queue, fail_batch=False, resume=False):

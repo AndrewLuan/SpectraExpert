@@ -1,38 +1,42 @@
 """功能概述：原子保存两种显式训练模式的完整状态，严格阻止配置、数据及版本混用。
-主要职责：CheckpointSnapshot/read_checkpoint_snapshot 捕获一次读取的不可变 bytes，hash 和
-load(BytesIO) 使用相同内容；materialize_checkpoint/copy_checkpoint 验证后原子物化原字节。
-model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_rng_state 保存各 RNG，
-恢复前先对称校验 CUDA 可用性及状态数量；validate_best_payload 统一验证 best 的有限等分数、
-bad_epochs=0 与选择元数据，copy_checkpoint(require_best=True) 在复制历史 best 前调用它。
-save_checkpoint 原子保存状态，load_checkpoint 预检后恢复模型、optimizer/scheduler 与 RNG。
-_validate_training_bindings 拒绝重复参数、全冻结模型和不完整 trainable 参数覆盖，检查 scheduler
-归属；_preflight_states 在写入前检查状态存在性和参数组布局；_apply_states 执行状态与设备恢复；
-_validate_standard_loaders/_require_torch_implementation 检查 public/private 恢复及 extra-state
-动态方法的 torch.* 来源并拒绝实例覆盖和 hooks；_scheduler_tree 递归检查组合 scheduler。
-COPY_PROTOCOL 覆盖 deepcopy/reduce/getstate/setstate 协议，任何 probe 或状态备份前检查模型
-全部注册 module/parameter/buffer、optimizer 和组合 scheduler；允许 object 的标准内建协议。
-允许官方 ReduceLROnPlateau/SequentialLR/ChainedScheduler 覆盖；_transactional_apply 先 deepcopy/probe，
-再备份调用方状态进行事务式应用，失败恢复三者。入口 RNG 保护涵盖所有校验、probe 与应用。
-MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
-_atomic_save/_atomic_write 在目标目录创建临时文件，flush/fsync 成功后 replace 目标。
+主要职责：CheckpointSnapshot/read_checkpoint_snapshot 使 load(BytesIO) 和 hash 共用一次读取的
+不可变 bytes；materialize_checkpoint/copy_checkpoint 验证后原子物化原字节。model_config/
+rebuild_model 负责严格配置重建，MODES/SPECTRUM_KEYS 固定版本及字段；_compare/_validate_stats
+校验元数据/normalizer，validate_best_payload 统一验证有限且相等的 best 分数与选择规则。
+capture_rng/restore_rng_state 管理各 RNG，写入前对称检查 CUDA topology；load_checkpoint 保证
+默认保持入口 RNG，显式恢复成功才采用 checkpoint RNG，任何异常恢复入口 RNG。
+_registered_tree 只读取注册字典并拒绝循环，_model_tensors 得到持久化键；不调用 named_modules。
+_require_torch_implementation 用静态方法解析拒绝用户 state save/load/extra-state 覆盖及 descriptor；
+_validate_standard_loaders 检查 registered save/load hooks 和 exact Parameter/Tensor 类型。
+COPY_PROTOCOL 保留旧扩展拒绝兼容性，但不再调用任何调用方对象 copy 协议或建立 deepcopy probe。
+_scheduler_tree/_validate_training_bindings 验证组合 scheduler、参数对象唯一性和完整 trainable 覆盖。
+_safe_clone 只克隆受限纯数据与 exact Tensor；_preflight_states/_validate_scheduler_state/
+_validate_state_layout 校验来源
+状态字段、参数组、参数 ID 和张量布局；_apply_states 调用标准框架加载方法并恢复设备。
+_transactional_apply 直接克隆注册参数/缓冲区/梯度并保存模式与 flags；_backup_optimizer 保留
+Parameter 引用并手工复制 state/groups；scheduler 备份只保存 safe-clone 后的状态及子对象引用。
+真实应用失败时回到原注册对象/存储并原位恢复，已有 state_dict 存储视图也保持原值；
+不实例化或 deepcopy 调用方模型/optimizer/scheduler。
+save_checkpoint/_atomic_save/_atomic_write 以同目录临时文件、flush/fsync、replace 原子保存。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
 由 train_structure_aware 使用。历史无 schema checkpoint 仍只能由 legacy wrapper 加载。
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
 事务只支持使用框架恢复实现且无用户扩展/load-state hooks 的对象，不承诺任意自定义副作用或
-导致回滚也无法执行的硬件故障；显式恢复需要 probe 和回滚快照的额外内存，probe 随后释放。
-支持范围是标准项目模型的注册模块/参数/缓冲区与框架 optimizer/scheduler；附加任意自定义
-可达属性、全局 copyreg 扩展及伪造来源不属于此契约，本 loader 不是 Python 对象沙箱。
+导致回滚也无法执行的硬件故障。支持标准项目模型的注册模块/参数/缓冲区、框架 optimizer/
+scheduler 与纯数据状态；任意额外用户对象或伪造来源不属于契约，loader 不是 Python 对象沙箱。
 epoch 为已完成的零基 epoch；默认保持入口 RNG，restore_rng=True 成功时才采用 checkpoint RNG。
 """
 from __future__ import annotations
 
 import os
-import copy
+import inspect
 import hashlib
 import io
 import random
 import tempfile
 from dataclasses import dataclass
+from collections import OrderedDict, defaultdict
+from types import FunctionType, BuiltinFunctionType
 from pathlib import Path
 
 import numpy as np
@@ -218,12 +222,16 @@ def _validate_training_bindings(model, optimizer, scheduler):
     if optimizer is not None:
         if model is None:
             raise ValueError("optimizer requires an explicitly supplied model")
-        parameters = list(model.parameters())
+        parameters = [tensor for _, module in _registered_tree(model)
+                      for tensor in object.__getattribute__(module, "_parameters").values() if tensor is not None]
         model_ids = {id(parameter) for parameter in parameters}
         required_ids = {id(parameter) for parameter in parameters if parameter.requires_grad}
         if not required_ids:
             raise ValueError("model must have at least one requires_grad parameter")
-        flattened = [parameter for group in optimizer.param_groups for parameter in group["params"]]
+        groups = object.__getattribute__(optimizer, "__dict__")["param_groups"]
+        if type(groups) is not list or any(type(group) is not dict or type(group.get("params")) is not list for group in groups):
+            raise ValueError("optimizer: unsupported parameter group container")
+        flattened = [parameter for group in groups for parameter in group["params"]]
         optimizer_ids = {id(parameter) for parameter in flattened}
         if len(flattened) != len(optimizer_ids):
             raise ValueError("optimizer contains duplicate parameter objects")
@@ -237,7 +245,7 @@ def _validate_training_bindings(model, optimizer, scheduler):
         if optimizer is None:
             raise ValueError("scheduler requires an explicitly supplied optimizer")
         for current in _scheduler_tree(scheduler):
-            if getattr(current, "optimizer", None) is not optimizer:
+            if object.__getattribute__(current, "__dict__").get("optimizer") is not optimizer:
                 raise ValueError("scheduler must belong to the supplied optimizer")
 
 
@@ -248,46 +256,127 @@ def _scheduler_tree(scheduler):
         if id(current) not in seen:
             seen.add(id(current))
             yield current
-            pending.extend(getattr(current, "_schedulers", []))
+            children = object.__getattribute__(current, "__dict__").get("_schedulers", [])
+            if type(children) not in (list, tuple):
+                raise ValueError("scheduler: unsupported child container")
+            pending.extend(children)
+
+
+def _registered_tree(model):
+    """只读注册字典；允许共享子模块的不同路径，拒绝祖先循环。"""
+    pending = [("", model, frozenset())]
+    while pending:
+        name, module, ancestors = pending.pop()
+        if id(module) in ancestors:
+            raise ValueError("model registration cycle")
+        if not isinstance(module, torch.nn.Module):
+            raise ValueError("model registration requires Module")
+        yield name, module
+        children = object.__getattribute__(module, "_modules")
+        if type(children) not in (dict, OrderedDict):
+            raise ValueError("model registration requires standard dict")
+        for key, child in reversed(list(children.items())):
+            if child is not None:
+                pending.append((f"{name}.{key}" if name else key, child, ancestors | {id(module)}))
 
 
 def _require_torch_implementation(component, name, methods):
     missing = object()
     for method in methods:
-        implementation = getattr(type(component), method, missing)
-        if (method in component.__dict__ or (implementation is not missing
-                and implementation is not getattr(object, method, missing)
-                and not getattr(implementation, "__module__", "").startswith("torch."))):
+        implementation = inspect.getattr_static(type(component), method, missing)
+        source = (object.__getattribute__(implementation, "__module__")
+                  if type(implementation) in (FunctionType, BuiltinFunctionType) else "")
+        if (method in object.__getattribute__(component, "__dict__") or (implementation is not missing
+                and implementation is not inspect.getattr_static(object, method, missing)
+                and not (type(source) is str and source.startswith("torch.")))):
             raise ValueError(f"unsupported {name} {method} override")
 
 
 def _validate_standard_loaders(model, optimizer, scheduler):
-    """在任何 deepcopy 前验证注册对象的动态调用点，不遍历任意用户附加属性。"""
+    """静态验证注册对象的保存/加载入口，不调用用户 descriptor 或遍历任意附加属性。"""
     if model is not None:
-        for name, module in model.named_modules():
-            if module._load_state_dict_pre_hooks or module._load_state_dict_post_hooks:
-                raise ValueError(f"unsupported model load-state hook: {name or '<root>'}")
+        for name, module in _registered_tree(model):
+            values = object.__getattribute__(module, "__dict__")
+            if any(values.get(key) for key in ("_load_state_dict_pre_hooks", "_load_state_dict_post_hooks",
+                                               "_state_dict_pre_hooks", "_state_dict_hooks")):
+                raise ValueError(f"unsupported model state hook: {name or '<root>'}")
             _require_torch_implementation(module, f"model.{name}",
-                ("load_state_dict", "_load_from_state_dict", "set_extra_state") + COPY_PROTOCOL)
-        for name, tensor in list(model.named_parameters()) + list(model.named_buffers()):
-            _require_torch_implementation(tensor, f"model tensor.{name}", COPY_PROTOCOL)
+                ("state_dict", "load_state_dict", "_save_to_state_dict", "_load_from_state_dict",
+                 "get_extra_state", "set_extra_state") + COPY_PROTOCOL)
+            for mapping, expected_type in (("_parameters", torch.nn.Parameter), ("_buffers", torch.Tensor)):
+                registered = object.__getattribute__(module, mapping)
+                if type(registered) not in (dict, OrderedDict):
+                    raise ValueError("model registration requires standard dict")
+                for key, tensor in registered.items():
+                    if tensor is not None and type(tensor) is not expected_type:
+                        raise ValueError(f"model {mapping[1:]} {name}.{key}: unsupported tensor type")
+                    if tensor is not None and tensor.grad is not None and type(tensor.grad) is not torch.Tensor:
+                        raise ValueError("model gradient: unsupported tensor type")
     if optimizer is not None:
-        if (optimizer._optimizer_load_state_dict_pre_hooks
-                or optimizer._optimizer_load_state_dict_post_hooks):
-            raise ValueError("unsupported optimizer load-state hook")
-        _require_torch_implementation(optimizer, "optimizer", ("load_state_dict",) + COPY_PROTOCOL)
+        values = object.__getattribute__(optimizer, "__dict__")
+        if any(values.get(key) for key in ("_optimizer_load_state_dict_pre_hooks", "_optimizer_load_state_dict_post_hooks",
+                                           "_optimizer_state_dict_pre_hooks", "_optimizer_state_dict_post_hooks")):
+            raise ValueError("unsupported optimizer state hook")
+        _require_torch_implementation(optimizer, "optimizer", ("state_dict", "load_state_dict") + COPY_PROTOCOL)
     if scheduler is not None:
         for current in _scheduler_tree(scheduler):
             _require_torch_implementation(current, "scheduler",
-                ("load_state_dict", "_init_is_better", "_init_scale_fn") + COPY_PROTOCOL)
+                ("state_dict", "load_state_dict", "_init_is_better", "_init_scale_fn") + COPY_PROTOCOL)
 
 
-def _preflight_states(payload, optimizer, scheduler):
+def _safe_clone(value, path="state", ancestors=frozenset()):
+    """纯数据复制：不调用对象 copy/reduce 协议，不接受用户容器或 Tensor 子类。"""
+    kind = type(value)
+    if kind in (type(None), bool, int, float, str, bytes):
+        return value
+    if kind is torch.Tensor:
+        if value.layout != torch.strided:
+            raise ValueError(f"{path}: unsupported tensor layout")
+        return value.detach().clone()
+    if kind not in (dict, OrderedDict, list, tuple) or id(value) in ancestors:
+        raise ValueError(f"{path}: unsupported state data type or cycle")
+    ancestors = ancestors | {id(value)}
+    if kind in (dict, OrderedDict):
+        result = kind()
+        for key, item in value.items():
+            if type(key) not in (str, int, float, bool, type(None)):
+                raise ValueError(f"{path}: unsupported state key")
+            result[key] = _safe_clone(item, f"{path}.{key}", ancestors)
+        if kind is OrderedDict and "_metadata" in object.__getattribute__(value, "__dict__"):
+            result._metadata = _safe_clone(value._metadata, f"{path}._metadata", ancestors)
+        return result
+    return kind(_safe_clone(item, f"{path}[{index}]", ancestors) for index, item in enumerate(value))
+
+
+def _model_tensors(model):
+    result = {}
+    for prefix, module in _registered_tree(model):
+        nonpersistent = object.__getattribute__(module, "_non_persistent_buffers_set")
+        for mapping in ("_parameters", "_buffers"):
+            for name, tensor in object.__getattribute__(module, mapping).items():
+                if tensor is not None and not (mapping == "_buffers" and name in nonpersistent):
+                    result[f"{prefix}.{name}" if prefix else name] = tensor
+    return result
+
+
+def _preflight_states(payload, model, optimizer, scheduler):
     if not isinstance(payload["model_state_dict"], dict):
         raise ValueError("model_state_dict: requires a mapping")
     for name, component in (("optimizer", optimizer), ("scheduler", scheduler)):
         if component is not None and not isinstance(payload[f"{name}_state_dict"], dict):
             raise ValueError(f"{name}_state_dict: absent or invalid; cannot resume")
+    for name, component in (("model", model), ("optimizer", optimizer), ("scheduler", scheduler)):
+        if component is not None:
+            payload[f"{name}_state_dict"] = _safe_clone(payload[f"{name}_state_dict"], f"{name}_state_dict")
+    expected = _model_tensors(model)
+    state = payload["model_state_dict"]
+    if state.keys() != expected.keys():
+        raise ValueError("model_state_dict: missing or unexpected keys")
+    for key, tensor in expected.items():
+        saved = state[key]
+        if (type(saved) is not torch.Tensor or saved.shape != tensor.shape
+                or saved.dtype != tensor.dtype or saved.layout != tensor.layout):
+            raise ValueError(f"model_state_dict.{key}: shape/dtype/layout mismatch")
     if optimizer is not None:
         state = payload["optimizer_state_dict"]
         groups = state.get("param_groups")
@@ -299,6 +388,54 @@ def _preflight_states(payload, optimizer, scheduler):
             if (not isinstance(saved, dict) or not isinstance(saved.get("params"), list)
                     or len(saved["params"]) != len(current["params"])):
                 raise ValueError(f"optimizer_state_dict.param_groups[{index}]: parameter count mismatch")
+        ids = [key for group in groups for key in group["params"]]
+        if any(type(key) is not int for key in ids) or len(ids) != len(set(ids)) or set(state["state"]) - set(ids):
+            raise ValueError("optimizer_state_dict: invalid parameter IDs")
+        parameters = [parameter for group in optimizer.param_groups for parameter in group["params"]]
+        for key, parameter in zip(ids, parameters):
+            values = state["state"].get(key, {})
+            if type(values) is not dict:
+                raise ValueError("optimizer_state_dict: parameter state requires dict")
+            for name, value in values.items():
+                if type(value) is torch.Tensor and (name in ("exp_avg", "exp_avg_sq", "max_exp_avg_sq", "momentum_buffer")):
+                    if value.shape != parameter.shape or value.dtype != parameter.dtype:
+                        raise ValueError(f"optimizer_state_dict.{name}: shape/dtype mismatch")
+                if name == "step" and type(value) is torch.Tensor and value.numel() != 1:
+                    raise ValueError("optimizer_state_dict.step: requires scalar")
+    if scheduler is not None:
+        _validate_scheduler_state(payload["scheduler_state_dict"], scheduler)
+
+
+def _validate_scheduler_state(state, scheduler):
+    current = _safe_clone(scheduler.state_dict(), "scheduler backup")
+    if state.keys() != current.keys() or "optimizer" in state:
+        raise ValueError("scheduler_state_dict: field layout mismatch")
+    _validate_state_layout(state, current, "scheduler_state_dict")
+    children = object.__getattribute__(scheduler, "__dict__").get("_schedulers", [])
+    if children:
+        saved_children = state.get("_schedulers")
+        if type(saved_children) is not list or len(saved_children) != len(children):
+            raise ValueError("scheduler_state_dict: child count mismatch")
+        for child_state, child in zip(saved_children, children):
+            _validate_scheduler_state(child_state, child)
+
+
+def _validate_state_layout(saved, current, path):
+    if type(saved) is not type(current):
+        raise ValueError(f"{path}: type layout mismatch")
+    if type(current) in (dict, OrderedDict):
+        if saved.keys() != current.keys():
+            raise ValueError(f"{path}: field layout mismatch")
+        for key in current:
+            _validate_state_layout(saved[key], current[key], f"{path}.{key}")
+    elif type(current) in (list, tuple):
+        if len(saved) != len(current):
+            raise ValueError(f"{path}: length layout mismatch")
+        for index, (first, second) in enumerate(zip(saved, current)):
+            _validate_state_layout(first, second, f"{path}[{index}]")
+    elif type(current) is torch.Tensor:
+        if saved.shape != current.shape or saved.dtype != current.dtype or saved.layout != current.layout:
+            raise ValueError(f"{path}: tensor shape/dtype/layout mismatch")
 
 
 def _apply_states(model, optimizer, scheduler, payload, device):
@@ -320,48 +457,75 @@ def _apply_states(model, optimizer, scheduler, payload, device):
 
 
 def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state=None):
-    # 整体 deepcopy 保留 probe 内 scheduler→optimizer→model 参数的对象关系。
-    probe = copy.deepcopy((model, optimizer, scheduler))
-    try:
-        _apply_states(*probe, payload, device)
-    finally:
-        del probe
-    components = (model, optimizer, scheduler)
-    memo = {id(component): component for component in components if component is not None}
-    previous = [copy.deepcopy(component.state_dict(), memo.copy()) if component is not None else None
-                for component in components]
-    original_groups = (copy.deepcopy(optimizer.param_groups,
-        {id(parameter): parameter for parameter in model.parameters()}) if optimizer is not None else None)
-    # 记录注册对象与设备，回滚 device migration 时仍保持 optimizer 引用原 Parameter。
-    layout = [(module, mapping, name, tensor, tensor.device)
-              for module in model.modules() for mapping in ("_parameters", "_buffers")
-              for name, tensor in getattr(module, mapping).items() if tensor is not None]
-    original_rng = capture_rng() if rng_state is not None else None
-    scheduler_keys = set(scheduler.__dict__) if scheduler is not None else set()
+    # 只备份注册张量与纯数据；不实例化、不 deepcopy 调用方组件。
+    layout, modes = [], []
+    for _, module in _registered_tree(model):
+        modes.append((module, object.__getattribute__(module, "training")))
+        for mapping in ("_parameters", "_buffers"):
+            for name, tensor in object.__getattribute__(module, mapping).items():
+                if tensor is not None:
+                    grad = tensor.grad
+                    data = tensor.detach()
+                    grad_data = None if grad is None else grad.detach()
+                    layout.append((module, mapping, name, tensor, data, data.clone(), tensor.requires_grad,
+                                   grad, grad_data, None if grad_data is None else grad_data.clone()))
+    optimizer_backup = _backup_optimizer(optimizer) if optimizer is not None else None
+    scheduler_backup = []
+    if scheduler is not None:
+        for current in _scheduler_tree(scheduler):
+            values = object.__getattribute__(current, "__dict__")
+            scheduler_backup.append((current, _safe_clone(current.state_dict(), "scheduler backup"),
+                                     set(values), values.get("_schedulers")))
     try:
         _apply_states(model, optimizer, scheduler, payload, device)
         if rng_state is not None:
             restore_rng_state(rng_state)
-    except Exception:
-        for module, mapping, name, tensor, original_device in layout:
-            getattr(module, mapping)[name] = tensor
-            tensor.data = tensor.data.to(original_device)
-            if isinstance(tensor, torch.nn.Parameter) and tensor.grad is not None:
-                tensor.grad.data = tensor.grad.data.to(original_device)
-        # 入口已拒绝 hooks/覆盖；标准加载保留 training、requires_grad 和梯度值。
-        # 使用框架基础方法恢复，回滚仍依赖设备及底层张量复制可用。
-        torch.nn.Module.load_state_dict(model, previous[0], strict=True)
+    except BaseException:
+        for module, mapping, name, tensor, data, saved_data, requires_grad, grad, grad_data, saved_grad in layout:
+            object.__getattribute__(module, mapping)[name] = tensor
+            tensor.data = data
+            data.copy_(saved_data)
+            tensor.requires_grad_(requires_grad)
+            tensor.grad = grad
+            if grad is not None:
+                grad.data = grad_data
+                grad_data.copy_(saved_grad)
+        for module, training in modes:
+            object.__setattr__(module, "training", training)
         if optimizer is not None:
-            optimizer.param_groups = original_groups
-            torch.optim.Optimizer.load_state_dict(optimizer, previous[1])
-        if scheduler is not None:
-            scheduler.optimizer = optimizer
-            for key in set(scheduler.__dict__) - scheduler_keys:
-                del scheduler.__dict__[key]
-            type(scheduler).load_state_dict(scheduler, previous[2])
-        if original_rng is not None:
-            restore_rng_state(original_rng)
+            values = object.__getattribute__(optimizer, "__dict__")
+            values["state"], values["param_groups"] = optimizer_backup
+        for current, state, keys, children in scheduler_backup:
+            values = object.__getattribute__(current, "__dict__")
+            for key in set(values) - keys:
+                del values[key]
+            values["optimizer"] = optimizer
+            if children is not None:
+                values["_schedulers"] = children
+            current.load_state_dict(state)
         raise
+
+
+def _backup_optimizer(optimizer):
+    values = object.__getattribute__(optimizer, "__dict__")
+    current_state = values["state"]
+    if type(current_state) not in (dict, defaultdict):
+        raise ValueError("optimizer backup: unsupported state mapping")
+    if type(current_state) is defaultdict and current_state.default_factory not in (dict, None):
+        raise ValueError("optimizer backup: unsupported default factory")
+    state = defaultdict(current_state.default_factory) if type(current_state) is defaultdict else {}
+    groups = []
+    parameter_ids = set()
+    for group in values["param_groups"]:
+        copied = _safe_clone({key: value for key, value in group.items() if key != "params"}, "optimizer group")
+        copied["params"] = list(group["params"])
+        groups.append(copied)
+        parameter_ids.update(id(parameter) for parameter in group["params"])
+    for parameter, entry in current_state.items():
+        if type(parameter) is not torch.nn.Parameter or id(parameter) not in parameter_ids:
+            raise ValueError("optimizer backup: external state parameter")
+        state[parameter] = _safe_clone(entry, "optimizer backup")
+    return state, groups
 
 
 def load_checkpoint(path, *, model=None, optimizer=None, scheduler=None, device="cpu",
@@ -424,10 +588,10 @@ def _load_checkpoint(path, *, model, optimizer, scheduler, device, expected_mode
         raise ValueError("selection_metric: requires top1_tanimoto")
     if payload["selection_exclude_identity"] is not True:
         raise ValueError("selection_exclude_identity: requires True for fair ablation selection")
-    _preflight_states(payload, optimizer, scheduler)
     reconstructed = rebuild_model(mode, payload["model_config"])
     if model is not None and model_config(model) != payload["model_config"]:
         raise ValueError("model_config: target model mismatch")
+    _preflight_states(payload, reconstructed if model is None else model, optimizer, scheduler)
     rng_state = None
     if restore_rng:
         if rank < 0 or rank >= len(payload["rng_states"]):
