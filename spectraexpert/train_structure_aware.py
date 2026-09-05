@@ -2,8 +2,8 @@
 主要职责：TrainConfig 声明实验参数；train 校验 manifest/source、仅从 train fit normalizer，
 运行增强目标和排除同 identity 的验证 top1_tanimoto early stopping，并写 best/last 原子
 checkpoint 与 JSONL；包含自身候选的结果以 inclusive_ 前缀单独记录。
-恢复到已有目录时，last 必须与来源为同一 resolved 文件或 SHA-256 相同，否则在写入前拒绝；
-这防止已结束的恢复请求返回来源状态，却交付目标目录的其它 epoch 权重。
+恢复来源只读取一次不可变字节快照，load 与来源 SHA-256 共用此快照；已有 last 的当前
+内容必须与快照相同，通过后原子物化快照为普通文件，避免 symlink 或来源替换造成混装。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -39,7 +39,7 @@ from spectraexpert.data.structure_dataset import (StructureAwareSpectralDataset,
     canonical_smiles_sha256, canonicalize_smiles, structure_aware_collate)
 from spectraexpert.data.structure_features import DescriptorNormalizer, StructureFeatureConfig
 from spectraexpert.training.checkpoints import (MODES, capture_rng, copy_checkpoint, load_checkpoint,
-    rebuild_model, restore_rng_state, save_checkpoint)
+    materialize_checkpoint, read_checkpoint_snapshot, rebuild_model, restore_rng_state, save_checkpoint)
 from spectraexpert.training.validation import validate_retrieval
 from spectraexpert.utils.distributed import gather_identity, gather_with_local_grad
 from spectraexpert.utils.structure_losses import StructureAwareObjective, dynamic_nt_xent
@@ -252,7 +252,8 @@ def _run(config):
         expected = metadata | dict(loss_weights=weights, seed=config.seed, train_config=resume_config)
         start_epoch, global_steps, best, bad_epochs = 0, 0, float("-inf"), 0
         if config.resume_from:
-            model, payload = load_checkpoint(config.resume_from, model=model, optimizer=optimizer, device=device,
+            resume_snapshot = read_checkpoint_snapshot(config.resume_from)
+            model, payload = load_checkpoint(resume_snapshot, model=model, optimizer=optimizer, device=device,
                 expected_mode=config.training_mode, expected_model_config=architecture,
                 expected_metadata=expected)
             saved = payload["descriptor_stats"]
@@ -270,20 +271,19 @@ def _run(config):
                     load_checkpoint(best_destination, **best_options)
                 last_destination = config.output_dir / "last.pt"
                 if (last_destination.exists()
-                        and last_destination.resolve() != config.resume_from.resolve()
-                        and _sha256(last_destination) != _sha256(config.resume_from)):
+                        and _sha256(last_destination) != resume_snapshot.sha256):
                     raise ValueError("resume destination last.pt conflict: differs from resume source")
                 if not best_destination.exists():
                     best_source = config.resume_from.parent / "best.pt"
-                    if not best_source.is_file() and payload["bad_epochs"] == 0:
-                        best_source = config.resume_from
-                    if not best_source.is_file():
+                    if payload["bad_epochs"] == 0:
+                        copy_checkpoint(resume_snapshot, best_destination, **best_options)
+                    elif best_source.is_file():
+                        copy_checkpoint(best_source, best_destination, **best_options)
+                    else:
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")
-                    copy_checkpoint(best_source, best_destination, **best_options)
-                if not last_destination.exists():
-                    copy_checkpoint(config.resume_from, last_destination, expected_mode=config.training_mode,
-                                    expected_model_config=architecture, expected_metadata=expected)
+                materialize_checkpoint(resume_snapshot, last_destination)
             restore_rng_state(payload["rng_states"][rank])
+            del resume_snapshot
         sampler = DistributedSampler(training, num_replicas=world, rank=rank, shuffle=True,
                                      seed=config.seed, drop_last=True) if config.ddp else None
         if sampler is not None and len(sampler) == 0:

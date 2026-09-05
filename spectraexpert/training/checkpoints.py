@@ -1,22 +1,28 @@
 """功能概述：原子保存两种显式训练模式的完整状态，严格阻止配置、数据及版本混用。
-主要职责：model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_rng_state
-保存 Python、NumPy、Torch 和 CUDA RNG；save_checkpoint 以同目录临时文件原子替换；
-load_checkpoint 检查字段后恢复模型、可选 optimizer/scheduler 和指定 rank 的 RNG；
-copy_checkpoint 严格验证后原子保留历史 best 的完整 payload。
-_validate_training_bindings 在读取/修改状态前确认 optimizer 只持有目标模型的参数对象，且
-覆盖所有 requires_grad 参数；scheduler 必须绑定同一个显式传入的 optimizer。
+主要职责：CheckpointSnapshot/read_checkpoint_snapshot 捕获一次读取的不可变 bytes，hash 和
+load(BytesIO) 使用相同内容；materialize_checkpoint/copy_checkpoint 验证后原子物化原字节。
+model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_rng_state 保存各 RNG；
+save_checkpoint 原子保存状态，load_checkpoint 预检后恢复模型、optimizer/scheduler 与 RNG。
+_validate_training_bindings 拒绝重复参数、全冻结模型和不完整 trainable 参数覆盖，检查 scheduler
+归属；_preflight_states 在写入前检查状态存在性和参数组布局；_apply_states 执行状态与设备恢复；
+_transactional_apply 先整体 deepcopy/probe，再备份调用方状态进行事务式应用，失败恢复三者。
 MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
-_atomic_save 在目标目录创建临时文件并在持久化成功后替换目标。
+_atomic_save/_atomic_write 在目标目录创建临时文件，flush/fsync 成功后 replace 目标。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
 由 train_structure_aware 使用。历史无 schema checkpoint 仍只能由 legacy wrapper 加载。
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
-失败不会覆盖原文件。epoch 为已完成的零基 epoch，RNG 必须在重建模型后恢复。
+文件与调用方状态加载失败均保持原状态；显式恢复临时需要 probe 和回滚快照的额外内存，
+probe 在真实应用前释放。epoch 为已完成的零基 epoch，RNG 必须在重建模型后恢复。
 """
 from __future__ import annotations
 
 import os
+import copy
+import hashlib
+import io
 import random
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -29,6 +35,31 @@ from spectraexpert.models.spectrum_encoder import SpectrumTransformer
 
 MODES = ("spectral_only_v1", "spectrum_graph_v2")
 SPECTRUM_KEYS = ("signal_length", "patch_size", "stride", "embed_dim", "depth", "num_heads", "projection_dim")
+
+
+@dataclass(frozen=True)
+class CheckpointSnapshot:
+    """同一次文件读取的不可变字节；digest 和反序列化均只使用这份内容。"""
+    content: bytes
+
+    def __post_init__(self):
+        if not isinstance(self.content, bytes):
+            raise TypeError("CheckpointSnapshot requires immutable bytes")
+
+    @property
+    def sha256(self):
+        return hashlib.sha256(self.content).hexdigest()
+
+
+def read_checkpoint_snapshot(path):
+    return path if isinstance(path, CheckpointSnapshot) else CheckpointSnapshot(Path(path).read_bytes())
+
+
+def materialize_checkpoint(snapshot, destination):
+    """按原字节原子落盘；replace 替换目标 symlink 本身，不写入它指向的文件。"""
+    if not isinstance(snapshot, CheckpointSnapshot):
+        raise TypeError("materialize_checkpoint requires an immutable CheckpointSnapshot")
+    return _atomic_write(destination, lambda handle: handle.write(snapshot.content))
 
 
 def model_config(model):
@@ -127,12 +158,16 @@ def save_checkpoint(path, model, optimizer=None, *, epoch=0, global_steps=0,
 
 
 def _atomic_save(path, payload):
+    return _atomic_write(path, lambda handle: torch.save(payload, handle))
+
+
+def _atomic_write(path, write):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
     try:
         with os.fdopen(fd, "wb") as handle:
-            torch.save(payload, handle)
+            write(handle)
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, path)
@@ -144,8 +179,9 @@ def _atomic_save(path, payload):
 
 def copy_checkpoint(source, destination, **validation_options):
     """验证来源后原子复制完整历史 checkpoint；不把 last 权重误记为 best。"""
-    _, payload = load_checkpoint(source, **validation_options)
-    return _atomic_save(destination, payload)
+    snapshot = read_checkpoint_snapshot(source)
+    load_checkpoint(snapshot, **validation_options)
+    return materialize_checkpoint(snapshot, destination)
 
 
 def _validate_training_bindings(model, optimizer, scheduler):
@@ -155,9 +191,16 @@ def _validate_training_bindings(model, optimizer, scheduler):
         parameters = list(model.parameters())
         model_ids = {id(parameter) for parameter in parameters}
         required_ids = {id(parameter) for parameter in parameters if parameter.requires_grad}
-        optimizer_ids = {id(parameter) for group in optimizer.param_groups for parameter in group["params"]}
+        if not required_ids:
+            raise ValueError("model must have at least one requires_grad parameter")
+        flattened = [parameter for group in optimizer.param_groups for parameter in group["params"]]
+        optimizer_ids = {id(parameter) for parameter in flattened}
+        if len(flattened) != len(optimizer_ids):
+            raise ValueError("optimizer contains duplicate parameter objects")
         if optimizer_ids - model_ids:
             raise ValueError("optimizer parameters contain objects outside the supplied model")
+        if optimizer_ids - required_ids:
+            raise ValueError("optimizer parameters include non-trainable model parameters")
         if required_ids - optimizer_ids:
             raise ValueError("optimizer parameters do not cover all model requires_grad parameters")
     if scheduler is not None:
@@ -167,11 +210,93 @@ def _validate_training_bindings(model, optimizer, scheduler):
             raise ValueError("scheduler must belong to the supplied optimizer")
 
 
+def _preflight_states(payload, optimizer, scheduler):
+    if not isinstance(payload["model_state_dict"], dict):
+        raise ValueError("model_state_dict: requires a mapping")
+    for name, component in (("optimizer", optimizer), ("scheduler", scheduler)):
+        if component is not None and not isinstance(payload[f"{name}_state_dict"], dict):
+            raise ValueError(f"{name}_state_dict: absent or invalid; cannot resume")
+    if optimizer is not None:
+        state = payload["optimizer_state_dict"]
+        groups = state.get("param_groups")
+        if not isinstance(state.get("state"), dict) or not isinstance(groups, list):
+            raise ValueError("optimizer_state_dict: requires state and param_groups")
+        if len(groups) != len(optimizer.param_groups):
+            raise ValueError("optimizer_state_dict.param_groups: group count mismatch")
+        for index, (saved, current) in enumerate(zip(groups, optimizer.param_groups)):
+            if (not isinstance(saved, dict) or not isinstance(saved.get("params"), list)
+                    or len(saved["params"]) != len(current["params"])):
+                raise ValueError(f"optimizer_state_dict.param_groups[{index}]: parameter count mismatch")
+
+
+def _apply_states(model, optimizer, scheduler, payload, device):
+    try:
+        model.load_state_dict(payload["model_state_dict"], strict=True)
+    except RuntimeError as error:
+        raise ValueError(f"model_state_dict: {error}") from error
+    model.to(device)
+    _validate_training_bindings(model, optimizer, scheduler)
+    if optimizer is not None:
+        optimizer.load_state_dict(payload["optimizer_state_dict"])
+        for state in optimizer.state.values():
+            for key, value in state.items():
+                if torch.is_tensor(value) and key != "step":
+                    state[key] = value.to(device)
+    if scheduler is not None:
+        scheduler.load_state_dict(payload["scheduler_state_dict"])
+    _validate_training_bindings(model, optimizer, scheduler)
+
+
+def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state=None):
+    # 整体 deepcopy 保留 probe 内 scheduler→optimizer→model 参数的对象关系。
+    probe = copy.deepcopy((model, optimizer, scheduler))
+    try:
+        _apply_states(*probe, payload, device)
+    finally:
+        del probe
+    components = (model, optimizer, scheduler)
+    memo = {id(component): component for component in components if component is not None}
+    previous = [copy.deepcopy(component.state_dict(), memo.copy()) if component is not None else None
+                for component in components]
+    original_groups = (copy.deepcopy(optimizer.param_groups,
+        {id(parameter): parameter for parameter in model.parameters()}) if optimizer is not None else None)
+    # 记录注册对象与设备，回滚 device migration 时仍保持 optimizer 引用原 Parameter。
+    layout = [(module, mapping, name, tensor, tensor.device)
+              for module in model.modules() for mapping in ("_parameters", "_buffers")
+              for name, tensor in getattr(module, mapping).items() if tensor is not None]
+    original_rng = capture_rng() if rng_state is not None else None
+    scheduler_keys = set(scheduler.__dict__) if scheduler is not None else set()
+    try:
+        _apply_states(model, optimizer, scheduler, payload, device)
+        if rng_state is not None:
+            restore_rng_state(rng_state)
+    except Exception:
+        for module, mapping, name, tensor, original_device in layout:
+            getattr(module, mapping)[name] = tensor
+            tensor.data = tensor.data.to(original_device)
+            if isinstance(tensor, torch.nn.Parameter) and tensor.grad is not None:
+                tensor.grad.data = tensor.grad.data.to(original_device)
+        # 直接使用框架基础恢复方法，绕过刚刚抛错的自定义 load_state_dict 覆盖。
+        torch.nn.Module.load_state_dict(model, previous[0], strict=True)
+        if optimizer is not None:
+            optimizer.param_groups = original_groups
+            torch.optim.Optimizer.load_state_dict(optimizer, previous[1])
+        if scheduler is not None:
+            scheduler.optimizer = optimizer
+            for key in set(scheduler.__dict__) - scheduler_keys:
+                del scheduler.__dict__[key]
+            torch.optim.lr_scheduler.LRScheduler.load_state_dict(scheduler, previous[2])
+        if original_rng is not None:
+            restore_rng_state(original_rng)
+        raise
+
+
 def load_checkpoint(path, *, model=None, optimizer=None, scheduler=None, device="cpu",
                     expected_mode=None, expected_model_config=None, expected_feature_config=None,
                     expected_metadata=None, restore_rng=False, rank=0):
     _validate_training_bindings(model, optimizer, scheduler)
-    payload = torch.load(path, map_location="cpu", weights_only=False)
+    snapshot = read_checkpoint_snapshot(path)
+    payload = torch.load(io.BytesIO(snapshot.content), map_location="cpu", weights_only=False)
     if not isinstance(payload, dict) or payload.get("schema_version") not in MODES:
         raise ValueError("schema_version: unsupported checkpoint; use legacy wrapper for historical files")
     mode = payload["schema_version"]
@@ -203,34 +328,31 @@ def load_checkpoint(path, *, model=None, optimizer=None, scheduler=None, device=
         _compare(expected_model_config, payload["model_config"], "model_config")
     if expected_metadata is not None:
         _compare(expected_metadata, payload, "checkpoint")
-    reconstructed = rebuild_model(mode, payload["model_config"])
     _validate_stats(payload["descriptor_stats"], payload["model_config"].get("descriptor_dim", 15))
     if payload["selection_metric"] != "top1_tanimoto":
         raise ValueError("selection_metric: requires top1_tanimoto")
     if payload["selection_exclude_identity"] is not True:
         raise ValueError("selection_exclude_identity: requires True for fair ablation selection")
+    _preflight_states(payload, optimizer, scheduler)
+    reconstructed = rebuild_model(mode, payload["model_config"])
+    if model is not None and model_config(model) != payload["model_config"]:
+        raise ValueError("model_config: target model mismatch")
+    rng_state = None
+    if restore_rng:
+        if rank < 0 or rank >= len(payload["rng_states"]):
+            raise ValueError("rng_states: missing rank")
+        rng_state = payload["rng_states"][rank]
+        current_rng = capture_rng()
+        try:
+            restore_rng_state(rng_state)
+        finally:
+            restore_rng_state(current_rng)
     if model is None:
         model = reconstructed
-    elif model_config(model) != payload["model_config"]:
-        raise ValueError("model_config: target model mismatch")
-    try:
-        model.load_state_dict(payload["model_state_dict"], strict=True)
-    except RuntimeError as error:
-        raise ValueError(f"model_state_dict: {error}") from error
-    model.to(device)
-    for name, component in (("optimizer", optimizer), ("scheduler", scheduler)):
-        if component is not None:
-            state = payload[f"{name}_state_dict"]
-            if state is None:
-                raise ValueError(f"{name}_state_dict: absent; cannot resume")
-            component.load_state_dict(state)
-    if optimizer is not None:
-        for state in optimizer.state.values():
-            for key, value in state.items():
-                if torch.is_tensor(value) and key != "step":
-                    state[key] = value.to(device)
-    if restore_rng:
-        if rank >= len(payload["rng_states"]):
-            raise ValueError("rng_states: missing rank")
-        restore_rng_state(payload["rng_states"][rank])
+        _apply_states(model, None, None, payload, device)
+        if rng_state is not None:
+            restore_rng_state(rng_state)
+    else:
+        del reconstructed
+        _transactional_apply(model, optimizer, scheduler, payload, device, rng_state)
     return model, payload

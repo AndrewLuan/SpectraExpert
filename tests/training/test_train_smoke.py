@@ -2,6 +2,7 @@
 主要职责：fixture 固定分子、光谱和 split；验证 train-only 统计量、graph 梯度更新、
 v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希和空训练保护；恢复到已有
 目录时拒绝 last 内容冲突并保持原文件，同时接受同路径或逐字节相同的 checkpoint。
+原子替换来源文件验证已加载快照不会混入替换后的状态，并验证 symlink 物化和 best 来源复用。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
@@ -9,6 +10,7 @@ import dataclasses
 import hashlib
 import json
 import shutil
+import os
 from datetime import timedelta
 
 import numpy as np
@@ -193,6 +195,82 @@ def test_resume_accepts_identical_checkpoint_in_different_directory(tiny_dataset
     assert result["history"] == []
     assert result["global_steps"] == 4
     assert (destination / "last.pt").read_bytes() == (config.output_dir / "last.pt").read_bytes()
+
+
+@pytest.mark.parametrize("same_destination", [False, True])
+def test_resume_uses_loaded_snapshot_when_source_is_atomically_replaced(tiny_dataset_dir, tmp_path, monkeypatch, same_destination):
+    import spectraexpert.train_structure_aware as entry
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source", epochs=2)
+    train(config)
+    replacement = dataclasses.replace(config, output_dir=tmp_path / "replacement", epochs=3)
+    train(replacement)
+    original_bytes = (config.output_dir / "last.pt").read_bytes()
+    replacement_bytes = (replacement.output_dir / "last.pt").read_bytes()
+    destination = config.output_dir if same_destination else tmp_path / "destination"
+    if not same_destination:
+        destination.mkdir()
+        for name in ("best.pt", "last.pt"):
+            shutil.copyfile(config.output_dir / name, destination / name)
+    original_loader = entry.load_checkpoint
+    replaced = False
+    def replace_after_loading(*args, **kwargs):
+        nonlocal replaced
+        result = original_loader(*args, **kwargs)
+        if not replaced:
+            replaced = True
+            os.replace(replacement.output_dir / "last.pt", config.output_dir / "last.pt")
+        return result
+    monkeypatch.setattr(entry, "load_checkpoint", replace_after_loading)
+    resumed = dataclasses.replace(config, output_dir=destination, resume_from=config.output_dir / "last.pt")
+    if same_destination:
+        with pytest.raises(ValueError, match="last.pt.*conflict"):
+            train(resumed)
+        assert (destination / "last.pt").read_bytes() == replacement_bytes
+    else:
+        result = train(resumed)
+        assert result["global_steps"] == 4
+        assert (destination / "last.pt").read_bytes() == original_bytes
+
+
+def test_resume_materializes_destination_symlink_as_snapshot_file(tiny_dataset_dir, tmp_path):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source", epochs=2)
+    train(config)
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    shutil.copyfile(config.output_dir / "best.pt", destination / "best.pt")
+    (destination / "last.pt").symlink_to(config.output_dir / "last.pt")
+    expected = (config.output_dir / "last.pt").read_bytes()
+    result = train(dataclasses.replace(config, output_dir=destination, resume_from=destination / "last.pt"))
+    assert result["global_steps"] == 4
+    assert not (destination / "last.pt").is_symlink()
+    assert (destination / "last.pt").read_bytes() == expected
+
+
+def test_resume_from_best_uses_snapshot_for_both_delivered_files(tiny_dataset_dir, tmp_path, monkeypatch):
+    import spectraexpert.train_structure_aware as entry
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(config)
+    source = config.output_dir / "best.pt"
+    expected = source.read_bytes()
+    changed = torch.load(source, weights_only=False)
+    first_key = next(iter(changed["model_state_dict"]))
+    changed["model_state_dict"][first_key] += 1
+    replacement = tmp_path / "replacement.pt"
+    torch.save(changed, replacement)
+    original_loader = entry.load_checkpoint
+    replaced = False
+    def replace_after_loading(*args, **kwargs):
+        nonlocal replaced
+        result = original_loader(*args, **kwargs)
+        if not replaced:
+            replaced = True
+            os.replace(replacement, source)
+        return result
+    monkeypatch.setattr(entry, "load_checkpoint", replace_after_loading)
+    destination = tmp_path / "destination"
+    train(dataclasses.replace(config, output_dir=destination, resume_from=source))
+    assert (destination / "best.pt").read_bytes() == expected
+    assert (destination / "last.pt").read_bytes() == expected
 
 
 def _ddp_worker(rank, store, config, queue, fail_batch=False, resume=False):
