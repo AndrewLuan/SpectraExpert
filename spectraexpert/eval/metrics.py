@@ -267,9 +267,9 @@ def graph_edit_distance(
 ) -> Optional[float]:
     """返回版本化 GED；chemical 只报告完整 bounded 搜索的最小值。"""
 
+    validated_version = _validate_version(version)
     if timeout <= 0:
         return None
-    validated_version = _validate_version(version)
     return _run_ged_worker(
         smiles_a, smiles_b, timeout, include_h, validated_version, normalized=False
     )
@@ -284,9 +284,9 @@ def normalized_graph_edit_distance(
 ) -> Optional[float]:
     """以 ``|Vq| + |Vc| + |Eq| + |Ec|`` 固定分母返回 nGED。"""
 
+    validated_version = _validate_version(version)
     if timeout <= 0:
         return None
-    validated_version = _validate_version(version)
     return _run_ged_worker(
         smiles_a, smiles_b, timeout, include_h, validated_version, normalized=True
     )
@@ -301,9 +301,9 @@ def batch_graph_edit_distance(
 ) -> list[Optional[float]]:
     """对候选列表逐项计算同一 GED schema 的有界距离。"""
 
+    validated_version = _validate_version(version)
     if timeout <= 0:
         return [None] * len(candidates)
-    validated_version = _validate_version(version)
     return [
         _run_ged_worker(
             ground_truth,

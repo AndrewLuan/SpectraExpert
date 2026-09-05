@@ -6,6 +6,7 @@ Tanimoto 的对称、单位对角线与交并比，并覆盖未完成搜索不�
 原始检索 rank 映射。本轮还验证任意调用线程的硬 timeout、搜索异常和空 SMILES 在所有公开
 指标及聚合路径中的一致无效语义。Fix Round 2 进一步验证 spawn worker 覆盖解析至搜索的
 deadline、SIGTERM 后 kill 清理，以及零重原子 SMILES 的统一无效语义。
+Fix Round 3 还锁定零超时时先验证版本、但绝不解析 SMILES 的公开 API 顺序契约。
 代码库关系：直接消费 ``spectraexpert.eval.metrics``，并以 Task 2 的
 ``spectraexpert.data.structure_features`` 键类型和 Morgan schema 为唯一事实来源；评估脚本通过
 这些函数比较检索候选的分子结构。
@@ -198,3 +199,35 @@ def test_sigterm_ignoring_spawn_worker_is_killed_without_residual_child(monkeypa
     assert result is None
     assert time.monotonic() - started < 0.5
     assert {child.pid for child in mp.active_children()} <= existing_pids
+
+
+@pytest.mark.parametrize(
+    ("metric", "args"),
+    [
+        (metrics.graph_edit_distance, ("CC", "CO")),
+        (metrics.normalized_graph_edit_distance, ("CC", "CO")),
+        (metrics.batch_graph_edit_distance, ("CC", ["CO"])),
+    ],
+)
+def test_zero_timeout_rejects_invalid_ged_version(metric, args):
+    with pytest.raises(ValueError, match="version must be"):
+        metric(*args, timeout=0.0, version="unsupported_ged_v0")
+
+
+@pytest.mark.parametrize(
+    ("metric", "args", "expected"),
+    [
+        (metrics.graph_edit_distance, ("CC", "CO"), None),
+        (metrics.normalized_graph_edit_distance, ("CC", "CO"), None),
+        (metrics.batch_graph_edit_distance, ("CC", ["CO"]), [None]),
+    ],
+)
+def test_zero_timeout_valid_ged_version_never_parses_smiles(
+    monkeypatch, metric, args, expected
+):
+    def parsing_must_not_run(*args, **kwargs):
+        pytest.fail("zero-timeout GED must return before parsing SMILES")
+
+    monkeypatch.setattr(metrics, "smiles_to_nx", parsing_must_not_run)
+
+    assert metric(*args, timeout=0.0, version="chemical_ged_v2") == expected
