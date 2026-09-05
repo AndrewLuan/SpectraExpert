@@ -10,12 +10,17 @@ scheduler 的恢复、续跑与回滚；以 fake CUDA RNG 后端验证数量对�
 确认任何 deepcopy 前拒绝，用户回调未运行，调用方权重/状态与入口 RNG 不变。
 构造/newargs/named_modules 探针确认这些入口不被调用；descriptor、save hooks/extra-state 与
 Parameter 子类静态拒绝；纯数据和张量/scheduler 布局预检在任何调用方状态写入之前完成。
+固定注册字段 descriptor 在读取前拒绝；物化失败保留 traceback 但释放快照；官方 Counter
+milestones 的 MultiStepLR 及组合 scheduler 验证恢复、续跑和回滚，并拒绝 Counter 子类。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
 import random
 import copy
 import types
+import gc
+import weakref
+from collections import Counter
 
 import numpy as np
 import pytest
@@ -24,6 +29,107 @@ import torch
 from spectraexpert.data.structure_features import DescriptorNormalizer
 from spectraexpert.models.multimodal_retriever import StructureAwareRetriever
 from spectraexpert.training.checkpoints import capture_rng, load_checkpoint, save_checkpoint
+
+
+@pytest.mark.parametrize("field", ["_modules", "_parameters", "_buffers"])
+@pytest.mark.parametrize("owner_kind", ["root", "nested"])
+@pytest.mark.parametrize("descriptor_kind", ["property", "descriptor"])
+def test_registration_field_descriptor_rejected_without_execution(tmp_path, field, owner_kind, descriptor_kind):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    owner = model if owner_kind == "root" else model.spectrum_encoder.projection[0]
+    original_class = type(owner)
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    called = []
+    def callback(instance):
+        called.append(True)
+        instance.__dict__["training"] = not instance.__dict__["training"]
+        random.random(); np.random.rand(); torch.rand(1)
+        raise RuntimeError("registration descriptor executed")
+    class Descriptor:
+        def __get__(self, instance, owner_type=None):
+            return callback(instance)
+        def __set__(self, instance, value):
+            raise AssertionError("descriptor assignment")
+    descriptor = property(callback) if descriptor_kind == "property" else Descriptor()
+    owner.__class__ = type("RegistrationOverride", (original_class,), {field: descriptor})
+    try:
+        with pytest.raises(ValueError, match="registration.*override"):
+            load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    finally:
+        owner.__class__ = original_class
+    assert not called
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("failure", ["replace", "fsync", "write"])
+def test_materialization_failure_traceback_releases_all_snapshot_references(tmp_path, monkeypatch, failure):
+    from spectraexpert.training import checkpoints
+    def fail_replace(source, destination):
+        raise OSError("atomic replacement failed")
+    def fail_fsync(descriptor):
+        raise OSError("atomic sync failed")
+    original_fdopen = checkpoints.os.fdopen
+    def readonly_fdopen(descriptor, mode):
+        return original_fdopen(descriptor, "rb")
+    monkeypatch.setattr(checkpoints.os, {"replace": "replace", "fsync": "fsync", "write": "fdopen"}[failure],
+                        {"replace": fail_replace, "fsync": fail_fsync, "write": readonly_fdopen}[failure])
+    def capture_error():
+        snapshot = checkpoints.CheckpointSnapshot(b"x" * 1024 * 1024)
+        reference = weakref.ref(snapshot)
+        try:
+            checkpoints.materialize_checkpoint(snapshot, tmp_path / "failed.pt")
+        except OSError as error:
+            return error, reference
+        finally:
+            snapshot = None
+    error, reference = capture_error()
+    gc.collect()
+    assert reference() is None
+    seen = set()
+    def check_value(value):
+        if id(value) in seen:
+            return
+        seen.add(id(value))
+        assert not isinstance(value, checkpoints.CheckpointSnapshot)
+        assert not (type(value) is bytes and len(value) >= 1024 * 1024)
+        if type(value) in (dict, list, tuple):
+            assert not (type(value) is dict and "model_state_dict" in value)
+            for child in value.values() if type(value) is dict else value:
+                check_value(child)
+        if type(value) is types.FunctionType and value.__closure__:
+            for cell in value.__closure__:
+                check_value(cell.cell_contents)
+    frames = []
+    traceback = error.__traceback__
+    while traceback is not None:
+        frames.append(traceback.tb_frame.f_code.co_name)
+        for value in traceback.tb_frame.f_locals.values():
+            check_value(value)
+        traceback = traceback.tb_next
+    assert "materialize_checkpoint" in frames and "_atomic_write" in frames
+    assert {"replace": "fail_replace", "fsync": "fail_fsync", "write": "write"}[failure] in frames
+    assert str(error) == {"replace": "atomic replacement failed", "fsync": "atomic sync failed", "write": "write"}[failure]
+    assert not list(tmp_path.iterdir())
+
+
+def test_counter_clone_preserves_exact_type_and_rejects_subclasses():
+    from spectraexpert.training.checkpoints import _safe_clone
+    source = Counter({1: 2, 3: torch.tensor(4)})
+    cloned = _safe_clone(source)
+    assert type(cloned) is Counter
+    assert cloned[1] == 2 and torch.equal(cloned[3], source[3]) and cloned[3] is not source[3]
+    class UserCounter(Counter):
+        def items(self):
+            raise AssertionError("user Counter iterated")
+    with pytest.raises(ValueError, match="unsupported state data"):
+        _safe_clone(UserCounter({1: 2}))
+    with pytest.raises(ValueError, match="unsupported state key"):
+        _safe_clone(Counter({object(): 2}))
+    with pytest.raises(ValueError, match="unsupported state data"):
+        _safe_clone(Counter({1: object()}))
 
 
 def make_model():
@@ -418,15 +524,19 @@ def test_dynamic_restore_extensions_rejected_before_user_code(tmp_path, extensio
     assert_nested_equal(capture_rng(), before_rng)
 
 
-@pytest.mark.parametrize("kind", ["plateau", "sequential", "chained"])
+@pytest.mark.parametrize("kind", ["plateau", "sequential", "chained", "multistep", "sequential_multistep", "chained_multistep"])
 def test_official_scheduler_overrides_restore_and_continue(tmp_path, kind):
     def make_scheduler(optimizer):
         schedulers = torch.optim.lr_scheduler
         if kind == "plateau":
             return schedulers.ReduceLROnPlateau(optimizer, patience=0, factor=.5)
-        children = [schedulers.StepLR(optimizer, step_size=1, gamma=.5),
+        first = (schedulers.MultiStepLR(optimizer, milestones=[1, 3, 3], gamma=.5) if "multistep" in kind
+                 else schedulers.StepLR(optimizer, step_size=1, gamma=.5))
+        if kind == "multistep":
+            return first
+        children = [first,
                     schedulers.ExponentialLR(optimizer, gamma=.8)]
-        return (schedulers.SequentialLR(optimizer, children, milestones=[2]) if kind == "sequential"
+        return (schedulers.SequentialLR(optimizer, children, milestones=[2]) if kind.startswith("sequential")
                 else schedulers.ChainedScheduler(children, optimizer=optimizer))
     source = make_model()
     optimizer = torch.optim.Adam(source.parameters(), lr=.02)
@@ -503,12 +613,16 @@ def test_scheduler_restore_extensions_rejected_recursively(tmp_path, extension):
     assert_nested_equal(capture_rng(), before_rng)
 
 
-def test_sequential_scheduler_rollback_preserves_child_objects(tmp_path, monkeypatch):
+@pytest.mark.parametrize("kind", ["sequential", "sequential_multistep", "chained_multistep"])
+def test_sequential_scheduler_rollback_preserves_child_objects(tmp_path, monkeypatch, kind):
     path = make_optimizer_checkpoint(tmp_path)
     model, optimizer, _ = training_bundle()
-    children = [torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=.5),
+    first = (torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[1, 3, 3], gamma=.5)
+             if "multistep" in kind else torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=.5))
+    children = [first,
                 torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=.8)]
-    scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, children, milestones=[2])
+    scheduler = (torch.optim.lr_scheduler.SequentialLR(optimizer, children, milestones=[2])
+                 if kind.startswith("sequential") else torch.optim.lr_scheduler.ChainedScheduler(children, optimizer=optimizer))
     payload = torch.load(path, weights_only=False)
     payload["scheduler_state_dict"] = scheduler.state_dict()
     torch.save(payload, path)

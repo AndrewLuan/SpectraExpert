@@ -5,12 +5,13 @@ rebuild_model 负责严格配置重建，MODES/SPECTRUM_KEYS 固定版本及字�
 校验元数据/normalizer，validate_best_payload 统一验证有限且相等的 best 分数与选择规则。
 capture_rng/restore_rng_state 管理各 RNG，写入前对称检查 CUDA topology；load_checkpoint 保证
 默认保持入口 RNG，显式恢复成功才采用 checkpoint RNG，任何异常恢复入口 RNG。
-_registered_tree 只读取注册字典并拒绝循环，_model_tensors 得到持久化键；不调用 named_modules。
+_registered_tree 静态拒绝类层固定注册字段覆盖，再读取 exact 实例字典并拒绝循环，
+_model_tensors 得到持久化键；不调用 named_modules 或注册字段 descriptor。
 _require_torch_implementation 用静态方法解析拒绝用户 state save/load/extra-state 覆盖及 descriptor；
 _validate_standard_loaders 检查 registered save/load hooks 和 exact Parameter/Tensor 类型。
 COPY_PROTOCOL 保留旧扩展拒绝兼容性，但不再调用任何调用方对象 copy 协议或建立 deepcopy probe。
 _scheduler_tree/_validate_training_bindings 验证组合 scheduler、参数对象唯一性和完整 trainable 覆盖。
-_safe_clone 只克隆受限纯数据与 exact Tensor；_preflight_states/_validate_scheduler_state/
+_safe_clone 只克隆受限纯数据、exact Counter 与 Tensor；_preflight_states/_validate_scheduler_state/
 _validate_state_layout 校验来源
 状态字段、参数组、参数 ID 和张量布局；_apply_states 调用标准框架加载方法并恢复设备。
 _transactional_apply 直接克隆注册参数/缓冲区/梯度并保存模式与 flags；_backup_optimizer 保留
@@ -18,6 +19,7 @@ Parameter 引用并手工复制 state/groups；scheduler 备份只保存 safe-cl
 真实应用失败时回到原注册对象/存储并原位恢复，已有 state_dict 存储视图也保持原值；
 不实例化或 deepcopy 调用方模型/optimizer/scheduler。
 save_checkpoint/_atomic_save/_atomic_write 以同目录临时文件、flush/fsync、replace 原子保存。
+物化/原子写入 finally 清空快照、数据与写入闭包，保留错误 traceback 而不驻留大状态。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
 由 train_structure_aware 使用。历史无 schema checkpoint 仍只能由 legacy wrapper 加载。
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
@@ -35,7 +37,7 @@ import io
 import random
 import tempfile
 from dataclasses import dataclass
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict, defaultdict, Counter
 from types import FunctionType, BuiltinFunctionType
 from pathlib import Path
 
@@ -72,9 +74,16 @@ def read_checkpoint_snapshot(path):
 
 def materialize_checkpoint(snapshot, destination):
     """按原字节原子落盘；replace 替换目标 symlink 本身，不写入它指向的文件。"""
-    if not isinstance(snapshot, CheckpointSnapshot):
-        raise TypeError("materialize_checkpoint requires an immutable CheckpointSnapshot")
-    return _atomic_write(destination, lambda handle: handle.write(snapshot.content))
+    data = write = None
+    try:
+        if not isinstance(snapshot, CheckpointSnapshot):
+            raise TypeError("materialize_checkpoint requires an immutable CheckpointSnapshot")
+        data = snapshot.content
+        def write(handle):
+            handle.write(data)
+        return _atomic_write(destination, write)
+    finally:
+        snapshot = data = write = None
 
 
 def model_config(model):
@@ -194,17 +203,19 @@ def _atomic_save(path, payload):
 
 
 def _atomic_write(path, write):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    temporary = handle = None
     try:
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
         with os.fdopen(fd, "wb") as handle:
             write(handle)
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, path)
     finally:
-        if os.path.exists(temporary):
+        write = handle = None
+        if temporary is not None and os.path.exists(temporary):
             os.unlink(temporary)
     return path
 
@@ -222,8 +233,8 @@ def _validate_training_bindings(model, optimizer, scheduler):
     if optimizer is not None:
         if model is None:
             raise ValueError("optimizer requires an explicitly supplied model")
-        parameters = [tensor for _, module in _registered_tree(model)
-                      for tensor in object.__getattribute__(module, "_parameters").values() if tensor is not None]
+        parameters = [tensor for _, _, values in _registered_tree(model)
+                      for tensor in values.get("_parameters").values() if tensor is not None]
         model_ids = {id(parameter) for parameter in parameters}
         required_ids = {id(parameter) for parameter in parameters if parameter.requires_grad}
         if not required_ids:
@@ -263,7 +274,7 @@ def _scheduler_tree(scheduler):
 
 
 def _registered_tree(model):
-    """只读注册字典；允许共享子模块的不同路径，拒绝祖先循环。"""
+    """先静态拒绝注册字段覆盖，再读实例字典；共享路径可用，祖先循环拒绝。"""
     pending = [("", model, frozenset())]
     while pending:
         name, module, ancestors = pending.pop()
@@ -271,10 +282,18 @@ def _registered_tree(model):
             raise ValueError("model registration cycle")
         if not isinstance(module, torch.nn.Module):
             raise ValueError("model registration requires Module")
-        yield name, module
-        children = object.__getattribute__(module, "_modules")
-        if type(children) not in (dict, OrderedDict):
-            raise ValueError("model registration requires standard dict")
+        missing = object()
+        for field in ("_modules", "_parameters", "_buffers"):
+            if inspect.getattr_static(type(module), field, missing) is not missing:
+                raise ValueError(f"model registration {field}: unsupported class override")
+        values = object.__getattribute__(module, "__dict__")
+        if type(values) is not dict:
+            raise ValueError("model registration requires exact instance dict")
+        for field in ("_modules", "_parameters", "_buffers"):
+            if type(values.get(field)) not in (dict, OrderedDict):
+                raise ValueError("model registration requires standard dict")
+        yield name, module, values
+        children = values.get("_modules")
         for key, child in reversed(list(children.items())):
             if child is not None:
                 pending.append((f"{name}.{key}" if name else key, child, ancestors | {id(module)}))
@@ -295,8 +314,7 @@ def _require_torch_implementation(component, name, methods):
 def _validate_standard_loaders(model, optimizer, scheduler):
     """静态验证注册对象的保存/加载入口，不调用用户 descriptor 或遍历任意附加属性。"""
     if model is not None:
-        for name, module in _registered_tree(model):
-            values = object.__getattribute__(module, "__dict__")
+        for name, module, values in _registered_tree(model):
             if any(values.get(key) for key in ("_load_state_dict_pre_hooks", "_load_state_dict_post_hooks",
                                                "_state_dict_pre_hooks", "_state_dict_hooks")):
                 raise ValueError(f"unsupported model state hook: {name or '<root>'}")
@@ -304,7 +322,7 @@ def _validate_standard_loaders(model, optimizer, scheduler):
                 ("state_dict", "load_state_dict", "_save_to_state_dict", "_load_from_state_dict",
                  "get_extra_state", "set_extra_state") + COPY_PROTOCOL)
             for mapping, expected_type in (("_parameters", torch.nn.Parameter), ("_buffers", torch.Tensor)):
-                registered = object.__getattribute__(module, mapping)
+                registered = values.get(mapping)
                 if type(registered) not in (dict, OrderedDict):
                     raise ValueError("model registration requires standard dict")
                 for key, tensor in registered.items():
@@ -333,10 +351,10 @@ def _safe_clone(value, path="state", ancestors=frozenset()):
         if value.layout != torch.strided:
             raise ValueError(f"{path}: unsupported tensor layout")
         return value.detach().clone()
-    if kind not in (dict, OrderedDict, list, tuple) or id(value) in ancestors:
+    if kind not in (dict, OrderedDict, Counter, list, tuple) or id(value) in ancestors:
         raise ValueError(f"{path}: unsupported state data type or cycle")
     ancestors = ancestors | {id(value)}
-    if kind in (dict, OrderedDict):
+    if kind in (dict, OrderedDict, Counter):
         result = kind()
         for key, item in value.items():
             if type(key) not in (str, int, float, bool, type(None)):
@@ -350,10 +368,10 @@ def _safe_clone(value, path="state", ancestors=frozenset()):
 
 def _model_tensors(model):
     result = {}
-    for prefix, module in _registered_tree(model):
-        nonpersistent = object.__getattribute__(module, "_non_persistent_buffers_set")
+    for prefix, _, values in _registered_tree(model):
+        nonpersistent = values.get("_non_persistent_buffers_set")
         for mapping in ("_parameters", "_buffers"):
-            for name, tensor in object.__getattribute__(module, mapping).items():
+            for name, tensor in values.get(mapping).items():
                 if tensor is not None and not (mapping == "_buffers" and name in nonpersistent):
                     result[f"{prefix}.{name}" if prefix else name] = tensor
     return result
@@ -423,7 +441,7 @@ def _validate_scheduler_state(state, scheduler):
 def _validate_state_layout(saved, current, path):
     if type(saved) is not type(current):
         raise ValueError(f"{path}: type layout mismatch")
-    if type(current) in (dict, OrderedDict):
+    if type(current) in (dict, OrderedDict, Counter):
         if saved.keys() != current.keys():
             raise ValueError(f"{path}: field layout mismatch")
         for key in current:
@@ -459,15 +477,15 @@ def _apply_states(model, optimizer, scheduler, payload, device):
 def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state=None):
     # 只备份注册张量与纯数据；不实例化、不 deepcopy 调用方组件。
     layout, modes = [], []
-    for _, module in _registered_tree(model):
+    for _, module, values in _registered_tree(model):
         modes.append((module, object.__getattribute__(module, "training")))
         for mapping in ("_parameters", "_buffers"):
-            for name, tensor in object.__getattribute__(module, mapping).items():
+            for name, tensor in values.get(mapping).items():
                 if tensor is not None:
                     grad = tensor.grad
                     data = tensor.detach()
                     grad_data = None if grad is None else grad.detach()
-                    layout.append((module, mapping, name, tensor, data, data.clone(), tensor.requires_grad,
+                    layout.append((values.get(mapping), name, tensor, data, data.clone(), tensor.requires_grad,
                                    grad, grad_data, None if grad_data is None else grad_data.clone()))
     optimizer_backup = _backup_optimizer(optimizer) if optimizer is not None else None
     scheduler_backup = []
@@ -481,8 +499,8 @@ def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state
         if rng_state is not None:
             restore_rng_state(rng_state)
     except BaseException:
-        for module, mapping, name, tensor, data, saved_data, requires_grad, grad, grad_data, saved_grad in layout:
-            object.__getattribute__(module, mapping)[name] = tensor
+        for registered, name, tensor, data, saved_data, requires_grad, grad, grad_data, saved_grad in layout:
+            registered[name] = tensor
             tensor.data = data
             data.copy_(saved_data)
             tensor.requires_grad_(requires_grad)
