@@ -8,6 +8,9 @@ bad_epochs 为零且分数一致才表示恢复状态本身为 best，此时已�
 平分后的 last 不替代历史 best，所有目标冲突均在写入前拒绝。
 resume best、已有 best 与 sibling historical best 在物化前均复用 validate_best_payload，
 拒绝缺失选择指标、非有限值或声明 best 分数与实际 validation 不一致的文件。
+setup validation 阶段只验证各 rank 来源/模型/元数据/RNG 并准备快照，所有 rank 通过相同
+_phase 错误同步后才进入 setup materialization，由 rank 0 创建目录或原子物化 best/last；
+单 rank 验证失败时全部退出且不写文件，不增加可能与失败路径 collective 错序的单独 barrier。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -42,7 +45,7 @@ from spectraexpert.data.molecular_graph import collate_graphs
 from spectraexpert.data.structure_dataset import (StructureAwareSpectralDataset,
     canonical_smiles_sha256, canonicalize_smiles, structure_aware_collate)
 from spectraexpert.data.structure_features import DescriptorNormalizer, StructureFeatureConfig
-from spectraexpert.training.checkpoints import (MODES, capture_rng, copy_checkpoint, load_checkpoint,
+from spectraexpert.training.checkpoints import (MODES, capture_rng, load_checkpoint,
     materialize_checkpoint, read_checkpoint_snapshot, rebuild_model, restore_rng_state, save_checkpoint,
     validate_best_payload)
 from spectraexpert.training.validation import validate_retrieval
@@ -233,7 +236,8 @@ def _run(config):
     random.seed(config.seed + rank)
     np.random.seed(config.seed + rank)
     torch.manual_seed(config.seed + rank)
-    with _phase("setup"):
+    with _phase("setup validation"):
+        materializations = []
         objective = StructureAwareObjective(temperature=config.temperature, lambda_aug=config.lambda_aug,
             lambda_struct=config.lambda_struct, lambda_aux=config.lambda_aux, lambda_fingerprint=config.lambda_fingerprint)
         training, validation_data, stats, metadata = _prepare_data(config)
@@ -293,15 +297,18 @@ def _run(config):
                 if resume_is_best:
                     if best_snapshot is not None and best_snapshot.sha256 != resume_snapshot.sha256:
                         raise ValueError("resume destination best.pt conflict: differs from resume best snapshot")
-                    # 即使已有 symlink 内容相同，也以已加载的同一 bytes 原子替换别名。
-                    materialize_checkpoint(resume_snapshot, best_destination)
+                    # 只记录已验证快照；所有 rank 完成验证且同步成功后才允许物化。
+                    materializations.append((resume_snapshot, best_destination))
                 elif best_snapshot is None:
                     best_source = config.resume_from.parent / "best.pt"
                     if best_source.is_file():
-                        copy_checkpoint(best_source, best_destination, require_best=True, **best_options)
+                        historical_snapshot = read_checkpoint_snapshot(best_source)
+                        _, best_payload = load_checkpoint(historical_snapshot, **best_options)
+                        validate_best_payload(best_payload)
+                        materializations.append((historical_snapshot, best_destination))
                     else:
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")
-                materialize_checkpoint(resume_snapshot, last_destination)
+                materializations.append((resume_snapshot, last_destination))
             restore_rng_state(payload["rng_states"][rank])
             del resume_snapshot
         sampler = DistributedSampler(training, num_replicas=world, rank=rank, shuffle=True,
@@ -310,7 +317,12 @@ def _run(config):
             raise ValueError("training sampler is empty; increase train samples or reduce world size")
         val_loader = DataLoader(_ValidationDataset(validation_data), batch_size=config.batch_size,
             shuffle=False, collate_fn=_validation_collate, generator=torch.Generator().manual_seed(config.seed))
-        config.output_dir.mkdir(parents=True, exist_ok=True)
+    with _phase("setup materialization"):
+        if rank == 0:
+            for snapshot, destination in materializations:
+                materialize_checkpoint(snapshot, destination)
+            config.output_dir.mkdir(parents=True, exist_ok=True)
+        materializations.clear()
     wrapped = DistributedDataParallel(model, device_ids=[device.index] if device.type == "cuda" else None,
         find_unused_parameters=config.training_mode == "spectrum_graph_v2", broadcast_buffers=False) if config.ddp else model
     graph_gradient_norm = 0.

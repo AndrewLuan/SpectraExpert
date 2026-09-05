@@ -6,10 +6,13 @@ v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希�
 真正 best 状态要求分数与 best_score 相同且 bad_epochs 为零；已有 best 的字节冲突先拒绝，
 等字节链接按快照物化，平分后的 last 仍保留独立历史 best。
 已有或 sibling historical best 的分数不一致、NaN、选择键缺失均在写入前拒绝，目录原字节不变。
+两进程 gloo 用固定 CPU topology/fake CUDA RNG 仅破坏 rank 1，确认相同应用错误无 timeout，
+新目录不创建、已有目录的文件名/字节/symlink 类型不变；正常 DDP resume 仍逐参数一致。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
 import dataclasses
+import copy
 import hashlib
 import json
 import shutil
@@ -438,6 +441,67 @@ def test_ddp_equal_short_batches_and_rank_failure(tiny_dataset_dir, tmp_path, mo
                 resumed = torch.load(tmp_path / "resumed" / "last.pt", weights_only=False)
                 assert all(torch.equal(value, resumed["model_state_dict"][key])
                            for key, value in payload["model_state_dict"].items())
+    finally:
+        for process in processes:
+            if process.is_alive():
+                process.terminate()
+            process.join(2)
+        queue.close()
+        queue.join_thread()
+
+
+def _ddp_rng_failure_worker(rank, store, config, queue):
+    torch.set_num_threads(1)
+    try:
+        dist.init_process_group("gloo", init_method=f"file://{store}", rank=rank,
+                                world_size=2, timeout=timedelta(seconds=15))
+        # CPU gloo 下固定 CUDA 不可用；来源只有 rank 1 含 fake CUDA RNG，精确触发单 rank 拒绝。
+        torch.cuda.is_available = lambda: False
+        torch.cuda.device_count = lambda: 0
+        train(config)
+        queue.put((rank, "ok"))
+    except Exception as error:
+        queue.put((rank, "error", str(error)))
+    finally:
+        if dist.is_initialized():
+            dist.destroy_process_group()
+
+
+@pytest.mark.parametrize("existing_destination", [False, True])
+def test_ddp_rank_one_rng_failure_prevents_all_output_writes(tiny_dataset_dir, tmp_path, existing_destination):
+    source_config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(source_config)
+    source = source_config.output_dir / "last.pt"
+    payload = torch.load(source, weights_only=False)
+    payload["train_config"]["world_size"] = 2
+    payload["rng_states"].append(copy.deepcopy(payload["rng_states"][0]))
+    payload["rng_states"][1]["cuda"] = [torch.tensor([42], dtype=torch.uint8)]
+    torch.save(payload, source)
+    destination = tmp_path / "destination"
+    if existing_destination:
+        destination.mkdir()
+        # 相同字节的 symlink 若被物化，read_bytes 不变但链接类型改变，也必须检出。
+        (destination / "last.pt").symlink_to(source)
+        (destination / "best.pt").symlink_to(source)
+    before = {p.name: (p.is_symlink(), p.read_bytes()) for p in destination.iterdir()} if destination.exists() else None
+    config = dataclasses.replace(source_config, output_dir=destination, resume_from=source, ddp=True)
+    context = mp.get_context("spawn")
+    queue = context.Queue()
+    processes = [context.Process(target=_ddp_rng_failure_worker,
+        args=(rank, str(tmp_path / "rng-store"), config, queue)) for rank in range(2)]
+    try:
+        for process in processes:
+            process.start()
+        for process in processes:
+            process.join(25)
+        assert all(not process.is_alive() and process.exitcode == 0 for process in processes)
+        results = sorted(queue.get(timeout=2) for _ in range(2))
+        assert all(result[1] == "error" for result in results), results
+        assert results[0][2] == results[1][2]
+        assert "rank 1 ValueError: rng_states.cuda" in results[0][2]
+        assert "timeout" not in results[0][2].lower()
+        after = {p.name: (p.is_symlink(), p.read_bytes()) for p in destination.iterdir()} if destination.exists() else None
+        assert after == before
     finally:
         for process in processes:
             if process.is_alive():

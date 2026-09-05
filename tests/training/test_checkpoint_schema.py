@@ -6,6 +6,8 @@
 bytes；同时确认梯度、requires_grad 和各子模块训练模式保持不变，故障注入由 pytest 撤销。
 覆盖 nested private/extra-state 和 optimizer/scheduler 恢复扩展的入口拒绝，官方 plateau/组合
 scheduler 的恢复、续跑与回滚；以 fake CUDA RNG 后端验证数量对称预检和不恢复时的入口保护。
+对 root/nested module、optimizer、scheduler/子 scheduler 的五种 copy 协议作实例/子类矩阵，
+确认任何 deepcopy 前拒绝，用户回调未运行，调用方权重/状态与入口 RNG 不变。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
@@ -540,3 +542,42 @@ def test_cuda_topology_failure_precedes_all_rng_writes(monkeypatch):
     monkeypatch.setattr(torch, "set_rng_state", forbidden_write)
     with pytest.raises(ValueError, match="rng_states.cuda"):
         restore_rng_state(invalid)
+
+
+@pytest.mark.parametrize("owner_kind", ["root", "nested", "optimizer", "scheduler", "child_scheduler"])
+@pytest.mark.parametrize("method", ["__deepcopy__", "__reduce__", "__reduce_ex__", "__getstate__", "__setstate__"])
+@pytest.mark.parametrize("override_kind", ["instance", "subclass"])
+def test_copy_protocol_extensions_rejected_before_any_copy(tmp_path, owner_kind, method, override_kind):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    owners = dict(root=model, nested=model.spectrum_encoder.projection[0], optimizer=optimizer, scheduler=scheduler)
+    if owner_kind == "child_scheduler":
+        child = scheduler
+        scheduler = torch.optim.lr_scheduler.ChainedScheduler([child], optimizer=optimizer)
+        owners[owner_kind] = child
+    owner = owners[owner_kind]
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    def unsafe_copy(*args, **kwargs):
+        owner.copy_hook_ran = True
+        with torch.no_grad():
+            next(model.parameters()).fill_(99)
+        random.random()
+        np.random.rand()
+        torch.rand(1)
+        raise RuntimeError("unsafe copy protocol executed")
+    if override_kind == "instance":
+        setattr(owner, method, types.MethodType(unsafe_copy, owner))
+    else:
+        owner.__class__ = type("CustomCopyProtocol", (type(owner),), {method: unsafe_copy})
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match=f"unsupported.*{method}"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    def without_hook(value):
+        if isinstance(value, dict):
+            return {key: without_hook(item) for key, item in value.items() if key != method}
+        if isinstance(value, list):
+            return [without_hook(item) for item in value]
+        return value
+    assert not hasattr(owner, "copy_hook_ran")
+    assert_nested_equal(without_hook([component.state_dict() for component in (model, optimizer, scheduler)]), before)
+    assert_nested_equal(capture_rng(), before_rng)

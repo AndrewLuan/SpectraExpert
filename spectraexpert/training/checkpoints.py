@@ -9,6 +9,8 @@ _validate_training_bindings 拒绝重复参数、全冻结模型和不完整 tra
 归属；_preflight_states 在写入前检查状态存在性和参数组布局；_apply_states 执行状态与设备恢复；
 _validate_standard_loaders/_require_torch_implementation 检查 public/private 恢复及 extra-state
 动态方法的 torch.* 来源并拒绝实例覆盖和 hooks；_scheduler_tree 递归检查组合 scheduler。
+COPY_PROTOCOL 覆盖 deepcopy/reduce/getstate/setstate 协议，任何 probe 或状态备份前检查模型
+全部注册 module/parameter/buffer、optimizer 和组合 scheduler；允许 object 的标准内建协议。
 允许官方 ReduceLROnPlateau/SequentialLR/ChainedScheduler 覆盖；_transactional_apply 先 deepcopy/probe，
 再备份调用方状态进行事务式应用，失败恢复三者。入口 RNG 保护涵盖所有校验、probe 与应用。
 MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
@@ -18,6 +20,8 @@ _atomic_save/_atomic_write 在目标目录创建临时文件，flush/fsync 成�
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
 事务只支持使用框架恢复实现且无用户扩展/load-state hooks 的对象，不承诺任意自定义副作用或
 导致回滚也无法执行的硬件故障；显式恢复需要 probe 和回滚快照的额外内存，probe 随后释放。
+支持范围是标准项目模型的注册模块/参数/缓冲区与框架 optimizer/scheduler；附加任意自定义
+可达属性、全局 copyreg 扩展及伪造来源不属于此契约，本 loader 不是 Python 对象沙箱。
 epoch 为已完成的零基 epoch；默认保持入口 RNG，restore_rng=True 成功时才采用 checkpoint RNG。
 """
 from __future__ import annotations
@@ -41,6 +45,7 @@ from spectraexpert.models.spectrum_encoder import SpectrumTransformer
 
 MODES = ("spectral_only_v1", "spectrum_graph_v2")
 SPECTRUM_KEYS = ("signal_length", "patch_size", "stride", "embed_dim", "depth", "num_heads", "projection_dim")
+COPY_PROTOCOL = ("__deepcopy__", "__reduce__", "__reduce_ex__", "__getstate__", "__setstate__")
 
 
 @dataclass(frozen=True)
@@ -247,30 +252,34 @@ def _scheduler_tree(scheduler):
 
 
 def _require_torch_implementation(component, name, methods):
+    missing = object()
     for method in methods:
-        implementation = getattr(type(component), method, None)
-        if (method in component.__dict__ or (implementation is not None
+        implementation = getattr(type(component), method, missing)
+        if (method in component.__dict__ or (implementation is not missing
+                and implementation is not getattr(object, method, missing)
                 and not getattr(implementation, "__module__", "").startswith("torch."))):
             raise ValueError(f"unsupported {name} {method} override")
 
 
 def _validate_standard_loaders(model, optimizer, scheduler):
-    """验证实际动态调用点；官方 torch.* 覆盖受支持，用户扩展及实例覆盖被拒绝。"""
+    """在任何 deepcopy 前验证注册对象的动态调用点，不遍历任意用户附加属性。"""
     if model is not None:
         for name, module in model.named_modules():
             if module._load_state_dict_pre_hooks or module._load_state_dict_post_hooks:
                 raise ValueError(f"unsupported model load-state hook: {name or '<root>'}")
             _require_torch_implementation(module, f"model.{name}",
-                ("load_state_dict", "_load_from_state_dict", "set_extra_state", "__setstate__"))
+                ("load_state_dict", "_load_from_state_dict", "set_extra_state") + COPY_PROTOCOL)
+        for name, tensor in list(model.named_parameters()) + list(model.named_buffers()):
+            _require_torch_implementation(tensor, f"model tensor.{name}", COPY_PROTOCOL)
     if optimizer is not None:
         if (optimizer._optimizer_load_state_dict_pre_hooks
                 or optimizer._optimizer_load_state_dict_post_hooks):
             raise ValueError("unsupported optimizer load-state hook")
-        _require_torch_implementation(optimizer, "optimizer", ("load_state_dict", "__setstate__"))
+        _require_torch_implementation(optimizer, "optimizer", ("load_state_dict",) + COPY_PROTOCOL)
     if scheduler is not None:
         for current in _scheduler_tree(scheduler):
             _require_torch_implementation(current, "scheduler",
-                ("load_state_dict", "__setstate__", "_init_is_better", "_init_scale_fn"))
+                ("load_state_dict", "_init_is_better", "_init_scale_fn") + COPY_PROTOCOL)
 
 
 def _preflight_states(payload, optimizer, scheduler):
