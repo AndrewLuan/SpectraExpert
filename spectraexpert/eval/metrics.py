@@ -11,16 +11,14 @@ legacy 首个上界和 chemical 完整搜索语义；``normalized_graph_edit_dis
 Morgan 参数。
 输入输出与副作用：公开 GED 接收两个 SMILES，非法 SMILES、超时或未完成搜索返回 ``None``；
 legacy 仅为历史复现而返回 generator 首项，chemical 仅在 generator 耗尽后返回最小值。本模块
-不读取数据或写入状态，NetworkX 搜索由进程主线程的计时器在给定 wall-clock timeout 后中断。
+不读取数据或写入状态；GED 在隔离 fork worker 中运行，父进程在给定 wall-clock deadline 后终止
+worker 并回收其资源，因此主线程与后台线程都不会被长期不 yield 的搜索阻塞。
 """
 
 from __future__ import annotations
 
-import signal
-import threading
+import multiprocessing as mp
 import time
-from collections.abc import Iterator
-from contextlib import contextmanager
 from typing import Literal, Optional
 
 import networkx as nx
@@ -32,10 +30,6 @@ from spectraexpert.data.structure_features import bond_features, morgan_fingerpr
 
 GEDVersion = Literal["legacy_ged_v1", "chemical_ged_v2"]
 DEFAULT_GED_VERSION: GEDVersion = "chemical_ged_v2"
-
-
-class _GEDTimeout(Exception):
-    """内部控制流：有界 GED 搜索超过调用方给定的 wall-clock 时限。"""
 
 
 def _validate_version(version: str) -> GEDVersion:
@@ -55,6 +49,18 @@ def _bond_type_id(bond: Chem.Bond, version: GEDVersion) -> int:
     return bond_features(bond)[0]
 
 
+def _molecule_from_smiles(smiles: str) -> Optional[Chem.Mol]:
+    """解析至少含一个原子的 SMILES；空字符串和无效输入统一返回 ``None``。"""
+
+    try:
+        molecule = Chem.MolFromSmiles(smiles)
+    except (TypeError, ValueError):
+        return None
+    if molecule is None or molecule.GetNumAtoms() == 0:
+        return None
+    return molecule
+
+
 def smiles_to_nx(
     smiles: str,
     include_h: bool = False,
@@ -63,11 +69,13 @@ def smiles_to_nx(
     """将 SMILES 转为指定 GED schema 的 NetworkX 图，解析失败返回 ``None``。"""
 
     version = _validate_version(version)
-    molecule = Chem.MolFromSmiles(smiles)
+    molecule = _molecule_from_smiles(smiles)
     if molecule is None:
         return None
     if not include_h:
         molecule = Chem.RemoveHs(molecule)
+    if molecule.GetNumAtoms() == 0:
+        return None
 
     graph = nx.Graph()
     for atom in molecule.GetAtoms():
@@ -97,53 +105,51 @@ def _edge_insertion_or_deletion_cost(_: dict) -> float:
     return 1.0
 
 
-@contextmanager
-def _ged_timeout(timeout: float) -> Iterator[None]:
-    """在主线程精确中断 NetworkX generator，其他线程在 yield 间检查时限。"""
-
-    if timeout < 0:
-        raise ValueError("timeout must be non-negative")
-    if threading.current_thread() is not threading.main_thread():
-        yield
-        return
-
-    def raise_timeout(_: int, __: object) -> None:
-        raise _GEDTimeout
-
-    previous_handler = signal.getsignal(signal.SIGALRM)
-    previous_timer = signal.setitimer(signal.ITIMER_REAL, timeout)
-    signal.signal(signal.SIGALRM, raise_timeout)
-    try:
-        yield
-    finally:
-        signal.setitimer(signal.ITIMER_REAL, *previous_timer)
-        signal.signal(signal.SIGALRM, previous_handler)
-
-
-def _optimized_ged_values(
+def _consume_optimized_ged(
     left: nx.Graph,
     right: nx.Graph,
-    timeout: float,
-) -> Iterator[float]:
-    """产出显式 0/1 编辑代价下 NetworkX 的每个递减 GED 上界。"""
+    version: GEDVersion,
+) -> Optional[float]:
+    """在 worker 内完整消费 generator，复现 legacy 或 chemical 的版本化语义。"""
 
-    start = time.monotonic()
-    with _ged_timeout(timeout):
-        for distance in nx.optimize_graph_edit_distance(
-            left,
-            right,
-            node_subst_cost=_node_substitution_cost,
-            node_del_cost=_node_insertion_or_deletion_cost,
-            node_ins_cost=_node_insertion_or_deletion_cost,
-            edge_subst_cost=_edge_substitution_cost,
-            edge_del_cost=_edge_insertion_or_deletion_cost,
-            edge_ins_cost=_edge_insertion_or_deletion_cost,
-        ):
-            if threading.current_thread() is not threading.main_thread() and (
-                time.monotonic() - start > timeout
-            ):
-                raise _GEDTimeout
-            yield float(distance)
+    distances = nx.optimize_graph_edit_distance(
+        left,
+        right,
+        node_subst_cost=_node_substitution_cost,
+        node_del_cost=_node_insertion_or_deletion_cost,
+        node_ins_cost=_node_insertion_or_deletion_cost,
+        edge_subst_cost=_edge_substitution_cost,
+        edge_del_cost=_edge_insertion_or_deletion_cost,
+        edge_ins_cost=_edge_insertion_or_deletion_cost,
+    )
+    if version == "legacy_ged_v1":
+        return next((float(distance) for distance in distances), None)
+
+    minimum: Optional[float] = None
+    for distance in distances:
+        value = float(distance)
+        minimum = value if minimum is None else min(minimum, value)
+    return minimum
+
+
+def _ged_worker(
+    connection: object,
+    left: nx.Graph,
+    right: nx.Graph,
+    version: GEDVersion,
+) -> None:
+    """在独立进程中执行搜索；普通搜索异常以 ``None`` 回传而不捕获中断信号。"""
+
+    try:
+        result = _consume_optimized_ged(left, right, version)
+    except Exception:
+        result = None
+    try:
+        connection.send(result)  # type: ignore[attr-defined]
+    except (BrokenPipeError, EOFError, OSError):
+        pass
+    finally:
+        connection.close()  # type: ignore[attr-defined]
 
 
 def _graph_edit_distance_from_graphs(
@@ -152,19 +158,47 @@ def _graph_edit_distance_from_graphs(
     timeout: float,
     version: GEDVersion,
 ) -> Optional[float]:
-    """执行版本约定的 generator 消费策略，并把未完成计算标记为 ``None``。"""
+    """在可终止 worker 中执行版本化 GED，超过 deadline 或异常均返回 ``None``。"""
 
-    try:
-        distances = _optimized_ged_values(left, right, timeout)
-        if version == "legacy_ged_v1":
-            return next(distances, None)
-
-        minimum: Optional[float] = None
-        for distance in distances:
-            minimum = distance if minimum is None else min(minimum, distance)
-        return minimum
-    except (_GEDTimeout, nx.NetworkXError, ValueError):
+    if timeout <= 0:
         return None
+    deadline = time.monotonic() + timeout
+    process: Optional[mp.Process] = None
+    process_started = False
+    parent_connection = None
+    child_connection = None
+    try:
+        context = mp.get_context("fork")
+        parent_connection, child_connection = context.Pipe(duplex=False)
+        process = context.Process(
+            target=_ged_worker,
+            args=(child_connection, left, right, version),
+        )
+        process.start()
+        process_started = True
+        child_connection.close()
+        child_connection = None
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return None
+        process.join(remaining)
+        if process.is_alive() or time.monotonic() > deadline:
+            return None
+        if not parent_connection.poll():
+            return None
+        return parent_connection.recv()
+    except (EOFError, OSError, ValueError):
+        return None
+    finally:
+        if child_connection is not None:
+            child_connection.close()
+        if parent_connection is not None:
+            parent_connection.close()
+        if process is not None and process_started:
+            if process.is_alive():
+                process.terminate()
+            process.join()
+            process.close()
 
 
 def graph_edit_distance(
@@ -253,13 +287,16 @@ def pairwise_tanimoto(fingerprints: torch.Tensor) -> torch.Tensor:
 def tanimoto_similarity(smiles_a: str, smiles_b: str) -> Optional[float]:
     """用 Task 2 默认 Morgan schema 返回两条 SMILES 的 Tanimoto 相似度。"""
 
-    molecule_a = Chem.MolFromSmiles(smiles_a)
-    molecule_b = Chem.MolFromSmiles(smiles_b)
+    molecule_a = _molecule_from_smiles(smiles_a)
+    molecule_b = _molecule_from_smiles(smiles_b)
     if molecule_a is None or molecule_b is None:
         return None
-    fingerprints = torch.stack(
-        [morgan_fingerprint(molecule_a), morgan_fingerprint(molecule_b)]
-    )
+    try:
+        fingerprints = torch.stack(
+            [morgan_fingerprint(molecule_a), morgan_fingerprint(molecule_b)]
+        )
+    except ValueError:
+        return None
     return float(pairwise_tanimoto(fingerprints)[0, 1])
 
 
