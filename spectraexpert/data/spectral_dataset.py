@@ -1,14 +1,11 @@
 """
-Spectral Dataset for Contrastive Learning on QM9S.
-
-Loads pre-processed QM9S spectra (Parquet format) and constructs positive
-pairs via the augmentation strategies defined in utils/augmentations.py.
-
-Design follows MatExpert's MyDataset pattern (retrieval/utils.py):
-  - __getitem__ returns two views of the same spectrum (anchor, positive)
-  - The dataset handles all augmentation on-the-fly
-
-No text tokenisation is needed — we operate directly on raw spectral arrays.
+功能概述：将 QM9S Parquet 光谱转换为对比学习可消费的数据集，避免训练代码直接处理表格细节。
+主要职责：``SpectralDataset`` 读取波数、SMILES 元数据和强度列，``__getitem__`` 生成同一光谱的
+anchor/positive 视图；``create_dataloader`` 按批次、采样器和 worker 配置封装 PyTorch DataLoader。
+代码库关系：依赖 ``spectraexpert.utils.augmentations.create_positive_pair``，由
+``spectraexpert.train_contrastive`` 导入；数据格式为含 ``mol_id`` 的 Parquet 文件。
+输入输出与副作用：构造时读取 Parquet，取样时返回两个 float Tensor 与 mol_id；归一化零方差输入
+会安全地中心化而非除零，函数不修改源数据。
 """
 
 import os
@@ -24,7 +21,7 @@ _parent = Path(__file__).resolve().parent.parent.parent
 if str(_parent) not in sys.path:
     sys.path.insert(0, str(_parent))
 
-from spectra_expert.utils.augmentations import create_positive_pair
+from spectraexpert.utils.augmentations import create_positive_pair
 
 
 class SpectralDataset(Dataset):

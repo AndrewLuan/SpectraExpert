@@ -9,8 +9,12 @@ rdkit>=2023.9
 hapi>=1.3
 datasets>=2.14
 scikit-learn>=1.3
+torch>=2.0
+networkx>=3.1
+pyyaml>=6.0
+tensorboard>=2.14
+pytest>=8.0
 
 # Optional: for LLM-based reasoning
-# torch>=2.0
 # transformers>=4.35
 # llama-factory

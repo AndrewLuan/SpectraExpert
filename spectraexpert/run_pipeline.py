@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """
-SpectraExpert Pipeline — CLI entry point.
+功能概述：提供 SpectraExpert 三阶段分子识别流程的命令行入口，负责把用户输入映射为管线配置。
+主要职责：``main`` 解析内置数据索引、.npy 光谱或 SMILES 查询，以及 LLM/输出参数；随后构造
+``SpectraExpertPipeline`` 并打印或保存结果。
+代码库关系：依赖 ``spectraexpert.pipeline`` 的公开 API；它是人工运行管线的薄适配层，不实现
+检索、峰匹配或 LLM 推理算法。
+输入输出与副作用：读取用户指定的光谱或本地数据，按选项写 .npz 输出并打印摘要；导入模块本身
+不发起模型或网络请求。
 
 Usage
 -----
@@ -31,7 +37,7 @@ _PROJ_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_PROJ_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJ_ROOT))
 
-from proj.spectra_expert.pipeline import SpectraExpertPipeline, PipelineConfig
+from spectraexpert.pipeline import PipelineConfig, SpectraExpertPipeline
 
 
 def main():

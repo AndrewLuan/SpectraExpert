@@ -1,15 +1,17 @@
 """
-Stage 2: Peak Analysis — match detected peaks to Nakamoto empirical rules.
-
-This stage is purely algorithmic (no LLM call).  It:
-1. Uses the PeakMatcher to find Nakamoto group-frequency rules matching each peak
-2. Produces a formatted "knowledge summary" for the Stage 3 LLM prompt
-3. Tracks which peaks are explained by rules and which are not
+功能概述：实现三阶段流程的确定性峰分析，将 Stage 1 的峰与 Nakamoto 经验规则相匹配，形成供
+语言模型解释的知识摘要。
+主要职责：``Stage2PeakAnalysis`` 加载规则库和 ``PeakMatcher``；``run`` 批量匹配峰、按偏好
+类别补充规则，并组装已解释峰与格式化 ``Stage2Result``。
+代码库关系：依赖同包 knowledge loader/matcher 及 ``spectraexpert.pipeline.data_types``，由
+``SpectraExpertPipeline`` 在检索之后调用，结果交给 ``Stage3LLMReasoning``。
+输入输出与副作用：构造器读取规则文件；``run`` 只消费 ``Stage1Result`` 并返回新结果对象，
+不调用 LLM、不修改原始谱图或规则数据。
 """
 
 from __future__ import annotations
 
-from proj.spectra_expert.pipeline.data_types import DetectedPeak, MatchedRule, Stage1Result, Stage2Result
+from spectraexpert.pipeline.data_types import DetectedPeak, MatchedRule, Stage1Result, Stage2Result
 from .knowledge.nakamoto_loader import NakamotoRuleBase
 from .knowledge.peak_matcher import PeakMatcher
 

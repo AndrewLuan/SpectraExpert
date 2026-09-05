@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """
-Multi-method evaluation of SpectraExpert on ChEMBL held-out test set.
+功能概述：在留出分子集合上比较 KNN、编码器、直接 LLM、知识增强 LLM 与完整 agentic 管线，
+生成可复核的检索和结构质量指标。
+主要职责：``_PeakDetector`` 提供无需 encoder 的轻量峰检测；数据与客户端辅助函数准备样本；各
+``evaluate_*`` 函数运行指定模式；聚合/报告函数落盘并展示指标；``main`` 组装 CLI 工作流。
+代码库关系：使用 ``spectraexpert.pipeline``、``spectraexpert.eval.metrics`` 与直接识别 prompt；
+该模块是评估消费者，不定义训练模型或知识库规则。
+输入输出与副作用：读取测试集、光谱和可选 checkpoint，可能通过配置的兼容端点调用 LLM，并写入
+评估 JSON/报告；导入模块不自动执行评估。
 
 Supported modes:
   knn          — Pure K-nearest-neighbour spectral similarity (baseline 1)
@@ -63,22 +70,22 @@ if str(_PROJ_ROOT) not in sys.path:
 
 _PROXY_BASE_URL = "https://api.chatanywhere.tech/v1"
 
-from proj.spectra_expert.pipeline import PipelineConfig, SpectraExpertPipeline
-from proj.spectra_expert.pipeline.stage1_retrieval import Stage1Retrieval
-from proj.spectra_expert.pipeline.stage2_peak_analysis import Stage2PeakAnalysis
-from proj.spectra_expert.pipeline.data_types import (
+from spectraexpert.pipeline import PipelineConfig, SpectraExpertPipeline
+from spectraexpert.pipeline.stage1_retrieval import Stage1Retrieval
+from spectraexpert.pipeline.stage2_peak_analysis import Stage2PeakAnalysis
+from spectraexpert.pipeline.data_types import (
     Candidate,
     DetectedPeak,
     Stage1Result,
     Stage2Result,
 )
-from proj.spectra_expert.eval.metrics import (
+from spectraexpert.eval.metrics import (
     compute_retrieval_metrics,
     graph_edit_distance,
     tanimoto_similarity,
 )
-from proj.spectra_expert.pipeline.llm.openai_client import OpenAIClient
-from proj.spectra_expert.pipeline.prompts.stage3_direct_identification import (
+from spectraexpert.pipeline.llm.openai_client import OpenAIClient
+from spectraexpert.pipeline.prompts.stage3_direct_identification import (
     DIRECT_ID_SYSTEM_PROMPT,
     DIRECT_ID_PEAKS_ONLY_PROMPT,
     DIRECT_ID_WITH_KB_PROMPT,

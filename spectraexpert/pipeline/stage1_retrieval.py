@@ -1,26 +1,25 @@
 """
-Stage 1: Contrastive Retrieval + Peak Detection.
-
-Encodes the input spectrum using the trained SpectrumTransformer, detects
-spectral peaks via scipy, and retrieves top-K candidates from the database.
+功能概述：实现三阶段流程的第一阶段，把输入 Raman 光谱转换为 checkpoint 嵌入、检测谱峰并从
+预计算数据库中检索候选分子。
+主要职责：``Stage1Retrieval`` 初始化编码器、嵌入缓存及元数据；``run`` 编排检测/编码/检索；
+``_detect_peaks`` 使用 scipy 配置生成 ``DetectedPeak``，``_retrieve`` 使用 legacy 余弦检索生成
+有 rank 的 ``Candidate``。
+代码库关系：依赖 ``spectraexpert.inference.SpectralEncoder``、数据类型及 Parquet/NPZ 数据；由
+``SpectraExpertPipeline`` 和评估脚本调用，输出被 Stage 2 与 Stage 3 消费。
+输入输出与副作用：构造时读取 checkpoint、缓存与可选 Parquet；无缓存时抛 FileNotFoundError，
+运行只返回内存中的 ``Stage1Result``，不修改数据文件。
 """
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
-# Ensure the project root is on sys.path so we can import analyze_spectra
-_PROJ_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-if str(_PROJ_ROOT) not in sys.path:
-    sys.path.insert(0, str(_PROJ_ROOT))
-
-from proj.spectra_expert.analyze_spectra import SpectralEncoder
-from proj.spectra_expert.pipeline.data_types import Candidate, DetectedPeak, Stage1Result
+from spectraexpert.inference import SpectralEncoder
+from spectraexpert.pipeline.data_types import Candidate, DetectedPeak, Stage1Result
 
 
 class Stage1Retrieval:
