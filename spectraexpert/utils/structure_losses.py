@@ -4,6 +4,7 @@
 ``multi_positive_cross_entropy`` 将相同 identity 的列归一化为每行 soft target；
 ``relational_structure_loss`` 以固定 Morgan Tanimoto 分布监督任意方阵相似度；
 ``StructureAwareObjective`` 聚合 DDP 全局 embedding/identity/fingerprint，并组合全部七项标量 loss。
+``DistributedObjectiveError`` 在任一 rank 输入或数值异常时携带原 rank、异常类型和上下文同步失败。
 代码库关系：消费 Task 4 ``MultimodalOutput`` 和 Task 2 生成的布尔 fingerprint，不复制 Morgan
 schema；复用同目录 ``distributed`` 的 rank-major gather，由 Task 7 训练循环直接调用返回字典。
 输入输出与副作用：输入 tensor 必须具有一致 batch/device，embedding loss 保留本 rank 梯度；
@@ -26,6 +27,13 @@ if TYPE_CHECKING:
     from spectraexpert.models.multimodal_retriever import MultimodalOutput
 
 
+class DistributedObjectiveError(RuntimeError):
+    """表示某个 rank 的 objective 验证或数值错误已同步到整个进程组。"""
+
+
+_MAX_DISTRIBUTED_ERROR_BYTES = 4096
+
+
 def _validate_temperature(value: float, name: str) -> float:
     temperature = float(value)
     if not math.isfinite(temperature) or temperature <= 0:
@@ -43,6 +51,70 @@ def _scale_replicated_global_gradient(loss: torch.Tensor) -> torch.Tensor:
         return loss
     detached = loss.detach()
     return detached + world_size * (loss - detached)
+
+
+def _distributed_control_device(reference: torch.Tensor | None) -> torch.device:
+    """为错误状态 collective 选择与 backend 兼容且不进入模型计算图的设备。"""
+
+    backend = str(dist.get_backend()).lower()
+    if backend.endswith("nccl"):
+        if isinstance(reference, torch.Tensor) and reference.device.type == "cuda":
+            return reference.device
+        if not torch.cuda.is_available():
+            raise RuntimeError("NCCL objective error synchronization requires a CUDA device")
+        return torch.device("cuda", torch.cuda.current_device())
+    return torch.device("cpu")
+
+
+def _synchronize_distributed_error(
+    local_error: Exception | None,
+    *,
+    stage: str,
+    reference: torch.Tensor | None,
+) -> None:
+    """同步各 rank 失败状态；失败时全部 rank 抛出同一条、保留原上下文的项目错误。"""
+
+    if not dist.is_available() or not dist.is_initialized() or dist.get_world_size() == 1:
+        if local_error is not None:
+            raise local_error
+        return
+
+    world_size = dist.get_world_size()
+    rank = dist.get_rank()
+    device = _distributed_control_device(reference)
+    failed = torch.tensor(
+        [1 if local_error is not None else 0], dtype=torch.int32, device=device
+    )
+    dist.all_reduce(failed, op=dist.ReduceOp.MAX)
+    if int(failed.item()) == 0:
+        return
+
+    detail = ""
+    if local_error is not None:
+        detail = f"rank {rank} {type(local_error).__name__}: {local_error}"
+    encoded = detail.encode("utf-8")[:_MAX_DISTRIBUTED_ERROR_BYTES]
+    local_length = torch.tensor([len(encoded)], dtype=torch.long, device=device)
+    gathered_lengths = [torch.empty_like(local_length) for _ in range(world_size)]
+    dist.all_gather(gathered_lengths, local_length)
+    lengths = [int(length.item()) for length in gathered_lengths]
+    max_length = max(lengths)
+    local_payload = torch.zeros(max_length, dtype=torch.uint8, device=device)
+    if encoded:
+        local_payload[: len(encoded)] = torch.tensor(
+            list(encoded), dtype=torch.uint8, device=device
+        )
+    gathered_payloads = [torch.empty_like(local_payload) for _ in range(world_size)]
+    dist.all_gather(gathered_payloads, local_payload)
+    details = [
+        bytes(payload[:length].cpu().tolist()).decode("utf-8", errors="replace")
+        for payload, length in zip(gathered_payloads, lengths)
+        if length > 0
+    ]
+    message = f"distributed objective {stage} failed: " + "; ".join(details)
+    synchronized = DistributedObjectiveError(message)
+    if local_error is not None:
+        raise synchronized from local_error
+    raise synchronized
 
 
 def _validate_embedding_pair(first: torch.Tensor, second: torch.Tensor) -> None:
@@ -278,12 +350,22 @@ class StructureAwareObjective(nn.Module):
         element_presence: torch.Tensor,
         identity_ids: torch.LongTensor,
     ) -> dict[str, torch.Tensor]:
-        self._validate_local_inputs(
-            output,
-            fingerprints,
-            descriptor_targets,
-            element_presence,
-            identity_ids,
+        reference = getattr(output, "spectrum_view1_embedding", None)
+        validation_error = None
+        try:
+            self._validate_local_inputs(
+                output,
+                fingerprints,
+                descriptor_targets,
+                element_presence,
+                identity_ids,
+            )
+        except Exception as error:
+            validation_error = error
+        _synchronize_distributed_error(
+            validation_error,
+            stage="input validation",
+            reference=reference if isinstance(reference, torch.Tensor) else None,
         )
         spectrum1 = gather_with_local_grad(output.spectrum_view1_embedding)
         spectrum2 = gather_with_local_grad(output.spectrum_view2_embedding)
@@ -362,9 +444,6 @@ class StructureAwareObjective(nn.Module):
             "presence": presence,
             "fingerprint": fingerprint,
         }
-        for name, loss in losses.items():
-            if loss.ndim != 0 or not bool(torch.isfinite(loss).item()):
-                raise FloatingPointError(f"{name} loss is not finite")
         total = (
             cross
             + self.lambda_aug * aug
@@ -372,12 +451,27 @@ class StructureAwareObjective(nn.Module):
             + self.lambda_aux * (descriptor + presence)
             + self.lambda_fingerprint * fingerprint
         )
-        if not bool(torch.isfinite(total).item()):
-            raise FloatingPointError("total loss is not finite")
+        checked_losses = {**losses, "total": total}
+        invalid_names = [
+            name
+            for name, loss in checked_losses.items()
+            if loss.ndim != 0 or not bool(torch.isfinite(loss.detach()).all().item())
+        ]
+        finite_error = None
+        if invalid_names:
+            finite_error = FloatingPointError(
+                "non-finite objective loss components: " + ", ".join(invalid_names)
+            )
+        _synchronize_distributed_error(
+            finite_error,
+            stage="finite check before backward",
+            reference=output.spectrum_view1_embedding,
+        )
         return {"total": total, **losses}
 
 
 __all__ = [
+    "DistributedObjectiveError",
     "StructureAwareObjective",
     "dynamic_nt_xent",
     "multi_positive_cross_entropy",

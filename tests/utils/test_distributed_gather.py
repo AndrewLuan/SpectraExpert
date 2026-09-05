@@ -1,7 +1,8 @@
 """
 功能概述：以两进程 CPU gloo 验证结构感知 loss 的 DDP 全局样本顺序与本 rank 梯度保留契约。
 主要职责：覆盖 ``gather_with_local_grad``、``gather_identity`` 的 rank-major 拼接、无梯度标签、
-全局 cross-modal negatives 和不等 local batch 的一致失败；显式检查 identity offset 后的排列。
+全局 cross-modal negatives、不等 local batch，以及单 rank validation/非有限 loss 的一致失败；
+显式检查 identity offset 后的排列和 DDP 参数梯度等价性。
 代码库关系：直接消费 ``spectraexpert.utils.distributed`` 与 ``StructureAwareObjective``；worker 是
 可由 spawn 导入的模块级测试辅助函数，不进入生产类，也不依赖 GPU、训练 sampler 或远端服务。
 输入输出与副作用：每个测试仅临时创建本机 gloo FileStore 和两个子进程；所有 join 均有硬超时，
@@ -13,6 +14,7 @@ from __future__ import annotations
 import queue
 import tempfile
 import time
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -31,7 +33,8 @@ from spectraexpert.utils.structure_losses import (
 
 
 _WORLD_SIZE = 2
-_PROCESS_TIMEOUT_SECONDS = 30.0
+_PROCESS_TIMEOUT_SECONDS = 15.0
+_COLLECTIVE_TIMEOUT_SECONDS = 8.0
 
 
 def _init_process_group(rank: int, store_path: str) -> None:
@@ -40,6 +43,7 @@ def _init_process_group(rank: int, store_path: str) -> None:
         init_method=f"file://{store_path}",
         rank=rank,
         world_size=_WORLD_SIZE,
+        timeout=timedelta(seconds=_COLLECTIVE_TIMEOUT_SECONDS),
     )
 
 
@@ -186,8 +190,81 @@ def _uneven_worker(rank: int, store_path: str, result_queue) -> None:
             dist.destroy_process_group()
 
 
+def _validation_failure_worker(rank: int, store_path: str, result_queue) -> None:
+    try:
+        _init_process_group(rank, store_path)
+        embeddings = F.normalize(torch.eye(2), dim=1).requires_grad_()
+        output = MultimodalOutput(
+            spectrum_view1_embedding=embeddings,
+            spectrum_view2_embedding=embeddings.clone(),
+            graph_embedding=embeddings.clone(),
+            spectrum_view1_features=torch.zeros(2, 1),
+            spectrum_view2_features=torch.zeros(2, 1),
+            graph_features=torch.zeros(2, 1),
+            descriptor_prediction=torch.zeros(2, 1, requires_grad=True),
+            element_presence_logits=torch.zeros(2, 1, requires_grad=True),
+            fingerprint_logits=None,
+        )
+        descriptor_targets = torch.zeros(2, 2 if rank == 0 else 1)
+        StructureAwareObjective()(
+            output,
+            torch.eye(2, dtype=torch.bool),
+            descriptor_targets,
+            torch.zeros(2, 1, dtype=torch.bool),
+            torch.arange(rank * 2, rank * 2 + 2),
+        )
+    except Exception as error:
+        result_queue.put(("ok", rank, type(error).__name__, str(error)))
+    else:
+        result_queue.put(("error", rank, "validation unexpectedly succeeded"))
+        raise AssertionError("validation unexpectedly succeeded")
+    finally:
+        if dist.is_initialized():
+            dist.destroy_process_group()
+
+
+def _nonfinite_failure_worker(rank: int, store_path: str, result_queue) -> None:
+    try:
+        _init_process_group(rank, store_path)
+        model = torch.nn.Linear(2, 2, bias=False)
+        model = DistributedDataParallel(model)
+        encoded = model(torch.eye(2))
+        embeddings = F.normalize(encoded, dim=1)
+        output = MultimodalOutput(
+            spectrum_view1_embedding=embeddings,
+            spectrum_view2_embedding=embeddings,
+            graph_embedding=embeddings,
+            spectrum_view1_features=encoded,
+            spectrum_view2_features=encoded,
+            graph_features=encoded,
+            descriptor_prediction=encoded[:, :1],
+            element_presence_logits=encoded[:, :1],
+            fingerprint_logits=None,
+        )
+        descriptor_targets = torch.zeros(2, 1)
+        if rank == 0:
+            descriptor_targets[0, 0] = torch.nan
+        losses = StructureAwareObjective()(
+            output,
+            torch.eye(2, dtype=torch.bool),
+            descriptor_targets,
+            torch.zeros(2, 1, dtype=torch.bool),
+            torch.arange(rank * 2, rank * 2 + 2),
+        )
+        losses["total"].backward()
+    except Exception as error:
+        result_queue.put(("ok", rank, type(error).__name__, str(error)))
+    else:
+        result_queue.put(("error", rank, "non-finite objective unexpectedly succeeded"))
+        raise AssertionError("non-finite objective unexpectedly succeeded")
+    finally:
+        if dist.is_initialized():
+            dist.destroy_process_group()
+
+
 def _run_two_processes(worker):
     context = mp.get_context("spawn")
+    existing_child_pids = {process.pid for process in mp.active_children()}
     result_queue = context.Queue()
     processes = []
     results = []
@@ -221,6 +298,7 @@ def _run_two_processes(worker):
                 process.join(timeout=2.0)
             result_queue.close()
             result_queue.join_thread()
+    assert {process.pid for process in mp.active_children()} <= existing_child_pids
     assert all(result[0] == "ok" for result in results), results
     return sorted(results, key=lambda result: result[1])
 
@@ -253,3 +331,25 @@ def test_uneven_batches_fail_on_every_rank_with_all_rank_sizes():
     for _, _, message in results:
         assert "batch" in message.lower()
         assert "[2, 3]" in message
+
+
+@pytest.mark.parametrize(
+    "worker, expected_context",
+    [
+        (_validation_failure_worker, "ValueError"),
+        (_nonfinite_failure_worker, "FloatingPointError"),
+    ],
+)
+def test_single_rank_objective_failure_is_synchronized_before_collective_or_backward(
+    worker, expected_context
+):
+    results = _run_two_processes(worker)
+    error_types = {result[2] for result in results}
+    messages = {result[3] for result in results}
+
+    assert error_types == {"DistributedObjectiveError"}
+    assert len(messages) == 1
+    message = messages.pop()
+    assert "rank 0" in message
+    assert expected_context in message
+    assert "timeout" not in message.lower()
