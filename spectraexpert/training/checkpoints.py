@@ -5,14 +5,16 @@ model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_
 save_checkpoint 原子保存状态，load_checkpoint 预检后恢复模型、optimizer/scheduler 与 RNG。
 _validate_training_bindings 拒绝重复参数、全冻结模型和不完整 trainable 参数覆盖，检查 scheduler
 归属；_preflight_states 在写入前检查状态存在性和参数组布局；_apply_states 执行状态与设备恢复；
-_transactional_apply 先整体 deepcopy/probe，再备份调用方状态进行事务式应用，失败恢复三者。
+_validate_standard_loaders 拒绝自定义加载覆盖及 hooks；_transactional_apply 先整体 deepcopy/probe，
+再备份调用方状态进行事务式应用，失败恢复三者。入口 RNG 保护涵盖所有校验、probe 与应用。
 MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
 _atomic_save/_atomic_write 在目标目录创建临时文件，flush/fsync 成功后 replace 目标。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
 由 train_structure_aware 使用。历史无 schema checkpoint 仍只能由 legacy wrapper 加载。
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
-文件与调用方状态加载失败均保持原状态；显式恢复临时需要 probe 和回滚快照的额外内存，
-probe 在真实应用前释放。epoch 为已完成的零基 epoch，RNG 必须在重建模型后恢复。
+事务只支持使用框架标准加载方法且无 load-state hooks 的对象，不承诺任意自定义副作用或
+导致回滚也无法执行的硬件故障；显式恢复需要 probe 和回滚快照的额外内存，probe 随后释放。
+epoch 为已完成的零基 epoch；默认保持入口 RNG，restore_rng=True 成功时才采用 checkpoint RNG。
 """
 from __future__ import annotations
 
@@ -210,6 +212,27 @@ def _validate_training_bindings(model, optimizer, scheduler):
             raise ValueError("scheduler must belong to the supplied optimizer")
 
 
+def _validate_standard_loaders(model, optimizer, scheduler):
+    """在执行任何用户加载代码前限定事务边界；允许继承框架标准实现。"""
+    components = []
+    if model is not None:
+        for name, module in model.named_modules():
+            if module._load_state_dict_pre_hooks or module._load_state_dict_post_hooks:
+                raise ValueError(f"unsupported model load-state hook: {name or '<root>'}")
+            components.append((f"model.{name}", module, torch.nn.Module.load_state_dict))
+    if optimizer is not None:
+        if (optimizer._optimizer_load_state_dict_pre_hooks
+                or optimizer._optimizer_load_state_dict_post_hooks):
+            raise ValueError("unsupported optimizer load-state hook")
+        components.append(("optimizer", optimizer, torch.optim.Optimizer.load_state_dict))
+    if scheduler is not None:
+        components.append(("scheduler", scheduler, torch.optim.lr_scheduler.LRScheduler.load_state_dict))
+    for name, component, standard in components:
+        if ("load_state_dict" in component.__dict__
+                or type(component).load_state_dict is not standard):
+            raise ValueError(f"unsupported {name} load_state_dict override")
+
+
 def _preflight_states(payload, optimizer, scheduler):
     if not isinstance(payload["model_state_dict"], dict):
         raise ValueError("model_state_dict: requires a mapping")
@@ -276,7 +299,8 @@ def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state
             tensor.data = tensor.data.to(original_device)
             if isinstance(tensor, torch.nn.Parameter) and tensor.grad is not None:
                 tensor.grad.data = tensor.grad.data.to(original_device)
-        # 直接使用框架基础恢复方法，绕过刚刚抛错的自定义 load_state_dict 覆盖。
+        # 入口已拒绝 hooks/覆盖；标准加载保留 training、requires_grad 和梯度值。
+        # 使用框架基础方法恢复，回滚仍依赖设备及底层张量复制可用。
         torch.nn.Module.load_state_dict(model, previous[0], strict=True)
         if optimizer is not None:
             optimizer.param_groups = original_groups
@@ -294,6 +318,24 @@ def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state
 def load_checkpoint(path, *, model=None, optimizer=None, scheduler=None, device="cpu",
                     expected_mode=None, expected_model_config=None, expected_feature_config=None,
                     expected_metadata=None, restore_rng=False, rank=0):
+    entry_rng = capture_rng()
+    try:
+        _validate_standard_loaders(model, optimizer, scheduler)
+        result = _load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler,
+            device=device, expected_mode=expected_mode, expected_model_config=expected_model_config,
+            expected_feature_config=expected_feature_config, expected_metadata=expected_metadata,
+            restore_rng=restore_rng, rank=rank)
+        if not restore_rng:
+            restore_rng_state(entry_rng)
+        return result
+    except BaseException:
+        restore_rng_state(entry_rng)
+        raise
+
+
+def _load_checkpoint(path, *, model, optimizer, scheduler, device, expected_mode,
+                     expected_model_config, expected_feature_config, expected_metadata,
+                     restore_rng, rank):
     _validate_training_bindings(model, optimizer, scheduler)
     snapshot = read_checkpoint_snapshot(path)
     payload = torch.load(io.BytesIO(snapshot.content), map_location="cpu", weights_only=False)

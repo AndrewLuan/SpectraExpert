@@ -3,6 +3,8 @@
 v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希和空训练保护；恢复到已有
 目录时拒绝 last 内容冲突并保持原文件，同时接受同路径或逐字节相同的 checkpoint。
 原子替换来源文件验证已加载快照不会混入替换后的状态，并验证 symlink 物化和 best 来源复用。
+真正 best 状态要求分数与 best_score 相同且 bad_epochs 为零；已有 best 的字节冲突先拒绝，
+等字节链接按快照物化，平分后的 last 仍保留独立历史 best。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
@@ -271,6 +273,71 @@ def test_resume_from_best_uses_snapshot_for_both_delivered_files(tiny_dataset_di
     train(dataclasses.replace(config, output_dir=destination, resume_from=source))
     assert (destination / "best.pt").read_bytes() == expected
     assert (destination / "last.pt").read_bytes() == expected
+
+
+def test_existing_best_with_same_score_but_different_weights_is_rejected(tiny_dataset_dir, tmp_path):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(config)
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    shutil.copyfile(config.output_dir / "last.pt", destination / "last.pt")
+    changed = torch.load(config.output_dir / "best.pt", weights_only=False)
+    changed["model_state_dict"][next(iter(changed["model_state_dict"]))] += 1
+    torch.save(changed, destination / "best.pt")
+    before = {p.name: p.read_bytes() for p in destination.iterdir()}
+    with pytest.raises(ValueError, match="best.pt.*conflict"):
+        train(dataclasses.replace(config, output_dir=destination, resume_from=config.output_dir / "last.pt"))
+    assert {p.name: p.read_bytes() for p in destination.iterdir()} == before
+
+
+@pytest.mark.parametrize("replace_alias", [False, True])
+def test_existing_best_alias_is_materialized_or_rejected_if_replaced(tiny_dataset_dir, tmp_path, monkeypatch, replace_alias):
+    import spectraexpert.train_structure_aware as entry
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(config)
+    source = config.output_dir / "best.pt"
+    expected = source.read_bytes()
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    (destination / "best.pt").symlink_to(source)
+    shutil.copyfile(config.output_dir / "last.pt", destination / "last.pt")
+    changed = torch.load(source, weights_only=False)
+    changed["model_state_dict"][next(iter(changed["model_state_dict"]))] += 1
+    replacement = tmp_path / "replacement.pt"
+    torch.save(changed, replacement)
+    replacement_bytes = replacement.read_bytes()
+    original_loader = entry.load_checkpoint
+    replaced = False
+    def replace_after_loading(*args, **kwargs):
+        nonlocal replaced
+        result = original_loader(*args, **kwargs)
+        if replace_alias and not replaced:
+            replaced = True
+            os.replace(replacement, source)
+        return result
+    monkeypatch.setattr(entry, "load_checkpoint", replace_after_loading)
+    resumed = dataclasses.replace(config, output_dir=destination, resume_from=source)
+    if replace_alias:
+        with pytest.raises(ValueError, match="best.pt.*conflict"):
+            train(resumed)
+        assert (destination / "best.pt").is_symlink()
+        assert (destination / "best.pt").read_bytes() == replacement_bytes
+        assert (destination / "last.pt").read_bytes() == expected
+    else:
+        train(resumed)
+        assert not (destination / "best.pt").is_symlink()
+        assert (destination / "best.pt").read_bytes() == expected
+
+
+def test_inconsistent_best_selection_metadata_is_rejected(tiny_dataset_dir, tmp_path):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(config)
+    source = config.output_dir / "last.pt"
+    changed = torch.load(source, weights_only=False)
+    changed["validation"]["top1_tanimoto"] = .25
+    torch.save(changed, source)
+    with pytest.raises(ValueError, match="selection.*inconsistent"):
+        train(dataclasses.replace(config, output_dir=tmp_path / "destination", resume_from=source))
 
 
 def _ddp_worker(rank, store, config, queue, fail_batch=False, resume=False):

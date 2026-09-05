@@ -4,6 +4,8 @@
 checkpoint 与 JSONL；包含自身候选的结果以 inclusive_ 前缀单独记录。
 恢复来源只读取一次不可变字节快照，load 与来源 SHA-256 共用此快照；已有 last 的当前
 内容必须与快照相同，通过后原子物化快照为普通文件，避免 symlink 或来源替换造成混装。
+bad_epochs 为零且分数一致才表示恢复状态本身为 best，此时已有 best 也必须匹配同一快照；
+平分后的 last 不替代历史 best，所有目标冲突均在写入前拒绝。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -263,21 +265,31 @@ def _run(config):
             training.descriptor_normalizer = validation_data.descriptor_normalizer = stats
             start_epoch, global_steps = payload["epoch"] + 1, payload["global_steps"]
             best, bad_epochs = payload["best_score"], payload["bad_epochs"]
+            score = payload["validation"].get(payload["selection_metric"])
+            if (not isinstance(score, (int, float)) or not np.isfinite(score)
+                    or not np.isfinite(best) or score > best or (bad_epochs == 0 and score != best)):
+                raise ValueError("resume selection metadata inconsistent with best_score/bad_epochs")
+            resume_is_best = score == best and bad_epochs == 0
             if rank == 0:
                 best_destination = config.output_dir / "best.pt"
                 best_options = dict(expected_mode=config.training_mode, expected_model_config=architecture,
                                     expected_metadata=expected | {"best_score": best, "bad_epochs": 0})
+                best_snapshot = None
                 if best_destination.exists():
-                    load_checkpoint(best_destination, **best_options)
+                    best_snapshot = read_checkpoint_snapshot(best_destination)
+                    load_checkpoint(best_snapshot, **best_options)
                 last_destination = config.output_dir / "last.pt"
                 if (last_destination.exists()
                         and _sha256(last_destination) != resume_snapshot.sha256):
                     raise ValueError("resume destination last.pt conflict: differs from resume source")
-                if not best_destination.exists():
+                if resume_is_best:
+                    if best_snapshot is not None and best_snapshot.sha256 != resume_snapshot.sha256:
+                        raise ValueError("resume destination best.pt conflict: differs from resume best snapshot")
+                    # 即使已有 symlink 内容相同，也以已加载的同一 bytes 原子替换别名。
+                    materialize_checkpoint(resume_snapshot, best_destination)
+                elif best_snapshot is None:
                     best_source = config.resume_from.parent / "best.pt"
-                    if payload["bad_epochs"] == 0:
-                        copy_checkpoint(resume_snapshot, best_destination, **best_options)
-                    elif best_source.is_file():
+                    if best_source.is_file():
                         copy_checkpoint(best_source, best_destination, **best_options)
                     else:
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")

@@ -1,8 +1,9 @@
 """功能概述：验证训练 checkpoint 的版本隔离、严格重建和原子写入契约。
 主要职责：通过真实模型保存/恢复验证权重、优化器与 RNG；篡改配置验证字段级拒绝；
 检查 optimizer 参数对象及 scheduler 归属，拒绝时不改变模型，正确恢复后能更新同一模型。
-覆盖单/多参数组重复、空 trainable、缺失状态与组布局、probe/真实应用自定义加载错误后的
-三者事务回滚，以及不可变 checkpoint bytes；测试故障注入只修改临时模型实例。
+覆盖单/多参数组重复、空 trainable、缺失状态与组布局，递归拒绝加载 hooks 及实例/子类覆盖。
+检查 probe 失败、底层张量复制中断后的三者事务回滚和入口 RNG 保持，以及不可变 checkpoint
+bytes；同时确认梯度、requires_grad 和各子模块训练模式保持不变，故障注入由 pytest 撤销。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
@@ -16,7 +17,7 @@ import torch
 
 from spectraexpert.data.structure_features import DescriptorNormalizer
 from spectraexpert.models.multimodal_retriever import StructureAwareRetriever
-from spectraexpert.training.checkpoints import load_checkpoint, save_checkpoint
+from spectraexpert.training.checkpoints import capture_rng, load_checkpoint, save_checkpoint
 
 
 def make_model():
@@ -169,6 +170,8 @@ def test_correct_optimizer_scheduler_binding_resumes_and_updates_returned_model(
 def assert_nested_equal(actual, expected):
     if isinstance(expected, torch.Tensor):
         assert torch.equal(actual, expected)
+    elif isinstance(expected, np.ndarray):
+        assert np.array_equal(actual, expected)
     elif isinstance(expected, dict):
         assert actual.keys() == expected.keys()
         for key in expected:
@@ -237,27 +240,24 @@ def test_state_preflight_failure_preserves_all_caller_states(tmp_path, corruptio
 
 
 @pytest.mark.parametrize("component_name", ["model", "optimizer", "scheduler"])
-@pytest.mark.parametrize("failure_stage", ["probe", "application"])
-def test_custom_load_failure_preserves_all_caller_states(tmp_path, component_name, failure_stage):
+@pytest.mark.parametrize("override_kind", ["instance", "subclass"])
+def test_custom_load_overrides_rejected_before_calling_user_code(tmp_path, component_name, override_kind):
     path = make_optimizer_checkpoint(tmp_path)
     model, optimizer, scheduler = training_bundle()
     components = dict(model=model, optimizer=optimizer, scheduler=scheduler)
     failing_component = components[component_name]
-    base_loader = {"model": torch.nn.Module.load_state_dict,
-                   "optimizer": torch.optim.Optimizer.load_state_dict,
-                   "scheduler": torch.optim.lr_scheduler.LRScheduler.load_state_dict}[component_name]
+    def unsupported_load(self, *args, **kwargs):
+        random.random()
+        np.random.rand()
+        torch.rand(1)
+        raise RuntimeError("unsupported user code executed")
+    if override_kind == "instance":
+        failing_component.load_state_dict = types.MethodType(unsupported_load, failing_component)
+    else:
+        failing_component.__class__ = type("CustomLoader", (type(failing_component),), {"load_state_dict": unsupported_load})
     before = copy.deepcopy([component.state_dict() for component in components.values()])
-    def fail_after_load(self, state, *args, **kwargs):
-        result = base_loader(self, state, *args, **kwargs)
-        if failure_stage == "probe" or self is failing_component:
-            if component_name == "scheduler":
-                self.optimizer = None
-            raise RuntimeError("injected custom state load failure")
-        return result
-    failing_component.load_state_dict = types.MethodType(fail_after_load, failing_component)
-    # Instance methods are intentionally not serialized scheduler state in this check.
-    before = copy.deepcopy([component.state_dict() for component in components.values()])
-    with pytest.raises((ValueError, RuntimeError), match="injected custom"):
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*load_state_dict"):
         load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
     after = [component.state_dict() for component in components.values()]
     if component_name == "scheduler":
@@ -265,6 +265,7 @@ def test_custom_load_failure_preserves_all_caller_states(tmp_path, component_nam
         after[-1].pop("load_state_dict", None)
     assert_nested_equal(after, before)
     assert scheduler.optimizer is optimizer
+    assert_nested_equal(capture_rng(), before_rng)
 
 
 def test_multiple_optimizer_groups_restore_and_step(tmp_path):
@@ -293,16 +294,97 @@ def test_checkpoint_snapshot_rejects_mutable_content():
         CheckpointSnapshot(bytearray(b"mutable"))
 
 
-def test_custom_optimizer_failure_after_group_mutation_rolls_back(tmp_path):
+def test_standard_application_copy_failure_rolls_back_execution_state_and_rng(tmp_path, monkeypatch):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    model.eval()
+    model.spectrum_encoder.train()
+    for parameter in model.parameters():
+        parameter.grad = torch.ones_like(parameter)
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    modes = [module.training for module in model.modules()]
+    requires_grad = [parameter.requires_grad for parameter in model.parameters()]
+    gradients = [parameter.grad.clone() for parameter in model.parameters()]
+    failing_parameter = list(model.parameters())[1]
+    original_copy = torch.Tensor.copy_
+    failed = False
+    def fail_once(self, *args, **kwargs):
+        nonlocal failed
+        if self is failing_parameter and not failed:
+            failed = True
+            random.random()
+            np.random.rand()
+            torch.rand(1)
+            raise RuntimeError("injected tensor copy failure")
+        return original_copy(self, *args, **kwargs)
+    monkeypatch.setattr(torch.Tensor, "copy_", fail_once)
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="injected tensor copy"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal([parameter.grad for parameter in model.parameters()], gradients)
+    assert [module.training for module in model.modules()] == modes
+    assert [parameter.requires_grad for parameter in model.parameters()] == requires_grad
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("hook_kind", ["module_pre", "module_post", "optimizer_pre", "optimizer_post"])
+@pytest.mark.parametrize("restore", [False, True])
+def test_registered_load_hooks_are_rejected_without_rng_changes(tmp_path, hook_kind, restore):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    def unsupported_hook(*args, **kwargs):
+        random.random()
+        np.random.rand()
+        torch.rand(1)
+        raise RuntimeError("registered hook executed")
+    owner = model.spectrum_encoder.projection[0] if hook_kind.startswith("module") else optimizer
+    register = owner.register_load_state_dict_pre_hook if hook_kind.endswith("pre") else owner.register_load_state_dict_post_hook
+    register(unsupported_hook)
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match="unsupported.*hook"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=restore)
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("restore", [False, True])
+def test_probe_failure_restores_entry_rng(tmp_path, monkeypatch, restore):
+    import spectraexpert.training.checkpoints as checkpoints
     path = make_optimizer_checkpoint(tmp_path)
     model, optimizer, scheduler = training_bundle()
     before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
-    def mutate_and_fail(self, state):
-        torch.optim.Optimizer.load_state_dict(self, state)
-        if self is optimizer:
-            self.param_groups.append(dict(self.param_groups[0]))
-            raise RuntimeError("injected group mutation failure")
-    optimizer.load_state_dict = types.MethodType(mutate_and_fail, optimizer)
-    with pytest.raises(RuntimeError, match="injected group mutation"):
-        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    original_deepcopy = checkpoints.copy.deepcopy
+    def fail_probe(value, *args, **kwargs):
+        if isinstance(value, tuple) and len(value) == 3 and isinstance(value[0], torch.nn.Module):
+            random.random()
+            np.random.rand()
+            torch.rand(1)
+            raise RuntimeError("injected probe copy failure")
+        return original_deepcopy(value, *args, **kwargs)
+    monkeypatch.setattr(checkpoints.copy, "deepcopy", fail_probe)
+    before_rng = capture_rng()
+    with pytest.raises(RuntimeError, match="probe copy failure"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=restore)
     assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+def test_inference_load_without_rng_restore_preserves_entry_rng_and_execution_flags(tmp_path):
+    path = make_optimizer_checkpoint(tmp_path)
+    model = make_model().eval()
+    model.spectrum_encoder.train()
+    next(model.parameters()).requires_grad_(False)
+    for parameter in model.parameters():
+        parameter.grad = torch.ones_like(parameter)
+    modes = [module.training for module in model.modules()]
+    flags = [parameter.requires_grad for parameter in model.parameters()]
+    gradients = [parameter.grad.clone() for parameter in model.parameters()]
+    before_rng = capture_rng()
+    restored, _ = load_checkpoint(path, model=model, restore_rng=False)
+    assert restored is model
+    assert [module.training for module in model.modules()] == modes
+    assert [parameter.requires_grad for parameter in model.parameters()] == flags
+    assert_nested_equal([parameter.grad for parameter in model.parameters()], gradients)
+    assert_nested_equal(capture_rng(), before_rng)
