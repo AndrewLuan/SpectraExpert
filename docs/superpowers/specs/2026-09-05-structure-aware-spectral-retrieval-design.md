@@ -259,7 +259,9 @@ P_{ij}^{\mathrm{struct}}
 为保持历史结果可追溯，评测同时区分两个版本：
 
 - `legacy_ged_v1`：完全复现已有 `atomic_num` node match 及截断后的整数 bond type，只用于与旧报告比较；
-- `chemical_ged_v2`：node match 仍以 atomic number 为核心，edge match 使用不会混淆芳香键的离散 bond type，作为新模型的主 GED 指标。
+- `chemical_ged_v2`：node match 仍以 atomic number 为核心，edge match 使用不会混淆芳香键的离散 bond type，并返回搜索完成后的最小编辑代价，作为新模型的主 GED 指标。
+
+现有实现对 `nx.optimize_graph_edit_distance` 的 generator 取得第一个结果便返回；该值只是搜索得到的初始上界，不保证是最优 GED。`legacy_ged_v1` 保留这一行为用于复现，`chemical_ged_v2` 必须迭代到搜索完成并取最小值；超时时返回 `None`，不能把未证明最优的中间上界标成精确 GED。
 
 两种 GED 不得混在同一结果列中。论文引用旧数值时标记 legacy；所有新消融在同一候选集上同时报告两个版本，最终结构结论以 `chemical_ged_v2` 和固定配置的 Morgan Tanimoto 为准。
 
@@ -304,6 +306,7 @@ ChEMBL 相对 QM9S 的候选覆盖不足必须单独报告。若扩大结构候�
 
 - SMILES 转图后的节点、边、元素计数和键类型正确；
 - aromatic bond 与 single bond 在图特征和 `chemical_ged_v2` 中具有不同类别，而 `legacy_ged_v1` 仍可复现旧行为；
+- `chemical_ged_v2` 取优化序列的最小值，`legacy_ged_v1` 保留第一个上界；发生 timeout 时 v2 返回 `None`；
 - 两轮消息传递后的 multi-scale readout 分别包含 0-hop、1-hop 和 2-hop 表示；
 - fingerprint metadata 明确固定 radius、bit 数、bond type 和 chirality 配置；
 - `mol_id` 顺序打乱时仍能正确 join，重复或缺失 ID 会失败；
