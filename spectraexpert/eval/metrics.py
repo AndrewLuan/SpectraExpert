@@ -11,14 +11,15 @@ legacy 首个上界和 chemical 完整搜索语义；``normalized_graph_edit_dis
 Morgan 参数。
 输入输出与副作用：公开 GED 接收两个 SMILES，非法 SMILES、超时或未完成搜索返回 ``None``；
 legacy 仅为历史复现而返回 generator 首项，chemical 仅在 generator 耗尽后返回最小值。本模块
-不读取数据或写入状态；GED 在隔离 fork worker 中运行，父进程在给定 wall-clock deadline 后终止
-worker 并回收其资源，因此主线程与后台线程都不会被长期不 yield 的搜索阻塞。
+不读取数据或写入状态；GED 的解析、构图和搜索都在隔离 spawn worker 中运行，父进程在 deadline
+后以有限 terminate/kill/join 回收资源，因此主线程与后台线程均不会被长期工作阻塞。
 """
 
 from __future__ import annotations
 
 import multiprocessing as mp
 import time
+from collections.abc import Callable
 from typing import Literal, Optional
 
 import networkx as nx
@@ -56,7 +57,7 @@ def _molecule_from_smiles(smiles: str) -> Optional[Chem.Mol]:
         molecule = Chem.MolFromSmiles(smiles)
     except (TypeError, ValueError):
         return None
-    if molecule is None or molecule.GetNumAtoms() == 0:
+    if molecule is None or molecule.GetNumHeavyAtoms() == 0:
         return None
     return molecule
 
@@ -74,7 +75,7 @@ def smiles_to_nx(
         return None
     if not include_h:
         molecule = Chem.RemoveHs(molecule)
-    if molecule.GetNumAtoms() == 0:
+    if molecule.GetNumHeavyAtoms() == 0:
         return None
 
     graph = nx.Graph()
@@ -109,10 +110,12 @@ def _consume_optimized_ged(
     left: nx.Graph,
     right: nx.Graph,
     version: GEDVersion,
+    search_factory: Optional[Callable[..., object]] = None,
 ) -> Optional[float]:
     """在 worker 内完整消费 generator，复现 legacy 或 chemical 的版本化语义。"""
 
-    distances = nx.optimize_graph_edit_distance(
+    factory = search_factory or nx.optimize_graph_edit_distance
+    distances = factory(
         left,
         right,
         node_subst_cost=_node_substitution_cost,
@@ -132,16 +135,42 @@ def _consume_optimized_ged(
     return minimum
 
 
+def _worker_metric(
+    smiles_a: str,
+    smiles_b: str,
+    include_h: bool,
+    version: str,
+    normalized: bool,
+    search_factory: Optional[Callable[..., object]] = None,
+) -> Optional[float]:
+    """在 worker 中从 SMILES 完成解析、构图、GED 及可选 nGED。"""
+
+    validated_version = _validate_version(version)
+    left = smiles_to_nx(smiles_a, include_h=include_h, version=validated_version)
+    right = smiles_to_nx(smiles_b, include_h=include_h, version=validated_version)
+    if left is None or right is None:
+        return None
+    distance = _consume_optimized_ged(
+        left, right, validated_version, search_factory=search_factory
+    )
+    if distance is None or not normalized:
+        return distance
+    denominator = len(left) + len(right) + left.number_of_edges() + right.number_of_edges()
+    return None if denominator == 0 else distance / denominator
+
+
 def _ged_worker(
     connection: object,
-    left: nx.Graph,
-    right: nx.Graph,
-    version: GEDVersion,
+    smiles_a: str,
+    smiles_b: str,
+    include_h: bool,
+    version: str,
+    normalized: bool,
 ) -> None:
     """在独立进程中执行搜索；普通搜索异常以 ``None`` 回传而不捕获中断信号。"""
 
     try:
-        result = _consume_optimized_ged(left, right, version)
+        result = _worker_metric(smiles_a, smiles_b, include_h, version, normalized)
     except Exception:
         result = None
     try:
@@ -152,13 +181,36 @@ def _ged_worker(
         connection.close()  # type: ignore[attr-defined]
 
 
-def _graph_edit_distance_from_graphs(
-    left: nx.Graph,
-    right: nx.Graph,
+_GED_WORKER_TARGET: Callable[..., None] = _ged_worker
+_TERMINATE_JOIN_SECONDS = 0.05
+_KILL_JOIN_SECONDS = 0.05
+
+
+def _cleanup_worker_process(process: mp.Process, started: bool) -> None:
+    """只用有限 join 回收 worker；SIGTERM 无效时升级为 kill。"""
+
+    if not started:
+        return
+    if process.is_alive():
+        process.terminate()
+        process.join(_TERMINATE_JOIN_SECONDS)
+    if process.is_alive():
+        process.kill()
+        process.join(_KILL_JOIN_SECONDS)
+    if not process.is_alive():
+        process.join(0)
+        process.close()
+
+
+def _run_ged_worker(
+    smiles_a: str,
+    smiles_b: str,
     timeout: float,
+    include_h: bool,
     version: GEDVersion,
+    normalized: bool,
 ) -> Optional[float]:
-    """在可终止 worker 中执行版本化 GED，超过 deadline 或异常均返回 ``None``。"""
+    """以 spawn worker 执行完整 GED 路径，并在解析前建立 wall-clock deadline。"""
 
     if timeout <= 0:
         return None
@@ -168,11 +220,18 @@ def _graph_edit_distance_from_graphs(
     parent_connection = None
     child_connection = None
     try:
-        context = mp.get_context("fork")
+        context = mp.get_context("spawn")
         parent_connection, child_connection = context.Pipe(duplex=False)
         process = context.Process(
-            target=_ged_worker,
-            args=(child_connection, left, right, version),
+            target=_GED_WORKER_TARGET,
+            args=(
+                child_connection,
+                smiles_a,
+                smiles_b,
+                include_h,
+                version,
+                normalized,
+            ),
         )
         process.start()
         process_started = True
@@ -184,7 +243,8 @@ def _graph_edit_distance_from_graphs(
         process.join(remaining)
         if process.is_alive() or time.monotonic() > deadline:
             return None
-        if not parent_connection.poll():
+        remaining = deadline - time.monotonic()
+        if remaining <= 0 or not parent_connection.poll(remaining):
             return None
         return parent_connection.recv()
     except (EOFError, OSError, ValueError):
@@ -195,10 +255,7 @@ def _graph_edit_distance_from_graphs(
         if parent_connection is not None:
             parent_connection.close()
         if process is not None and process_started:
-            if process.is_alive():
-                process.terminate()
-            process.join()
-            process.close()
+            _cleanup_worker_process(process, process_started)
 
 
 def graph_edit_distance(
@@ -210,12 +267,12 @@ def graph_edit_distance(
 ) -> Optional[float]:
     """返回版本化 GED；chemical 只报告完整 bounded 搜索的最小值。"""
 
-    version = _validate_version(version)
-    left = smiles_to_nx(smiles_a, include_h=include_h, version=version)
-    right = smiles_to_nx(smiles_b, include_h=include_h, version=version)
-    if left is None or right is None:
+    if timeout <= 0:
         return None
-    return _graph_edit_distance_from_graphs(left, right, timeout, version)
+    validated_version = _validate_version(version)
+    return _run_ged_worker(
+        smiles_a, smiles_b, timeout, include_h, validated_version, normalized=False
+    )
 
 
 def normalized_graph_edit_distance(
@@ -227,16 +284,12 @@ def normalized_graph_edit_distance(
 ) -> Optional[float]:
     """以 ``|Vq| + |Vc| + |Eq| + |Ec|`` 固定分母返回 nGED。"""
 
-    version = _validate_version(version)
-    left = smiles_to_nx(smiles_a, include_h=include_h, version=version)
-    right = smiles_to_nx(smiles_b, include_h=include_h, version=version)
-    if left is None or right is None:
+    if timeout <= 0:
         return None
-    denominator = len(left) + len(right) + left.number_of_edges() + right.number_of_edges()
-    if denominator == 0:
-        return None
-    distance = _graph_edit_distance_from_graphs(left, right, timeout, version)
-    return None if distance is None else distance / denominator
+    validated_version = _validate_version(version)
+    return _run_ged_worker(
+        smiles_a, smiles_b, timeout, include_h, validated_version, normalized=True
+    )
 
 
 def batch_graph_edit_distance(
@@ -248,25 +301,20 @@ def batch_graph_edit_distance(
 ) -> list[Optional[float]]:
     """对候选列表逐项计算同一 GED schema 的有界距离。"""
 
-    version = _validate_version(version)
-    ground_truth_graph = smiles_to_nx(
-        ground_truth, include_h=include_h, version=version
-    )
-    if ground_truth_graph is None:
+    if timeout <= 0:
         return [None] * len(candidates)
-
-    results: list[Optional[float]] = []
-    for candidate in candidates:
-        candidate_graph = smiles_to_nx(candidate, include_h=include_h, version=version)
-        if candidate_graph is None:
-            results.append(None)
-            continue
-        results.append(
-            _graph_edit_distance_from_graphs(
-                ground_truth_graph, candidate_graph, timeout, version
-            )
+    validated_version = _validate_version(version)
+    return [
+        _run_ged_worker(
+            ground_truth,
+            candidate,
+            timeout,
+            include_h,
+            validated_version,
+            normalized=False,
         )
-    return results
+        for candidate in candidates
+    ]
 
 
 def pairwise_tanimoto(fingerprints: torch.Tensor) -> torch.Tensor:

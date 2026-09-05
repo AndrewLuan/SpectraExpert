@@ -4,7 +4,8 @@
 可区分芳香键的 schema 且只在完整搜索后返回最小值；验证 nGED 的节点边分母和 tensor
 Tanimoto 的对称、单位对角线与交并比，并覆盖未完成搜索不得泄漏中间上界和过滤无效候选后的
 原始检索 rank 映射。本轮还验证任意调用线程的硬 timeout、搜索异常和空 SMILES 在所有公开
-指标及聚合路径中的一致无效语义。
+指标及聚合路径中的一致无效语义。Fix Round 2 进一步验证 spawn worker 覆盖解析至搜索的
+deadline、SIGTERM 后 kill 清理，以及零重原子 SMILES 的统一无效语义。
 代码库关系：直接消费 ``spectraexpert.eval.metrics``，并以 Task 2 的
 ``spectraexpert.data.structure_features`` 键类型和 Morgan schema 为唯一事实来源；评估脚本通过
 这些函数比较检索候选的分子结构。
@@ -14,11 +15,13 @@ Tanimoto 的对称、单位对角线与交并比，并覆盖未完成搜索不�
 
 import time
 import threading
+import multiprocessing as mp
 
 import pytest
 import torch
 
 import spectraexpert.eval.metrics as metrics
+from tests.eval import worker_helpers
 from spectraexpert.eval.metrics import (
     graph_edit_distance,
 )
@@ -34,9 +37,7 @@ def test_chemical_ged_distinguishes_benzene_from_cyclohexane():
 
 def test_chemical_ged_returns_minimum_completed_search_value(monkeypatch):
     monkeypatch.setattr(
-        metrics.nx,
-        "optimize_graph_edit_distance",
-        lambda *args, **kwargs: iter([5.0, 3.0, 2.0]),
+        metrics, "_GED_WORKER_TARGET", worker_helpers.completed_values_worker, raising=False
     )
 
     assert graph_edit_distance("CC", "CO", version="chemical_ged_v2") == 2.0
@@ -65,12 +66,9 @@ def test_pairwise_tanimoto_is_symmetric_with_unit_diagonal():
 
 
 def test_chemical_ged_returns_none_when_bounded_search_does_not_complete(monkeypatch):
-    def unfinished_search(*args, **kwargs):
-        yield 5.0
-        time.sleep(0.05)
-        yield 3.0
-
-    monkeypatch.setattr(metrics.nx, "optimize_graph_edit_distance", unfinished_search)
+    monkeypatch.setattr(
+        metrics, "_GED_WORKER_TARGET", worker_helpers.blocking_worker, raising=False
+    )
 
     assert graph_edit_distance("CC", "CO", timeout=0.01) is None
 
@@ -96,34 +94,43 @@ def test_chemical_ged_with_zero_timeout_returns_none_immediately():
 
 
 def test_chemical_ged_timeout_is_bounded_inside_background_thread(monkeypatch):
-    def generator_that_blocks_before_yield(*args, **kwargs):
-        time.sleep(0.5)
-        if False:
-            yield 1.0
-
     monkeypatch.setattr(
-        metrics.nx, "optimize_graph_edit_distance", generator_that_blocks_before_yield
+        metrics, "_GED_WORKER_TARGET", worker_helpers.blocking_worker, raising=False
     )
     results = []
     worker = threading.Thread(
-        target=lambda: results.append(graph_edit_distance("CC", "CO", timeout=0.02))
+        target=lambda: results.append(graph_edit_distance("CC", "CO", timeout=0.05))
     )
 
     started = time.monotonic()
     worker.start()
-    worker.join(0.2)
+    worker.join(0.5)
 
     assert not worker.is_alive()
     assert results == [None]
-    assert time.monotonic() - started < 0.2
+    assert time.monotonic() - started < 0.5
+
+
+def test_spawn_worker_completes_chemical_ged_inside_background_thread(monkeypatch):
+    monkeypatch.setattr(
+        metrics, "_GED_WORKER_TARGET", worker_helpers.completed_values_worker, raising=False
+    )
+    results = []
+    worker = threading.Thread(
+        target=lambda: results.append(graph_edit_distance("CC", "CO", timeout=10.0))
+    )
+
+    worker.start()
+    worker.join(12.0)
+
+    assert not worker.is_alive()
+    assert results == [2.0]
 
 
 def test_chemical_ged_returns_none_when_generator_raises_after_yield(monkeypatch):
-    def generator_that_raises(*args, **kwargs):
-        yield 5.0
-        raise RuntimeError("search failed")
-
-    monkeypatch.setattr(metrics.nx, "optimize_graph_edit_distance", generator_that_raises)
+    monkeypatch.setattr(
+        metrics, "_GED_WORKER_TARGET", worker_helpers.raising_values_worker, raising=False
+    )
 
     assert graph_edit_distance("CC", "CO") is None
 
@@ -149,3 +156,45 @@ def test_retrieval_metrics_skips_empty_smiles_without_raising():
     assert result["top1_ged"] is None
     assert result["top1_tanimoto"] is None
     assert result["num_valid_candidates"] == 0
+
+
+def test_timeout_zero_returns_before_parent_smiles_parsing(monkeypatch):
+    original_parser = metrics.smiles_to_nx
+
+    def slow_parser(*args, **kwargs):
+        time.sleep(0.1)
+        return original_parser(*args, **kwargs)
+
+    monkeypatch.setattr(metrics, "smiles_to_nx", slow_parser)
+    started = time.monotonic()
+
+    assert graph_edit_distance("CC", "CO", timeout=0.0) is None
+    assert time.monotonic() - started < 0.05
+
+
+@pytest.mark.parametrize("hydrogen_smiles", ["[H]", "[H][H]"])
+def test_zero_heavy_atom_smiles_are_invalid_for_all_structure_metrics(hydrogen_smiles):
+    assert graph_edit_distance(hydrogen_smiles, "CC") is None
+    assert metrics.normalized_graph_edit_distance(hydrogen_smiles, "CC") is None
+    assert metrics.tanimoto_similarity(hydrogen_smiles, "CC") is None
+
+    aggregate = metrics.compute_retrieval_metrics(
+        hydrogen_smiles, [hydrogen_smiles, "CC"], [0.9, 0.8]
+    )
+    assert aggregate["top1_ged"] is None
+    assert aggregate["top1_tanimoto"] is None
+    assert aggregate["num_valid_candidates"] == 0
+
+
+def test_sigterm_ignoring_spawn_worker_is_killed_without_residual_child(monkeypatch):
+    monkeypatch.setattr(
+        metrics, "_GED_WORKER_TARGET", worker_helpers.ignore_sigterm_worker, raising=False
+    )
+    existing_pids = {child.pid for child in mp.active_children()}
+    started = time.monotonic()
+
+    result = graph_edit_distance("CC", "CO", timeout=0.05)
+
+    assert result is None
+    assert time.monotonic() - started < 0.5
+    assert {child.pid for child in mp.active_children()} <= existing_pids
