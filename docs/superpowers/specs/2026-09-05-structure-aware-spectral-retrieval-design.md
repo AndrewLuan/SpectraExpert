@@ -58,39 +58,58 @@ h_i^g=E_g(G_i),\qquad z_i^g=\operatorname{norm}(P_g(h_i^g)).
 
 ## 分子图与辅助标签
 
-### 图输入
+### 由 GED 与 Tanimoto 对齐的图输入
 
-每个重原子是一个节点。节点特征至少包括：
+节点和边特征不采用任意的属性堆叠，而是分成两层语义。第一层严格对应 GED 的编辑对象，第二层对应 radius-2 Morgan fingerprint 用于区分局部化学环境的信息。
 
-- atomic number；
+GED 核心节点特征为 `atomic_number`。当前项目的 GED 在 `_node_match` 中只比较 atomic number，因此元素身份必须拥有独立 embedding，不能被压缩为“金属/非金属”或简单 one-hot 统计。atomic number 使用覆盖 1–118 的固定索引和独立 UNK token，避免因候选库新增元素而发生数组越界。
+
+GED 核心边特征为离散 `bond_type`：`SINGLE`、`DOUBLE`、`TRIPLE`、`AROMATIC` 和 `OTHER`。当前 `metrics.py` 使用 `int(bond.GetBondTypeAsDouble())`，会把数值 1.5 的 aromatic bond 截断为 1，从而与 single bond 混淆。新版图特征和新版 GED 必须使用稳定的类别编码，禁止经过浮点值转整数。
+
+为了与默认的 radius-2 Morgan Tanimoto 对齐，节点进一步包含：
+
 - degree；
+- total valence；
 - formal charge；
-- hybridization；
-- aromatic flag；
 - total hydrogen count；
-- chirality tag；
+- aromatic flag；
 - ring membership。
 
-每条化学键构成双向边。边特征至少包括：
+边进一步包含：
 
-- bond type：single、double、triple、aromatic；
 - conjugation flag；
-- ring membership；
-- stereo tag。
+- ring membership。
 
-氢原子不显式建图，使用节点的 total hydrogen count 表示，以控制图规模并与现有 heavy-atom GED/Tanimoto 评测保持一致。无法解析的 SMILES 不得静默生成空图；预处理应记录并排除该样本。
+这些属性和两跳连接关系共同描述 Morgan fingerprint 所编码的局部原子环境。首版默认不加入 chirality tag 和 bond stereo：现有 `GetMorganFingerprintAsBitVect(mol, 2, 2048)` 没有启用 chirality，当前 GED 也忽略立体信息。若后续实验启用 `useChirality=True`，必须同时升级 fingerprint、图特征、结构指标和 featurizer version，不能只改模型输入。
 
-atomic number 使用覆盖 1–118 的固定索引和独立 UNK token，避免因候选库新增元素而发生数组越界。但是，QM9S 配对训练实际只覆盖 H/C/N/O/F；没有配对训练数据的元素 embedding 仍属于分布外表示。建索引和评测必须报告未知元素比例与训练元素词表，不能把“能够编码”误解为“已经学会该元素的谱图对应关系”。
+每条化学键构成双向边。氢原子不显式建图，使用节点的 total hydrogen count 表示，以控制图规模并与现有 heavy-atom GED/Tanimoto 评测保持一致。无法解析的 SMILES 不得静默生成空图；预处理应记录并排除该样本。
+
+QM9S 分子组成只覆盖 H/C/N/O/F，其中重原子图节点只包含 C/N/O/F，H 仅通过 total hydrogen count 表示；没有配对训练数据的重元素 embedding 仍属于分布外表示。建索引和评测必须报告未知元素比例与训练元素词表，不能把“能够编码”误解为“已经学会该元素的谱图对应关系”。
+
+### 与 Morgan radius 对齐的消息传递
+
+图 encoder 使用 edge-conditioned GIN。第 \(k\) 层先根据邻接原子和键特征聚合消息，再更新中心原子：
+
+\[
+m_v^{(k)}=\sum_{u\in\mathcal N(v)}
+\phi_k\!\left(h_u^{(k-1)},e_{uv}\right),
+\qquad
+h_v^{(k)}=\operatorname{MLP}_k\!\left((1+\epsilon_k)h_v^{(k-1)}+m_v^{(k)}\right).
+\]
+
+主配置使用两轮消息传递，并对 \(h^{(0)}\)、\(h^{(1)}\)、\(h^{(2)}\) 做 multi-scale readout，使表示显式覆盖中心原子、一步环境和两步环境，与 ECFP4/Morgan radius=2 的结构监督尺度一致。每一尺度分别计算 mean pooling 与 sum pooling，随后拼接并投影：mean 保留局部环境分布，sum 保留原子数和子结构计数。更深 GIN 只作为消融配置，不在首版默认启用，以免表示尺度与监督指标失配。
 
 ### 结构关系标签
 
-为每个分子离线计算 radius=2、2048-bit Morgan fingerprint。batch 内结构相似度定义为：
+为每个分子离线计算 radius=2、2048-bit Morgan fingerprint。实现必须显式固定 `useBondTypes=True`、`useChirality=False`，并把这些参数写入缓存与索引 metadata，避免 RDKit 版本或调用入口改变默认语义。batch 内结构相似度定义为：
 
 \[
 S_{ij}=\operatorname{Tanimoto}(f_i,f_j),\qquad S_{ij}\in[0,1].
 \]
 
 Morgan fingerprint 不作为查询时的已知输入，而是训练阶段的关系监督及可选辅助预测目标。候选库的 fingerprint 来自候选 SMILES，允许离线计算。
+
+GED 不用于在线 batch loss。其最优匹配搜索开销远高于 fingerprint Tanimoto，当前实现还可能超时，并且离散 GED 对神经网络不可微。训练时用可批量计算的 Morgan Tanimoto 提供连续结构软标签；GED 用于验证集、测试集和少量 hard-pair 审计，检查模型是否只学会局部 fingerprint 相似而忽略整体拓扑。
 
 ### 分子描述符标签
 
@@ -237,6 +256,13 @@ P_{ij}^{\mathrm{struct}}
 
 由于 raw GED 随分子大小增长，报告中同时保留 raw GED 和 normalized GED。对结构距离耗时过高的全库比较，先使用 Morgan Tanimoto 做全量评估，再只对 Top-K 候选计算 GED。
 
+为保持历史结果可追溯，评测同时区分两个版本：
+
+- `legacy_ged_v1`：完全复现已有 `atomic_num` node match 及截断后的整数 bond type，只用于与旧报告比较；
+- `chemical_ged_v2`：node match 仍以 atomic number 为核心，edge match 使用不会混淆芳香键的离散 bond type，作为新模型的主 GED 指标。
+
+两种 GED 不得混在同一结果列中。论文引用旧数值时标记 legacy；所有新消融在同一候选集上同时报告两个版本，最终结构结论以 `chemical_ged_v2` 和固定配置的 Morgan Tanimoto 为准。
+
 本项目的 normalized GED 明确定义为：
 
 \[
@@ -245,7 +271,7 @@ P_{ij}^{\mathrm{struct}}
 {|V_q|+|V_c|+|E_q|+|E_c|},
 \]
 
-其中 GED 沿用当前评测的原子类型 node match 和键类型 edge match。若分母为 0 或 GED 超时，该样本记为不可计算，不以 0 填充。
+其中主报告的 GED 使用 `chemical_ged_v2`：节点替换比较 atomic number，边替换比较离散 bond type；节点/边插入、删除及不匹配的默认代价均为 1。若分母为 0 或 GED 超时，该样本记为不可计算，不以 0 填充。描述局部环境的 degree、valence、H count、aromatic 和 ring 属性进入 encoder 与 Tanimoto 关系监督，但不额外叠加到 GED edit cost，避免对同一拓扑差异重复计费。
 
 ## 评估指标与验收标准
 
@@ -277,6 +303,9 @@ ChEMBL 相对 QM9S 的候选覆盖不足必须单独报告。若扩大结构候�
 单元测试首先覆盖可由小型合成数据验证的行为：
 
 - SMILES 转图后的节点、边、元素计数和键类型正确；
+- aromatic bond 与 single bond 在图特征和 `chemical_ged_v2` 中具有不同类别，而 `legacy_ged_v1` 仍可复现旧行为；
+- 两轮消息传递后的 multi-scale readout 分别包含 0-hop、1-hop 和 2-hop 表示；
+- fingerprint metadata 明确固定 radius、bit 数、bond type 和 chirality 配置；
 - `mol_id` 顺序打乱时仍能正确 join，重复或缺失 ID 会失败；
 - graph collate 在不同节点数、单原子和无键分子上 shape 正确；
 - SpectrumEncoder、GraphEncoder 和 projection head 输出 shape、有限值和单位范数正确；
