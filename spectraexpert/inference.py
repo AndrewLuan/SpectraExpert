@@ -1,20 +1,24 @@
 """
-功能概述：提供与旧版检索产物兼容的 ``SpectralEncoder`` 推理门面，将训练得到的
-``SpectrumTransformer`` checkpoint 还原为单谱编码器，并实现无模型依赖的余弦近邻检索。
+功能概述：提供互不混用的 legacy ``SpectralEncoder`` 与 v2 ``StructureAwareSpectralEncoder``
+推理门面；前者恢复历史光谱 checkpoint，后者从 Task 7 严格 checkpoint 只接受 spectrum query。
 主要职责：构造器加载 ``model_state_dict`` 或裸 state dict；裸字典仅在权重形状完整吻合历史
 训练默认架构时恢复约定参数，否则要求保存 ``args``；``encode_spectrum`` 将一条有限的一维光谱
 转换为 float32 嵌入；静态方法 ``retrieve`` 验证二维数据库并返回稳定降序的 int64 索引和
-float32 余弦分数。
+float32 余弦分数；``StructureAwareSpectralEncoder.from_checkpoint`` 让校验、SHA-256 与反序列化
+共享同一不可变 snapshot，``encode_spectrum/predict_auxiliary`` 校验 signal length 后执行纯光谱推理。
 代码库关系：依赖 ``spectraexpert.models.spectrum_encoder.SpectrumTransformer``；由
-``pipeline.stage1_retrieval`` 调用，并兼容 ``train_contrastive.py`` 保存的 args 与
-``SpectrumSimCLR`` 的 ``encoder.`` 参数前缀。
+``pipeline.stage1_retrieval`` 按显式 mode 调用；v2 依赖 ``training.checkpoints`` 与
+``StructureAwareRetriever``，legacy 继续兼容 ``train_contrastive.py`` args 和 ``encoder.`` 前缀。
 输入输出与副作用：checkpoint 只在构造时读取一次，模型被置为 eval 模式且编码不计算梯度；
-维度错误、非有限数、无效 topk 或不兼容状态字典均显式抛出 ValueError/运行时加载错误。
+维度错误、非有限数、无效 topk、错误 signal length 或不兼容 schema 均 fail fast；v2 loader
+v2 只面向可信本地 checkpoint（Task 7 loader 明确使用 weights_only=False）；legacy 显式使用受限
+weights-only loader，并把无法安全读取的 v2/versioned checkpoint 转为清晰模式错误；两者均不接收 query 结构字段。
 """
 
 from __future__ import annotations
 
 from collections.abc import Mapping
+import pickle
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +26,8 @@ import numpy as np
 import torch
 
 from spectraexpert.models.spectrum_encoder import SpectrumTransformer
+from spectraexpert.models.multimodal_retriever import StructureAwareRetriever
+from spectraexpert.training.checkpoints import load_checkpoint, read_checkpoint_snapshot
 
 
 _MODEL_ARGUMENTS = (
@@ -49,6 +55,72 @@ _LEGACY_BARE_MODEL_ARGS = {
 }
 
 
+class StructureAwareSpectralEncoder:
+    """从严格 v2 checkpoint 恢复、只以光谱为 query 输入的推理门面。"""
+
+    def __init__(self, *, model: StructureAwareRetriever, payload: Mapping[str, Any],
+                 device: torch.device, checkpoint_sha256: str) -> None:
+        self.model = model
+        self.payload = payload
+        self.device = device
+        self.checkpoint_sha256 = checkpoint_sha256
+        self.model_config = dict(payload["model_config"])
+        self.feature_metadata = dict(payload["feature_config"])
+        self.descriptor_mean = payload["descriptor_stats"]["mean"].detach().cpu().numpy().astype(np.float32)
+        self.descriptor_std = payload["descriptor_stats"]["std"].detach().cpu().numpy().astype(np.float32)
+
+    @classmethod
+    def from_checkpoint(cls, checkpoint_path: str | Path,
+                        device: str | None = None) -> "StructureAwareSpectralEncoder":
+        """一次读取 checkpoint bytes，严格验证 v2 schema 后恢复到显式或自动设备。"""
+        snapshot = read_checkpoint_snapshot(checkpoint_path)
+        resolved = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
+        model, payload = load_checkpoint(snapshot, expected_mode="spectrum_graph_v2", device=resolved)
+        if not isinstance(model, StructureAwareRetriever):
+            raise ValueError("spectrum_graph_v2 checkpoint did not restore StructureAwareRetriever")
+        model.eval()
+        return cls(model=model, payload=payload, device=resolved,
+                   checkpoint_sha256=snapshot.sha256)
+
+    def _prepare_spectrum(self, spectrum: np.ndarray) -> torch.Tensor:
+        array = np.asarray(spectrum, dtype=np.float32)
+        if array.ndim != 1:
+            raise ValueError("spectrum must be a one-dimensional array")
+        expected = int(self.model_config["signal_length"])
+        if array.shape[0] != expected:
+            raise ValueError(f"spectrum signal length mismatch: expected {expected}, got {array.shape[0]}")
+        if not np.isfinite(array).all():
+            raise ValueError("spectrum must contain only finite values")
+        return torch.from_numpy(np.ascontiguousarray(array)).unsqueeze(0).to(self.device)
+
+    def encode_spectrum(self, spectrum: np.ndarray) -> np.ndarray:
+        """只编码一条 spectrum；签名刻意不暴露 SMILES、formula、descriptor 或 fingerprint。"""
+        tensor = self._prepare_spectrum(spectrum)
+        with torch.inference_mode():
+            embedding = self.model.encode_spectrum(tensor).squeeze(0).detach().cpu().numpy()
+        result = embedding.astype(np.float32, copy=False)
+        if result.shape != (int(self.model_config["projection_dim"]),) or not np.isfinite(result).all():
+            raise ValueError("spectrum encoder returned invalid embedding")
+        return result
+
+    def predict_auxiliary(self, spectrum: np.ndarray) -> tuple[np.ndarray, np.ndarray | None]:
+        """返回 spectrum head 预测的标准化 descriptors 和可选 fingerprint 概率。"""
+        tensor = self._prepare_spectrum(spectrum)
+        with torch.inference_mode():
+            descriptor, fingerprint = self.model.predict_auxiliary(tensor)
+        descriptor_array = descriptor.squeeze(0).detach().cpu().numpy().astype(np.float32, copy=False)
+        fingerprint_array = (None if fingerprint is None else
+            fingerprint.squeeze(0).detach().cpu().numpy().astype(np.float32, copy=False))
+        if (descriptor_array.shape != (int(self.model_config["descriptor_dim"]),)
+                or not np.isfinite(descriptor_array).all()):
+            raise ValueError("descriptor head returned invalid prediction")
+        if fingerprint_array is not None and (
+            fingerprint_array.shape != (int(self.feature_metadata["morgan_bits"]),)
+                or not np.isfinite(fingerprint_array).all()):
+            raise ValueError("fingerprint head returned invalid prediction")
+        return descriptor_array, fingerprint_array
+
+
 class SpectralEncoder:
     """从训练 checkpoint 恢复的单谱编码器及 legacy 余弦检索工具。"""
 
@@ -58,7 +130,19 @@ class SpectralEncoder:
         if not path.is_file():
             raise FileNotFoundError(f"Checkpoint not found: {path}")
 
-        checkpoint = torch.load(path, map_location=self.device)
+        try:
+            checkpoint = torch.load(path, map_location=self.device, weights_only=True)
+        except (pickle.UnpicklingError, RuntimeError) as error:
+            raise ValueError(
+                "legacy SpectralEncoder cannot load v2/versioned checkpoint; "
+                "use retrieval_mode='spectrum_graph_v2'"
+            ) from error
+        if (isinstance(checkpoint, Mapping)
+                and checkpoint.get("schema_version") in {"spectral_only_v1", "spectrum_graph_v2"}):
+            raise ValueError(
+                "legacy SpectralEncoder cannot load v2/versioned checkpoint; "
+                "use the matching versioned inference path"
+            )
         state_dict, model_args = self._unpack_checkpoint(checkpoint)
         state_dict = self._normalise_state_dict(state_dict)
         if not model_args:

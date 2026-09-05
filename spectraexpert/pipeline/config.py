@@ -1,14 +1,18 @@
 """
-Configuration for the SpectraExpert pipeline.
-
-PipelineConfig provides a single source of truth for all parameters across
-the 3 stages.  It can be initialised from a dict, from a YAML file, or
-from built-in defaults.
+功能概述：提供 SpectraExpert 三阶段 pipeline 的单一配置来源，支持默认值、dict 与 YAML 合并。
+主要职责：``DEFAULT_CONFIG`` 声明各阶段参数，Task 8 默认显式使用 ``spectrum_graph_v2``、版本化
+``graph_index`` 与默认禁用 rerank；``PipelineConfig`` 提供深合并、读取、序列化和 warnings；
+``_validate`` 检查 LLM provider、Stage 1 mode/重排字段及外部文件是否存在。
+代码库关系：由 pipeline/run/eval 构造并传入 ``Stage1Retrieval``；legacy ``embeddings_cache`` 仍保留，
+但只有 ``retrieval_mode=spectral_only_v1`` 才消费，v2 缺 index/checkpoint 时不会回退。
+输入输出与副作用：默认/dict 构造不读文件，warnings 只做存在性和字段检查；YAML 方法显式读写调用方
+路径。warning 不代替 Stage1 的严格 runtime metadata 校验。
 """
 
 from __future__ import annotations
 
 import os
+import math
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -33,12 +37,20 @@ DEFAULT_CONFIG: dict[str, Any] = {
     },
     # ── stage 1: contrastive retrieval ────────────────────────────────
     "stage1": {
+        "retrieval_mode": "spectrum_graph_v2",
         "checkpoint": str(PROJECT_ROOT / "spectra_expert_pkg" / "checkpoints"
                           / "spectral_simclr_qm9s_8gpu_best.pth"),
+        "graph_index": str(PROJECT_ROOT / "spectra_expert_pkg" / "graph_index_v2.npz"),
         "embeddings_cache": str(PROJECT_ROOT / "spectra_expert_pkg"
                                 / "embeddings.npz"),
         "data_dir": str(PROJECT_ROOT / "data" / "qm9s"),
         "normalize_spectrum": True,
+        "rerank": {
+            "enabled": False,
+            "top_m": 100,
+            "fingerprint_weight": 0.0,
+            "descriptor_weight": 0.0,
+        },
     },
     # ── stage 2: peak analysis & knowledge matching ───────────────────
     "stage2": {
@@ -85,6 +97,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
 # ── validation rules ─────────────────────────────────────────────────
 
 _VALID_PROVIDERS = {"openai", "anthropic", "dummy"}
+_VALID_RETRIEVAL_MODES = {"spectral_only_v1", "spectrum_graph_v2"}
 
 
 def _validate(config: dict) -> list[str]:
@@ -97,6 +110,30 @@ def _validate(config: dict) -> list[str]:
     ckpt = config.get("stage1", {}).get("checkpoint", "")
     if ckpt and not os.path.isfile(ckpt):
         warnings.append(f"Checkpoint not found: {ckpt}")
+    stage1 = config.get("stage1", {})
+    mode = stage1.get("retrieval_mode")
+    if mode not in _VALID_RETRIEVAL_MODES:
+        warnings.append(
+            f"Unknown stage1 retrieval_mode '{mode}'; expected one of {_VALID_RETRIEVAL_MODES}"
+        )
+    elif mode == "spectrum_graph_v2":
+        index_path = stage1.get("graph_index", "")
+        if index_path and not os.path.isfile(index_path):
+            warnings.append(f"Graph index not found: {index_path}")
+    rerank = stage1.get("rerank", {})
+    if not isinstance(rerank, dict):
+        warnings.append("stage1.rerank must be a mapping")
+    else:
+        if type(rerank.get("enabled")) is not bool:
+            warnings.append("stage1.rerank.enabled must be bool")
+        top_m = rerank.get("top_m")
+        if not isinstance(top_m, int) or isinstance(top_m, bool) or top_m <= 0:
+            warnings.append("stage1.rerank.top_m must be a positive integer")
+        for field in ("fingerprint_weight", "descriptor_weight"):
+            value = rerank.get(field)
+            if (isinstance(value, bool) or not isinstance(value, (int, float))
+                    or not math.isfinite(value) or value < 0):
+                warnings.append(f"stage1.rerank.{field} must be nonnegative")
     rules = config.get("stage2", {}).get("knowledge", {}).get("rules_path", "")
     if rules and not os.path.isfile(rules):
         warnings.append(f"Rules file not found: {rules}")
