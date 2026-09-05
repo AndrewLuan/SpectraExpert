@@ -157,7 +157,7 @@ def test_collate_preserves_graph_and_target_order(tmp_path):
     assert batch["spectrum_view1"].shape == (2, 5)
     assert batch["spectrum_view2"].shape == (2, 5)
     assert batch["descriptor_targets"].shape == (2, 15)
-    assert batch["element_presence"].shape == (2, 4)
+    assert batch["element_presence"].shape == (2, 5)
     assert batch["fingerprint"].shape == (2, 2048)
     assert batch["mol_id"].tolist() == [2, 1]
     assert batch["graph"].mol_ids.tolist() == [2, 1]
@@ -167,6 +167,32 @@ def test_collate_preserves_graph_and_target_order(tmp_path):
         batch["descriptor_targets"], batch["graph"].descriptors
     )
     assert torch.equal(batch["fingerprint"], batch["graph"].fingerprints)
+
+
+def test_element_presence_uses_cnofh_descriptor_order_and_float32(tmp_path):
+    write_tiny_parquets(
+        tmp_path,
+        spectrum_ids=[2, 1],
+        smiles_ids=[1, 2],
+        smiles_overrides={1: "C", 2: "[H]C([H])([H])[H]"},
+    )
+    dataset = StructureAwareSpectralDataset.from_directory(tmp_path, signal_length=5)
+
+    first = dataset[0]
+    second = dataset[1]
+    batch = structure_aware_collate([first, second])
+
+    assert first["graph"].descriptors[:5].tolist() == [1.0, 0.0, 0.0, 0.0, 4.0]
+    assert second["graph"].descriptors[:5].tolist() == [1.0, 0.0, 0.0, 0.0, 4.0]
+    assert first["element_presence"].tolist() == [1.0, 0.0, 0.0, 0.0, 1.0]
+    assert second["element_presence"].tolist() == [1.0, 0.0, 0.0, 0.0, 1.0]
+    assert first["element_presence"].dtype == torch.float32
+    assert batch["element_presence"].dtype == torch.float32
+    assert batch["mol_id"].tolist() == [2, 1]
+    assert batch["element_presence"].tolist() == [
+        [1.0, 0.0, 0.0, 0.0, 1.0],
+        [1.0, 0.0, 0.0, 0.0, 1.0],
+    ]
 
 
 def test_dataset_and_collate_are_spawn_dataloader_picklable(tmp_path):

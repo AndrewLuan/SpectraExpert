@@ -1,7 +1,8 @@
 """
 功能概述：提供按 ``mol_id`` 严格对齐的光谱—分子图 Dataset、批处理、scaffold split 与缓存恢复。
 主要职责：``StructureAwareSpectralDataset`` 校验三件套 Parquet 并只图化所选 split；
-``structure_aware_collate`` 保持光谱、图、identity 和辅助 targets 的输入顺序；``scaffold_split``
+``structure_aware_collate`` 保持光谱、图、identity 和辅助 targets 的输入顺序，元素 presence 固定按
+C/N/O/F/H 五维从 Task 2 descriptor 派生；``scaffold_split``
 按 Bemis–Murcko scaffold（无环分子按 canonical identity）产生可复用 manifest；
 ``load_feature_cache`` 校验 Task 2 schema/config/hash 后逐行恢复 ``MoleculeGraph``。
 代码库关系：图特征唯一复用 ``molecular_graph.featurize_smiles/collate_graphs`` 和
@@ -486,7 +487,7 @@ class StructureAwareSpectralDataset(Dataset):
             "spectrum_view2": torch.from_numpy(np.asarray(view2, dtype=np.float32)),
             "graph": graph,
             "descriptor_targets": descriptor_targets.clone().float(),
-            "element_presence": (graph.descriptors[:4] > 0).float(),
+            "element_presence": (graph.descriptors[:5] > 0).float(),
             "fingerprint": graph.fingerprint.clone(),
             "identity_id": torch.tensor(self.identity_ids[index], dtype=torch.long),
             "mol_id": int(self.mol_ids[index]),
