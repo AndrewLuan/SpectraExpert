@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
 功能概述：只把两个明确获授权的 Raman JSONL 转为统一 500..4000/3501 点的标准三件套 Parquet。
-主要职责：``prepare_raman_jsonl`` 校验输入 basename、逐行解析 JSON、规范化唯一 SMILES、验证
+主要职责：``prepare_raman_jsonl`` 校验解析后的输入绝对路径、逐行解析 JSON、规范化 SMILES、验证
 x/y 长度/有限性/严格单调和覆盖边界，再用 ``numpy.interp`` 线性插值；同时写 source hash、原始
 坐标范围、插值参数、split manifest 和 preparation metadata。``main`` 提供无目录扫描的显式 CLI。
 代码库关系：canonical identity 与 scaffold manifest 复用 ``structure_dataset``；输出的
 ``spectra.parquet``、``smiles.parquet``、``wavenumber.parquet`` 由结构感知 Dataset 和后续消融
-共同消费。输入范围只限 ``Raman_QME14S.jsonl``、``Raman_fg26.jsonl``，记录数不硬编码为 400。
+共同消费。生产输入范围只限 ``/data/SpecGPT/data/theory_data_tiny`` 下的两个授权文件；仅 Python
+测试调用可注入 ``allowed_input_paths``，CLI 不提供该参数，记录数不硬编码为 400。
 输入输出与副作用：只逐行读取两个显式文件，不遍历其父目录；默认拒绝任何已存在的 output_dir。
 全部记录先通过校验后才在同级 staging 目录写文件，成功后一次目录 rename 发布，失败清理 staging，
-因此非法 JSON/SMILES/坐标、重复 identity 或 I/O 失败不会留下可被误用的 partial 数据集。
+因此非法 JSON/SMILES/坐标或 I/O 失败不会留下可被误用的 partial 数据集；重复 identity 作为不同
+来源行保留，并以不同 ``mol_id`` 参与同一 scaffold group。
 """
 
 from __future__ import annotations
@@ -30,7 +32,11 @@ import pyarrow.parquet as pq
 from spectraexpert.data.structure_dataset import canonicalize_smiles, scaffold_split
 
 
-AUTHORIZED_BASENAMES = frozenset({"Raman_QME14S.jsonl", "Raman_fg26.jsonl"})
+AUTHORIZED_INPUT_PATHS = (
+    Path("/data/SpecGPT/data/theory_data_tiny/Raman_QME14S.jsonl"),
+    Path("/data/SpecGPT/data/theory_data_tiny/Raman_fg26.jsonl"),
+)
+AUTHORIZED_BASENAMES = frozenset(path.name for path in AUTHORIZED_INPUT_PATHS)
 
 
 def _file_sha256(path: Path) -> str:
@@ -98,18 +104,64 @@ def _extract_record(
     return str(smiles) if isinstance(smiles, str) else smiles, x, y
 
 
-def _validate_inputs(inputs: Sequence[str | Path]) -> list[Path]:
+def _absolute_without_resolving(path: Path) -> Path:
+    return Path(os.path.abspath(os.fspath(path.expanduser())))
+
+
+def _validate_inputs(
+    inputs: Sequence[str | Path],
+    *,
+    allowed_input_paths: Sequence[str | Path] | None = None,
+) -> list[Path]:
     paths = [Path(value) for value in inputs]
-    basenames = [path.name for path in paths]
-    if len(paths) != 2 or set(basenames) != AUTHORIZED_BASENAMES:
+    allowed = [
+        Path(value)
+        for value in (
+            AUTHORIZED_INPUT_PATHS
+            if allowed_input_paths is None
+            else allowed_input_paths
+        )
+    ]
+    if (
+        len(paths) != 2
+        or len(allowed) != 2
+        or {path.name for path in paths} != AUTHORIZED_BASENAMES
+        or {path.name for path in allowed} != AUTHORIZED_BASENAMES
+    ):
         expected = ", ".join(sorted(AUTHORIZED_BASENAMES))
         raise ValueError(f"inputs must be exactly authorized Raman JSONL files: {expected}")
-    if len({path.resolve() for path in paths}) != 2:
-        raise ValueError("authorized Raman JSONL inputs must be two distinct files")
+    allowed_by_name = {
+        path.name: _absolute_without_resolving(path) for path in allowed
+    }
+    if len(allowed_by_name) != 2:
+        raise ValueError("allowed_input_paths must name two distinct authorized files")
+    resolved_paths: list[Path] = []
     for path in paths:
-        if not path.is_file():
-            raise FileNotFoundError(f"authorized Raman JSONL input does not exist: {path}")
-    return paths
+        absolute = _absolute_without_resolving(path)
+        allowed_absolute = allowed_by_name[path.name]
+        if absolute != allowed_absolute:
+            raise ValueError(
+                "input is not an authorized resolved input path: "
+                f"{absolute}"
+            )
+        try:
+            resolved = absolute.resolve(strict=True)
+            allowed_resolved = allowed_absolute.resolve(strict=True)
+        except FileNotFoundError as error:
+            raise FileNotFoundError(
+                f"authorized Raman JSONL input does not exist: {absolute}"
+            ) from error
+        if absolute != resolved or allowed_absolute != allowed_resolved:
+            raise ValueError(f"authorized Raman JSONL path must not use a symlink: {absolute}")
+        if resolved != allowed_resolved or not resolved.is_file():
+            raise ValueError(
+                "input is not an authorized resolved input path: "
+                f"{resolved}"
+            )
+        resolved_paths.append(resolved)
+    if len(set(resolved_paths)) != 2:
+        raise ValueError("authorized Raman JSONL inputs must be two distinct files")
+    return resolved_paths
 
 
 def _column_names(axis: np.ndarray) -> list[str]:
@@ -194,10 +246,12 @@ def prepare_raman_jsonl(
     stop: float = 4000.0,
     points: int = 3501,
     split_seed: int = 0,
+    *,
+    allowed_input_paths: Sequence[str | Path] | None = None,
 ) -> dict[str, object]:
     """转换恰好两个白名单 JSONL；返回记录数、唯一 identity 数和输出轴摘要。"""
 
-    paths = _validate_inputs(inputs)
+    paths = _validate_inputs(inputs, allowed_input_paths=allowed_input_paths)
     output_path = Path(output_dir)
     if output_path.exists():
         raise FileExistsError(f"output directory already exists: {output_path}")
@@ -211,7 +265,7 @@ def prepare_raman_jsonl(
     source_hashes = {path: _file_sha256(path) for path in paths}
     interpolated_rows: list[np.ndarray] = []
     smiles_rows: list[dict[str, object]] = []
-    seen_identities: dict[str, tuple[str, int]] = {}
+    canonical_identities: set[str] = set()
     source_counts: dict[str, int] = {path.name: 0 for path in paths}
     for path in paths:
         for line_number, record in _iter_json_lines(path):
@@ -235,13 +289,7 @@ def prepare_raman_jsonl(
                     f"source axis does not cover [{start}, {stop}] in {path.name}:{line_number}"
                 )
             canonical = canonicalize_smiles(raw_smiles)
-            if canonical in seen_identities:
-                prior_file, prior_line = seen_identities[canonical]
-                raise ValueError(
-                    "duplicate canonical SMILES: "
-                    f"{canonical!r} at {prior_file}:{prior_line} and {path.name}:{line_number}"
-                )
-            seen_identities[canonical] = (path.name, line_number)
+            canonical_identities.add(canonical)
             mol_id = len(smiles_rows)
             interpolated = np.interp(target_axis, x, y).astype(np.float32)
             if not np.isfinite(interpolated).all():
@@ -278,7 +326,7 @@ def prepare_raman_jsonl(
     metadata: dict[str, object] = {
         "schema_version": "raman_jsonl_preparation_v1",
         "record_count": len(smiles_rows),
-        "unique_canonical_smiles": len(seen_identities),
+        "unique_canonical_smiles": len(canonical_identities),
         "sources": source_metadata,
         "interpolation": {
             "method": "numpy.interp",
@@ -311,7 +359,7 @@ def prepare_raman_jsonl(
 
     return {
         "records": len(smiles_rows),
-        "unique_canonical_smiles": len(seen_identities),
+        "unique_canonical_smiles": len(canonical_identities),
         "start": float(start),
         "stop": float(stop),
         "points": points,

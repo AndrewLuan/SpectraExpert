@@ -188,6 +188,32 @@ def test_feature_cache_subset_load_still_validates_unselected_rows(tmp_path):
         )
 
 
+@pytest.mark.parametrize("mutation", ["delete", "add", "replace_canonical"])
+def test_feature_cache_recomputes_source_hash_from_all_rows(tmp_path, mutation):
+    smiles_path = tmp_path / "smiles.parquet"
+    output = tmp_path / "features.parquet"
+    _write_smiles(smiles_path, [(1, "CC"), (2, "O")])
+    build_feature_cache(smiles_path, output)
+    table = pq.read_table(output)
+    rows = table.to_pylist()
+    if mutation == "delete":
+        rows = rows[:1]
+    elif mutation == "add":
+        added = dict(rows[1])
+        added["mol_id"] = 3
+        rows.append(added)
+    else:
+        rows[1]["smiles_canonical"] = "N"
+    pq.write_table(pa.Table.from_pylist(rows, schema=table.schema), output)
+
+    with pytest.raises(ValueError, match="source_smiles_sha256"):
+        load_feature_cache(
+            output,
+            expected_config=StructureFeatureConfig(),
+            required_mol_ids=[1],
+        )
+
+
 @pytest.mark.parametrize(
     ("rows", "message"),
     [([(1, "CC"), (1, "O")], "duplicate mol_id"), ([(1, "not-a-smiles")], "invalid SMILES")],

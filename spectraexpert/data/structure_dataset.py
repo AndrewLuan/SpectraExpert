@@ -182,15 +182,11 @@ def load_feature_cache(
     actual_config_hash = hashlib.sha256(_stable_json(cached_config)).hexdigest()
     if cached_config_hash != actual_config_hash:
         raise ValueError("corrupt feature cache: feature_config_sha256 mismatch")
-    if (
-        expected_source_smiles_sha256 is not None
-        and cached_source_hash != expected_source_smiles_sha256
-    ):
-        raise ValueError("feature metadata mismatch: source_smiles_sha256")
-
     required = None if required_mol_ids is None else {int(value) for value in required_mol_ids}
     graphs: dict[int, MoleculeGraph] = {}
     seen_cache_ids: set[int] = set()
+    cache_mol_ids: list[int] = []
+    cache_canonical_smiles: list[str] = []
     try:
         batches = parquet.iter_batches(batch_size=1024)
         for batch in batches:
@@ -204,6 +200,8 @@ def load_feature_cache(
                     raise ValueError(
                         f"corrupt feature cache: non-canonical SMILES for mol_id {mol_id}"
                     )
+                cache_mol_ids.append(mol_id)
+                cache_canonical_smiles.append(canonical)
                 node_features = torch.tensor(row["node_features"], dtype=torch.long)
                 edge_src = torch.tensor(row["edge_src"], dtype=torch.long)
                 edge_dst = torch.tensor(row["edge_dst"], dtype=torch.long)
@@ -261,6 +259,16 @@ def load_feature_cache(
     except Exception as error:
         raise ValueError(f"corrupt feature cache: {cache_path}") from error
 
+    actual_source_hash = canonical_smiles_sha256(
+        cache_mol_ids, cache_canonical_smiles
+    )
+    if actual_source_hash != cached_source_hash:
+        raise ValueError("corrupt feature cache: source_smiles_sha256 mismatch")
+    if (
+        expected_source_smiles_sha256 is not None
+        and actual_source_hash != expected_source_smiles_sha256
+    ):
+        raise ValueError("feature metadata mismatch: source_smiles_sha256")
     if required is not None:
         missing = sorted(required - set(graphs))
         if missing:

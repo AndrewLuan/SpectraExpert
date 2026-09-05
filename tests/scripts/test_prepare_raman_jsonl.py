@@ -54,6 +54,7 @@ def test_prepare_interpolates_both_authorized_sources_to_one_axis(tmp_path):
         stop=4000.0,
         points=3501,
         split_seed=0,
+        allowed_input_paths=[qme_path, fg_path],
     )
 
     axis = pd.read_parquet(output_dir / "wavenumber.parquet")["wavenumber"]
@@ -83,7 +84,10 @@ def test_prepare_writes_explicit_arrow_dtypes_and_audit_metadata(tmp_path):
     qme_path, fg_path = _valid_input_paths(tmp_path)
     output_dir = tmp_path / "prepared"
 
-    prepare_raman_jsonl([qme_path, fg_path], output_dir)
+    prepare_raman_jsonl(
+        [qme_path, fg_path], output_dir,
+        allowed_input_paths=[qme_path, fg_path],
+    )
 
     spectra_schema = pq.read_schema(output_dir / "spectra.parquet")
     smiles_schema = pq.read_schema(output_dir / "smiles.parquet")
@@ -112,9 +116,15 @@ def test_prepare_rejects_any_non_authorized_or_missing_input_basename(tmp_path):
     unauthorized.write_text(qme_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     with pytest.raises(ValueError, match="authorized Raman JSONL"):
-        prepare_raman_jsonl([qme_path, unauthorized], tmp_path / "out1")
+        prepare_raman_jsonl(
+            [qme_path, unauthorized], tmp_path / "out1",
+            allowed_input_paths=[qme_path, fg_path],
+        )
     with pytest.raises(ValueError, match="exactly.*Raman_QME14S.*Raman_fg26"):
-        prepare_raman_jsonl([fg_path], tmp_path / "out2")
+        prepare_raman_jsonl(
+            [fg_path], tmp_path / "out2",
+            allowed_input_paths=[qme_path, fg_path],
+        )
 
 
 @pytest.mark.parametrize(
@@ -133,21 +143,73 @@ def test_prepare_rejects_invalid_coordinates_or_intensities(tmp_path, x, y, mess
     output_dir = tmp_path / "prepared"
 
     with pytest.raises(ValueError, match=message):
-        prepare_raman_jsonl([qme_path, fg_path], output_dir)
+        prepare_raman_jsonl(
+            [qme_path, fg_path], output_dir,
+            allowed_input_paths=[qme_path, fg_path],
+        )
 
     assert not output_dir.exists()
 
 
-def test_prepare_rejects_duplicate_canonical_smiles_without_partial_output(tmp_path):
+def test_prepare_keeps_duplicate_canonical_smiles_as_distinct_observations(tmp_path):
     qme_path, fg_path = _valid_input_paths(tmp_path)
     fg_x = np.arange(1.0, 4001.0)
     _write_lines(fg_path, [_record("CC", fg_x, fg_x)])
     output_dir = tmp_path / "prepared"
 
-    with pytest.raises(ValueError, match="duplicate canonical SMILES"):
-        prepare_raman_jsonl([qme_path, fg_path], output_dir)
+    summary = prepare_raman_jsonl(
+        [qme_path, fg_path], output_dir,
+        allowed_input_paths=[qme_path, fg_path],
+    )
 
-    assert not output_dir.exists()
+    smiles = pd.read_parquet(output_dir / "smiles.parquet")
+    manifest = json.loads(
+        (output_dir / "split_manifest.json").read_text(encoding="utf-8")
+    )
+    assert summary["records"] == 2
+    assert summary["unique_canonical_smiles"] == 1
+    assert smiles["mol_id"].tolist() == [0, 1]
+    assert smiles["smiles_canonical"].tolist() == ["CC", "CC"]
+    owner = {
+        mol_id: split
+        for split in ("train", "validation", "test")
+        for mol_id in manifest[split]
+    }
+    assert owner[0] == owner[1]
+
+
+def test_default_whitelist_rejects_same_basenames_outside_authorized_directory(tmp_path):
+    qme_path, fg_path = _valid_input_paths(tmp_path)
+
+    with pytest.raises(ValueError, match="authorized resolved input path"):
+        prepare_raman_jsonl([qme_path, fg_path], tmp_path / "prepared")
+
+
+def test_prepare_accepts_explicitly_injected_test_paths(tmp_path):
+    qme_path, fg_path = _valid_input_paths(tmp_path)
+
+    summary = prepare_raman_jsonl(
+        [qme_path, fg_path],
+        tmp_path / "prepared",
+        allowed_input_paths=[qme_path, fg_path],
+    )
+
+    assert summary["records"] == 2
+
+
+def test_prepare_rejects_symlink_alias_even_with_injected_target_whitelist(tmp_path):
+    qme_path, fg_path = _valid_input_paths(tmp_path)
+    alias_dir = tmp_path / "aliases"
+    alias_dir.mkdir()
+    qme_alias = alias_dir / "Raman_QME14S.jsonl"
+    qme_alias.symlink_to(qme_path)
+
+    with pytest.raises(ValueError, match="symlink|authorized resolved input path"):
+        prepare_raman_jsonl(
+            [qme_alias, fg_path],
+            tmp_path / "prepared",
+            allowed_input_paths=[qme_path, fg_path],
+        )
 
 
 def test_prepare_refuses_to_overwrite_existing_output(tmp_path):
@@ -158,6 +220,9 @@ def test_prepare_refuses_to_overwrite_existing_output(tmp_path):
     marker.write_text("do not replace", encoding="utf-8")
 
     with pytest.raises(FileExistsError, match="output directory already exists"):
-        prepare_raman_jsonl([qme_path, fg_path], output_dir)
+        prepare_raman_jsonl(
+            [qme_path, fg_path], output_dir,
+            allowed_input_paths=[qme_path, fg_path],
+        )
 
     assert marker.read_text(encoding="utf-8") == "do not replace"
