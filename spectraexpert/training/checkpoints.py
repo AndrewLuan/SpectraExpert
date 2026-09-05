@@ -1,18 +1,22 @@
 """功能概述：原子保存两种显式训练模式的完整状态，严格阻止配置、数据及版本混用。
 主要职责：CheckpointSnapshot/read_checkpoint_snapshot 捕获一次读取的不可变 bytes，hash 和
 load(BytesIO) 使用相同内容；materialize_checkpoint/copy_checkpoint 验证后原子物化原字节。
-model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_rng_state 保存各 RNG；
+model_config/rebuild_model 序列化和严格重建模型；capture_rng/restore_rng_state 保存各 RNG，
+恢复前先对称校验 CUDA 可用性及状态数量；validate_best_payload 统一验证 best 的有限等分数、
+bad_epochs=0 与选择元数据，copy_checkpoint(require_best=True) 在复制历史 best 前调用它。
 save_checkpoint 原子保存状态，load_checkpoint 预检后恢复模型、optimizer/scheduler 与 RNG。
 _validate_training_bindings 拒绝重复参数、全冻结模型和不完整 trainable 参数覆盖，检查 scheduler
 归属；_preflight_states 在写入前检查状态存在性和参数组布局；_apply_states 执行状态与设备恢复；
-_validate_standard_loaders 拒绝自定义加载覆盖及 hooks；_transactional_apply 先整体 deepcopy/probe，
+_validate_standard_loaders/_require_torch_implementation 检查 public/private 恢复及 extra-state
+动态方法的 torch.* 来源并拒绝实例覆盖和 hooks；_scheduler_tree 递归检查组合 scheduler。
+允许官方 ReduceLROnPlateau/SequentialLR/ChainedScheduler 覆盖；_transactional_apply 先 deepcopy/probe，
 再备份调用方状态进行事务式应用，失败恢复三者。入口 RNG 保护涵盖所有校验、probe 与应用。
 MODES/SPECTRUM_KEYS 固定版本和光谱配置键；_compare/_validate_stats 执行字段与统计量校验，
 _atomic_save/_atomic_write 在目标目录创建临时文件，flush/fsync 成功后 replace 目标。
 代码库关系：消费 Task 4 StructureAwareRetriever 与 SpectrumTransformer、Task 2 normalizer；
 由 train_structure_aware 使用。历史无 schema checkpoint 仍只能由 legacy wrapper 加载。
 输入输出与副作用：只加载可信本地 torch checkpoint（weights_only=False）；错误报告字段路径；
-事务只支持使用框架标准加载方法且无 load-state hooks 的对象，不承诺任意自定义副作用或
+事务只支持使用框架恢复实现且无用户扩展/load-state hooks 的对象，不承诺任意自定义副作用或
 导致回滚也无法执行的硬件故障；显式恢复需要 probe 和回滚快照的额外内存，probe 随后释放。
 epoch 为已完成的零基 epoch；默认保持入口 RNG，restore_rng=True 成功时才采用 checkpoint RNG。
 """
@@ -103,13 +107,30 @@ def capture_rng():
 
 
 def restore_rng_state(state):
+    cuda_states = state["cuda"]
+    available = torch.cuda.is_available()
+    if (not isinstance(cuda_states, list)
+            or (available and (not cuda_states or len(cuda_states) != torch.cuda.device_count()))
+            or (not available and cuda_states)):
+        raise ValueError("rng_states.cuda: device count mismatch")
     random.setstate(state["python"])
     np.random.set_state(state["numpy"])
     torch.set_rng_state(state["torch"].cpu())
-    if state["cuda"]:
-        if not torch.cuda.is_available() or len(state["cuda"]) != torch.cuda.device_count():
-            raise ValueError("rng_states.cuda: device count mismatch")
-        torch.cuda.set_rng_state_all([value.cpu() for value in state["cuda"]])
+    if cuda_states:
+        torch.cuda.set_rng_state_all([value.cpu() for value in cuda_states])
+
+
+def validate_best_payload(payload):
+    """在物化任何 best 前验证统一的选择不变量；普通 last 不要求分数等于 best。"""
+    metric = payload.get("selection_metric")
+    validation = payload.get("validation")
+    score = validation.get(metric) if isinstance(validation, dict) else None
+    best = payload.get("best_score")
+    if (metric != "top1_tanimoto" or payload.get("selection_exclude_identity") is not True
+            or payload.get("bad_epochs") != 0
+            or type(score) not in (int, float) or type(best) not in (int, float)
+            or not np.isfinite(score) or not np.isfinite(best) or score != best):
+        raise ValueError("best selection metadata inconsistent: requires finite equal score/best_score and bad_epochs=0")
 
 
 def _compare(expected, actual, prefix):
@@ -179,10 +200,12 @@ def _atomic_write(path, write):
     return path
 
 
-def copy_checkpoint(source, destination, **validation_options):
+def copy_checkpoint(source, destination, *, require_best=False, **validation_options):
     """验证来源后原子复制完整历史 checkpoint；不把 last 权重误记为 best。"""
     snapshot = read_checkpoint_snapshot(source)
-    load_checkpoint(snapshot, **validation_options)
+    _, payload = load_checkpoint(snapshot, **validation_options)
+    if require_best:
+        validate_best_payload(payload)
     return materialize_checkpoint(snapshot, destination)
 
 
@@ -208,29 +231,46 @@ def _validate_training_bindings(model, optimizer, scheduler):
     if scheduler is not None:
         if optimizer is None:
             raise ValueError("scheduler requires an explicitly supplied optimizer")
-        if getattr(scheduler, "optimizer", None) is not optimizer:
-            raise ValueError("scheduler must belong to the supplied optimizer")
+        for current in _scheduler_tree(scheduler):
+            if getattr(current, "optimizer", None) is not optimizer:
+                raise ValueError("scheduler must belong to the supplied optimizer")
+
+
+def _scheduler_tree(scheduler):
+    pending, seen = [scheduler], set()
+    while pending:
+        current = pending.pop()
+        if id(current) not in seen:
+            seen.add(id(current))
+            yield current
+            pending.extend(getattr(current, "_schedulers", []))
+
+
+def _require_torch_implementation(component, name, methods):
+    for method in methods:
+        implementation = getattr(type(component), method, None)
+        if (method in component.__dict__ or (implementation is not None
+                and not getattr(implementation, "__module__", "").startswith("torch."))):
+            raise ValueError(f"unsupported {name} {method} override")
 
 
 def _validate_standard_loaders(model, optimizer, scheduler):
-    """在执行任何用户加载代码前限定事务边界；允许继承框架标准实现。"""
-    components = []
+    """验证实际动态调用点；官方 torch.* 覆盖受支持，用户扩展及实例覆盖被拒绝。"""
     if model is not None:
         for name, module in model.named_modules():
             if module._load_state_dict_pre_hooks or module._load_state_dict_post_hooks:
                 raise ValueError(f"unsupported model load-state hook: {name or '<root>'}")
-            components.append((f"model.{name}", module, torch.nn.Module.load_state_dict))
+            _require_torch_implementation(module, f"model.{name}",
+                ("load_state_dict", "_load_from_state_dict", "set_extra_state", "__setstate__"))
     if optimizer is not None:
         if (optimizer._optimizer_load_state_dict_pre_hooks
                 or optimizer._optimizer_load_state_dict_post_hooks):
             raise ValueError("unsupported optimizer load-state hook")
-        components.append(("optimizer", optimizer, torch.optim.Optimizer.load_state_dict))
+        _require_torch_implementation(optimizer, "optimizer", ("load_state_dict", "__setstate__"))
     if scheduler is not None:
-        components.append(("scheduler", scheduler, torch.optim.lr_scheduler.LRScheduler.load_state_dict))
-    for name, component, standard in components:
-        if ("load_state_dict" in component.__dict__
-                or type(component).load_state_dict is not standard):
-            raise ValueError(f"unsupported {name} load_state_dict override")
+        for current in _scheduler_tree(scheduler):
+            _require_torch_implementation(current, "scheduler",
+                ("load_state_dict", "__setstate__", "_init_is_better", "_init_scale_fn"))
 
 
 def _preflight_states(payload, optimizer, scheduler):
@@ -309,7 +349,7 @@ def _transactional_apply(model, optimizer, scheduler, payload, device, rng_state
             scheduler.optimizer = optimizer
             for key in set(scheduler.__dict__) - scheduler_keys:
                 del scheduler.__dict__[key]
-            torch.optim.lr_scheduler.LRScheduler.load_state_dict(scheduler, previous[2])
+            type(scheduler).load_state_dict(scheduler, previous[2])
         if original_rng is not None:
             restore_rng_state(original_rng)
         raise

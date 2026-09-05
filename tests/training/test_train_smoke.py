@@ -5,6 +5,7 @@ v1 独立候选光谱模式、相同 seed 的连续/恢复训练、来源哈希�
 原子替换来源文件验证已加载快照不会混入替换后的状态，并验证 symlink 物化和 best 来源复用。
 真正 best 状态要求分数与 best_score 相同且 bad_epochs 为零；已有 best 的字节冲突先拒绝，
 等字节链接按快照物化，平分后的 last 仍保留独立历史 best。
+已有或 sibling historical best 的分数不一致、NaN、选择键缺失均在写入前拒绝，目录原字节不变。
 代码库关系：覆盖 Task 4–6 到 train_structure_aware 的真实集成；不读取项目大型数据目录。
 输入输出与副作用：写入 tmp_path 内微型数据、日志、best/last checkpoint。
 """
@@ -338,6 +339,46 @@ def test_inconsistent_best_selection_metadata_is_rejected(tiny_dataset_dir, tmp_
     torch.save(changed, source)
     with pytest.raises(ValueError, match="selection.*inconsistent"):
         train(dataclasses.replace(config, output_dir=tmp_path / "destination", resume_from=source))
+
+
+@pytest.mark.parametrize("location", ["existing", "sibling"])
+@pytest.mark.parametrize("corruption", ["different_score", "nan_score", "missing_metric", "nan_best"])
+def test_historical_best_invariant_rejected_before_any_write(tiny_dataset_dir, tmp_path, location, corruption):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source", epochs=2)
+    train(config)
+    last = torch.load(config.output_dir / "last.pt", weights_only=False)
+    assert last["bad_epochs"] > 0
+    destination = tmp_path / "destination"
+    destination.mkdir()
+    shutil.copyfile(config.output_dir / "last.pt", destination / "last.pt")
+    best_path = destination / "best.pt" if location == "existing" else config.output_dir / "best.pt"
+    payload = torch.load(config.output_dir / "best.pt", weights_only=False)
+    if corruption == "different_score":
+        payload["validation"]["top1_tanimoto"] = -.25
+    elif corruption == "nan_score":
+        payload["validation"]["top1_tanimoto"] = float("nan")
+    elif corruption == "missing_metric":
+        payload["validation"].pop("top1_tanimoto")
+    else:
+        payload["best_score"] = float("nan")
+    torch.save(payload, best_path)
+    before = {str(p): p.read_bytes() for directory in (destination, config.output_dir) for p in directory.iterdir()}
+    with pytest.raises(ValueError):
+        train(dataclasses.replace(config, output_dir=destination, resume_from=config.output_dir / "last.pt"))
+    assert {str(p): p.read_bytes() for directory in (destination, config.output_dir) for p in directory.iterdir()} == before
+
+
+def test_resume_cuda_rng_mismatch_rejected_before_checkpoint_materialization(tiny_dataset_dir, tmp_path):
+    config = TrainConfig.tiny(data_dir=tiny_dataset_dir, output_dir=tmp_path / "source")
+    train(config)
+    source = config.output_dir / "last.pt"
+    payload = torch.load(source, weights_only=False)
+    payload["rng_states"][0]["cuda"] = [torch.tensor([42], dtype=torch.uint8)]
+    torch.save(payload, source)
+    destination = tmp_path / "destination"
+    with pytest.raises(ValueError, match="rng_states.cuda"):
+        train(dataclasses.replace(config, output_dir=destination, resume_from=source))
+    assert not destination.exists()
 
 
 def _ddp_worker(rank, store, config, queue, fail_batch=False, resume=False):

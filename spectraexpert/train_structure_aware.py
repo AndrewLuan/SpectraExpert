@@ -6,6 +6,8 @@ checkpoint 与 JSONL；包含自身候选的结果以 inclusive_ 前缀单独记
 内容必须与快照相同，通过后原子物化快照为普通文件，避免 symlink 或来源替换造成混装。
 bad_epochs 为零且分数一致才表示恢复状态本身为 best，此时已有 best 也必须匹配同一快照；
 平分后的 last 不替代历史 best，所有目标冲突均在写入前拒绝。
+resume best、已有 best 与 sibling historical best 在物化前均复用 validate_best_payload，
+拒绝缺失选择指标、非有限值或声明 best 分数与实际 validation 不一致的文件。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
 _prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
@@ -41,7 +43,8 @@ from spectraexpert.data.structure_dataset import (StructureAwareSpectralDataset,
     canonical_smiles_sha256, canonicalize_smiles, structure_aware_collate)
 from spectraexpert.data.structure_features import DescriptorNormalizer, StructureFeatureConfig
 from spectraexpert.training.checkpoints import (MODES, capture_rng, copy_checkpoint, load_checkpoint,
-    materialize_checkpoint, read_checkpoint_snapshot, rebuild_model, restore_rng_state, save_checkpoint)
+    materialize_checkpoint, read_checkpoint_snapshot, rebuild_model, restore_rng_state, save_checkpoint,
+    validate_best_payload)
 from spectraexpert.training.validation import validate_retrieval
 from spectraexpert.utils.distributed import gather_identity, gather_with_local_grad
 from spectraexpert.utils.structure_losses import StructureAwareObjective, dynamic_nt_xent
@@ -257,7 +260,7 @@ def _run(config):
             resume_snapshot = read_checkpoint_snapshot(config.resume_from)
             model, payload = load_checkpoint(resume_snapshot, model=model, optimizer=optimizer, device=device,
                 expected_mode=config.training_mode, expected_model_config=architecture,
-                expected_metadata=expected)
+                expected_metadata=expected, restore_rng=True, rank=rank)
             saved = payload["descriptor_stats"]
             if not torch.equal(stats.mean, saved["mean"]) or not torch.equal(stats.std, saved["std"]):
                 raise ValueError("descriptor_stats: train statistics mismatch")
@@ -265,11 +268,15 @@ def _run(config):
             training.descriptor_normalizer = validation_data.descriptor_normalizer = stats
             start_epoch, global_steps = payload["epoch"] + 1, payload["global_steps"]
             best, bad_epochs = payload["best_score"], payload["bad_epochs"]
-            score = payload["validation"].get(payload["selection_metric"])
-            if (not isinstance(score, (int, float)) or not np.isfinite(score)
-                    or not np.isfinite(best) or score > best or (bad_epochs == 0 and score != best)):
-                raise ValueError("resume selection metadata inconsistent with best_score/bad_epochs")
-            resume_is_best = score == best and bad_epochs == 0
+            resume_is_best = bad_epochs == 0
+            if resume_is_best:
+                validate_best_payload(payload)
+            else:
+                validation = payload["validation"]
+                score = validation.get(payload["selection_metric"]) if isinstance(validation, dict) else None
+                if (type(score) not in (int, float) or type(best) not in (int, float)
+                        or not np.isfinite(score) or not np.isfinite(best) or score > best):
+                    raise ValueError("resume selection metadata inconsistent with best_score/bad_epochs")
             if rank == 0:
                 best_destination = config.output_dir / "best.pt"
                 best_options = dict(expected_mode=config.training_mode, expected_model_config=architecture,
@@ -277,7 +284,8 @@ def _run(config):
                 best_snapshot = None
                 if best_destination.exists():
                     best_snapshot = read_checkpoint_snapshot(best_destination)
-                    load_checkpoint(best_snapshot, **best_options)
+                    _, best_payload = load_checkpoint(best_snapshot, **best_options)
+                    validate_best_payload(best_payload)
                 last_destination = config.output_dir / "last.pt"
                 if (last_destination.exists()
                         and _sha256(last_destination) != resume_snapshot.sha256):
@@ -290,7 +298,7 @@ def _run(config):
                 elif best_snapshot is None:
                     best_source = config.resume_from.parent / "best.pt"
                     if best_source.is_file():
-                        copy_checkpoint(best_source, best_destination, **best_options)
+                        copy_checkpoint(best_source, best_destination, require_best=True, **best_options)
                     else:
                         raise ValueError("resume requires historical best.pt alongside last checkpoint")
                 materialize_checkpoint(resume_snapshot, last_destination)

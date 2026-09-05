@@ -4,6 +4,8 @@
 覆盖单/多参数组重复、空 trainable、缺失状态与组布局，递归拒绝加载 hooks 及实例/子类覆盖。
 检查 probe 失败、底层张量复制中断后的三者事务回滚和入口 RNG 保持，以及不可变 checkpoint
 bytes；同时确认梯度、requires_grad 和各子模块训练模式保持不变，故障注入由 pytest 撤销。
+覆盖 nested private/extra-state 和 optimizer/scheduler 恢复扩展的入口拒绝，官方 plateau/组合
+scheduler 的恢复、续跑与回滚；以 fake CUDA RNG 后端验证数量对称预检和不恢复时的入口保护。
 代码库关系：消费 training.checkpoints，避免旧 checkpoint 被静默解释为新模型。
 输入输出与副作用：只在 pytest 临时目录创建小型模型文件，不访问实验数据。
 """
@@ -388,3 +390,153 @@ def test_inference_load_without_rng_restore_preserves_entry_rng_and_execution_fl
     assert [parameter.requires_grad for parameter in model.parameters()] == flags
     assert_nested_equal([parameter.grad for parameter in model.parameters()], gradients)
     assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("extension", ["_load_from_state_dict", "set_extra_state", "__setstate__"])
+@pytest.mark.parametrize("override_kind", ["instance", "subclass"])
+def test_dynamic_restore_extensions_rejected_before_user_code(tmp_path, extension, override_kind):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, scheduler = training_bundle()
+    owner = optimizer if extension == "__setstate__" else model.spectrum_encoder.projection[0]
+    def unsupported_extension(*args, **kwargs):
+        random.random()
+        np.random.rand()
+        torch.rand(1)
+        raise RuntimeError("dynamic extension executed")
+    if override_kind == "instance":
+        setattr(owner, extension, types.MethodType(unsupported_extension, owner))
+    else:
+        owner.__class__ = type("CustomRestoreExtension", (type(owner),), {extension: unsupported_extension})
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match=f"unsupported.*{extension}"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+@pytest.mark.parametrize("kind", ["plateau", "sequential", "chained"])
+def test_official_scheduler_overrides_restore_and_continue(tmp_path, kind):
+    def make_scheduler(optimizer):
+        schedulers = torch.optim.lr_scheduler
+        if kind == "plateau":
+            return schedulers.ReduceLROnPlateau(optimizer, patience=0, factor=.5)
+        children = [schedulers.StepLR(optimizer, step_size=1, gamma=.5),
+                    schedulers.ExponentialLR(optimizer, gamma=.8)]
+        return (schedulers.SequentialLR(optimizer, children, milestones=[2]) if kind == "sequential"
+                else schedulers.ChainedScheduler(children, optimizer=optimizer))
+    source = make_model()
+    optimizer = torch.optim.Adam(source.parameters(), lr=.02)
+    scheduler = make_scheduler(optimizer)
+    for _ in range(3):
+        optimizer.zero_grad()
+        sum(parameter.square().sum() for parameter in source.parameters()).backward()
+        optimizer.step()
+        scheduler.step(1.) if kind == "plateau" else scheduler.step()
+    path = save_checkpoint(tmp_path / "official.pt", source, optimizer, scheduler=scheduler,
+                           descriptor_stats=DescriptorNormalizer(torch.zeros(15), torch.ones(15)))
+    model = make_model()
+    restored_optimizer = torch.optim.Adam(model.parameters(), lr=.1)
+    restored_scheduler = make_scheduler(restored_optimizer)
+    before_rng = capture_rng()
+    restored, _ = load_checkpoint(path, model=model, optimizer=restored_optimizer, scheduler=restored_scheduler)
+    assert restored is model
+    assert_nested_equal(restored_scheduler.state_dict(), scheduler.state_dict())
+    assert_nested_equal(capture_rng(), before_rng)
+    for current_optimizer, current_scheduler in ((optimizer, scheduler), (restored_optimizer, restored_scheduler)):
+        current_optimizer.step()
+        current_scheduler.step(1.) if kind == "plateau" else current_scheduler.step()
+    assert restored_optimizer.param_groups[0]["lr"] == optimizer.param_groups[0]["lr"]
+    assert_nested_equal(restored_scheduler.state_dict(), scheduler.state_dict())
+
+
+@pytest.mark.parametrize("available,saved_count", [(True, 0), (True, 2), (False, 1), (True, 1)])
+@pytest.mark.parametrize("restore", [False, True])
+def test_cuda_rng_topology_checked_symmetrically_without_real_cuda(tmp_path, monkeypatch, available, saved_count, restore):
+    path = make_optimizer_checkpoint(tmp_path)
+    payload = torch.load(path, weights_only=False)
+    payload["rng_states"][0]["cuda"] = [torch.tensor([42], dtype=torch.uint8) for _ in range(saved_count)]
+    torch.save(payload, path)
+    model, optimizer, scheduler = training_bundle()
+    fake_cuda = [torch.tensor([17], dtype=torch.uint8)] if available else []
+    def set_cuda(states):
+        fake_cuda[:] = [state.clone() for state in states]
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: available)
+    monkeypatch.setattr(torch.cuda, "device_count", lambda: 1 if available else 0)
+    monkeypatch.setattr(torch.cuda, "get_rng_state_all", lambda: [state.clone() for state in fake_cuda])
+    monkeypatch.setattr(torch.cuda, "set_rng_state_all", set_cuda)
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    mismatch = (available and saved_count != 1) or (not available and saved_count != 0)
+    if restore and mismatch:
+        with pytest.raises(ValueError, match="rng_states.cuda"):
+            load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=True)
+        assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    else:
+        restored, _ = load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler, restore_rng=restore)
+        assert restored is model
+    assert_nested_equal(capture_rng(), payload["rng_states"][0] if restore and not mismatch else before_rng)
+
+
+@pytest.mark.parametrize("extension", ["_init_is_better", "__setstate__", "child_load"])
+def test_scheduler_restore_extensions_rejected_recursively(tmp_path, extension):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, _ = training_bundle()
+    if extension == "child_load":
+        child = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1)
+        scheduler = torch.optim.lr_scheduler.ChainedScheduler([child], optimizer=optimizer)
+        owner, method = child, "load_state_dict"
+    else:
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+        owner, method = scheduler, extension
+    def unsupported_extension(*args, **kwargs):
+        raise RuntimeError("scheduler restore extension executed")
+    owner.__class__ = type("CustomSchedulerExtension", (type(owner),), {method: unsupported_extension})
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    before_rng = capture_rng()
+    with pytest.raises(ValueError, match=f"unsupported.*{method}"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+    assert_nested_equal(capture_rng(), before_rng)
+
+
+def test_sequential_scheduler_rollback_preserves_child_objects(tmp_path, monkeypatch):
+    path = make_optimizer_checkpoint(tmp_path)
+    model, optimizer, _ = training_bundle()
+    children = [torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=.5),
+                torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=.8)]
+    scheduler = torch.optim.lr_scheduler.SequentialLR(optimizer, children, milestones=[2])
+    payload = torch.load(path, weights_only=False)
+    payload["scheduler_state_dict"] = scheduler.state_dict()
+    torch.save(payload, path)
+    before = copy.deepcopy([component.state_dict() for component in (model, optimizer, scheduler)])
+    failing_parameter = list(model.parameters())[1]
+    original_copy = torch.Tensor.copy_
+    failed = False
+    def fail_once(self, *args, **kwargs):
+        nonlocal failed
+        if self is failing_parameter and not failed:
+            failed = True
+            raise RuntimeError("sequential rollback injected copy failure")
+        return original_copy(self, *args, **kwargs)
+    monkeypatch.setattr(torch.Tensor, "copy_", fail_once)
+    with pytest.raises(ValueError, match="injected copy failure"):
+        load_checkpoint(path, model=model, optimizer=optimizer, scheduler=scheduler)
+    assert scheduler._schedulers == children
+    assert all(child.optimizer is optimizer for child in children)
+    assert_nested_equal([component.state_dict() for component in (model, optimizer, scheduler)], before)
+
+
+def test_cuda_topology_failure_precedes_all_rng_writes(monkeypatch):
+    from spectraexpert.training.checkpoints import restore_rng_state
+    entry = capture_rng()
+    invalid = copy.deepcopy(entry)
+    invalid["cuda"] = [torch.tensor([42], dtype=torch.uint8)]
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    def forbidden_write(*args, **kwargs):
+        raise RuntimeError("RNG written before topology validation")
+    monkeypatch.setattr(random, "setstate", forbidden_write)
+    monkeypatch.setattr(np.random, "set_state", forbidden_write)
+    monkeypatch.setattr(torch, "set_rng_state", forbidden_write)
+    with pytest.raises(ValueError, match="rng_states.cuda"):
+        restore_rng_state(invalid)
