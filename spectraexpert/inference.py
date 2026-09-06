@@ -6,6 +6,7 @@
 转换为 float32 嵌入；静态方法 ``retrieve`` 验证二维数据库并返回稳定降序的 int64 索引和
 float32 余弦分数；``StructureAwareSpectralEncoder.from_checkpoint`` 让校验、SHA-256 与反序列化
 共享同一不可变 snapshot，``encode_spectrum/predict_auxiliary`` 校验 signal length 后执行纯光谱推理。
+v2 loader 要求 ``train_config.normalize`` 为 exact bool，并暴露经验证的 loss 权重供索引能力核对。
 代码库关系：依赖 ``spectraexpert.models.spectrum_encoder.SpectrumTransformer``；由
 ``pipeline.stage1_retrieval`` 按显式 mode 调用；v2 依赖 ``training.checkpoints`` 与
 ``StructureAwareRetriever``，legacy 继续兼容 ``train_contrastive.py`` args 和 ``encoder.`` 前缀。
@@ -66,6 +67,14 @@ class StructureAwareSpectralEncoder:
         self.checkpoint_sha256 = checkpoint_sha256
         self.model_config = dict(payload["model_config"])
         self.feature_metadata = dict(payload["feature_config"])
+        train_config = payload.get("train_config")
+        if not isinstance(train_config, Mapping) or type(train_config.get("normalize")) is not bool:
+            raise ValueError("train_config.normalize must be exact bool for v2 inference")
+        self.normalize_spectrum = train_config["normalize"]
+        loss_weights = payload.get("loss_weights")
+        if not isinstance(loss_weights, Mapping):
+            raise ValueError("loss_weights must be a mapping for v2 inference")
+        self.loss_weights = dict(loss_weights)
         self.descriptor_mean = payload["descriptor_stats"]["mean"].detach().cpu().numpy().astype(np.float32)
         self.descriptor_std = payload["descriptor_stats"]["std"].detach().cpu().numpy().astype(np.float32)
 

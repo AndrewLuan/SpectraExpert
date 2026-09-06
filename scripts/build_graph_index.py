@@ -8,8 +8,9 @@ feature config，验证 SMILES 的唯一 mol_id/canonical identity 与 cache sou
 代码库关系：输入缓存由 ``scripts/cache_molecular_features.py`` 生成并由
 ``load_feature_cache`` 严格恢复；编码和 NPZ 发布委托 ``spectraexpert.retrieval.graph_index``，因此 CLI、
 测试与 Stage 1 使用完全相同的 checkpoint SHA、model/feature/source metadata 契约。
-输入输出与副作用：只读取四个显式路径，不扫描目录、不读取 spectra 或真实大型数据目录；目标已存在、
-重复/非 canonical 结构、cache 不匹配、空输入或非法 batch 会在编码/写入前失败。成功时写一个原子 NPZ；
+输入输出与副作用：只读取四个显式路径，不扫描目录、不读取 spectra 或真实大型数据目录；``mol_id``
+在转换前逐值要求 Python/NumPy exact integer 且位于 int64 范围；目标已存在、重复/非 canonical 结构、
+cache provenance 不匹配、空输入或非法 batch 会在编码/写入前失败。成功时写一个原子 NPZ；
 checkpoint 只面向可信本地文件，底层 Task 7 loader 的 ``weights_only=False`` 安全边界保持不变。
 """
 
@@ -63,15 +64,16 @@ def _candidate_records(path: Path) -> tuple[list[int], list[str]]:
         raise ValueError("candidate SMILES Parquet requires smiles_canonical or smiles")
     if frame.empty:
         raise ValueError("candidate SMILES Parquet is empty")
-    numeric = pd.to_numeric(frame["mol_id"], errors="raise").to_numpy()
-    try:
-        finite = np.isfinite(numeric.astype(np.float64))
-        integer = np.equal(numeric, np.floor(numeric))
-    except (TypeError, ValueError, OverflowError) as error:
-        raise ValueError("candidate mol_id must be finite integer-valued") from error
-    if not finite.all() or not integer.all():
-        raise ValueError("candidate mol_id must be finite integer-valued")
-    mol_ids = numeric.astype(np.int64).tolist()
+    mol_ids = []
+    minimum, maximum = np.iinfo(np.int64).min, np.iinfo(np.int64).max
+    for raw in frame["mol_id"].array:
+        if (isinstance(raw, (bool, np.bool_))
+                or not isinstance(raw, (int, np.integer))):
+            raise ValueError("candidate mol_id must be exact int64-compatible integer")
+        value = int(raw)
+        if value < minimum or value > maximum:
+            raise ValueError("candidate mol_id must be exact int64-compatible integer")
+        mol_ids.append(value)
     if len(set(mol_ids)) != len(mol_ids):
         raise ValueError("duplicate mol_id in candidate SMILES Parquet")
     canonical = [canonicalize_smiles(value, mol_id=identifier)

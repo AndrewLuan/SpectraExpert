@@ -1,7 +1,7 @@
 """
 功能概述：验证 Task 8 图候选索引模块能够作为独立、版本化的检索边界导入。
-主要职责：首个 TDD 用例锁定 ``spectraexpert.retrieval.graph_index`` 模块必须存在，后续用例将在
-同一文件覆盖索引持久化、严格 metadata 校验、稳定检索与可选光谱预测辅助重排。
+主要职责：覆盖索引持久化、原始 ZIP member/metadata-first 校验、稳定检索、checkpoint loss capability、
+dataset provenance、exact int64 CLI identity、纯光谱编码与可选预测辅助重排。
 代码库关系：目标模块消费 Task 2 结构特征 schema、Task 6 图缓存与 Task 7 v2 checkpoint；测试仅
 使用临时小数组和小模型，不读取项目真实数据，也不启动训练或网络访问。
 输入输出与副作用：只在临时目录写小产物；autouse fixture 固定并恢复 Python/NumPy/Torch RNG，
@@ -12,9 +12,11 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+import io
 import inspect
 import json
 import random
+import zipfile
 from pathlib import Path
 
 import numpy as np
@@ -79,7 +81,9 @@ def _model(*, predict_fingerprint: bool = True) -> StructureAwareRetriever:
     ).eval()
 
 
-def _checkpoint(tmp_path: Path, *, predict_fingerprint: bool = True) -> tuple[Path, StructureAwareRetriever]:
+def _checkpoint(tmp_path: Path, *, predict_fingerprint: bool = True,
+                lambda_aux: float = 1.0,
+                normalize: object = True) -> tuple[Path, StructureAwareRetriever]:
     model = _model(predict_fingerprint=predict_fingerprint)
     path = tmp_path / "model.pt"
     save_checkpoint(
@@ -88,7 +92,9 @@ def _checkpoint(tmp_path: Path, *, predict_fingerprint: bool = True) -> tuple[Pa
         descriptor_stats=DescriptorNormalizer(torch.arange(15).float(), torch.full((15,), 2.0)),
         source_sha256={"smiles": "source-file"},
         source_smiles_sha256="source-smiles",
-        train_config={"normalize": True},
+        loss_weights={"lambda_aux": lambda_aux,
+                      "lambda_fingerprint": 1.0 if predict_fingerprint else 0.0},
+        train_config={"normalize": normalize},
     )
     return path, model
 
@@ -133,6 +139,7 @@ def _index(**overrides):
         "source_smiles_sha256": canonical_smiles_sha256(mol_ids.tolist(), smiles.tolist()),
         "descriptor_mean": np.zeros(15, dtype=np.float32),
         "descriptor_std": np.ones(15, dtype=np.float32),
+        "loss_weights": {"lambda_aux": 1.0, "lambda_fingerprint": 1.0},
     }
     values.update(overrides)
     return GraphIndex.from_arrays(**values)
@@ -295,6 +302,21 @@ def test_zero_weight_rerank_needs_no_auxiliary_head_but_positive_weights_do():
         )
 
 
+def test_fingerprint_rerank_capability_requires_both_trained_weight_and_head():
+    """即使物理 fingerprint head 存在，lambda_fingerprint=0 也必须禁用重排。"""
+    from spectraexpert.retrieval import RerankConfig
+
+    index = _index(loss_weights={"lambda_aux": 1.0, "lambda_fingerprint": 0.0})
+    assert index.metadata["capabilities"]["fingerprint_rerank"] is False
+    with pytest.raises(ValueError, match="fingerprint head"):
+        index.search(
+            np.asarray([1.0, 0.0], dtype=np.float32),
+            topk=1,
+            rerank=RerankConfig(enabled=True, top_m=2, fingerprint_weight=0.1),
+            predicted_fingerprint=np.zeros(2048, dtype=np.float32),
+        )
+
+
 def test_corrupt_or_future_index_metadata_is_rejected_without_pickle(tmp_path):
     from spectraexpert.retrieval import GraphIndex
 
@@ -365,6 +387,16 @@ def test_structure_aware_encoder_restores_one_snapshot_and_accepts_only_spectrum
         encoder.encode_spectrum(np.full(65, np.nan, dtype=np.float32))
 
 
+@pytest.mark.parametrize("normalize", ["false", 0, None])
+def test_structure_aware_encoder_requires_exact_checkpoint_normalize_bool(tmp_path, normalize):
+    """把 checkpoint normalize 松散转换为 bool 会让训练/推理预处理分叉。"""
+    from spectraexpert.inference import StructureAwareSpectralEncoder
+
+    checkpoint, _ = _checkpoint(tmp_path, normalize=normalize)
+    with pytest.raises(ValueError, match="train_config.*normalize.*bool"):
+        StructureAwareSpectralEncoder.from_checkpoint(checkpoint, device="cpu")
+
+
 class _GraphDataset(Dataset):
     def __init__(self):
         self.graphs = [featurize_smiles("CC", 1), featurize_smiles("CO", 2)]
@@ -402,6 +434,31 @@ def test_build_graph_index_encodes_graph_batches_and_binds_checkpoint_metadata(t
     }
 
 
+def test_descriptor_rerank_capability_requires_positive_checkpoint_loss_weight(tmp_path):
+    """随机存在的 descriptor head 不能冒充训练过的 rerank capability。"""
+    from spectraexpert.retrieval.graph_index import build_graph_index
+
+    checkpoint, model = _checkpoint(tmp_path, lambda_aux=0.0)
+    loader = DataLoader(_GraphDataset(), batch_size=2, shuffle=False, collate_fn=collate_graphs)
+    index = build_graph_index(model, loader, checkpoint, tmp_path / "graphs.npz")
+    assert index.metadata["capabilities"]["descriptor_rerank"] is False
+    assert index.metadata["loss_weights"]["lambda_aux"] == 0.0
+
+
+@pytest.mark.parametrize("attribute", ["feature_config", "source_smiles_sha256"])
+def test_build_graph_index_rejects_dataset_without_verified_provenance(tmp_path, attribute):
+    """删除 dataset provenance 必须失败，不能用 checkpoint/现场 hash 反向盖章。"""
+    from spectraexpert.retrieval.graph_index import build_graph_index
+
+    checkpoint, model = _checkpoint(tmp_path)
+    dataset = _GraphDataset()
+    delattr(dataset, attribute)
+    loader = DataLoader(dataset, batch_size=2, shuffle=False, collate_fn=collate_graphs)
+    with pytest.raises(ValueError, match=attribute):
+        build_graph_index(model, loader, checkpoint, tmp_path / "graphs.npz")
+    assert not (tmp_path / "graphs.npz").exists()
+
+
 def test_from_encoded_batches_accepts_brief_checkpoint_and_dataset_contract(tmp_path):
     from spectraexpert.retrieval import GraphIndex
 
@@ -419,6 +476,26 @@ def test_from_encoded_batches_accepts_brief_checkpoint_and_dataset_contract(tmp_
     assert index.mol_ids.tolist() == [1, 2]
     assert index.metadata["model_config"] == model.to_config()
     assert index.metadata["source_smiles_sha256"] == dataset.source_smiles_sha256
+
+
+@pytest.mark.parametrize("attribute", ["feature_config", "source_smiles_sha256"])
+def test_from_encoded_batches_rejects_dataset_without_verified_provenance(tmp_path, attribute):
+    """checkpoint+dataset 便捷入口也必须消费真实 provenance，不能 fallback。"""
+    from spectraexpert.retrieval import GraphIndex
+
+    checkpoint, model = _checkpoint(tmp_path)
+    dataset = _GraphDataset()
+    delattr(dataset, attribute)
+    with torch.inference_mode():
+        embeddings = model.encode_graph(collate_graphs(dataset.graphs)).numpy()
+    with pytest.raises(ValueError, match=attribute):
+        GraphIndex.from_encoded_batches(
+            embedding_batches=[embeddings],
+            mol_id_batches=[np.asarray([1, 2], dtype=np.int64)],
+            smiles=["CC", "CO"],
+            checkpoint_path=checkpoint,
+            dataset=dataset,
+        )
 
 
 def test_build_graph_index_cli_helper_consumes_explicit_smiles_and_feature_cache(tmp_path):
@@ -471,3 +548,71 @@ def test_build_graph_index_cli_helper_rejects_smiles_cache_source_mismatch(tmp_p
             checkpoint, requested_smiles, feature_cache, tmp_path / "index.npz", batch_size=1
         )
     assert not (tmp_path / "index.npz").exists()
+
+
+@pytest.mark.parametrize(
+    "invalid_id",
+    [True, 1.0, "1", np.uint64(2**63)],
+)
+def test_candidate_cli_rejects_non_exact_or_out_of_int64_mol_id(tmp_path, invalid_id):
+    """转换前拒绝 bool/float/string/越界 uint，防止不同 identity 被静默合并。"""
+    from scripts.build_graph_index import _candidate_records
+
+    path = tmp_path / "candidates.parquet"
+    pd.DataFrame({"mol_id": pd.Series([invalid_id]), "smiles_canonical": ["CC"]}).to_parquet(
+        path, index=False
+    )
+    with pytest.raises(ValueError, match="mol_id.*exact int64"):
+        _candidate_records(path)
+
+
+def test_graph_index_rejects_duplicate_or_ambiguous_raw_npz_members(tmp_path):
+    """依赖 np.load 的去重视图会漏掉 ZIP 中重复或别名 member。"""
+    from spectraexpert.retrieval import GraphIndex
+
+    path = tmp_path / "index.npz"
+    _index().save(path)
+    with pytest.warns(UserWarning, match="Duplicate name"):
+        with zipfile.ZipFile(path, "a") as archive:
+            archive.writestr("metadata.npy", b"duplicate")
+    with pytest.raises(ValueError, match="NPZ members"):
+        GraphIndex.load(path)
+
+
+def test_graph_index_validates_expected_metadata_before_materializing_large_arrays(tmp_path):
+    """expected checkpoint 不兼容时应在读取损坏 embedding member 前失败。"""
+    from spectraexpert.retrieval import GraphIndex
+
+    source = tmp_path / "source.npz"
+    target = tmp_path / "corrupt-embedding.npz"
+    _index().save(source)
+    with zipfile.ZipFile(source, "r") as reader, zipfile.ZipFile(target, "w") as writer:
+        for name in reader.namelist():
+            content = b"not-a-numpy-array" if name == "embeddings.npy" else reader.read(name)
+            writer.writestr(name, content)
+    with pytest.raises(ValueError, match="checkpoint_sha256"):
+        GraphIndex.load(target, expected_checkpoint_sha256="b" * 64)
+
+
+def test_graph_index_validates_capability_consistency_before_materializing_arrays(tmp_path):
+    """伪造的 capability 必须由 model/loss metadata 提前识别，不能先碰大数组。"""
+    from spectraexpert.retrieval import GraphIndex
+
+    source = tmp_path / "source.npz"
+    target = tmp_path / "forged-capability.npz"
+    _index().save(source)
+    with zipfile.ZipFile(source, "r") as reader:
+        members = {name: reader.read(name) for name in reader.namelist()}
+    metadata_array = np.load(io.BytesIO(members["metadata.npy"]), allow_pickle=False)
+    metadata = json.loads(metadata_array.tobytes().decode("utf-8"))
+    metadata["capabilities"]["descriptor_rerank"] = False
+    metadata_bytes = json.dumps(metadata, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    metadata_buffer = io.BytesIO()
+    np.save(metadata_buffer, np.frombuffer(metadata_bytes, dtype=np.uint8), allow_pickle=False)
+    members["metadata.npy"] = metadata_buffer.getvalue()
+    members["embeddings.npy"] = b"not-a-numpy-array"
+    with zipfile.ZipFile(target, "w") as writer:
+        for name, content in members.items():
+            writer.writestr(name, content)
+    with pytest.raises(ValueError, match="capabilities.*loss_weights|capability"):
+        GraphIndex.load(target)

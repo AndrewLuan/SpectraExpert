@@ -1,8 +1,9 @@
 """
 功能概述：提供 SpectraExpert 三阶段 pipeline 的单一配置来源，支持默认值、dict 与 YAML 合并。
-主要职责：``DEFAULT_CONFIG`` 声明各阶段参数，Task 8 默认显式使用 ``spectrum_graph_v2``、版本化
-``graph_index`` 与默认禁用 rerank；``PipelineConfig`` 提供深合并、读取、序列化和 warnings；
-``_validate`` 检查 LLM provider、Stage 1 mode/重排字段及外部文件是否存在。
+主要职责：``DEFAULT_CONFIG`` 声明各阶段参数，Task 8 默认显式使用 ``spectrum_graph_v2``、
+``outputs/structure_aware`` 下的 v2 checkpoint/index 与默认禁用 rerank；``PipelineConfig`` 提供深合并、
+读取、序列化和 warnings；``_validate`` 检查 LLM provider、Stage 1 mode、exact bool 归一化、重排字段
+及外部文件是否存在。
 代码库关系：由 pipeline/run/eval 构造并传入 ``Stage1Retrieval``；legacy ``embeddings_cache`` 仍保留，
 但只有 ``retrieval_mode=spectral_only_v1`` 才消费，v2 缺 index/checkpoint 时不会回退。
 输入输出与副作用：默认/dict 构造不读文件，warnings 只做存在性和字段检查；YAML 方法显式读写调用方
@@ -21,7 +22,7 @@ from typing import Any
 # ── project root helper ──────────────────────────────────────────────
 def _project_root() -> Path:
     """Return the absolute path of the SpectrExpert project root."""
-    return Path(__file__).resolve().parent.parent.parent.parent
+    return Path(__file__).resolve().parent.parent.parent
 
 
 PROJECT_ROOT = _project_root()
@@ -38,9 +39,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
     # ── stage 1: contrastive retrieval ────────────────────────────────
     "stage1": {
         "retrieval_mode": "spectrum_graph_v2",
-        "checkpoint": str(PROJECT_ROOT / "spectra_expert_pkg" / "checkpoints"
-                          / "spectral_simclr_qm9s_8gpu_best.pth"),
-        "graph_index": str(PROJECT_ROOT / "spectra_expert_pkg" / "graph_index_v2.npz"),
+        "checkpoint": str(PROJECT_ROOT / "outputs" / "structure_aware" / "best.pt"),
+        "graph_index": str(PROJECT_ROOT / "outputs" / "structure_aware" / "graph_index.npz"),
         "embeddings_cache": str(PROJECT_ROOT / "spectra_expert_pkg"
                                 / "embeddings.npz"),
         "data_dir": str(PROJECT_ROOT / "data" / "qm9s"),
@@ -111,6 +111,8 @@ def _validate(config: dict) -> list[str]:
     if ckpt and not os.path.isfile(ckpt):
         warnings.append(f"Checkpoint not found: {ckpt}")
     stage1 = config.get("stage1", {})
+    if type(stage1.get("normalize_spectrum")) is not bool:
+        warnings.append("stage1.normalize_spectrum must be bool")
     mode = stage1.get("retrieval_mode")
     if mode not in _VALID_RETRIEVAL_MODES:
         warnings.append(

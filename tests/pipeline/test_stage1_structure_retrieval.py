@@ -1,7 +1,8 @@
 """
 功能概述：验证 Stage 1 的 ``spectrum_graph_v2`` 模式能以纯光谱 query 检索离线分子图候选。
 主要职责：用 Task 7 真实 65 点 checkpoint、真实 graph encoder 和 Task 8 NPZ index 构建 fixture，
-覆盖归一化、稳定 top-k、Candidate provenance、可选辅助重排、checkpoint/index 不匹配与显式 mode。
+覆盖训练/推理 exact bool 归一化绑定、稳定 top-k、Candidate provenance、loss-gated 辅助重排、
+checkpoint/index 不匹配、v2 默认 artifact 路径与显式 mode。
 代码库关系：连接 ``StructureAwareSpectralEncoder``、``GraphIndex``、PipelineConfig 和
 ``Stage1Retrieval``；legacy 模式仍由旧 wrapper/cache 路径负责，不能静默回退到本模式。
 输入输出与副作用：只在 pytest 临时目录写小 checkpoint、index 与 65 点 wavenumber Parquet；autouse
@@ -58,12 +59,17 @@ def _model(*, predict_fingerprint: bool = True) -> StructureAwareRetriever:
     ).eval()
 
 
-def _v2_config(tmp_path: Path, *, predict_fingerprint: bool = True) -> dict:
+def _v2_config(tmp_path: Path, *, predict_fingerprint: bool = True,
+               checkpoint_normalize: object = True,
+               config_normalize: object = True,
+               lambda_aux: float = 1.0) -> dict:
     model = _model(predict_fingerprint=predict_fingerprint)
     checkpoint = tmp_path / "model.pt"
     normalizer = DescriptorNormalizer(torch.zeros(15), torch.ones(15))
     save_checkpoint(checkpoint, model, descriptor_stats=normalizer,
-                    train_config={"normalize": True})
+                    loss_weights={"lambda_aux": lambda_aux,
+                                  "lambda_fingerprint": 1.0 if predict_fingerprint else 0.0},
+                    train_config={"normalize": checkpoint_normalize})
     graphs = [featurize_smiles("CC", 1), featurize_smiles("CO", 2), featurize_smiles("CN", 3)]
     batch = collate_graphs(graphs)
     with torch.inference_mode():
@@ -83,6 +89,8 @@ def _v2_config(tmp_path: Path, *, predict_fingerprint: bool = True) -> dict:
         source_smiles_sha256=source_hash,
         descriptor_mean=normalizer.mean.numpy(),
         descriptor_std=normalizer.std.numpy(),
+        loss_weights={"lambda_aux": lambda_aux,
+                      "lambda_fingerprint": 1.0 if predict_fingerprint else 0.0},
     )
     index_path = tmp_path / "index.npz"
     index.save(index_path)
@@ -98,7 +106,7 @@ def _v2_config(tmp_path: Path, *, predict_fingerprint: bool = True) -> dict:
             "checkpoint": str(checkpoint),
             "graph_index": str(index_path),
             "data_dir": str(data_dir),
-            "normalize_spectrum": True,
+            "normalize_spectrum": config_normalize,
             "rerank": {
                 "enabled": False,
                 "top_m": 3,
@@ -171,6 +179,37 @@ def test_stage1_v2_normalizes_query_once_before_both_embedding_and_auxiliary(tmp
     np.testing.assert_allclose(result.query_embedding, expected, rtol=1e-6, atol=1e-6)
 
 
+def test_stage1_v2_false_normalize_uses_raw_query_once(tmp_path):
+    """checkpoint/config 均为 False 时不得标准化 raw spectrum。"""
+    config = _v2_config(tmp_path, checkpoint_normalize=False, config_normalize=False)
+    spectrum = np.linspace(-3.0, 4.0, 65, dtype=np.float32)
+    stage = Stage1Retrieval(config)
+    result = stage.run(spectrum)
+    expected = stage._encoder.encode_spectrum(spectrum)
+    normalized = stage._encoder.encode_spectrum(
+        ((spectrum - spectrum.mean()) / spectrum.std()).astype(np.float32)
+    )
+    np.testing.assert_allclose(result.query_embedding, expected, rtol=1e-6, atol=1e-6)
+    assert not np.allclose(result.query_embedding, normalized)
+
+
+@pytest.mark.parametrize(
+    ("checkpoint_normalize", "config_normalize"),
+    [(False, True), (True, False), (True, "false")],
+)
+def test_stage1_v2_rejects_normalize_mismatch_or_non_bool(
+    tmp_path, checkpoint_normalize, config_normalize
+):
+    """Stage1 必须 exact bool 且与 checkpoint 训练预处理一致。"""
+    config = _v2_config(
+        tmp_path,
+        checkpoint_normalize=checkpoint_normalize,
+        config_normalize=config_normalize,
+    )
+    with pytest.raises(ValueError, match="normalize_spectrum"):
+        Stage1Retrieval(config)
+
+
 def test_stage1_optional_rerank_only_consumes_spectrum_predictions(tmp_path):
     config = _v2_config(tmp_path)
     config["stage1"]["rerank"] = {
@@ -201,11 +240,25 @@ def test_stage1_rejects_positive_fingerprint_weight_when_checkpoint_has_no_head(
         Stage1Retrieval(config)
 
 
+def test_stage1_rejects_positive_descriptor_weight_when_checkpoint_loss_is_zero(tmp_path):
+    """物理 descriptor head 存在但 lambda_aux=0 时不得启用 descriptor rerank。"""
+    config = _v2_config(tmp_path, lambda_aux=0.0)
+    config["stage1"]["rerank"] = {
+        "enabled": True,
+        "top_m": 3,
+        "fingerprint_weight": 0.0,
+        "descriptor_weight": 0.1,
+    }
+    with pytest.raises(ValueError, match="descriptor.*trained|lambda_aux"):
+        Stage1Retrieval(config)
+
+
 def test_stage1_rejects_checkpoint_index_mismatch_and_never_falls_back(tmp_path):
     config = _v2_config(tmp_path)
     replacement = tmp_path / "replacement.pt"
     save_checkpoint(replacement, _model(),
                     descriptor_stats=DescriptorNormalizer(torch.zeros(15), torch.ones(15)),
+                    loss_weights={"lambda_aux": 1.0, "lambda_fingerprint": 1.0},
                     train_config={"normalize": True})
     config["stage1"]["checkpoint"] = str(replacement)
     with pytest.raises(ValueError, match="checkpoint_sha256"):
@@ -233,6 +286,14 @@ def test_stage1_legacy_mode_stays_compatible_and_rejects_v2_checkpoint(tmp_path)
 
 def test_pipeline_config_defaults_to_v2_and_rejects_unknown_retrieval_mode():
     assert PipelineConfig.defaults().get("stage1", "retrieval_mode") == "spectrum_graph_v2"
+    default_checkpoint = PipelineConfig.defaults().get("stage1", "checkpoint")
+    assert default_checkpoint.endswith(
+        "outputs/structure_aware/best.pt"
+    )
+    assert Path(default_checkpoint).parents[2] == Path(__file__).resolve().parents[2]
+    assert PipelineConfig.defaults().get("stage1", "graph_index").endswith(
+        "outputs/structure_aware/graph_index.npz"
+    )
     config = PipelineConfig.from_dict({"stage1": {"retrieval_mode": "auto"}})
     assert any("retrieval_mode" in warning for warning in config.warnings)
     assert Candidate(1, 1, "CC", 0.5).retrieval_mode == "spectral_only_v1"
@@ -241,3 +302,7 @@ def test_pipeline_config_defaults_to_v2_and_rejects_unknown_retrieval_mode():
         {"stage1": {"rerank": {"fingerprint_weight": float("nan")}}}
     )
     assert any("fingerprint_weight" in warning for warning in nonfinite.warnings)
+    string_false = PipelineConfig.from_dict(
+        {"stage1": {"normalize_spectrum": "false"}}
+    )
+    assert any("normalize_spectrum" in warning for warning in string_false.warnings)

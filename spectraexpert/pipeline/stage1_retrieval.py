@@ -3,13 +3,14 @@
 ``spectrum_graph_v2`` 纯光谱 query → 离线分子图候选检索，绝不静默 fallback 或混用产物。
 主要职责：``Stage1Retrieval.__init__`` 按 mode 恢复对应 encoder/cache，v2 严格绑定 checkpoint
 SHA、model_config、feature_config 与 GraphIndex；``run`` 校验一维有限且长度匹配的 spectrum，按
-训练约定只归一化一次供 embedding 和 auxiliary heads 共用；``_detect_peaks`` 产生 DetectedPeak；
+checkpoint ``train_config.normalize`` 要求 exact bool 且与配置一致，训练约定只归一化一次供 embedding
+和 auxiliary heads 共用；``_detect_peaks`` 产生 DetectedPeak；
 ``_retrieve_v1/_retrieve_v2`` 生成含 mode 与原 embedding cosine provenance 的 Candidate。
 代码库关系：legacy 路径使用 ``SpectralEncoder`` 和历史 embeddings NPZ；v2 路径使用
 ``StructureAwareSpectralEncoder``、``GraphIndex``、``RerankConfig``，输出继续供 Stage 2/3 与评估
 模块消费。PipelineConfig 声明 mode、graph_index 和 rerank 字段，Candidate 保持旧构造兼容。
 输入输出与副作用：构造时只读取显式 checkpoint/index/cache/wavenumber 文件；v2 查询签名只接收
-spectrum，不接收 SMILES、formula、真实 descriptor/fingerprint。正辅助权重缺 head 时在构造期
+spectrum，不接收 SMILES、formula、真实 descriptor/fingerprint。正辅助权重缺训练 loss/head 时在构造期
 fail fast；运行只返回内存结果，不写文件；top-k 超过候选数时由索引安全截断。
 """
 
@@ -48,7 +49,10 @@ class Stage1Retrieval:
         self._top_k = pipeline_cfg.get("top_k", 10)
         if not isinstance(self._top_k, int) or isinstance(self._top_k, bool) or self._top_k <= 0:
             raise ValueError("pipeline.top_k must be a positive integer")
-        self._normalize = bool(sc.get("normalize_spectrum", True))
+        normalize = sc.get("normalize_spectrum", True)
+        if type(normalize) is not bool:
+            raise ValueError("stage1.normalize_spectrum must be exact bool")
+        self._normalize = normalize
         self._graph_index: GraphIndex | None = None
         self._rerank = RerankConfig()
 
@@ -59,6 +63,10 @@ class Stage1Retrieval:
             if not index_path.is_file():
                 raise FileNotFoundError(f"Graph index not found: {index_path}")
             self._encoder = StructureAwareSpectralEncoder.from_checkpoint(checkpoint, device=device)
+            if self._normalize is not self._encoder.normalize_spectrum:
+                raise ValueError(
+                    "stage1.normalize_spectrum must match checkpoint train_config.normalize"
+                )
             self._graph_index = GraphIndex.load(
                 index_path,
                 expected_checkpoint_sha256=self._encoder.checkpoint_sha256,
@@ -68,6 +76,7 @@ class Stage1Retrieval:
                     "mean": self._encoder.descriptor_mean.astype(float).tolist(),
                     "std": self._encoder.descriptor_std.astype(float).tolist(),
                 },
+                expected_loss_weights=self._encoder.loss_weights,
             )
             rerank = sc.get("rerank", {})
             if not isinstance(rerank, dict):
@@ -80,9 +89,14 @@ class Stage1Retrieval:
             )
             capabilities = self._graph_index.metadata["capabilities"]
             if self._rerank.enabled and self._rerank.fingerprint_weight > 0 and not capabilities["fingerprint_rerank"]:
-                raise ValueError("stage1 rerank requires a checkpoint fingerprint head")
+                raise ValueError(
+                    "stage1 fingerprint rerank requires a trained fingerprint head "
+                    "(lambda_fingerprint > 0)"
+                )
             if self._rerank.enabled and self._rerank.descriptor_weight > 0 and not capabilities["descriptor_rerank"]:
-                raise ValueError("stage1 rerank requires a checkpoint descriptor head")
+                raise ValueError(
+                    "stage1 descriptor rerank requires a trained descriptor head (lambda_aux > 0)"
+                )
             expected_length = int(self._encoder.model_config["signal_length"])
         else:
             self._encoder = SpectralEncoder(checkpoint, device=device)
@@ -148,8 +162,8 @@ class Stage1Retrieval:
     def run(self, spectrum: np.ndarray) -> Stage1Result:
         """只接收一条 spectrum，返回 query embedding、检测峰及稳定排序候选。"""
         raw = self._validate_spectrum(spectrum)
-        peaks = self._detect_peaks(raw)
         query = self._normalize_spectrum(raw) if self._normalize else raw
+        peaks = self._detect_peaks(raw, query)
         query_embedding = self._encoder.encode_spectrum(query)
         if self._mode == "spectrum_graph_v2":
             candidates = self._retrieve_v2(query, query_embedding)
@@ -158,11 +172,10 @@ class Stage1Retrieval:
         return Stage1Result(query_embedding=query_embedding, detected_peaks=peaks,
                             candidates=candidates)
 
-    def _detect_peaks(self, spectrum: np.ndarray) -> list[DetectedPeak]:
-        """按配置检测峰；强度保留 raw spectrum，阈值与训练归一化选项一致。"""
-        spec = spectrum.astype(np.float64)
-        if self._normalize:
-            spec = self._normalize_spectrum(spec).astype(np.float64)
+    def _detect_peaks(self, spectrum: np.ndarray,
+                      prepared_spectrum: np.ndarray) -> list[DetectedPeak]:
+        """按配置检测峰；强度保留 raw spectrum，阈值复用已准备的模型 query。"""
+        spec = prepared_spectrum.astype(np.float64)
         height = float(np.max(spec)) * self._height_rel
         prominence = float(np.ptp(spec)) * self._prominence_rel
         indices, properties = find_peaks(spec, height=max(height, 1e-6),

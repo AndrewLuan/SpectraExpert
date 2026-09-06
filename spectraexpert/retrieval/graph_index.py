@@ -11,7 +11,9 @@ Morgan 位向量、原始 descriptors 及完整 checkpoint/feature/model/source 
 消费，legacy embedding cache 不经过本模块，因而不能和 v2 schema 混用。
 输入输出与副作用：构造和查询只操作有限、形状严格的 NumPy 数组；指纹保存为 little-endian packed
 uint8，metadata 保存为 canonical JSON UTF-8 bytes。写文件使用同目录临时文件、fsync 和 replace，
-失败不覆盖既有目标。重排只接受调用方从 query spectrum 得到的预测，不接收 query SMILES、真实
+失败不覆盖既有目标；加载前检查 ZIP 原始 member 清单，并先校验 metadata/调用方期望再物化大数组。
+重排能力同时绑定物理 head 与 checkpoint 正有限 loss 权重。重排只接受调用方从 query spectrum
+得到的预测，不接收 query SMILES、真实
 fingerprint、分子式或 descriptors；零权重不要求相应辅助 head，正权重缺能力或预测时 fail fast。
 """
 
@@ -20,6 +22,7 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Mapping, Sequence
@@ -38,7 +41,8 @@ INDEX_SCHEMA_VERSION = "spectrum_graph_index_v2"
 _METADATA_FIELDS = {
     "schema_version", "checkpoint_sha256", "feature_config", "model_config",
     "source_smiles_sha256", "canonical_smiles_sha256", "embedding_dim", "normalized",
-    "record_count", "fingerprint_bits", "descriptor_dim", "descriptor_normalizer", "capabilities",
+    "record_count", "fingerprint_bits", "descriptor_dim", "descriptor_normalizer", "loss_weights",
+    "capabilities",
 }
 _CAPABILITY_FIELDS = {"descriptor_normalizer", "descriptor_rerank", "fingerprint_rerank"}
 _MINIMAL_MODEL_FIELDS = {"projection_dim", "descriptor_dim", "predict_fingerprint"}
@@ -115,6 +119,28 @@ def _validate_model_config(value: Mapping[str, object], embedding_dim: int,
     return config
 
 
+def _validate_loss_weights(value: Mapping[str, object]) -> dict[str, float]:
+    """验证 checkpoint objective 权重，并保留全部有限非负审计字段。"""
+    if not isinstance(value, Mapping):
+        raise ValueError("loss_weights must be a mapping")
+    weights = dict(value)
+    if not {"lambda_aux", "lambda_fingerprint"}.issubset(weights):
+        raise ValueError("loss_weights requires lambda_aux and lambda_fingerprint")
+    normalized: dict[str, float] = {}
+    for name, raw in weights.items():
+        if type(name) is not str or isinstance(raw, (bool, np.bool_)) or not isinstance(
+            raw, (int, float, np.number)
+        ):
+            raise ValueError(f"loss_weights.{name} must be a finite nonnegative number")
+        if np.iscomplexobj(raw):
+            raise ValueError(f"loss_weights.{name} must be a finite nonnegative number")
+        value_float = float(raw)
+        if not np.isfinite(value_float) or value_float < 0:
+            raise ValueError(f"loss_weights.{name} must be a finite nonnegative number")
+        normalized[name] = value_float
+    return normalized
+
+
 def _readonly(array: np.ndarray) -> np.ndarray:
     result = np.ascontiguousarray(array)
     result.setflags(write=False)
@@ -187,7 +213,8 @@ class GraphIndex:
                     model_config: Mapping[str, object] | None = None,
                     source_smiles_sha256: str | None = None,
                     descriptor_mean: np.ndarray | Sequence[float] | None = None,
-                    descriptor_std: np.ndarray | Sequence[float] | None = None) -> "GraphIndex":
+                    descriptor_std: np.ndarray | Sequence[float] | None = None,
+                    loss_weights: Mapping[str, object] | None = None) -> "GraphIndex":
         """验证候选全集并将图 embedding 归一化为可稳定点积检索的只读数组。"""
 
         raw_embeddings = np.asarray(embeddings)
@@ -268,8 +295,14 @@ class GraphIndex:
             raise ValueError("descriptor_normalizer shape does not match descriptors")
         if not np.isfinite(mean).all() or not np.isfinite(std).all() or np.any(std <= 0):
             raise ValueError("descriptor_normalizer must contain finite mean and positive std")
-        capabilities = {"descriptor_normalizer": True, "descriptor_rerank": True,
-                        "fingerprint_rerank": bool(model["predict_fingerprint"])}
+        weights = _validate_loss_weights(loss_weights or {})
+        capabilities = {
+            "descriptor_normalizer": True,
+            "descriptor_rerank": weights["lambda_aux"] > 0,
+            "fingerprint_rerank": (
+                bool(model["predict_fingerprint"]) and weights["lambda_fingerprint"] > 0
+            ),
+        }
         metadata = {
             "schema_version": INDEX_SCHEMA_VERSION,
             "checkpoint_sha256": checkpoint_sha256,
@@ -284,6 +317,7 @@ class GraphIndex:
             "descriptor_dim": descriptor_dim,
             "descriptor_normalizer": {"mean": mean.astype(float).tolist(),
                                       "std": std.astype(float).tolist()},
+            "loss_weights": weights,
             "capabilities": capabilities,
         }
         _canonical_json(metadata)
@@ -301,6 +335,7 @@ class GraphIndex:
                              source_smiles_sha256: str | None = None,
                              descriptor_mean: np.ndarray | None = None,
                              descriptor_std: np.ndarray | None = None,
+                             loss_weights: Mapping[str, object] | None = None,
                              checkpoint_path: str | Path | None = None,
                              dataset: object | None = None) -> "GraphIndex":
         """合并编码 batch；可直接消费完整数组 metadata，或按 brief 从 checkpoint/dataset 恢复。"""
@@ -312,7 +347,7 @@ class GraphIndex:
         if checkpoint_path is not None:
             if dataset is None or any(value is not None for value in (
                 fingerprint_batches, descriptor_batches, checkpoint_sha256, feature_metadata,
-                model_config, source_smiles_sha256, descriptor_mean, descriptor_std,
+                model_config, source_smiles_sha256, descriptor_mean, descriptor_std, loss_weights,
             )):
                 raise ValueError("checkpoint_path mode requires only dataset plus encoded batches")
             snapshot = read_checkpoint_snapshot(checkpoint_path)
@@ -331,22 +366,23 @@ class GraphIndex:
             feature_metadata = payload["feature_config"]
             model_config = payload["model_config"]
             source_smiles_sha256 = canonical_smiles_sha256(mol_ids.tolist(), smiles)
-            dataset_source = getattr(dataset, "source_smiles_sha256", source_smiles_sha256)
+            dataset_source = getattr(dataset, "source_smiles_sha256", None)
+            if type(dataset_source) is not str:
+                raise ValueError("source_smiles_sha256: dataset provenance is required")
             if dataset_source != source_smiles_sha256:
                 raise ValueError("source_smiles_sha256: dataset records mismatch")
             dataset_feature = getattr(dataset, "feature_config", None)
-            if dataset_feature is not None:
-                actual_feature = (dataset_feature.to_metadata()
-                                  if isinstance(dataset_feature, StructureFeatureConfig)
-                                  else dict(dataset_feature))
-                if actual_feature != feature_metadata:
-                    raise ValueError("feature_config: dataset/checkpoint mismatch")
+            if type(dataset_feature) is not StructureFeatureConfig:
+                raise ValueError("feature_config: verified dataset provenance is required")
+            if dataset_feature.to_metadata() != feature_metadata:
+                raise ValueError("feature_config: dataset/checkpoint mismatch")
             descriptor_mean = payload["descriptor_stats"]["mean"].detach().cpu().numpy()
             descriptor_std = payload["descriptor_stats"]["std"].detach().cpu().numpy()
+            loss_weights = payload["loss_weights"]
         else:
             required = (fingerprint_batches, descriptor_batches, checkpoint_sha256,
                         feature_metadata, model_config, source_smiles_sha256,
-                        descriptor_mean, descriptor_std)
+                        descriptor_mean, descriptor_std, loss_weights)
             if any(value is None for value in required):
                 raise ValueError("encoded batches require complete index metadata")
             try:
@@ -357,7 +393,8 @@ class GraphIndex:
         return cls.from_arrays(embeddings, mol_ids, smiles, fingerprints, descriptors,
             checkpoint_sha256=checkpoint_sha256, feature_metadata=feature_metadata,
             model_config=model_config, source_smiles_sha256=source_smiles_sha256,
-            descriptor_mean=descriptor_mean, descriptor_std=descriptor_std)
+            descriptor_mean=descriptor_mean, descriptor_std=descriptor_std,
+            loss_weights=loss_weights)
 
     def save(self, path: str | Path) -> Path:
         """用无 pickle 单 NPZ 原子发布索引；任意写入失败保留既有目标字节。"""
@@ -388,34 +425,105 @@ class GraphIndex:
              expected_feature_metadata: Mapping[str, object] | None = None,
              expected_model_config: Mapping[str, object] | None = None,
              expected_source_smiles_sha256: str | None = None,
-             expected_descriptor_normalizer: Mapping[str, object] | None = None) -> "GraphIndex":
+             expected_descriptor_normalizer: Mapping[str, object] | None = None,
+             expected_loss_weights: Mapping[str, object] | None = None) -> "GraphIndex":
         """安全加载 v2 NPZ，并在返回数组前验证 schema、内容 hash 和所有期望 metadata。"""
         source = Path(path)
+        required = {"embeddings", "mol_ids", "smiles", "fingerprints_packed",
+                    "descriptors", "metadata"}
+        expected_members = {f"{name}.npy" for name in required}
         try:
+            with zipfile.ZipFile(source, "r") as raw_archive:
+                member_names = raw_archive.namelist()
+            if (len(member_names) != len(expected_members)
+                    or len(set(member_names)) != len(member_names)
+                    or set(member_names) != expected_members):
+                raise ValueError("graph index NPZ members must be exact and unique")
             with np.load(source, allow_pickle=False) as archive:
-                required = {"embeddings", "mol_ids", "smiles", "fingerprints_packed",
-                            "descriptors", "metadata"}
                 if set(archive.files) != required:
                     raise ValueError("graph index has missing or unexpected arrays")
-                arrays = {name: archive[name].copy() for name in required}
+                metadata_array = archive["metadata"].copy()
+                if metadata_array.dtype != np.uint8 or metadata_array.ndim != 1:
+                    raise ValueError("corrupt graph index metadata array")
+                metadata = _strict_json(metadata_array.tobytes())
+                if not isinstance(metadata, dict) or set(metadata) != _METADATA_FIELDS:
+                    raise ValueError("graph index metadata has missing or unexpected fields")
+                if metadata["schema_version"] != INDEX_SCHEMA_VERSION:
+                    raise ValueError("schema_version: legacy or future graph index is incompatible")
+                capabilities = metadata.get("capabilities")
+                if (not isinstance(capabilities, dict) or set(capabilities) != _CAPABILITY_FIELDS
+                        or any(type(value) is not bool for value in capabilities.values())):
+                    raise ValueError("capabilities metadata is invalid")
+                normalizer = metadata.get("descriptor_normalizer")
+                if not isinstance(normalizer, dict) or set(normalizer) != {"mean", "std"}:
+                    raise ValueError("descriptor_normalizer metadata is invalid")
+                weights = _validate_loss_weights(metadata.get("loss_weights"))
+                embedding_dim = metadata.get("embedding_dim")
+                descriptor_dim = metadata.get("descriptor_dim")
+                record_count = metadata.get("record_count")
+                fingerprint_bits = metadata.get("fingerprint_bits")
+                for field, value in (
+                    ("embedding_dim", embedding_dim),
+                    ("descriptor_dim", descriptor_dim),
+                    ("record_count", record_count),
+                    ("fingerprint_bits", fingerprint_bits),
+                ):
+                    if type(value) is not int or value <= 0:
+                        raise ValueError(f"{field} metadata is invalid")
+                feature = _validate_feature_metadata(metadata.get("feature_config"))
+                model = _validate_model_config(
+                    metadata.get("model_config"), embedding_dim, descriptor_dim
+                )
+                if fingerprint_bits != feature["morgan_bits"]:
+                    raise ValueError("fingerprint_bits metadata does not match feature_config")
+                if type(metadata.get("checkpoint_sha256")) is not str or not metadata["checkpoint_sha256"]:
+                    raise ValueError("checkpoint_sha256 metadata is invalid")
+                if type(metadata.get("source_smiles_sha256")) is not str:
+                    raise ValueError("source_smiles_sha256 metadata is invalid")
+                if type(metadata.get("canonical_smiles_sha256")) is not str:
+                    raise ValueError("canonical_smiles_sha256 metadata is invalid")
+                if metadata.get("normalized") is not True:
+                    raise ValueError("normalized metadata must be true")
+                try:
+                    mean = np.asarray(normalizer["mean"], dtype=np.float32)
+                    std = np.asarray(normalizer["std"], dtype=np.float32)
+                except (TypeError, ValueError) as error:
+                    raise ValueError("descriptor_normalizer metadata is invalid") from error
+                if (mean.shape != (descriptor_dim,) or std.shape != (descriptor_dim,)
+                        or not np.isfinite(mean).all() or not np.isfinite(std).all()
+                        or np.any(std <= 0)):
+                    raise ValueError("descriptor_normalizer metadata is invalid")
+                derived_capabilities = {
+                    "descriptor_normalizer": True,
+                    "descriptor_rerank": weights["lambda_aux"] > 0,
+                    "fingerprint_rerank": (
+                        model["predict_fingerprint"] and weights["lambda_fingerprint"] > 0
+                    ),
+                }
+                if capabilities != derived_capabilities:
+                    raise ValueError("capabilities metadata conflicts with model/loss_weights")
+                expected = {
+                    "checkpoint_sha256": expected_checkpoint_sha256,
+                    "feature_config": (None if expected_feature_metadata is None
+                                       else dict(expected_feature_metadata)),
+                    "model_config": (None if expected_model_config is None
+                                     else dict(expected_model_config)),
+                    "source_smiles_sha256": expected_source_smiles_sha256,
+                    "descriptor_normalizer": (
+                        None if expected_descriptor_normalizer is None
+                        else dict(expected_descriptor_normalizer)
+                    ),
+                    "loss_weights": (None if expected_loss_weights is None
+                                     else _validate_loss_weights(expected_loss_weights)),
+                }
+                for field, value in expected.items():
+                    if value is not None and metadata[field] != value:
+                        raise ValueError(f"{field}: graph index metadata mismatch")
+                arrays = {name: archive[name].copy() for name in required - {"metadata"}}
         except ValueError:
             raise
-        except (OSError, KeyError) as error:
+        except (OSError, KeyError, AttributeError, zipfile.BadZipFile) as error:
             raise ValueError(f"corrupt graph index: {source}") from error
-        if arrays["metadata"].dtype != np.uint8 or arrays["metadata"].ndim != 1:
-            raise ValueError("corrupt graph index metadata array")
-        metadata = _strict_json(arrays["metadata"].tobytes())
-        if not isinstance(metadata, dict) or set(metadata) != _METADATA_FIELDS:
-            raise ValueError("graph index metadata has missing or unexpected fields")
-        if metadata["schema_version"] != INDEX_SCHEMA_VERSION:
-            raise ValueError("schema_version: legacy or future graph index is incompatible")
-        capabilities = metadata.get("capabilities")
-        if (not isinstance(capabilities, dict) or set(capabilities) != _CAPABILITY_FIELDS
-                or any(type(value) is not bool for value in capabilities.values())):
-            raise ValueError("capabilities metadata is invalid")
-        normalizer = metadata.get("descriptor_normalizer")
-        if not isinstance(normalizer, dict) or set(normalizer) != {"mean", "std"}:
-            raise ValueError("descriptor_normalizer metadata is invalid")
         if (arrays["embeddings"].dtype != np.float32 or arrays["mol_ids"].dtype != np.int64
                 or arrays["smiles"].dtype.kind != "U" or arrays["fingerprints_packed"].dtype != np.uint8
                 or arrays["descriptors"].dtype != np.float32):
@@ -437,20 +545,10 @@ class GraphIndex:
             fingerprints, arrays["descriptors"], checkpoint_sha256=metadata.get("checkpoint_sha256"),
             feature_metadata=metadata.get("feature_config"), model_config=metadata.get("model_config"),
             source_smiles_sha256=metadata.get("source_smiles_sha256"),
-            descriptor_mean=normalizer["mean"], descriptor_std=normalizer["std"])
+            descriptor_mean=normalizer["mean"], descriptor_std=normalizer["std"],
+            loss_weights=weights)
         if rebuilt.metadata != metadata:
             raise ValueError("graph index metadata does not match stored arrays")
-        expected = {
-            "checkpoint_sha256": expected_checkpoint_sha256,
-            "feature_config": None if expected_feature_metadata is None else dict(expected_feature_metadata),
-            "model_config": None if expected_model_config is None else dict(expected_model_config),
-            "source_smiles_sha256": expected_source_smiles_sha256,
-            "descriptor_normalizer": (None if expected_descriptor_normalizer is None
-                                      else dict(expected_descriptor_normalizer)),
-        }
-        for field, value in expected.items():
-            if value is not None and metadata[field] != value:
-                raise ValueError(f"{field}: graph index metadata mismatch")
         return rebuilt
 
     def search(self, query_embedding: np.ndarray, topk: int, *, rerank: RerankConfig | None = None,
@@ -577,13 +675,14 @@ def build_graph_index(model: StructureAwareRetriever, dataloader: Iterable[Graph
     source_hash = canonical_smiles_sha256(ids.tolist(), smiles)
     dataset = getattr(dataloader, "dataset", None)
     dataset_feature = getattr(dataset, "feature_config", None)
-    if dataset_feature is not None:
-        dataset_metadata = (dataset_feature.to_metadata()
-                            if isinstance(dataset_feature, StructureFeatureConfig) else dict(dataset_feature))
-        if dataset_metadata != payload["feature_config"]:
-            raise ValueError("feature_config: dataloader/checkpoint mismatch")
+    if type(dataset_feature) is not StructureFeatureConfig:
+        raise ValueError("feature_config: verified dataloader dataset provenance is required")
+    if dataset_feature.to_metadata() != payload["feature_config"]:
+        raise ValueError("feature_config: dataloader/checkpoint mismatch")
     dataset_source = getattr(dataset, "source_smiles_sha256", None)
-    if dataset_source is not None and dataset_source != source_hash:
+    if type(dataset_source) is not str:
+        raise ValueError("source_smiles_sha256: dataloader dataset provenance is required")
+    if dataset_source != source_hash:
         raise ValueError("source_smiles_sha256: dataloader records mismatch")
     stats = payload["descriptor_stats"]
     index = GraphIndex.from_encoded_batches(embedding_batches=embedding_batches,
@@ -592,7 +691,8 @@ def build_graph_index(model: StructureAwareRetriever, dataloader: Iterable[Graph
         feature_metadata=payload["feature_config"], model_config=payload["model_config"],
         source_smiles_sha256=source_hash,
         descriptor_mean=stats["mean"].detach().cpu().numpy(),
-        descriptor_std=stats["std"].detach().cpu().numpy())
+        descriptor_std=stats["std"].detach().cpu().numpy(),
+        loss_weights=payload["loss_weights"])
     index.save(output_path)
     return index
 
