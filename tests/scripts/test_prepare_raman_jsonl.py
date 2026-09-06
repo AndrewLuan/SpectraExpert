@@ -10,6 +10,7 @@ x/y 长度、NaN/Inf、canonical 重复、PyArrow dtype、已有输出拒绝和�
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -78,6 +79,11 @@ def test_prepare_interpolates_both_authorized_sources_to_one_axis(tmp_path):
     assert all(smiles["source_sha256"].str.fullmatch(r"[0-9a-f]{64}"))
     assert smiles["interpolation"].tolist() == ["linear", "linear"]
     assert (output_dir / "split_manifest.json").is_file()
+    manifest = json.loads((output_dir / "split_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["source_sha256"] == {
+        name: hashlib.sha256((output_dir / name).read_bytes()).hexdigest()
+        for name in ("spectra.parquet", "smiles.parquet", "wavenumber.parquet")
+    }
 
 
 def test_prepare_writes_explicit_arrow_dtypes_and_audit_metadata(tmp_path):

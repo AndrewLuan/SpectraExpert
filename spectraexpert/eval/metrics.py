@@ -5,7 +5,8 @@ Tanimoto，避免旧版键阶截断把芳香键误判为单键。
 legacy 首个上界和 chemical 完整搜索语义；``normalized_graph_edit_distance`` 用两图节点/边总数
 归一化；``pairwise_tanimoto`` 计算可微批量交并比；``tanimoto_similarity`` 与
 ``compute_retrieval_metrics`` 保留旧报告契约；``rank_structure_candidates`` 在既有排序之后执行
-identity 排除并记录逐候选化学质量，``aggregate_structure_retrieval`` 汇总完整 Top-K 验收指标。
+identity 排除并记录逐候选化学质量，同一 chemical raw GED 复用固定图规模得到 nGED；
+``aggregate_structure_retrieval`` 按实际观测深度和 GED 完成覆盖率汇总 Top-K 验收指标。
 代码库关系：chemical 图键类别与 Morgan 指纹唯一复用
 ``spectraexpert.data.structure_features`` 的 ``bond_features``、``BOND_TYPE_TO_ID`` 和默认
 ``StructureFeatureConfig``；``spectraexpert.eval.evaluate`` 消费本模块，不应另行定义键类别或
@@ -467,6 +468,7 @@ def rank_structure_candidates(
     cosine_scores: Sequence[float] | None = None,
     exclude_identity: bool = False,
     top_k: int | None = None,
+    eligible_candidate_count: int | None = None,
     ged_timeout: float = 10.0,
     training_atomic_numbers: Sequence[int] = (1, 6, 7, 8, 9),
 ) -> dict[str, object]:
@@ -524,11 +526,16 @@ def rank_structure_candidates(
             timeout=ged_timeout,
             version="chemical_ged_v2",
         )
-        chemical_nged = normalized_graph_edit_distance(
-            query_identity,
-            canonical,
-            timeout=ged_timeout,
-            version="chemical_ged_v2",
+        denominator = (
+            query_molecule.GetNumAtoms()
+            + molecule.GetNumAtoms()
+            + query_molecule.GetNumBonds()
+            + molecule.GetNumBonds()
+        )
+        chemical_nged = (
+            None
+            if chemical_ged is None or denominator == 0
+            else chemical_ged / denominator
         )
         tanimoto = tanimoto_similarity(query_identity, canonical)
         candidate_atoms = {atom.GetAtomicNum() for atom in molecule.GetAtoms()}
@@ -571,6 +578,15 @@ def rank_structure_candidates(
         )
 
     top1 = candidates[0] if candidates else None
+    if eligible_candidate_count is None:
+        eligible_candidate_count = len(candidates)
+    if (
+        not isinstance(eligible_candidate_count, (int, np.integer))
+        or isinstance(eligible_candidate_count, (bool, np.bool_))
+        or eligible_candidate_count < len(candidates)
+    ):
+        raise ValueError("eligible_candidate_count must cover all retained candidates")
+    requested_top_k = len(candidates) if top_k is None else int(top_k)
     return {
         "ground_truth_smiles": query_identity,
         "identity_excluded": exclude_identity,
@@ -579,6 +595,9 @@ def rank_structure_candidates(
         "legacy_ged_v1": None if top1 is None else top1["legacy_ged_v1"],
         "chemical_ged_v2": None if top1 is None else top1["chemical_ged_v2"],
         "chemical_nged_v2": None if top1 is None else top1["chemical_nged_v2"],
+        "requested_top_k": requested_top_k,
+        "observed_depth": len(candidates),
+        "eligible_candidate_count": int(eligible_candidate_count),
         "candidates": candidates,
     }
 
@@ -593,139 +612,137 @@ def _mean_valid(values: Sequence[object]) -> float | None:
 def aggregate_structure_retrieval(
     query_results: Sequence[dict[str, object]],
 ) -> dict[str, object]:
-    """按 query 等权汇总统一 Top-K 结构质量、召回、相关性、覆盖与延迟。"""
+    """按 query 等权汇总；未观测深度与不完整 GED 搜索绝不伪装为完整 Top-K。"""
 
     rows = list(query_results)
     if not rows:
         raise ValueError("query_results must not be empty")
     candidate_rows = [list(row.get("candidates", [])) for row in rows]
+    depths: list[tuple[int, int, int]] = []
+    for row, candidates in zip(rows, candidate_rows):
+        requested = int(row.get("requested_top_k", len(candidates)))
+        observed = int(row.get("observed_depth", len(candidates)))
+        eligible = int(row.get("eligible_candidate_count", len(candidates)))
+        if requested < 0 or observed != len(candidates) or eligible < observed:
+            raise ValueError("query result depth metadata is inconsistent")
+        depths.append((requested, observed, eligible))
 
-    def per_query_mean(field: str, limit: int) -> list[float | None]:
-        return [
-            _mean_valid([candidate.get(field) for candidate in candidates[:limit]])
-            for candidates in candidate_rows
-        ]
+    def depth_available(limit: int) -> bool:
+        return all(
+            requested >= limit and observed >= min(limit, eligible)
+            for requested, observed, eligible in depths
+        )
 
-    def per_query_best(field: str, limit: int, *, minimum: bool = False) -> list[float | None]:
+    def scoped(index: int, limit: int) -> tuple[list[dict[str, object]], int]:
+        required = min(limit, depths[index][2])
+        return candidate_rows[index][:required], required
+
+    def per_query(field: str, limit: int, operation: str) -> list[float | None]:
         values: list[float | None] = []
-        for candidates in candidate_rows:
-            valid = [
-                float(candidate[field])
-                for candidate in candidates[:limit]
-                if candidate.get(field) is not None
-            ]
-            values.append((min(valid) if minimum else max(valid)) if valid else None)
+        for index in range(len(rows)):
+            candidates, _ = scoped(index, limit)
+            valid = [float(candidate[field]) for candidate in candidates
+                     if candidate.get(field) is not None]
+            if operation == "mean":
+                values.append(float(np.mean(valid)) if valid else None)
+            elif operation == "min":
+                values.append(min(valid) if valid else None)
+            else:
+                values.append(max(valid) if valid else None)
         return values
 
-    def recall(field: str, limit: int) -> float:
+    def recall(field: str, limit: int) -> float | None:
+        if not depth_available(limit):
+            return None
         return float(np.mean([
-            any(bool(candidate.get(field)) for candidate in candidates[:limit])
-            for candidates in candidate_rows
+            any(bool(candidate.get(field)) for candidate in scoped(index, limit)[0])
+            for index in range(len(rows))
         ]))
 
+    def structure_recall(limit: int, threshold: float) -> float | None:
+        if not depth_available(limit):
+            return None
+        return float(np.mean([
+            any(candidate.get("tanimoto") is not None
+                and float(candidate["tanimoto"]) >= threshold
+                for candidate in scoped(index, limit)[0])
+            for index in range(len(rows))
+        ]))
+
+    def coverage(field: str, limit: int) -> dict[str, float | int]:
+        completed = total = 0
+        for index in range(len(rows)):
+            candidates, required = scoped(index, limit)
+            total += required
+            completed += sum(candidate.get(field) is not None for candidate in candidates)
+        return {"completed": completed, "total": total,
+                "coverage": completed / total if total else 0.0}
+
+    def complete_ged_best(field: str, limit: int) -> float | None:
+        metric_coverage = coverage(field, limit)
+        if (not depth_available(limit)
+                or metric_coverage["completed"] != metric_coverage["total"]):
+            return None
+        return _mean_valid(per_query(field, limit, "min"))
+
     top1 = [candidates[0] if candidates else {} for candidates in candidate_rows]
-    cosine_values: list[float] = []
-    tanimoto_values: list[float] = []
-    for candidates in candidate_rows:
-        for candidate in candidates:
-            if candidate.get("tanimoto") is not None:
-                cosine_values.append(float(candidate["cosine_score"]))
-                tanimoto_values.append(float(candidate["tanimoto"]))
-    if (
-        len(cosine_values) < 2
-        or len(set(cosine_values)) < 2
-        or len(set(tanimoto_values)) < 2
-    ):
-        correlation = None
+    retrieved_cosine = [float(candidate["cosine_score"]) for candidates in candidate_rows
+                        for candidate in candidates if candidate.get("tanimoto") is not None]
+    retrieved_tanimoto = [float(candidate["tanimoto"]) for candidates in candidate_rows
+                          for candidate in candidates if candidate.get("tanimoto") is not None]
+    if (len(retrieved_cosine) < 2 or len(set(retrieved_cosine)) < 2
+            or len(set(retrieved_tanimoto)) < 2):
+        retrieved_correlation = None
     else:
-        statistic = float(spearmanr(cosine_values, tanimoto_values).statistic)
-        correlation = statistic if np.isfinite(statistic) else None
+        statistic = float(spearmanr(retrieved_cosine, retrieved_tanimoto).statistic)
+        retrieved_correlation = statistic if np.isfinite(statistic) else None
 
-    structure_recall: dict[str, dict[str, float]] = {}
-    for threshold in (0.3, 0.5):
-        structure_recall[str(threshold)] = {
-            str(limit): float(np.mean([
-                any(
-                    candidate.get("tanimoto") is not None
-                    and float(candidate["tanimoto"]) >= threshold
-                    for candidate in candidates[:limit]
-                )
-                for candidates in candidate_rows
-            ]))
-            for limit in (1, 5, 10)
-        }
-
-    unseen = [
-        candidate.get("unseen_element_fraction")
-        for candidates in candidate_rows
-        for candidate in candidates
-    ]
     latencies = [row.get("latency_seconds") for row in rows]
+    unseen = [candidate.get("unseen_element_fraction") for candidates in candidate_rows
+              for candidate in candidates]
     aggregate: dict[str, object] = {
         "query_count": len(rows),
         "top1_tanimoto": _mean_valid([candidate.get("tanimoto") for candidate in top1]),
-        "mean_top5_tanimoto": _mean_valid(per_query_mean("tanimoto", 5)),
-        "best_at_5_tanimoto": _mean_valid(per_query_best("tanimoto", 5)),
-        "best_at_10_tanimoto": _mean_valid(per_query_best("tanimoto", 10)),
-        "top1_legacy_ged_v1": _mean_valid([
-            candidate.get("legacy_ged_v1") for candidate in top1
-        ]),
-        "top1_chemical_ged_v2": _mean_valid([
-            candidate.get("chemical_ged_v2") for candidate in top1
-        ]),
-        "top1_chemical_nged_v2": _mean_valid([
-            candidate.get("chemical_nged_v2") for candidate in top1
-        ]),
-        "best_at_5_chemical_ged_v2": _mean_valid(
-            per_query_best("chemical_ged_v2", 5, minimum=True)
-        ),
-        "best_at_10_chemical_ged_v2": _mean_valid(
-            per_query_best("chemical_ged_v2", 10, minimum=True)
-        ),
-        "best_at_5_chemical_nged_v2": _mean_valid(
-            per_query_best("chemical_nged_v2", 5, minimum=True)
-        ),
-        "best_at_10_chemical_nged_v2": _mean_valid(
-            per_query_best("chemical_nged_v2", 10, minimum=True)
-        ),
-        "best_at_5_legacy_ged_v1": _mean_valid(
-            per_query_best("legacy_ged_v1", 5, minimum=True)
-        ),
-        "best_at_10_legacy_ged_v1": _mean_valid(
-            per_query_best("legacy_ged_v1", 10, minimum=True)
-        ),
-        "top1_heavy_atom_gap": _mean_valid([
-            candidate.get("heavy_atom_gap") for candidate in top1
-        ]),
-        "top1_element_jaccard": _mean_valid([
-            candidate.get("element_jaccard") for candidate in top1
-        ]),
+        "mean_top5_tanimoto": (_mean_valid(per_query("tanimoto", 5, "mean"))
+                                 if depth_available(5) else None),
+        "best_at_5_tanimoto": (_mean_valid(per_query("tanimoto", 5, "max"))
+                                if depth_available(5) else None),
+        "best_at_10_tanimoto": (_mean_valid(per_query("tanimoto", 10, "max"))
+                                 if depth_available(10) else None),
+        "top1_legacy_ged_v1": _mean_valid([candidate.get("legacy_ged_v1") for candidate in top1]),
+        "top1_chemical_ged_v2": _mean_valid([candidate.get("chemical_ged_v2") for candidate in top1]),
+        "top1_chemical_nged_v2": _mean_valid([candidate.get("chemical_nged_v2") for candidate in top1]),
+        "best_at_5_legacy_ged_v1": complete_ged_best("legacy_ged_v1", 5),
+        "best_at_10_legacy_ged_v1": complete_ged_best("legacy_ged_v1", 10),
+        "best_at_5_chemical_ged_v2": complete_ged_best("chemical_ged_v2", 5),
+        "best_at_10_chemical_ged_v2": complete_ged_best("chemical_ged_v2", 10),
+        "best_at_5_chemical_nged_v2": complete_ged_best("chemical_nged_v2", 5),
+        "best_at_10_chemical_nged_v2": complete_ged_best("chemical_nged_v2", 10),
+        "top1_heavy_atom_gap": _mean_valid([candidate.get("heavy_atom_gap") for candidate in top1]),
+        "top1_element_jaccard": _mean_valid([candidate.get("element_jaccard") for candidate in top1]),
         "top1_molecular_weight_error": _mean_valid([
-            candidate.get("molecular_weight_error") for candidate in top1
-        ]),
-        "embedding_tanimoto_spearman": correlation,
-        "candidate_unseen_element_fraction": _mean_valid(unseen),
+            candidate.get("molecular_weight_error") for candidate in top1]),
+        "embedding_tanimoto_spearman": None,
+        "retrieved_topk_embedding_tanimoto_spearman": retrieved_correlation,
+        "retrieved_topk_unseen_element_fraction": _mean_valid(unseen),
         "mean_latency_seconds": _mean_valid(latencies),
-        "total_latency_seconds": (
-            float(sum(float(value) for value in latencies if value is not None))
-        ),
-        "structure_recall_at_1": {
-            threshold: values["1"] for threshold, values in structure_recall.items()
-        },
-        "structure_recall_at_5": {
-            threshold: values["5"] for threshold, values in structure_recall.items()
-        },
-        "structure_recall_at_10": {
-            threshold: values["10"] for threshold, values in structure_recall.items()
-        },
+        "total_latency_seconds": float(sum(float(value) for value in latencies
+                                             if value is not None)),
+    }
+    ged_fields = ("legacy_ged_v1", "chemical_ged_v2", "chemical_nged_v2")
+    aggregate["ged_coverage"] = {
+        **{f"top1_{field}": coverage(field, 1) for field in ged_fields},
+        **{f"best_at_{limit}_{field}": coverage(field, limit)
+           for field in ged_fields for limit in (5, 10)},
     }
     for limit in (1, 5, 10):
         aggregate[f"exact_match_recall_at_{limit}"] = recall("exact_match", limit)
         aggregate[f"scaffold_recall_at_{limit}"] = recall("scaffold_match", limit)
-        for threshold in ("0.3", "0.5"):
-            aggregate[
-                f"structure_recall_at_{limit}_tanimoto_{threshold}"
-            ] = structure_recall[threshold][str(limit)]
+        values = {str(threshold): structure_recall(limit, threshold)
+                  for threshold in (0.3, 0.5)}
+        aggregate[f"structure_recall_at_{limit}"] = values
+        for threshold, value in values.items():
+            aggregate[f"structure_recall_at_{limit}_tanimoto_{threshold}"] = value
     return aggregate
 
 

@@ -16,6 +16,7 @@ import numpy as np
 import pytest
 
 import spectraexpert.eval.metrics as structure_metrics
+from spectraexpert.data.structure_dataset import canonical_smiles_sha256
 from spectraexpert.eval.evaluate_structure_retrieval import (
     compare_evaluation_results,
     evaluate_ranked_queries,
@@ -62,7 +63,7 @@ def test_retrieval_metrics_report_identity_excluded_structure_quality(monkeypatc
     assert metrics["top1_smiles"] == "CCCO"
     assert metrics["chemical_ged_v2"] == 2.0
     assert metrics["legacy_ged_v1"] == 3.0
-    assert metrics["chemical_nged_v2"] == 0.25
+    assert metrics["chemical_nged_v2"] == pytest.approx(2 / 12)
     candidate = metrics["candidates"][0]
     assert candidate["rank"] == 1
     assert candidate["source_rank"] == 2
@@ -71,7 +72,7 @@ def test_retrieval_metrics_report_identity_excluded_structure_quality(monkeypatc
     assert candidate["tanimoto"] == pytest.approx(0.6)
     assert candidate["legacy_ged_v1"] == 3.0
     assert candidate["chemical_ged_v2"] == 2.0
-    assert candidate["chemical_nged_v2"] == 0.25
+    assert candidate["chemical_nged_v2"] == pytest.approx(2 / 12)
     assert candidate["heavy_atom_gap"] == 1
     assert candidate["element_jaccard"] == 1.0
     assert candidate["molecular_weight_error"] == pytest.approx(14.027, abs=0.01)
@@ -82,11 +83,11 @@ def test_aggregate_reports_full_topk_metrics_and_latency(monkeypatch):
     _fast_structure_metrics(monkeypatch)
     first = structure_metrics.rank_structure_candidates(
         "CCO", ["CCO", "CCCO", "c1ccccc1"], [0.9, 0.8, 0.2],
-        exclude_identity=False,
+        exclude_identity=False, top_k=10, eligible_candidate_count=3,
     )
     second = structure_metrics.rank_structure_candidates(
         "CCO", ["CCCO", "CCO", "c1ccccc1"], [0.9, 0.8, 0.2],
-        exclude_identity=False,
+        exclude_identity=False, top_k=10, eligible_candidate_count=3,
     )
     first["latency_seconds"] = 0.1
     second["latency_seconds"] = 0.3
@@ -101,7 +102,8 @@ def test_aggregate_reports_full_topk_metrics_and_latency(monkeypatch):
     assert aggregate["exact_match_recall_at_5"] == 1.0
     assert aggregate["scaffold_recall_at_1"] == 0.5
     assert aggregate["structure_recall_at_1"]["0.5"] == 1.0
-    assert aggregate["embedding_tanimoto_spearman"] is not None
+    assert aggregate["embedding_tanimoto_spearman"] is None
+    assert aggregate["retrieved_topk_embedding_tanimoto_spearman"] is not None
     assert aggregate["mean_latency_seconds"] == pytest.approx(0.2)
 
 
@@ -200,20 +202,47 @@ def test_cli_rejects_query_structure_inputs_before_reading_any_dataset(tmp_path)
 
 
 def test_paired_report_skips_jointly_unavailable_ged_but_keeps_tanimoto():
+    config = {
+        "query_inputs": ["spectrum"], "top_k": 10, "exclude_identity": True,
+        "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
+        "normalized_ged": "chemical_nged_v2", "query_identity_sha256": "placeholder",
+        "query_source_sha256": {"spectra.parquet": "s", "smiles.parquet": "m", "wavenumber.parquet": "w"},
+        "split_manifest_sha256": "split", "candidate_identity_sha256": "candidate",
+        "candidate_source_smiles_sha256": "candidate-source",
+        "candidate_unique_identities": 20, "training_atomic_numbers": [6, 8],
+        "sampled_pair_protocol": None,
+    }
+    config["query_identity_sha256"] = canonical_smiles_sha256([1, 2], ["CCO", "CCN"])
     current = {
+        "config": config,
+        "sampled_pairs": [],
         "queries": [
-            {"query_mol_id": 1, "top1_tanimoto": 0.6, "chemical_nged_v2": 0.2,
-             "candidates": [{"exact_match": True}]},
-            {"query_mol_id": 2, "top1_tanimoto": 0.5, "chemical_nged_v2": None,
-             "candidates": [{"exact_match": True}]},
+            {"query_mol_id": 1, "ground_truth_smiles": "CCO", "identity_excluded": True,
+             "top1_tanimoto": 0.6, "chemical_nged_v2": 0.2,
+             "requested_top_k": 10, "observed_depth": 10, "eligible_candidate_count": 20,
+             "sampled_pair_spearman": None,
+             "candidates": [{"exact_match": True}] * 10},
+            {"query_mol_id": 2, "ground_truth_smiles": "CCN", "identity_excluded": True,
+             "top1_tanimoto": 0.5, "chemical_nged_v2": None,
+             "requested_top_k": 10, "observed_depth": 10, "eligible_candidate_count": 20,
+             "sampled_pair_spearman": None,
+             "candidates": [{"exact_match": True}] * 10},
         ]
     }
     baseline = {
+        "config": config.copy(),
+        "sampled_pairs": [],
         "queries": [
-            {"query_mol_id": 1, "top1_tanimoto": 0.4, "chemical_nged_v2": 0.3,
-             "candidates": [{"exact_match": True}]},
-            {"query_mol_id": 2, "top1_tanimoto": 0.3, "chemical_nged_v2": 0.4,
-             "candidates": [{"exact_match": False}]},
+            {"query_mol_id": 1, "ground_truth_smiles": "CCO", "identity_excluded": True,
+             "top1_tanimoto": 0.4, "chemical_nged_v2": 0.3,
+             "requested_top_k": 10, "observed_depth": 10, "eligible_candidate_count": 20,
+             "sampled_pair_spearman": None,
+             "candidates": [{"exact_match": True}] * 10},
+            {"query_mol_id": 2, "ground_truth_smiles": "CCN", "identity_excluded": True,
+             "top1_tanimoto": 0.3, "chemical_nged_v2": 0.4,
+             "requested_top_k": 10, "observed_depth": 10, "eligible_candidate_count": 20,
+             "sampled_pair_spearman": None,
+             "candidates": [{"exact_match": False}] * 10},
         ]
     }
 

@@ -223,11 +223,19 @@ def _write_outputs(
         compression="zstd",
         version="2.6",
     )
-    scaffold_split(
+    manifest = scaffold_split(
         [row["smiles_canonical"] for row in smiles_rows],
         mol_ids=[int(row["mol_id"]) for row in smiles_rows],
         seed=split_seed,
         manifest_path=staging / "split_manifest.json",
+    )
+    manifest["source_sha256"] = {
+        name: _file_sha256(staging / name)
+        for name in ("spectra.parquet", "smiles.parquet", "wavenumber.parquet")
+    }
+    (staging / "split_manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
     )
     (staging / "preparation_metadata.json").write_text(
         json.dumps(metadata, ensure_ascii=False, indent=2, sort_keys=True) + "\n",

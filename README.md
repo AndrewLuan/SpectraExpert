@@ -116,6 +116,25 @@ python scripts/build_graph_index.py \
 固定为 `query_inputs=["spectrum"]`。
 
 ```bash
+python -m spectraexpert.train_structure_aware \
+    --training-mode spectral_only_v1 \
+    --data-dir data/raman_tiny \
+    --output-dir outputs/spectral_only_v1 \
+    --split-manifest data/raman_tiny/split_manifest.json \
+    --seed 0 --epochs 50 --patience 8 --batch-size 32 \
+    --embed-dim 128 --depth 3 --num-heads 4 \
+    --projection-dim 64 --graph-hidden-dim 128 \
+    --lambda-aug 1.0 --lambda-struct 0.0 \
+    --lambda-aux 0.0 --lambda-fingerprint 0.0
+
+python -m spectraexpert.eval.evaluate_structure_retrieval \
+    --mode spectral_only_v1 \
+    --query-data-dir data/raman_tiny \
+    --candidate-data-dir data/raman_tiny \
+    --checkpoint outputs/spectral_only_v1/best.pt \
+    --top-k 10 --exclude-identity \
+    --output outputs/spectral_only_v1/eval_identity_excluded.json
+
 python -m spectraexpert.eval.evaluate_structure_retrieval \
     --mode spectrum_graph_v2 \
     --query-data-dir data/raman_tiny \

@@ -1,6 +1,6 @@
 """
-功能概述：提供互不混用的 legacy ``SpectralEncoder`` 与 v2 ``StructureAwareSpectralEncoder``
-推理门面；前者恢复历史光谱 checkpoint，后者从 Task 7 严格 checkpoint 只接受 spectrum query。
+功能概述：提供互不混用的 legacy、versioned spectral-only 与 v2 光谱推理门面；历史
+``SpectralEncoder`` 只恢复旧 checkpoint，另外两类通过 Task 7 正式 loader 重建并只接受 spectrum query。
 主要职责：构造器加载 ``model_state_dict`` 或裸 state dict；裸字典仅在权重形状完整吻合历史
 训练默认架构时恢复约定参数，否则要求保存 ``args``；``encode_spectrum`` 将一条有限的一维光谱
 转换为 float32 嵌入；静态方法 ``retrieve`` 验证二维数据库并返回稳定降序的 int64 索引和
@@ -54,6 +54,70 @@ _LEGACY_BARE_MODEL_ARGS = {
     "dropout": 0.1,
     "projection_dim": 256,
 }
+
+
+class VersionedSpectralEncoder:
+    """通过 Task 7 正式 checkpoint loader 恢复 ``spectral_only_v1`` 模型。"""
+
+    def __init__(
+        self,
+        *,
+        model: SpectrumTransformer,
+        payload: Mapping[str, Any],
+        device: torch.device,
+        checkpoint_sha256: str,
+    ) -> None:
+        self.model = model
+        self.payload = payload
+        self.device = device
+        self.checkpoint_sha256 = checkpoint_sha256
+        self.model_config = dict(payload["model_config"])
+        train_config = payload.get("train_config")
+        if not isinstance(train_config, Mapping) or type(train_config.get("normalize")) is not bool:
+            raise ValueError("train_config.normalize must be exact bool for versioned inference")
+        self.normalize_spectrum = train_config["normalize"]
+
+    @classmethod
+    def from_checkpoint(
+        cls, checkpoint_path: str | Path, device: str | None = None
+    ) -> "VersionedSpectralEncoder":
+        """一次读取并严格验证 ``spectral_only_v1`` schema 后重建模型。"""
+
+        snapshot = read_checkpoint_snapshot(checkpoint_path)
+        resolved = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
+        model, payload = load_checkpoint(
+            snapshot, expected_mode="spectral_only_v1", device=resolved
+        )
+        if not isinstance(model, SpectrumTransformer):
+            raise ValueError("spectral_only_v1 checkpoint did not restore SpectrumTransformer")
+        model.eval()
+        return cls(
+            model=model,
+            payload=payload,
+            device=resolved,
+            checkpoint_sha256=snapshot.sha256,
+        )
+
+    def encode_spectrum(self, spectrum: np.ndarray) -> np.ndarray:
+        """只编码一条 spectrum，不暴露任何真实结构字段。"""
+
+        array = np.asarray(spectrum, dtype=np.float32)
+        if array.ndim != 1:
+            raise ValueError("spectrum must be a one-dimensional array")
+        expected = int(self.model_config["signal_length"])
+        if array.shape != (expected,):
+            raise ValueError(
+                f"spectrum signal length mismatch: expected {expected}, got {array.shape[0]}"
+            )
+        if not np.isfinite(array).all():
+            raise ValueError("spectrum must contain only finite values")
+        tensor = torch.from_numpy(np.ascontiguousarray(array)).unsqueeze(0).to(self.device)
+        with torch.inference_mode():
+            embedding = self.model(tensor).squeeze(0).detach().cpu().numpy()
+        result = embedding.astype(np.float32, copy=False)
+        if result.shape != (int(self.model_config["projection_dim"]),) or not np.isfinite(result).all():
+            raise ValueError("spectrum encoder returned invalid embedding")
+        return result
 
 
 class StructureAwareSpectralEncoder:

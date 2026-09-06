@@ -1,5 +1,6 @@
 """
-功能概述：实现三阶段流程的第一阶段，并用显式 ``retrieval_mode`` 隔离 legacy 光谱库检索与
+功能概述：实现三阶段流程的第一阶段，并用显式 ``retrieval_mode/checkpoint_format`` 隔离历史或
+Task 7 versioned 光谱库检索与
 ``spectrum_graph_v2`` 纯光谱 query → 离线分子图候选检索，绝不静默 fallback 或混用产物。
 主要职责：``Stage1Retrieval.__init__`` 按 mode 恢复对应 encoder/cache，v2 严格绑定 checkpoint
 SHA、model_config、feature_config 与 GraphIndex；``run`` 校验一维有限且长度匹配的 spectrum，按
@@ -17,12 +18,18 @@ fail fast；运行只返回内存结果，不写文件；top-k 超过候选数�
 from __future__ import annotations
 
 from pathlib import Path
+from collections.abc import Mapping
+from typing import Any
 
 import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
-from spectraexpert.inference import SpectralEncoder, StructureAwareSpectralEncoder
+from spectraexpert.inference import (
+    SpectralEncoder,
+    StructureAwareSpectralEncoder,
+    VersionedSpectralEncoder,
+)
 from spectraexpert.pipeline.data_types import Candidate, DetectedPeak, Stage1Result
 from spectraexpert.retrieval import GraphIndex, RerankConfig
 
@@ -99,7 +106,19 @@ class Stage1Retrieval:
                 )
             expected_length = int(self._encoder.model_config["signal_length"])
         else:
-            self._encoder = SpectralEncoder(checkpoint, device=device)
+            checkpoint_format = sc.get("checkpoint_format", "legacy")
+            if checkpoint_format == "versioned":
+                self._encoder = VersionedSpectralEncoder.from_checkpoint(
+                    checkpoint, device=device
+                )
+                if self._normalize is not self._encoder.normalize_spectrum:
+                    raise ValueError(
+                        "stage1.normalize_spectrum must match checkpoint train_config.normalize"
+                    )
+            elif checkpoint_format == "legacy":
+                self._encoder = SpectralEncoder(checkpoint, device=device)
+            else:
+                raise ValueError("stage1.checkpoint_format must be 'legacy' or 'versioned'")
             cache_path = Path(sc.get("embeddings_cache", ""))
             if not cache_path.is_file():
                 raise FileNotFoundError(f"Embeddings cache not found: {cache_path}")
@@ -137,6 +156,35 @@ class Stage1Retrieval:
         self._prominence_rel = float(pd_cfg.get("prominence_rel", 0.02))
         self._distance = int(pd_cfg.get("distance", 5))
         self._width = int(pd_cfg.get("width", 1))
+
+    @property
+    def checkpoint_payload(self) -> Mapping[str, Any]:
+        """暴露 versioned checkpoint 的已验证只读语义视图，供评测核对 provenance。"""
+
+        payload = getattr(self._encoder, "payload", None)
+        if not isinstance(payload, Mapping):
+            raise ValueError("checkpoint payload is unavailable for legacy inference")
+        return payload
+
+    @property
+    def candidate_smiles(self) -> np.ndarray:
+        """返回当前模式实际检索的 canonical 候选 identity 数组。"""
+
+        return self._graph_index.smiles if self._graph_index is not None else self._db_smiles
+
+    @property
+    def candidate_embeddings(self) -> np.ndarray:
+        """返回与候选 identity 对齐的模型 embedding，供固定 pair cosine 审计。"""
+
+        return self._graph_index.embeddings if self._graph_index is not None else self._db_embeddings
+
+    @property
+    def candidate_source_smiles_sha256(self) -> str:
+        """返回 v2 索引记录的候选来源 identity hash。"""
+
+        if self._graph_index is None:
+            raise ValueError("candidate source hash is available only for graph index")
+        return str(self._graph_index.metadata["source_smiles_sha256"])
 
     @staticmethod
     def _normalize_spectrum(spectrum: np.ndarray) -> np.ndarray:
