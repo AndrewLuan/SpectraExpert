@@ -4,7 +4,8 @@ Tanimoto，避免旧版键阶截断把芳香键误判为单键。
 主要职责：``smiles_to_nx`` 依版本把 SMILES 转为重原子图；``graph_edit_distance`` 分别执行
 legacy 首个上界和 chemical 完整搜索语义；``normalized_graph_edit_distance`` 用两图节点/边总数
 归一化；``pairwise_tanimoto`` 计算可微批量交并比；``tanimoto_similarity`` 与
-``compute_retrieval_metrics`` 为评估报告提供单对和候选列表聚合结果。
+``compute_retrieval_metrics`` 保留旧报告契约；``rank_structure_candidates`` 在既有排序之后执行
+identity 排除并记录逐候选化学质量，``aggregate_structure_retrieval`` 汇总完整 Top-K 验收指标。
 代码库关系：chemical 图键类别与 Morgan 指纹唯一复用
 ``spectraexpert.data.structure_features`` 的 ``bond_features``、``BOND_TYPE_TO_ID`` 和默认
 ``StructureFeatureConfig``；``spectraexpert.eval.evaluate`` 消费本模块，不应另行定义键类别或
@@ -20,11 +21,16 @@ from __future__ import annotations
 import multiprocessing as mp
 import time
 from collections.abc import Callable
+from collections.abc import Sequence
 from typing import Literal, Optional
 
 import networkx as nx
+import numpy as np
 import torch
 from rdkit import Chem
+from rdkit.Chem import Descriptors
+from rdkit.Chem.Scaffolds import MurckoScaffold
+from scipy.stats import spearmanr
 
 from spectraexpert.data.structure_features import bond_features, morgan_fingerprint
 
@@ -422,14 +428,317 @@ def compute_retrieval_metrics(
     }
 
 
+def _canonical_molecule(smiles: str) -> tuple[str, Chem.Mol]:
+    """返回用于 identity 与组成审计的 canonical SMILES 和重原子分子。"""
+
+    molecule = _molecule_from_smiles(smiles)
+    if molecule is None:
+        raise ValueError(f"invalid non-empty molecular SMILES: {smiles!r}")
+    heavy = Chem.RemoveAllHs(molecule)
+    return Chem.MolToSmiles(heavy, canonical=True), heavy
+
+
+def _scaffold_identity(canonical_smiles: str, molecule: Chem.Mol) -> str:
+    """返回 Bemis–Murcko scaffold；无环分子回退 canonical identity。"""
+
+    scaffold = MurckoScaffold.MurckoScaffoldSmiles(
+        mol=molecule, includeChirality=True
+    )
+    return f"scaffold:{scaffold}" if scaffold else f"identity:{canonical_smiles}"
+
+
+def _finite_scores(values: Sequence[float], name: str) -> list[float]:
+    """把一维有限分数序列规范为 Python float，供严格 JSON 序列化。"""
+
+    try:
+        result = [float(value) for value in values]
+    except (TypeError, ValueError) as error:
+        raise ValueError(f"{name} must contain numeric values") from error
+    if not np.isfinite(result).all():
+        raise ValueError(f"{name} must contain only finite values")
+    return result
+
+
+def rank_structure_candidates(
+    query_smiles: str,
+    candidate_smiles: Sequence[str],
+    scores: Sequence[float],
+    *,
+    cosine_scores: Sequence[float] | None = None,
+    exclude_identity: bool = False,
+    top_k: int | None = None,
+    ged_timeout: float = 10.0,
+    training_atomic_numbers: Sequence[int] = (1, 6, 7, 8, 9),
+) -> dict[str, object]:
+    """评估已有 rank，不自行排序；真实结构仅在 retrieval 已完成后进入本函数。"""
+
+    if type(exclude_identity) is not bool:
+        raise ValueError("exclude_identity must be bool")
+    if top_k is not None and (
+        not isinstance(top_k, (int, np.integer))
+        or isinstance(top_k, (bool, np.bool_))
+        or top_k <= 0
+    ):
+        raise ValueError("top_k must be a positive integer or None")
+    identities = list(candidate_smiles)
+    ranked_scores = _finite_scores(scores, "scores")
+    embedding_scores = _finite_scores(
+        ranked_scores if cosine_scores is None else cosine_scores,
+        "cosine_scores",
+    )
+    if len(identities) != len(ranked_scores) or len(identities) != len(embedding_scores):
+        raise ValueError("candidate_smiles, scores, and cosine_scores must have equal length")
+    query_identity, query_molecule = _canonical_molecule(query_smiles)
+    query_atoms = {atom.GetAtomicNum() for atom in query_molecule.GetAtoms()}
+    query_scaffold = _scaffold_identity(query_identity, query_molecule)
+    query_weight = float(Descriptors.MolWt(query_molecule))
+    query_heavy_atoms = int(query_molecule.GetNumHeavyAtoms())
+    trained_elements = {int(value) for value in training_atomic_numbers}
+    if not trained_elements or any(value < 1 or value > 118 for value in trained_elements):
+        raise ValueError("training_atomic_numbers must contain atomic numbers in [1, 118]")
+
+    retained: list[tuple[int, str, Chem.Mol, float, float]] = []
+    for source_rank, (identity, score, cosine) in enumerate(
+        zip(identities, ranked_scores, embedding_scores), start=1
+    ):
+        canonical, molecule = _canonical_molecule(identity)
+        if exclude_identity and canonical == query_identity:
+            continue
+        retained.append((source_rank, canonical, molecule, score, cosine))
+        if top_k is not None and len(retained) == top_k:
+            break
+
+    candidates: list[dict[str, object]] = []
+    for rank, (source_rank, canonical, molecule, score, cosine) in enumerate(
+        retained, start=1
+    ):
+        legacy_ged = graph_edit_distance(
+            query_identity,
+            canonical,
+            timeout=ged_timeout,
+            version="legacy_ged_v1",
+        )
+        chemical_ged = graph_edit_distance(
+            query_identity,
+            canonical,
+            timeout=ged_timeout,
+            version="chemical_ged_v2",
+        )
+        chemical_nged = normalized_graph_edit_distance(
+            query_identity,
+            canonical,
+            timeout=ged_timeout,
+            version="chemical_ged_v2",
+        )
+        tanimoto = tanimoto_similarity(query_identity, canonical)
+        candidate_atoms = {atom.GetAtomicNum() for atom in molecule.GetAtoms()}
+        union = query_atoms | candidate_atoms
+        unseen_atoms = [
+            atom.GetAtomicNum()
+            for atom in molecule.GetAtoms()
+            if atom.GetAtomicNum() not in trained_elements
+        ]
+        candidates.append(
+            {
+                "rank": rank,
+                "source_rank": source_rank,
+                "smiles": canonical,
+                "score": score,
+                "cosine_score": cosine,
+                "tanimoto": tanimoto,
+                "legacy_ged_v1": legacy_ged,
+                "chemical_ged_v2": chemical_ged,
+                "chemical_nged_v2": chemical_nged,
+                "heavy_atom_gap": abs(
+                    query_heavy_atoms - int(molecule.GetNumHeavyAtoms())
+                ),
+                "element_jaccard": (
+                    len(query_atoms & candidate_atoms) / len(union) if union else None
+                ),
+                "molecular_weight_error": abs(
+                    query_weight - float(Descriptors.MolWt(molecule))
+                ),
+                "scaffold_match": (
+                    query_scaffold == _scaffold_identity(canonical, molecule)
+                ),
+                "exact_match": query_identity == canonical,
+                "unseen_element_fraction": (
+                    len(unseen_atoms) / molecule.GetNumAtoms()
+                    if molecule.GetNumAtoms()
+                    else None
+                ),
+            }
+        )
+
+    top1 = candidates[0] if candidates else None
+    return {
+        "ground_truth_smiles": query_identity,
+        "identity_excluded": exclude_identity,
+        "top1_smiles": "" if top1 is None else top1["smiles"],
+        "top1_tanimoto": None if top1 is None else top1["tanimoto"],
+        "legacy_ged_v1": None if top1 is None else top1["legacy_ged_v1"],
+        "chemical_ged_v2": None if top1 is None else top1["chemical_ged_v2"],
+        "chemical_nged_v2": None if top1 is None else top1["chemical_nged_v2"],
+        "candidates": candidates,
+    }
+
+
+def _mean_valid(values: Sequence[object]) -> float | None:
+    """对非 ``None`` 的有限数取均值；无可计算值时返回 ``None``。"""
+
+    valid = [float(value) for value in values if value is not None]
+    return float(np.mean(valid)) if valid else None
+
+
+def aggregate_structure_retrieval(
+    query_results: Sequence[dict[str, object]],
+) -> dict[str, object]:
+    """按 query 等权汇总统一 Top-K 结构质量、召回、相关性、覆盖与延迟。"""
+
+    rows = list(query_results)
+    if not rows:
+        raise ValueError("query_results must not be empty")
+    candidate_rows = [list(row.get("candidates", [])) for row in rows]
+
+    def per_query_mean(field: str, limit: int) -> list[float | None]:
+        return [
+            _mean_valid([candidate.get(field) for candidate in candidates[:limit]])
+            for candidates in candidate_rows
+        ]
+
+    def per_query_best(field: str, limit: int, *, minimum: bool = False) -> list[float | None]:
+        values: list[float | None] = []
+        for candidates in candidate_rows:
+            valid = [
+                float(candidate[field])
+                for candidate in candidates[:limit]
+                if candidate.get(field) is not None
+            ]
+            values.append((min(valid) if minimum else max(valid)) if valid else None)
+        return values
+
+    def recall(field: str, limit: int) -> float:
+        return float(np.mean([
+            any(bool(candidate.get(field)) for candidate in candidates[:limit])
+            for candidates in candidate_rows
+        ]))
+
+    top1 = [candidates[0] if candidates else {} for candidates in candidate_rows]
+    cosine_values: list[float] = []
+    tanimoto_values: list[float] = []
+    for candidates in candidate_rows:
+        for candidate in candidates:
+            if candidate.get("tanimoto") is not None:
+                cosine_values.append(float(candidate["cosine_score"]))
+                tanimoto_values.append(float(candidate["tanimoto"]))
+    if (
+        len(cosine_values) < 2
+        or len(set(cosine_values)) < 2
+        or len(set(tanimoto_values)) < 2
+    ):
+        correlation = None
+    else:
+        statistic = float(spearmanr(cosine_values, tanimoto_values).statistic)
+        correlation = statistic if np.isfinite(statistic) else None
+
+    structure_recall: dict[str, dict[str, float]] = {}
+    for threshold in (0.3, 0.5):
+        structure_recall[str(threshold)] = {
+            str(limit): float(np.mean([
+                any(
+                    candidate.get("tanimoto") is not None
+                    and float(candidate["tanimoto"]) >= threshold
+                    for candidate in candidates[:limit]
+                )
+                for candidates in candidate_rows
+            ]))
+            for limit in (1, 5, 10)
+        }
+
+    unseen = [
+        candidate.get("unseen_element_fraction")
+        for candidates in candidate_rows
+        for candidate in candidates
+    ]
+    latencies = [row.get("latency_seconds") for row in rows]
+    aggregate: dict[str, object] = {
+        "query_count": len(rows),
+        "top1_tanimoto": _mean_valid([candidate.get("tanimoto") for candidate in top1]),
+        "mean_top5_tanimoto": _mean_valid(per_query_mean("tanimoto", 5)),
+        "best_at_5_tanimoto": _mean_valid(per_query_best("tanimoto", 5)),
+        "best_at_10_tanimoto": _mean_valid(per_query_best("tanimoto", 10)),
+        "top1_legacy_ged_v1": _mean_valid([
+            candidate.get("legacy_ged_v1") for candidate in top1
+        ]),
+        "top1_chemical_ged_v2": _mean_valid([
+            candidate.get("chemical_ged_v2") for candidate in top1
+        ]),
+        "top1_chemical_nged_v2": _mean_valid([
+            candidate.get("chemical_nged_v2") for candidate in top1
+        ]),
+        "best_at_5_chemical_ged_v2": _mean_valid(
+            per_query_best("chemical_ged_v2", 5, minimum=True)
+        ),
+        "best_at_10_chemical_ged_v2": _mean_valid(
+            per_query_best("chemical_ged_v2", 10, minimum=True)
+        ),
+        "best_at_5_chemical_nged_v2": _mean_valid(
+            per_query_best("chemical_nged_v2", 5, minimum=True)
+        ),
+        "best_at_10_chemical_nged_v2": _mean_valid(
+            per_query_best("chemical_nged_v2", 10, minimum=True)
+        ),
+        "best_at_5_legacy_ged_v1": _mean_valid(
+            per_query_best("legacy_ged_v1", 5, minimum=True)
+        ),
+        "best_at_10_legacy_ged_v1": _mean_valid(
+            per_query_best("legacy_ged_v1", 10, minimum=True)
+        ),
+        "top1_heavy_atom_gap": _mean_valid([
+            candidate.get("heavy_atom_gap") for candidate in top1
+        ]),
+        "top1_element_jaccard": _mean_valid([
+            candidate.get("element_jaccard") for candidate in top1
+        ]),
+        "top1_molecular_weight_error": _mean_valid([
+            candidate.get("molecular_weight_error") for candidate in top1
+        ]),
+        "embedding_tanimoto_spearman": correlation,
+        "candidate_unseen_element_fraction": _mean_valid(unseen),
+        "mean_latency_seconds": _mean_valid(latencies),
+        "total_latency_seconds": (
+            float(sum(float(value) for value in latencies if value is not None))
+        ),
+        "structure_recall_at_1": {
+            threshold: values["1"] for threshold, values in structure_recall.items()
+        },
+        "structure_recall_at_5": {
+            threshold: values["5"] for threshold, values in structure_recall.items()
+        },
+        "structure_recall_at_10": {
+            threshold: values["10"] for threshold, values in structure_recall.items()
+        },
+    }
+    for limit in (1, 5, 10):
+        aggregate[f"exact_match_recall_at_{limit}"] = recall("exact_match", limit)
+        aggregate[f"scaffold_recall_at_{limit}"] = recall("scaffold_match", limit)
+        for threshold in ("0.3", "0.5"):
+            aggregate[
+                f"structure_recall_at_{limit}_tanimoto_{threshold}"
+            ] = structure_recall[threshold][str(limit)]
+    return aggregate
+
+
 __all__ = [
     "DEFAULT_GED_VERSION",
     "GEDVersion",
     "batch_graph_edit_distance",
+    "aggregate_structure_retrieval",
     "compute_retrieval_metrics",
     "graph_edit_distance",
     "normalized_graph_edit_distance",
     "pairwise_tanimoto",
+    "rank_structure_candidates",
     "smiles_to_nx",
     "tanimoto_similarity",
 ]

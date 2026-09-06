@@ -70,6 +70,85 @@ python spectraexpert/train_contrastive.py \
     --epochs 80
 ```
 
+### 结构感知 Stage 1：从数据准备到统一评测
+
+新版 Stage 1 在训练时对齐 Raman 光谱与二维分子图，在查询时仍然只接收光谱。下面的命令沿用
+同一个 `split_manifest.json`，避免不同消融实验因重新划分数据而失去可比性。数据准备入口只接受
+项目已授权的两份 Raman JSONL；路径白名单与来源 SHA-256 会写入输出元数据。
+
+```bash
+python scripts/prepare_raman_jsonl.py \
+    --input /data/SpecGPT/data/theory_data_tiny/Raman_QME14S.jsonl \
+    --input /data/SpecGPT/data/theory_data_tiny/Raman_fg26.jsonl \
+    --output-dir data/raman_tiny \
+    --split-seed 0
+
+python -m spectraexpert.train_structure_aware \
+    --training-mode spectrum_graph_v2 \
+    --data-dir data/raman_tiny \
+    --output-dir outputs/structure_v2 \
+    --split-manifest data/raman_tiny/split_manifest.json \
+    --epochs 50 --patience 8 --batch-size 32 \
+    --embed-dim 128 --depth 3 --num-heads 4 \
+    --projection-dim 64 --graph-hidden-dim 128 \
+    --lambda-aug 0.25 --lambda-struct 0.5 \
+    --lambda-aux 0.1 --lambda-fingerprint 0.0
+```
+
+候选图索引只需要候选 SMILES。先按 checkpoint 使用的固定 Morgan/图特征 schema 缓存结构特征，
+再建立带 checkpoint SHA-256 与 schema metadata 的 graph index：
+
+```bash
+python scripts/cache_molecular_features.py \
+    --smiles-path data/raman_tiny/smiles.parquet \
+    --output outputs/structure_v2/candidate_features.parquet
+
+python scripts/build_graph_index.py \
+    --checkpoint outputs/structure_v2/best.pt \
+    --smiles-path data/raman_tiny/smiles.parquet \
+    --feature-cache outputs/structure_v2/candidate_features.parquet \
+    --output outputs/structure_v2/graph_index.npz
+```
+
+统一评测报告同时保留历史复现用的 `legacy_ged_v1`、主指标 `chemical_ged_v2` 与
+`chemical_nged_v2`。identity-included 用于检查同域精确检索能力；identity-excluded 则衡量排除真实
+分子后候选的结构接近程度。两种设置都在 ranking 完成后才读取 ground-truth SMILES，模型输入审计字段
+固定为 `query_inputs=["spectrum"]`。
+
+```bash
+python -m spectraexpert.eval.evaluate_structure_retrieval \
+    --mode spectrum_graph_v2 \
+    --query-data-dir data/raman_tiny \
+    --candidate-index outputs/structure_v2/graph_index.npz \
+    --checkpoint outputs/structure_v2/best.pt \
+    --top-k 10 \
+    --output outputs/structure_v2/eval_identity_included.json
+
+python -m spectraexpert.eval.evaluate_structure_retrieval \
+    --mode spectrum_graph_v2 \
+    --query-data-dir data/raman_tiny \
+    --candidate-index outputs/structure_v2/graph_index.npz \
+    --checkpoint outputs/structure_v2/best.pt \
+    --top-k 10 --exclude-identity \
+    --baseline-result outputs/spectral_only_v1/eval_identity_excluded.json \
+    --output outputs/structure_v2/eval_identity_excluded.json
+```
+
+固定消融 launcher 可用 `--dry-run` 审计完整的 A–D、seed 0/1/2 共十二条命令，再在确认数据和 GPU
+资源后去掉该参数执行：
+
+```bash
+bash scripts/run_tiny_pilot.sh \
+    --data-dir data/raman_tiny \
+    --output-root outputs/tiny_pilot \
+    --gpu 0 \
+    --dry-run
+```
+
+**tiny pilot 仅用于验证数据、训练、索引与评测闭环是否可运行。** 其样本规模、候选覆盖与随机种子
+不足以支持论文性能结论；最终结论必须来自冻结测试集、相同候选库、完整消融和预先规定的 paired
+bootstrap 验收。
+
 ### Reproduce benchmark evaluation
 
 ```bash
