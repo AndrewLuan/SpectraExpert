@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from copy import deepcopy
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +38,7 @@ from spectraexpert.training.checkpoints import save_checkpoint
 
 
 SMILES = ["CC", "CCC", "CCCC", "CCO", "CCN", "CO", "CN", "C=C", "C#N", "c1ccccc1"]
+VERIFIED_HASH = "a" * 64
 
 
 def _sha256(path: Path) -> str:
@@ -133,16 +135,35 @@ def _comparable_report(identity: str = "CCO") -> dict[str, object]:
             "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
             "normalized_ged": "chemical_nged_v2",
             "query_identity_sha256": "query-hash",
-            "query_source_sha256": {"spectra.parquet": "s", "smiles.parquet": "m", "wavenumber.parquet": "w"},
-            "split_manifest_sha256": "split-hash",
-            "candidate_identity_sha256": "candidate-hash",
-            "candidate_source_smiles_sha256": "candidate-source-hash",
+            "query_source_sha256": {"spectra.parquet": VERIFIED_HASH, "smiles.parquet": VERIFIED_HASH, "wavenumber.parquet": VERIFIED_HASH},
+            "split_manifest_sha256": VERIFIED_HASH,
+            "candidate_identity_sha256": VERIFIED_HASH,
+            "candidate_source_smiles_sha256": VERIFIED_HASH,
             "candidate_unique_identities": 20,
             "training_atomic_numbers": [6, 8],
             "sampled_pair_protocol": {
                 "schema_version": "fixed_sampled_pairs_v1", "seed": 0,
                 "pairs_per_query": 4,
                 "duplicate_identity_embedding": "first_mol_id_sorted_source_record",
+                "candidate_identity_sha256": VERIFIED_HASH,
+            },
+            "query_spectrum_corpus_sha256": VERIFIED_HASH,
+            "candidate_corpus_kind": "spectrum",
+            "candidate_corpus_sha256": VERIFIED_HASH,
+            "candidate_spectrum_corpus_sha256": VERIFIED_HASH,
+            "structure_metric_protocol": {
+                "schema_version": "structure_retrieval_metrics_v1",
+                "ged_timeout_seconds": 10.0,
+                "ged_include_h": False,
+                "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
+                "normalized_ged": "chemical_nged_v2",
+                "morgan": {
+                    "schema_version": "metric_aligned_graph_v1",
+                    "morgan_radius": 2,
+                    "morgan_bits": 2048,
+                    "use_bond_types": True,
+                    "use_chirality": False,
+                },
             },
         },
         "queries": [_minimal_query(1, identity)],
@@ -154,6 +175,132 @@ def _comparable_report(identity: str = "CCO") -> dict[str, object]:
     }
     report["config"]["query_identity_sha256"] = canonical_smiles_sha256([1], [identity])
     return report
+
+
+def test_paired_comparison_rejects_different_query_spectrum_content(monkeypatch):
+    monkeypatch.setattr(structure_metrics, "graph_edit_distance", lambda *args, **kwargs: 0.0)
+    monkeypatch.setattr(structure_metrics, "tanimoto_similarity", lambda *args: 0.5)
+
+    def report(spectrum):
+        return evaluate_ranked_queries(
+            query_mol_ids=np.array([7]),
+            query_spectra=np.array([spectrum], dtype=np.float32),
+            query_smiles=["CCO"],
+            retrieve=lambda query: {
+                "smiles": ["CC", "CO", "CN"], "scores": [0.9, 0.8, 0.7],
+                "query_embedding": query,
+            },
+            top_k=10,
+            candidate_corpus_smiles=["CC", "CO", "CN"],
+            score_sampled_candidates=lambda spectrum, ranking, candidates: [0.1, 0.2, 0.3],
+            sampled_pairs_per_query=3,
+            split_manifest_sha256=VERIFIED_HASH,
+            candidate_corpus_sha256=VERIFIED_HASH,
+            candidate_corpus_kind="graph_index",
+            ged_timeout=0,
+        )
+
+    with pytest.raises(ValueError, match="query.*spectrum|spectrum.*corpus"):
+        compare_evaluation_results(report([1.0, 0.0]), report([0.0, 1.0]))
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["split_manifest_sha256", "query_spectrum_corpus_sha256", "candidate_corpus_sha256"],
+)
+def test_paired_comparison_rejects_both_null_verified_provenance(field):
+    current = _comparable_report()
+    baseline = deepcopy(current)
+    current["config"][field] = None
+    baseline["config"][field] = None
+
+    with pytest.raises(ValueError, match=f"{field}.*non-null|verified.*{field}"):
+        compare_evaluation_results(current, baseline)
+
+
+def test_paired_comparison_rejects_different_candidate_spectrum_content():
+    current = _comparable_report()
+    baseline = deepcopy(current)
+    baseline["config"]["candidate_spectrum_corpus_sha256"] = "b" * 64
+
+    with pytest.raises(ValueError, match="candidate spectrum corpus"):
+        compare_evaluation_results(current, baseline)
+
+
+@pytest.mark.parametrize(
+    ("path", "value", "message"),
+    [
+        (("ged_timeout_seconds",), 0.5, "structure_metric_protocol"),
+        (("morgan", "morgan_radius"), 3, "structure_metric_protocol"),
+        (("morgan", "morgan_bits"), 1024, "structure_metric_protocol"),
+        (("morgan", "use_chirality"), True, "structure_metric_protocol"),
+    ],
+)
+def test_paired_comparison_rejects_metric_protocol_mismatch(path, value, message):
+    current = _comparable_report()
+    baseline = deepcopy(current)
+    target = baseline["config"]["structure_metric_protocol"]
+    for part in path[:-1]:
+        target = target[part]
+    target[path[-1]] = value
+
+    with pytest.raises(ValueError, match=message):
+        compare_evaluation_results(current, baseline)
+
+
+def test_spearman_bootstrap_resamples_query_blocks_and_recomputes_pooled_rho(monkeypatch):
+    monkeypatch.setattr(structure_metrics, "graph_edit_distance", lambda *args, **kwargs: 0.0)
+    similarities = {
+        "CCO": {"CC": 0.1, "CN": 0.2, "CO": 0.3},
+        "CCN": {"CC": 0.7, "CN": 0.8, "CO": 0.9},
+    }
+    monkeypatch.setattr(
+        structure_metrics, "tanimoto_similarity",
+        lambda left, right: similarities[left][right],
+    )
+
+    def report(current):
+        def score(spectrum, ranking, candidates):
+            query_index = int(np.argmax(spectrum))
+            values = (
+                ([0.7, 0.8, 0.9], [0.1, 0.2, 0.3])
+                if current else
+                ([0.3, 0.2, 0.1], [0.9, 0.8, 0.7])
+            )[query_index]
+            by_identity = dict(zip(["CC", "CN", "CO"], values))
+            return [by_identity[candidate] for candidate in candidates]
+
+        return evaluate_ranked_queries(
+            query_mol_ids=np.array([7, 8]),
+            query_spectra=np.eye(2, dtype=np.float32),
+            query_smiles=["CCO", "CCN"],
+            retrieve=lambda query: {
+                "smiles": ["CC", "CN", "CO"], "scores": [0.9, 0.8, 0.7],
+                "query_embedding": query,
+            },
+            top_k=10,
+            candidate_corpus_smiles=["CC", "CN", "CO"],
+            score_sampled_candidates=score,
+            sampled_pairs_per_query=3,
+            split_manifest_sha256=VERIFIED_HASH,
+            candidate_corpus_sha256=VERIFIED_HASH,
+            candidate_corpus_kind="graph_index",
+            ged_timeout=0,
+        )
+
+    current = report(True)
+    baseline = report(False)
+    comparison = compare_evaluation_results(current, baseline)
+    statistic = comparison["embedding_tanimoto_spearman_v2_minus_baseline"]
+
+    expected = (
+        current["aggregate"]["embedding_tanimoto_spearman"]
+        - baseline["aggregate"]["embedding_tanimoto_spearman"]
+    )
+    assert expected < 0
+    assert statistic["mean_delta"] == pytest.approx(expected)
+    assert statistic["ci_2_5"] < 0
+    assert statistic["mean_delta"] != pytest.approx(2.0)
 
 
 def test_versioned_spectral_checkpoint_runs_unified_evaluation(tmp_path):
@@ -242,6 +389,9 @@ def test_sampled_pair_correlation_uses_same_pairs_when_topk_rankings_differ(monk
             score_sampled_candidates=score_pairs,
             sampled_pairs_per_query=3,
             sampled_pair_seed=0,
+            split_manifest_sha256=VERIFIED_HASH,
+            candidate_corpus_sha256=VERIFIED_HASH,
+            candidate_corpus_kind="graph_index",
             ged_timeout=0,
         )
 

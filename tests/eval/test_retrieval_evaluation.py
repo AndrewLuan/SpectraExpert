@@ -202,15 +202,30 @@ def test_cli_rejects_query_structure_inputs_before_reading_any_dataset(tmp_path)
 
 
 def test_paired_report_skips_jointly_unavailable_ged_but_keeps_tanimoto():
+    verified_hash = "a" * 64
     config = {
         "query_inputs": ["spectrum"], "top_k": 10, "exclude_identity": True,
         "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
         "normalized_ged": "chemical_nged_v2", "query_identity_sha256": "placeholder",
-        "query_source_sha256": {"spectra.parquet": "s", "smiles.parquet": "m", "wavenumber.parquet": "w"},
-        "split_manifest_sha256": "split", "candidate_identity_sha256": "candidate",
-        "candidate_source_smiles_sha256": "candidate-source",
+        "query_source_sha256": {"spectra.parquet": verified_hash, "smiles.parquet": verified_hash, "wavenumber.parquet": verified_hash},
+        "query_spectrum_corpus_sha256": verified_hash,
+        "split_manifest_sha256": verified_hash, "candidate_identity_sha256": verified_hash,
+        "candidate_source_smiles_sha256": verified_hash,
+        "candidate_corpus_kind": "graph_index", "candidate_corpus_sha256": verified_hash,
+        "candidate_spectrum_corpus_sha256": None,
         "candidate_unique_identities": 20, "training_atomic_numbers": [6, 8],
         "sampled_pair_protocol": None,
+        "structure_metric_protocol": {
+            "schema_version": "structure_retrieval_metrics_v1",
+            "ged_timeout_seconds": 10.0,
+            "ged_include_h": False,
+            "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
+            "normalized_ged": "chemical_nged_v2",
+            "morgan": {
+                "schema_version": "metric_aligned_graph_v1", "morgan_radius": 2,
+                "morgan_bits": 2048, "use_bond_types": True, "use_chirality": False,
+            },
+        },
     }
     config["query_identity_sha256"] = canonical_smiles_sha256([1, 2], ["CCO", "CCN"])
     current = {

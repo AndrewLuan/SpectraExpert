@@ -4,7 +4,8 @@
 主要职责：``paired_bootstrap`` 生成固定协议置信区间；``candidate_corpus_audit`` 以 canonical identity
 审计完整唯一候选库与实际训练元素词表；``evaluate_ranked_queries`` 编排纯 spectrum
 查询和逐条/聚合指标；``run_evaluation`` 从显式目录构造 baseline 或 Task 8 Stage1Retrieval；
-``compare_evaluation_results`` 对同序 query 生成可审计的 v2-baseline 配对统计；``main`` 提供 CLI。
+``compare_evaluation_results`` 先核对内容 hash/结构指标协议，再按 query block 重采样并重算 pooled
+Spearman，生成可审计的 v2-baseline 配对统计；``main`` 提供 CLI。
 代码库关系：结构质量完全委托 Task 3 ``eval.metrics``，legacy cosine 委托 ``SpectralEncoder.retrieve``，
 v1/v2 模型检索委托 Task 8 ``Stage1Retrieval.run``；不维护任何平行 GED、Tanimoto 或排序算法。
 输入输出与副作用：查询模型仅接收有限二维 spectra 的逐行一维数组；读取显式 Parquet、manifest、
@@ -35,6 +36,7 @@ from spectraexpert.data.structure_dataset import (
     canonicalize_smiles,
     scaffold_split,
 )
+from spectraexpert.data.structure_features import StructureFeatureConfig
 from spectraexpert.eval import metrics as structure_metrics
 from spectraexpert.inference import SpectralEncoder
 from spectraexpert.pipeline.stage1_retrieval import Stage1Retrieval
@@ -78,6 +80,47 @@ def _atomic_numbers(smiles: Sequence[str]) -> list[int]:
     if not values:
         raise ValueError("training split must contain at least one atom")
     return sorted(values)
+
+
+def _spectrum_corpus_sha256(
+    mol_ids: Sequence[int], canonical_smiles: Sequence[str], spectra: np.ndarray
+) -> str:
+    """按实际行序绑定 mol_id、canonical identity、float32 shape 与模型所见谱值。"""
+
+    values = np.asarray(spectra, dtype=np.float32)
+    identifiers = [int(value) for value in mol_ids]
+    identities = [canonicalize_smiles(value) for value in canonical_smiles]
+    if values.ndim != 2 or len(values) != len(identifiers) or len(values) != len(identities):
+        raise ValueError("spectrum corpus IDs, identities, and values must be aligned")
+    digest = hashlib.sha256()
+    header = {
+        "schema_version": "ordered_spectrum_corpus_v1",
+        "dtype": "float32-le",
+        "shape": list(values.shape),
+        "records": list(zip(identifiers, identities)),
+    }
+    digest.update(json.dumps(
+        header, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8"))
+    little_endian = np.ascontiguousarray(values.astype("<f4", copy=False))
+    digest.update(little_endian.tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def _structure_metric_protocol(ged_timeout: float) -> dict[str, object]:
+    """记录会改变结构指标语义的 GED 与 Morgan 完整固定配置。"""
+
+    timeout = float(ged_timeout)
+    if not np.isfinite(timeout) or timeout < 0:
+        raise ValueError("ged_timeout must be finite and non-negative")
+    return {
+        "schema_version": "structure_retrieval_metrics_v1",
+        "ged_timeout_seconds": timeout,
+        "ged_include_h": False,
+        "ged_versions": ["legacy_ged_v1", "chemical_ged_v2"],
+        "normalized_ged": "chemical_nged_v2",
+        "morgan": StructureFeatureConfig().to_metadata(),
+    }
 
 
 def candidate_corpus_audit(
@@ -197,6 +240,103 @@ def _spearman_or_none(first: Sequence[object], second: Sequence[object]) -> floa
     return value if np.isfinite(value) else None
 
 
+def _paired_pooled_spearman_bootstrap(
+    current_pairs: Sequence[Mapping[str, object]],
+    baseline_pairs: Sequence[Mapping[str, object]],
+    query_ids: Sequence[int],
+    *,
+    current_point: object,
+    baseline_point: object,
+    n_resamples: int = 10_000,
+    seed: int = 0,
+) -> dict[str, object]:
+    """按 query pair block 重采样，每次重算 pooled rho 差，与报告点估计保持同一统计量。"""
+
+    identifiers = [int(value) for value in query_ids]
+    current_by_query = {identifier: [] for identifier in identifiers}
+    baseline_by_query = {identifier: [] for identifier in identifiers}
+    for pair in current_pairs:
+        identifier = int(pair["query_mol_id"])
+        if identifier not in current_by_query:
+            raise ValueError("sampled pair references unknown query_mol_id")
+        current_by_query[identifier].append(pair)
+    for pair in baseline_pairs:
+        identifier = int(pair["query_mol_id"])
+        if identifier not in baseline_by_query:
+            raise ValueError("sampled pair references unknown query_mol_id")
+        baseline_by_query[identifier].append(pair)
+    if any(not current_by_query[value] or not baseline_by_query[value] for value in identifiers):
+        return {
+            "available": False, "mean_delta": None, "ci_2_5": None,
+            "ci_97_5": None, "n_pairs": 0, "n_total": len(identifiers),
+            "n_resamples": n_resamples, "valid_resamples": 0, "seed": seed,
+        }
+
+    current_rho = _spearman_or_none(
+        [pair["cosine_score"] for pair in current_pairs],
+        [pair["tanimoto"] for pair in current_pairs],
+    )
+    baseline_rho = _spearman_or_none(
+        [pair["cosine_score"] for pair in baseline_pairs],
+        [pair["tanimoto"] for pair in baseline_pairs],
+    )
+    try:
+        declared_current = float(current_point)
+        declared_baseline = float(baseline_point)
+    except (TypeError, ValueError):
+        declared_current = declared_baseline = float("nan")
+    if current_rho is None or baseline_rho is None:
+        return {
+            "available": False, "mean_delta": None, "ci_2_5": None,
+            "ci_97_5": None, "n_pairs": 0, "n_total": len(identifiers),
+            "n_resamples": n_resamples, "valid_resamples": 0, "seed": seed,
+        }
+    if (
+        not np.isfinite([declared_current, declared_baseline]).all()
+        or not np.isclose(declared_current, current_rho, rtol=0.0, atol=1e-12)
+        or not np.isclose(declared_baseline, baseline_rho, rtol=0.0, atol=1e-12)
+    ):
+        raise ValueError("aggregate pooled sampled-pair Spearman is inconsistent")
+
+    generator = np.random.default_rng(seed)
+    samples = generator.integers(0, len(identifiers), size=(n_resamples, len(identifiers)))
+    differences: list[float] = []
+    for sample in samples:
+        selected = [identifiers[index] for index in sample]
+        current_block = [pair for identifier in selected for pair in current_by_query[identifier]]
+        baseline_block = [pair for identifier in selected for pair in baseline_by_query[identifier]]
+        current_sample_rho = _spearman_or_none(
+            [pair["cosine_score"] for pair in current_block],
+            [pair["tanimoto"] for pair in current_block],
+        )
+        baseline_sample_rho = _spearman_or_none(
+            [pair["cosine_score"] for pair in baseline_block],
+            [pair["tanimoto"] for pair in baseline_block],
+        )
+        if current_sample_rho is not None and baseline_sample_rho is not None:
+            differences.append(current_sample_rho - baseline_sample_rho)
+    if not differences:
+        return {
+            "available": False, "mean_delta": None, "ci_2_5": None,
+            "ci_97_5": None, "n_pairs": 0, "n_total": len(identifiers),
+            "n_resamples": n_resamples, "valid_resamples": 0, "seed": seed,
+        }
+    lower, upper = np.percentile(np.asarray(differences, dtype=np.float64), [2.5, 97.5])
+    return {
+        "available": True,
+        "mean_delta": declared_current - declared_baseline,
+        "ci_2_5": float(lower),
+        "ci_97_5": float(upper),
+        "n_pairs": len(identifiers),
+        "n_total": len(identifiers),
+        "n_resamples": n_resamples,
+        "valid_resamples": len(differences),
+        "seed": seed,
+        "resampling_unit": "query_pair_block",
+        "statistic": "pooled_sampled_pair_spearman",
+    }
+
+
 def _unpack_ranking(ranking: object) -> tuple[list[str], list[float], list[float]]:
     """规范 Task 8 Stage1Result 或轻量 KNN mapping，不改变上游给出的 rank。"""
 
@@ -232,6 +372,11 @@ def evaluate_ranked_queries(
     sampled_pairs_per_query: int = 32,
     sampled_pair_seed: int = 0,
     eligible_candidate_count: int | None = None,
+    split_manifest_sha256: str | None = None,
+    candidate_corpus_sha256: str | None = None,
+    candidate_corpus_kind: str = "unverified",
+    candidate_source_smiles_sha256: str | None = None,
+    candidate_spectrum_corpus_sha256: str | None = None,
 ) -> dict[str, object]:
     """先以 spectrum 完成所有单条 ranking，再把真实 SMILES 交给结构 metrics。"""
 
@@ -344,6 +489,9 @@ def evaluate_ranked_queries(
         identifiers.astype(np.int64).tolist(),
         [canonicalize_smiles(value) for value in identities],
     )
+    query_spectrum_hash = _spectrum_corpus_sha256(
+        identifiers.astype(np.int64).tolist(), identities, spectra
+    )
     candidate_identity_hash = (
         None
         if sampled_corpus is None
@@ -351,6 +499,10 @@ def evaluate_ranked_queries(
             json.dumps(sampled_corpus, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         ).hexdigest()
     )
+    if sampled_corpus is not None and candidate_source_smiles_sha256 is None:
+        candidate_source_smiles_sha256 = canonical_smiles_sha256(
+            list(range(len(sampled_corpus))), sampled_corpus
+        )
     return {
         "config": {
             "query_inputs": inputs,
@@ -360,13 +512,18 @@ def evaluate_ranked_queries(
             "normalized_ged": "chemical_nged_v2",
             "query_identity_sha256": query_identity_hash,
             "query_source_sha256": None,
-            "split_manifest_sha256": None,
+            "query_spectrum_corpus_sha256": query_spectrum_hash,
+            "split_manifest_sha256": split_manifest_sha256,
             "candidate_identity_sha256": candidate_identity_hash,
-            "candidate_source_smiles_sha256": None,
+            "candidate_source_smiles_sha256": candidate_source_smiles_sha256,
+            "candidate_corpus_kind": candidate_corpus_kind,
+            "candidate_corpus_sha256": candidate_corpus_sha256,
+            "candidate_spectrum_corpus_sha256": candidate_spectrum_corpus_sha256,
             "candidate_unique_identities": (
                 None if sampled_corpus is None else len(sampled_corpus)
             ),
             "training_atomic_numbers": sorted({int(value) for value in training_atomic_numbers}),
+            "structure_metric_protocol": _structure_metric_protocol(ged_timeout),
             "sampled_pair_protocol": (
                 None
                 if sampled_corpus is None
@@ -590,18 +747,74 @@ def compare_evaluation_results(
         "normalized_ged",
         "query_identity_sha256",
         "query_source_sha256",
+        "query_spectrum_corpus_sha256",
         "split_manifest_sha256",
         "candidate_identity_sha256",
         "candidate_source_smiles_sha256",
+        "candidate_corpus_sha256",
         "candidate_unique_identities",
         "training_atomic_numbers",
         "sampled_pair_protocol",
+        "structure_metric_protocol",
     )
     for field in comparable_fields:
         if field not in current_config or field not in baseline_config:
             raise ValueError(f"paired evaluation missing comparable config field {field}")
         if current_config[field] != baseline_config[field]:
             raise ValueError(f"paired evaluation {field} mismatch")
+    verified_hash_fields = (
+        "query_spectrum_corpus_sha256",
+        "split_manifest_sha256",
+        "candidate_identity_sha256",
+        "candidate_source_smiles_sha256",
+        "candidate_corpus_sha256",
+    )
+    for field in verified_hash_fields:
+        value = current_config[field]
+        if (
+            not isinstance(value, str)
+            or len(value) != 64
+            or any(character not in "0123456789abcdef" for character in value)
+        ):
+            raise ValueError(f"paired evaluation {field} requires a verified non-null SHA-256")
+    metric_protocol = current_config["structure_metric_protocol"]
+    if not isinstance(metric_protocol, Mapping):
+        raise ValueError("paired evaluation structure_metric_protocol must be a mapping")
+    try:
+        expected_metric_protocol = _structure_metric_protocol(
+            float(metric_protocol["ged_timeout_seconds"])
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("paired evaluation structure_metric_protocol is invalid") from error
+    if metric_protocol != expected_metric_protocol:
+        raise ValueError("paired evaluation structure_metric_protocol is invalid")
+    sampled_protocol = current_config["sampled_pair_protocol"]
+    if sampled_protocol is not None:
+        if (
+            not isinstance(sampled_protocol, Mapping)
+            or sampled_protocol.get("candidate_identity_sha256")
+            != current_config["candidate_identity_sha256"]
+        ):
+            raise ValueError("paired evaluation sampled_pair_protocol provenance is invalid")
+    current_kind = current_config.get("candidate_corpus_kind")
+    baseline_kind = baseline_config.get("candidate_corpus_kind")
+    if current_kind not in {"spectrum", "graph_index"}:
+        raise ValueError("paired evaluation candidate_corpus_kind is unverified")
+    if baseline_kind not in {"spectrum", "graph_index"}:
+        raise ValueError("paired evaluation baseline candidate_corpus_kind is unverified")
+    if current_kind == baseline_kind == "spectrum":
+        current_spectrum_hash = current_config.get("candidate_spectrum_corpus_sha256")
+        baseline_spectrum_hash = baseline_config.get("candidate_spectrum_corpus_sha256")
+        if current_spectrum_hash != baseline_spectrum_hash:
+            raise ValueError("paired evaluation candidate spectrum corpus mismatch")
+        if (
+            not isinstance(current_spectrum_hash, str)
+            or len(current_spectrum_hash) != 64
+            or any(character not in "0123456789abcdef" for character in current_spectrum_hash)
+        ):
+            raise ValueError(
+                "paired evaluation candidate_spectrum_corpus_sha256 requires verified non-null SHA-256"
+            )
     _validate_query_inputs(current_config["query_inputs"])
     if current_config["exclude_identity"] is not baseline_config["exclude_identity"]:
         raise ValueError("paired evaluation exclude_identity mismatch")
@@ -707,6 +920,10 @@ def compare_evaluation_results(
 
     current_pairs = list(current.get("sampled_pairs", []))
     baseline_pairs = list(baseline.get("sampled_pairs", []))
+    if bool(current_pairs) is not (current_config["sampled_pair_protocol"] is not None):
+        raise ValueError("paired evaluation sampled_pair_protocol does not match sampled pairs")
+    if bool(baseline_pairs) is not (baseline_config["sampled_pair_protocol"] is not None):
+        raise ValueError("paired evaluation sampled_pair_protocol does not match sampled pairs")
     current_pair_ids = [pair.get("pair_id") for pair in current_pairs]
     baseline_pair_ids = [pair.get("pair_id") for pair in baseline_pairs]
     if current_pair_ids != baseline_pair_ids:
@@ -715,11 +932,20 @@ def compare_evaluation_results(
         identity_fields = ("pair_id", "query_mol_id", "candidate_smiles", "tanimoto")
         if any(first.get(field) != second.get(field) for field in identity_fields):
             raise ValueError("paired evaluation sampled pair identity mismatch")
-    current_correlations, baseline_correlations = paired_values(
-        current_rows, baseline_rows, "sampled_pair_spearman"
-    )
-    correlation = optional_bootstrap(
-        current_correlations, baseline_correlations, n_total=len(current_rows)
+    current_aggregate = current.get("aggregate")
+    baseline_aggregate = baseline.get("aggregate")
+    correlation = _paired_pooled_spearman_bootstrap(
+        current_pairs,
+        baseline_pairs,
+        [int(value) for value in current_ids],
+        current_point=(
+            current_aggregate.get("embedding_tanimoto_spearman")
+            if isinstance(current_aggregate, Mapping) else None
+        ),
+        baseline_point=(
+            baseline_aggregate.get("embedding_tanimoto_spearman")
+            if isinstance(baseline_aggregate, Mapping) else None
+        ),
     )
     return {
         "positive_delta_means_improvement": True,
@@ -783,6 +1009,11 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, object]:
             sampled_scorer = _sampled_embedding_scorer(candidate.smiles, candidate.spectra)
             checkpoint_schema = None
             candidate_source_smiles_sha256 = candidate.source_smiles_sha256
+            candidate_corpus_kind = "spectrum"
+            candidate_corpus_hash = candidate.source_smiles_sha256
+            candidate_spectrum_hash = _spectrum_corpus_sha256(
+                candidate.mol_ids, candidate.smiles, candidate.spectra
+            )
 
         elif mode == "spectral_only_v1":
             candidate = _load_dataset_bundle(
@@ -828,6 +1059,11 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, object]:
             sampled_scorer = _sampled_embedding_scorer(candidate.smiles, embeddings)
             checkpoint_schema = "spectral_only_v1"
             candidate_source_smiles_sha256 = candidate.source_smiles_sha256
+            candidate_corpus_kind = "spectrum"
+            candidate_corpus_hash = candidate.source_smiles_sha256
+            candidate_spectrum_hash = _spectrum_corpus_sha256(
+                candidate.mol_ids, candidate.smiles, candidate.spectra
+            )
         else:
             retrieval_top_k = args.top_k + 1 if args.exclude_identity else args.top_k
             stage1 = Stage1Retrieval({
@@ -859,6 +1095,9 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, object]:
             )
             checkpoint_schema = "spectrum_graph_v2"
             candidate_source_smiles_sha256 = stage1.candidate_source_smiles_sha256
+            candidate_corpus_kind = "graph_index"
+            candidate_corpus_hash = stage1.candidate_source_smiles_sha256
+            candidate_spectrum_hash = None
 
         result = evaluate_ranked_queries(
             query_mol_ids=query.mol_ids,
@@ -875,6 +1114,11 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, object]:
             sampled_pairs_per_query=getattr(args, "sampled_pairs_per_query", 32),
             sampled_pair_seed=getattr(args, "sampled_pair_seed", 0),
             eligible_candidate_count=int(audit["record_count"]),
+            split_manifest_sha256=query.split_manifest_sha256,
+            candidate_corpus_sha256=candidate_corpus_hash,
+            candidate_corpus_kind=candidate_corpus_kind,
+            candidate_source_smiles_sha256=candidate_source_smiles_sha256,
+            candidate_spectrum_corpus_sha256=candidate_spectrum_hash,
         )
     finally:
         if temporary is not None:
@@ -893,6 +1137,9 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, object]:
         "split_manifest_sha256": query.split_manifest_sha256,
         "candidate_identity_sha256": audit["canonical_identity_sha256"],
         "candidate_source_smiles_sha256": candidate_source_smiles_sha256,
+        "candidate_corpus_kind": candidate_corpus_kind,
+        "candidate_corpus_sha256": candidate_corpus_hash,
+        "candidate_spectrum_corpus_sha256": candidate_spectrum_hash,
         "candidate_unique_identities": audit["unique_identity_count"],
         "training_atomic_numbers": query.training_atomic_numbers,
     })
