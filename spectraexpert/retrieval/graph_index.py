@@ -12,8 +12,9 @@ Morgan 位向量、原始 descriptors 及完整 checkpoint/feature/model/source 
 输入输出与副作用：构造和查询只操作有限、形状严格的 NumPy 数组；指纹保存为 little-endian packed
 uint8，metadata 保存为 canonical JSON UTF-8 bytes。写文件使用同目录临时文件、fsync 和 replace，
 失败不覆盖既有目标；加载前检查 ZIP 原始 member 清单，并先校验 metadata/调用方期望再物化大数组。
-重排能力同时绑定物理 head 与 checkpoint 正有限 loss 权重。重排只接受调用方从 query spectrum
-得到的预测，不接收 query SMILES、真实
+重排能力同时绑定物理 head 与 checkpoint 正有限 loss 权重；公开 in-memory 构造省略 loss 权重时保守
+记录两个零权重并关闭 rerank，checkpoint-driven builder 仍要求真实训练 metadata。重排只接受调用方从
+query spectrum 得到的预测，不接收 query SMILES、真实
 fingerprint、分子式或 descriptors；零权重不要求相应辅助 head，正权重缺能力或预测时 fail fast。
 """
 
@@ -215,7 +216,7 @@ class GraphIndex:
                     descriptor_mean: np.ndarray | Sequence[float] | None = None,
                     descriptor_std: np.ndarray | Sequence[float] | None = None,
                     loss_weights: Mapping[str, object] | None = None) -> "GraphIndex":
-        """验证候选全集并将图 embedding 归一化为可稳定点积检索的只读数组。"""
+        """验证候选全集；省略训练权重时按未训练 auxiliary heads 保守记录。"""
 
         raw_embeddings = np.asarray(embeddings)
         if raw_embeddings.ndim != 2 or not raw_embeddings.shape[0] or not raw_embeddings.shape[1]:
@@ -295,7 +296,9 @@ class GraphIndex:
             raise ValueError("descriptor_normalizer shape does not match descriptors")
         if not np.isfinite(mean).all() or not np.isfinite(std).all() or np.any(std <= 0):
             raise ValueError("descriptor_normalizer must contain finite mean and positive std")
-        weights = _validate_loss_weights(loss_weights or {})
+        if loss_weights is None:
+            loss_weights = {"lambda_aux": 0.0, "lambda_fingerprint": 0.0}
+        weights = _validate_loss_weights(loss_weights)
         capabilities = {
             "descriptor_normalizer": True,
             "descriptor_rerank": weights["lambda_aux"] > 0,

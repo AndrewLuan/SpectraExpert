@@ -1,7 +1,8 @@
 """
 功能概述：验证 Task 8 图候选索引模块能够作为独立、版本化的检索边界导入。
-主要职责：覆盖索引持久化、原始 ZIP member/metadata-first 校验、稳定检索、checkpoint loss capability、
-dataset provenance、exact int64 CLI identity、纯光谱编码与可选预测辅助重排。
+主要职责：覆盖 brief 最小 in-memory round-trip、索引持久化、原始 ZIP member/metadata-first 校验、
+稳定检索、checkpoint loss capability、dataset provenance、exact int64 CLI identity、纯光谱编码与
+可选预测辅助重排。
 代码库关系：目标模块消费 Task 2 结构特征 schema、Task 6 图缓存与 Task 7 v2 checkpoint；测试仅
 使用临时小数组和小模型，不读取项目真实数据，也不启动训练或网络访问。
 输入输出与副作用：只在临时目录写小产物；autouse fixture 固定并恢复 Python/NumPy/Torch RNG，
@@ -187,6 +188,46 @@ def test_graph_index_round_trip_uses_non_object_arrays_and_validates_all_metadat
     for argument, (wrong, message) in mismatch_cases.items():
         with pytest.raises(ValueError, match=message):
             GraphIndex.load(path, **{argument: wrong})
+
+
+def test_graph_index_brief_minimal_round_trip_defaults_rerank_capabilities_off(tmp_path):
+    """省略 loss_weights 的 brief 公开调用必须保守可用，而不能声称 rerank 已训练。"""
+    from spectraexpert.retrieval import GraphIndex
+
+    embeddings = np.eye(2, dtype=np.float32)
+    mol_ids = np.array([1, 2], dtype=np.int64)
+    smiles = np.array(["CC", "CO"])
+    fingerprints = np.zeros((2, 2048), dtype=np.uint8)
+    fingerprints[0, [0, 2]] = 1
+    fingerprints[1, [0, 1]] = 1
+    descriptors = np.zeros((2, 15), dtype=np.float32)
+    descriptors[0, :2] = [2.0, 0.0]
+    descriptors[1, :2] = [1.0, 1.0]
+    metadata = StructureFeatureConfig().to_metadata()
+    index = GraphIndex.from_arrays(
+        embeddings,
+        mol_ids,
+        smiles,
+        fingerprints,
+        descriptors,
+        checkpoint_sha256="abc",
+        feature_metadata=metadata,
+    )
+    path = tmp_path / "index.npz"
+    index.save(path)
+    loaded = GraphIndex.load(
+        path,
+        expected_checkpoint_sha256="abc",
+        expected_feature_metadata=metadata,
+    )
+
+    assert loaded.smiles.tolist() == smiles.tolist()
+    assert loaded.metadata["loss_weights"] == {
+        "lambda_aux": 0.0,
+        "lambda_fingerprint": 0.0,
+    }
+    assert loaded.metadata["capabilities"]["descriptor_rerank"] is False
+    assert loaded.metadata["capabilities"]["fingerprint_rerank"] is False
 
 
 def test_graph_index_rejects_duplicate_id_and_canonical_identity():
