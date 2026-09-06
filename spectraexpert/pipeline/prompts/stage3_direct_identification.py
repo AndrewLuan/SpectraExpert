@@ -1,14 +1,17 @@
 """
-Direct molecule identification prompts for Stage 3 evaluation (no retrieval).
-
-Two variants:
-- Mode 3 (llm-direct): only detected peaks → identify molecule
-- Mode 4 (llm-knowledge): detected peaks + Nakamoto rules → identify molecule
+功能概述：定义不依赖检索候选的第三阶段直接识别 prompt，支持仅峰信息和峰加 Nakamoto 规则两种
+评估模式。
+主要职责：三个 prompt 常量约束模型输出；``format_peak_table`` 将 ``DetectedPeak`` 转为 Markdown；
+``format_matched_rules_summary`` 按峰归纳 ``MatchedRule`` 并限制每峰展示数。
+代码库关系：由 ``spectraexpert.eval.evaluate`` 在 llm-direct 与 llm-knowledge 模式中导入；
+数据类型来自同包 pipeline，不参与常规 Stage 3 候选推理 prompt。
+输入输出与副作用：格式化函数只从输入对象生成字符串，不调用 API、不持久化数据；缺失规则会明确
+标注为无直接匹配，保留评估提示的可解释性。
 """
 
 from __future__ import annotations
 
-from proj.spectra_expert.pipeline.data_types import DetectedPeak, MatchedRule
+from spectraexpert.pipeline.data_types import DetectedPeak, MatchedRule
 
 # ---------------------------------------------------------------------------
 # System prompt — generic spectroscopist (no retrieval context)

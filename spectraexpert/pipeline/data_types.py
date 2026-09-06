@@ -1,8 +1,12 @@
 """
-Type-safe data models for the SpectraExpert 3-stage inference pipeline.
-
-Each stage produces a typed dataclass that becomes the input for the next
-stage. PipelineResult captures the complete trace of a single query.
+功能概述：定义 SpectraExpert 三阶段推理之间传递的类型化 dataclass，并保存完整 pipeline trace。
+主要职责：``DetectedPeak`` 表示谱峰；``Candidate`` 保存 Stage 1 候选及 Task 8 新增的显式
+``retrieval_mode``/原始 ``embedding_similarity`` provenance；各 StageResult 和 PipelineResult 连接
+检索、规则匹配与 LLM 推理，``PipelineResult._hash/print_summary`` 提供追踪与人类可读输出。
+代码库关系：Stage 1 构造 Candidate/Stage1Result，Stage 2/3 和 prompt/eval 消费这些对象；新增字段
+置于 Candidate 旧四个必填字段之后并带默认值，因此既有 positional/keyword 调用保持兼容。
+输入输出与副作用：dataclass 主要保存内存状态；只有 ``print_summary`` 写标准输出，``_hash`` 对输入
+数组字节计算短 SHA-256。v2 启用重排时 similarity 是最终分数，embedding_similarity 保留原 cosine。
 """
 
 from __future__ import annotations
@@ -54,12 +58,16 @@ class Candidate:
     rank : 1-based rank (1 = most similar).
     mol_id : numeric identifier in the QM9S database.
     smiles : canonical SMILES string.
-    similarity : cosine similarity of the embedding (0-1).
+    similarity : 当前排序使用的分数；legacy/无重排时等于 cosine，重排时为最终组合分数。
+    retrieval_mode : 产生候选的显式索引模式，默认保持历史 ``spectral_only_v1``。
+    embedding_similarity : 重排前 cosine；旧调用未提供时为 None。
     """
     rank: int
     mol_id: int
     smiles: str
     similarity: float
+    retrieval_mode: str = "spectral_only_v1"
+    embedding_similarity: float | None = None
 
     def __str__(self) -> str:
         return (f"#{self.rank}  SIM={self.similarity:.4f}  "

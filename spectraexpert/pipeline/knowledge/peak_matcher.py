@@ -1,6 +1,12 @@
 """
-Peak-to-rule matcher — matches detected spectral peaks to Nakamoto
-empirical rules based on frequency-range overlap.
+功能概述：把检测到的光谱峰按照频率区间重叠关系映射到 Nakamoto 经验规则，是第二阶段的规则
+匹配边界。
+主要职责：``_confidence_rank`` 将可信度文本转换为排序权重；``PeakMatcher`` 的单峰、批量和
+内部转换方法筛选、去重、排序并限制 ``MatchedRule`` 数量。
+代码库关系：依赖同目录 ``NakamotoRuleBase`` 解析规则频率范围，并使用
+``spectraexpert.pipeline.data_types``；由 ``Stage2PeakAnalysis`` 创建和调用。
+输入输出与副作用：接收 ``DetectedPeak`` 与可选规则子集，返回新建的匹配对象；只读规则库，
+遇到无法解析的文本范围时由规则库的解析行为决定空匹配。
 """
 
 from __future__ import annotations
@@ -8,7 +14,7 @@ from __future__ import annotations
 from typing import Any
 
 from .nakamoto_loader import NakamotoRuleBase
-from proj.spectra_expert.pipeline.data_types import DetectedPeak, MatchedRule
+from spectraexpert.pipeline.data_types import DetectedPeak, MatchedRule
 
 # ── confidence ordering (higher = more reliable) ────────────────────────
 

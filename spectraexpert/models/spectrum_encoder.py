@@ -1,21 +1,13 @@
 """
-Spectrum Transformer Encoder — a 1D ViT-style transformer that processes
-Raman spectra as patch sequences.
-
-Architecture (inspired by MatExpert's dual-T5 SimCLR, but adapted for
-1D spectral data):
-
-  1. Raw spectrum (3501 points) → overlapping 1D patches
-  2. Linear projection → patch embeddings
-  3. Learnable positional encoding
-  4. Transformer encoder layers (with pre-norm, GeLU)
-  5. Global average pooling → projection head → L2-normalised embedding
-
-The projection head follows SimCLR's design:
-    Linear(d_model, d_model) → ReLU → Linear(d_model, projection_dim)
+功能概述：把一维 Raman/IR 光谱编码成 Transformer pooled 特征及单位范数检索向量。
+主要职责：PatchEmbed1D 将 (B,L) 光谱切成重叠 patch；SpectrumTransformer.encode_backbone
+负责位置编码、Transformer 和均值池化，project 负责投影及 L2 归一化，forward 串联二者；
+SpectrumSimCLR 共享同一 encoder 处理两个增强视图；_init_weights 初始化线性层和 LayerNorm。
+代码库关系：legacy SpectralEncoder 与 train_contrastive 继续消费原 forward/state_dict；
+StructureAwareRetriever 读取 backbone 构建辅助头，并用公开的构造标量保存 checkpoint 配置。
+输入输出与副作用：输入 (B,signal_length) 浮点 tensor，返回 (B,embed_dim) 特征或
+(B,projection_dim) embedding；训练态 dropout 随机，模块参数键保持兼容，不读取结构标签或文件。
 """
-
-import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -106,6 +98,16 @@ class SpectrumTransformer(nn.Module):
         """
         super().__init__()
 
+        self.signal_length = signal_length
+        self.patch_size = patch_size
+        self.stride = stride
+        self.embed_dim = embed_dim
+        self.depth = depth
+        self.num_heads = num_heads
+        self.mlp_ratio = mlp_ratio
+        self.dropout = dropout
+        self.projection_dim = projection_dim
+
         # Patch embedding
         self.patch_embed = PatchEmbed1D(
             signal_length=signal_length,
@@ -151,16 +153,8 @@ class SpectrumTransformer(nn.Module):
             nn.init.ones_(module.weight)
             nn.init.zeros_(module.bias)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Parameters
-        ----------
-        x : (B, L) tensor — raw spectra.
-
-        Returns
-        -------
-        z : (B, projection_dim) tensor — L2-normalised embeddings.
-        """
+    def encode_backbone(self, x: torch.Tensor) -> torch.Tensor:
+        """返回 projection 前的 (B, embed_dim) 光谱 pooled feature。"""
         # Patch embed + positional encoding
         x = self.patch_embed(x)  # (B, num_patches, embed_dim)
         x = x + self.pos_embed
@@ -171,15 +165,15 @@ class SpectrumTransformer(nn.Module):
         x = self.norm(x)
 
         # Global average pooling over patches
-        x = x.mean(dim=1)  # (B, embed_dim)
+        return x.mean(dim=1)  # (B, embed_dim)
 
-        # Projection head
-        z = self.projection(x)  # (B, projection_dim)
+    def project(self, features: torch.Tensor) -> torch.Tensor:
+        """投影到 (B, projection_dim) 并做安全 L2 归一化。"""
+        return F.normalize(self.projection(features), dim=1)
 
-        # L2 normalise
-        z = F.normalize(z, dim=1)
-
-        return z
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """将 (B, L) 光谱编码为 L2-normalized embedding，保持 legacy 语义。"""
+        return self.project(self.encode_backbone(x))
 
 
 class SpectrumSimCLR(nn.Module):

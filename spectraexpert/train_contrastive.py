@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 """
-Contrastive Learning Training Script for Spectral Encoder.
-
-Supports:
-  - Single-GPU:  python train_contrastive.py [args]
-  - Multi-GPU:   torchrun --nproc_per_node=N train_contrastive.py [args] --ddp
-
-Direct adaptation of MatExpert's retrieval/main.py (ICLR 2025).
-
-Key changes from MatExpert:
-  1. Single SpectrumTransformer encoder (instead of dual T5 encoders)
-  2. Positive pairs via spectral augmentations (instead of text pairs)
-  3. Raw spectral arrays as input (instead of tokenised text)
-  4. DDP support for 8-card parallel training
-  5. TensorBoard logging integrated
+功能概述：训练基于 SimCLR 的 ``SpectrumTransformer``，是 SpectraExpert 检索阶段生成
+checkpoint 的命令行入口。
+主要职责：``parse_arguments`` 定义训练与 DDP 参数；``setup_seed`` 和 DDP 辅助函数保证可复现
+执行；``Logger``/学习率调度器记录过程；``main`` 组织数据集、模型、优化器和 checkpoint 保存。
+代码库关系：依赖 ``spectraexpert.data.spectral_dataset``、模型与 NT-Xent 损失；输出的
+``model_state_dict`` 和 ``args`` 由 ``spectraexpert.inference.SpectralEncoder`` 恢复。
+输入输出与副作用：读取 Parquet 数据、写 TensorBoard/CSV/checkpoint；只有命令行执行 main 时启动
+训练，导入模块本身不读取数据或启动分布式进程。
 
 Usage:
     # Single GPU
@@ -56,8 +50,8 @@ _project_root = Path(__file__).resolve().parent.parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
-from spectra_expert.models.spectrum_encoder import SpectrumTransformer, SpectrumSimCLR
-from spectra_expert.utils.ntxent_loss import NTXentLoss
+from spectraexpert.models.spectrum_encoder import SpectrumTransformer, SpectrumSimCLR
+from spectraexpert.utils.ntxent_loss import NTXentLoss
 
 warnings.filterwarnings("ignore")
 
@@ -324,7 +318,7 @@ def main():
     logger.log("Loading data...")
 
     # Create dataset first (needed by DistributedSampler)
-    from spectra_expert.data.spectral_dataset import SpectralDataset
+    from spectraexpert.data.spectral_dataset import SpectralDataset
 
     data_dir = Path(args.data_dir)
     dataset = SpectralDataset(

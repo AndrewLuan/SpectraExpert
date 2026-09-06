@@ -1,8 +1,11 @@
 """
-Stage 3: LLM Reasoning — candidate evaluation, selection, and modification.
-
-Builds structured prompts from Stage 1 & 2 results, calls the LLM, parses
-the structured response, and (if needed) runs a modification fallback.
+功能概述：实现三阶段流程的语言模型推理层，根据候选分子与峰规则选择结构，必要时提出修改建议。
+主要职责：``Stage3LLMReasoning`` 配置 LLM 客户端和解析正则；``run`` 构造 prompt、调用客户端、
+解析字段并组装候选分析或修改回退结果。
+代码库关系：消费 ``Stage1Result``、``Stage2Result`` 和同包 prompt/LLM 模块；由
+``SpectraExpertPipeline`` 调用，其 ``Stage3Result`` 是最终管线结果的一部分。
+输入输出与副作用：会将结构化消息交给配置的 LLMClient，因而可能产生网络请求；格式不完整的模型
+回复会走默认字段和容错解析，不修改检索缓存或知识库。
 """
 
 from __future__ import annotations
@@ -10,7 +13,7 @@ from __future__ import annotations
 import re
 from typing import Any, Optional
 
-from proj.spectra_expert.pipeline.data_types import (
+from spectraexpert.pipeline.data_types import (
     Candidate,
     CandidateAnalysis,
     Stage1Result,
