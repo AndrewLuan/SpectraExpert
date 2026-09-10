@@ -12,7 +12,7 @@ SpectraExpert (Fingerprint Reasoner) identifies molecular structures from Raman 
 2. **Spectral Analysis** — Detected peaks are matched against 181 empirical group-frequency rules digitized from Nakamoto's authoritative textbook, producing a structured peak–rule annotation.
 3. **LLM-Guided Reasoning** — A frontier LLM performs 4-step chain-of-thought reasoning over the candidates and Nakamoto rule annotations, then issues a structured decision: **SELECT** a candidate, **MODIFY** it, or declare **UNCERTAIN**.
 
-![Pipeline overview](paper/figures/spectraexpert_agent_workflow.pdf)
+[Open the publication pipeline figure (PDF)](paper/figures/spectraexpert_agent_workflow.pdf)
 
 ---
 
