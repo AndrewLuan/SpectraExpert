@@ -1,0 +1,21 @@
+{
+  "query_index": 32,
+  "content": "SELECTED_INDEX: 2\nCONFIDENCE: 0.34\nEXPLANATION: The spectrum shows a characteristic carbon-yl doublet at 1821 cm⁻¹ and 1759 cm⁻¹. A high-frequency C=O band above 1800 cm⁻¹ is typical for an acyl halide, especially an acyl fluoride, whose C=O stretch is split by Fermi resonance into a pair near 1820 / 1760 cm⁻¹.  A strong C–F stretching band is expected in the 1000–1100 cm⁻¹ region and is observed at 1015 cm⁻¹, with intense CF bending / deformation bands near 680 cm⁻¹ (peak at 673 cm⁻¹) and around 800 cm⁻¹ (peaks at 810 cm⁻¹ and 788 cm⁻¹).  The prominent C–H stretch at 2946 cm⁻¹ and CH₃/CH₂ bending at 1436 cm⁻¹ and 1374 cm⁻¹ match the propyl chain. Among the candidates, only molecule 2 (CCC(=O)OF) contains an acyl-F functionality together with an aliphatic chain, fitting all of these key Raman features; the other candidates either lack a carbonyl, have the C=O frequency too low, or do not contain fluorine.",
+  "usage": {
+    "prompt_tokens": 5575,
+    "completion_tokens": 3981,
+    "total_tokens": 9556,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3648
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCICjxEEIQtNgBfGqgcXG1pLRCaY",
+  "last_attempt_file": "o3/attempts/0032_1788959172427837000.json"
+}

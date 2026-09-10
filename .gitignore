@@ -14,3 +14,37 @@ build/
 .env
 .env.*
 *.key
+
+# Local operating-system and editor files
+.DS_Store
+**/.DS_Store
+~$*
+
+# Test, paper-build, and scratch artifacts
+.pytest_cache/
+tmp/
+paper/build/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+paper/*.xdv
+paper/main.pdf
+
+# Working figure/PDF variants. The publication assets live in paper/figures/
+# and the released manuscript is output/pdf/SpectraExpert_camera_ready.pdf.
+output/figures/
+output/pdf/*_placeholder.pdf
+output/pdf/*_inserted.pdf
+
+# Local handoff notes and unfinished author notes are not publication assets.
+docs/HANDOFF_*.md
+docs/agent-multimodel-jj.md
+all_weakness.md
+paper/chinese_quick_review.md
+paper/待办.md
+paper/演示.md

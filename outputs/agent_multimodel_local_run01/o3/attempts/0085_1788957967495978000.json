@@ -1,0 +1,10 @@
+{
+  "query_index": 85,
+  "model": "o3",
+  "started_at": 1788957967.4959831,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMByq4bpdtFpAdjmtFWkwEjzgSzLa\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.46\\nEXPLANATION: The spectrum shows a very strong C=O stretching band at 1786 cm⁻¹ – characteristic of an acid-chloride carbonyl (expected 1790–1820 cm⁻¹), which is absent from all candidates except the acid-chloride methyl chloroformate (4).  \\nSupporting bands for 4:  \\n• 821 and 788 cm⁻¹ – strong C–Cl stretches of aliphatic chlorides.  \\n• 1007, 948 and 919 cm⁻¹ – C–O and C–Cl coupled stretches of the ‑O-CH₃ and ‑COCl group.  \\n• 1458 cm⁻¹ – CH₃ deformation; 2972 / 2854 cm⁻¹ – CH₃ ν(C–H) stretches.  \\n• 1156 and 1214 cm⁻¹ – C–O-CH₃ stretching modes expected for an alkoxy carbonyl chloride.  \\nNo nitrile band (~2250 cm⁻¹, rules GFQ-003/004) is present, excluding candidate 10, and no Si–F (~1030 cm⁻¹, rule GFQ-040) band pattern excludes candidate 3. The absence of P=O (~1250 cm⁻¹) or C=S (~1050 cm⁻¹) bands eliminates candidates 1, 5, 8, 9. The observed high-frequency carbonyl band is too high for ordinary esters (candidates 2, 6). Thus the peak pattern best matches methyl chloroformate.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957976,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5133,\"completion_tokens\":2947,\"total_tokens\":8080,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2560},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819135549-79c573a3-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 40.66686550001032,
+  "error": null
+}

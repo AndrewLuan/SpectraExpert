@@ -1,0 +1,21 @@
+{
+  "query_index": 194,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.62\nEXPLANATION: Strong aliphatic C–H stretches at 2946/2887 cm⁻¹ and a prominent CH₂ scissoring band at 1450 cm⁻¹ fit a saturated alkyl amine. The intense 771 cm⁻¹ band is consistent with CH₂ rocking in aliphatic chains, and the 919 cm⁻¹ feature matches methyl rocking/skeletal motions. The cluster at 1057–1163 cm⁻¹ suits C–N/C–C skeletal modes in a tertiary amine. Absence of diagnostic bands for isocyanate (~2270 cm⁻¹), diazo/N≡N (~2100–2300 cm⁻¹), O–H (~3200–3600 cm⁻¹), Si–H (~2100–2200 cm⁻¹), or aromatic C=C (~1600 cm⁻¹) disfavors other candidates. Overall, CCN(CC)CC best matches the observed Raman pattern.",
+  "usage": {
+    "prompt_tokens": 4970,
+    "completion_tokens": 3881,
+    "total_tokens": 8851,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3648
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMC0ISsWBQOsSyEWB3fYj7nls1reZ",
+  "last_attempt_file": "gpt5/attempts/0194_1788958065201232000.json"
+}

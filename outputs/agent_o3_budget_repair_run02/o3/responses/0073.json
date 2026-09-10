@@ -1,0 +1,21 @@
+{
+  "query_index": 73,
+  "content": "SELECTED_INDEX: 9\nCONFIDENCE: 0.20\nEXPLANATION: Spectrum shows:  \n• Very strong CH₃ C–H stretches at 2935 & 2880 cm⁻¹ and strong CH₃/CH₂ deformations at 1466–1442 cm⁻¹, consistent with a tertiary dimethylamino substituent (present in CN(C)CSN=O).  \n• Two medium bands at 1499 cm⁻¹ and 1483 cm⁻¹ match the ν(N=O) stretching doublet typical of nitrosamine / S–N=O groups, which only candidate 9 contains.  \n• An intense band at 920 cm⁻¹ fits the ν(S–N) stretch of sulfenamide / sulfinyl compounds, again unique to candidate 9.  \n• A distinct C–S stretching band is expected near 650 cm⁻¹ (rule GFQ-032); the observed 654 cm⁻¹ peak supports the presence of an S–C bond in candidate 9.  \n• Additional bands at 1007–1064 cm⁻¹ can be assigned to mixed S–N–O and C–N stretches of the dimethylamino-sulfenamide framework.\n\nAmong the candidates, only molecule 9 (CN(C)CSN=O) simultaneously provides:  \n– Tertiary dimethylamine (explaining strong CH₃ features),  \n– An S–N=O functional group giving characteristic Raman bands near 920 cm⁻¹ (S–N) and ~1500 cm⁻¹ (N=O),  \n– A C–S bond giving the 654 cm⁻¹ band.  \n\nOther candidates lack the N=O group (needed for the ~1500 cm⁻¹ doublet) or the S–N linkage (~920 cm⁻¹), making them less consistent with the key experimental peaks.",
+  "usage": {
+    "prompt_tokens": 5467,
+    "completion_tokens": 10616,
+    "total_tokens": 16083,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 10176
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCICRDKf3CpHE8ZVXEtLIiKSk89m",
+  "last_attempt_file": "o3/attempts/0073_1788959172470463000.json"
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 40,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.72\nEXPLANATION: The spectrum shows both an unconjugated carbonyl (1723 cm⁻¹) and an alkene (strong C=C at 1652 cm⁻¹) with clear =C–H stretches (3031, 3099 cm⁻¹) and abundant aliphatic C–H (2953, 2896 cm⁻¹), fitting an allyl ester. The very strong 1294 cm⁻¹ band is consistent with an ester C–O stretch. The trio of bands near 890/911/952 cm⁻¹ matches well with terminal vinyl out-of-plane modes (~910/990, shifted) together with characteristic epoxide ring vibrations (~890 and ~915 cm⁻¹), and the 1251 cm⁻¹ feature supports an epoxide ring breathing mode. Among candidates, only 1 combines an allyl ester and an epoxide, explaining the 890–950 cm⁻¹ cluster and the 1251 cm⁻¹ band. A nitro group (candidate 2) would typically show a strong ~1530–1560 cm⁻¹ band, which is absent.",
+  "usage": {
+    "prompt_tokens": 5379,
+    "completion_tokens": 6025,
+    "total_tokens": 11404,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5760
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2qjBkWzidQtODxi33mSiHOjoI",
+  "last_attempt_file": "gpt5/attempts/0040_1788964310752325000.json"
+}

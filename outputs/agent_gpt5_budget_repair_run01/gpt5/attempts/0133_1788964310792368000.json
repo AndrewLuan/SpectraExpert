@@ -1,0 +1,10 @@
+{
+  "query_index": 133,
+  "model": "gpt-5",
+  "started_at": 1788964310.7923698,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2VB7bjCL1dGYDHgtvywOCKeaT\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.68\\nEXPLANATION: The spectrum shows a strong band at 1652 cm⁻¹ consistent with an alkene C=C stretch, and CH stretches at 2908/2989 cm⁻¹ plus a weaker ≥3000 cm⁻¹ band at 3081 cm⁻¹ indicative of a vinylic C–H (GFQ-003). The cluster of out-of-plane bending bands at 842–893 cm⁻¹ aligns with a trisubstituted alkene having a single =CH (expected near ~800–850), which matches CC(C)=CCl but not a CH2= alkene. The prominent 767 cm⁻¹ and the low-frequency 531 cm⁻¹ bands lie in the typical C–Cl/C–X stretching region for organohalides, supporting a vinyl chloride. The 1395/1419 cm⁻¹ features fit aliphatic CH3/CH2 deformations, and the modest bands near 1015/1054 cm⁻¹ can be attributed to skeletal/rocking modes rather than C–O stretches (no strong OH band present). Overall, CC(C)=CCl best accounts for the alkene substitution pattern and halogen-related bands.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5232,\"completion_tokens\":6552,\"total_tokens\":11784,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":6272},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-10e6a11d-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 82.05886958399788,
+  "error": null
+}

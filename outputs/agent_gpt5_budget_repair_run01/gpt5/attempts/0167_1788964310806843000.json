@@ -1,0 +1,10 @@
+{
+  "query_index": 167,
+  "model": "gpt-5",
+  "started_at": 1788964310.806845,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3Z3kAKrWCLByhzosTVgzqvrMo\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.68\\nEXPLANATION: The spectrum shows a very strong band at ~1130 cm⁻¹ consistent with an aryl C–F stretch and another very strong band at ~670 cm⁻¹ indicative of an aryl C–Cl stretch; only candidate 4 contains both F and Cl on an aromatic ring. The strong 1677 cm⁻¹ band fits a conjugated aldehyde C=O, and the 1586 cm⁻¹ band is a typical aromatic C=C stretch. Out-of-plane C–H bands at 696/763/847 cm⁻¹ support a trisubstituted benzene, matching an aldehyde plus F and Cl substituents.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5659,\"completion_tokens\":3815,\"total_tokens\":9474,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3648},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822200305-73128551-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 46.48245045798831,
+  "error": null
+}

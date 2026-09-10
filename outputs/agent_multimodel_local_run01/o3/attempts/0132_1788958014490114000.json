@@ -1,0 +1,10 @@
+{
+  "query_index": 132,
+  "model": "o3",
+  "started_at": 1788958014.490121,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBzoww4KsbnWm45cErQN6dxuxgi3\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4  \\nCONFIDENCE: 0.55  \\nEXPLANATION: The spectrum shows a very intense band at 1041 cm⁻¹ and another at 744 cm⁻¹. Rule GFQ-075 assigns 1040 cm⁻¹ (ν₃) and ~700 cm⁻¹ (ν₂) to an O–O–O (ozone-like) moiety; very few organic groups give such a pair of strong Raman lines. Among the candidates only molecule 4, C=CCOC(=O)OOO, contains a contiguous O–O–O segment capable of this vibration. The sharp carbonyl band at 1748 cm⁻¹ fits the ester/carbonate C=O of 4, and the strong 893 cm⁻¹ line matches the typical RO–O stretch of peroxides. Alkene C=C stretching at 1635 cm⁻¹ and C–H stretches between 2888–3098 cm⁻¹ are also consistent with the allyl fragment (C=CC). No other candidate possesses the required O₃/peroxy group, making 4 the most compatible with the observed Raman peaks.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0}],\"created\":1788958036,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":6614,\"completion_tokens\":3030,\"total_tokens\":9644,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2752},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 53.97021483400022,
+  "error": null
+}

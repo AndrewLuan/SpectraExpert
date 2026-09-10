@@ -1,0 +1,10 @@
+{
+  "query_index": 2,
+  "model": "o3",
+  "started_at": 1788959172.315249,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCICZPukbGL1QB8CyQwiuMNh3VaA\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.34\\nEXPLANATION: The spectrum shows strong ether-type C-O-C vibrations (very intense 810 cm⁻¹ plus bands at 1019 and 1150 cm⁻¹) together with multiple CH₃ stretches (2955, 2896, 2854, 2820 cm⁻¹) and an N–H stretch at 3342 cm⁻¹. Candidate 2 (COC(CN)OC) is the only molecule that contains two methoxy (O–CH₃) groups giving the required C-O-C skeletal mode and CH₃ stretches, while also possessing a primary amine (-NH₂) that accounts for the N–H band. Other candidates lack either the ether linkage (810 cm⁻¹) or an N–H group. Hence candidate 2 best matches the observed Raman pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959176,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5049,\"completion_tokens\":3484,\"total_tokens\":8533,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3264},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819135549-293bcb73-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 50.423757250013296,
+  "error": null
+}

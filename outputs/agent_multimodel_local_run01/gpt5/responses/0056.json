@@ -1,0 +1,21 @@
+{
+  "query_index": 56,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.86\nEXPLANATION: The spectrum shows a clear nonconjugated C=O stretch at 1710 cm⁻¹ alongside strong aliphatic C–H stretches at 2861/2934 cm⁻¹ and a CH₂ scissoring band at 1446 cm⁻¹, indicating a saturated ketone. Multiple skeletal bands at ~834, 775, and 611 cm⁻¹ plus mid-frequency features at 1032, 1137, 1269, and 1298 cm⁻¹ closely match the known Raman pattern of cyclohexanone (e.g., bands near 840/802/772/705/650 cm⁻¹ and 1295/1266/1150–1120/1060 cm⁻¹). The absence of a pronounced ~1375 cm⁻¹ CH₃ bending band disfavors a simple dialkyl ketone (e.g., 4-heptanone), and there is no evidence for acid/ester or imine functionalities. Thus O=C1CCCCC1 (cyclohexanone) best fits the experimental peaks.",
+  "usage": {
+    "prompt_tokens": 5141,
+    "completion_tokens": 2372,
+    "total_tokens": 7513,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2112
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByI6t4gT96lNNwIN0wXs6b9wSo8",
+  "last_attempt_file": "gpt5/attempts/0056_1788957938754868000.json"
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 81,
+  "content": "SELECTED_INDEX: 9\nCONFIDENCE: 0.55\nEXPLANATION: The spectrum shows two sharp bands in the nitrile region (2255 and 2297 cm⁻¹), consistent with two distinct C≡N stretches. Candidate 9 contains two nitrile-type groups (N#C and C#N), which can yield multiple CN stretching bands (supports GFQ-030). The strong C–H stretches at 2945 and 3006 cm⁻¹ and a CH deformation near 1375 cm⁻¹ match aliphatic CH vibrations (GFQ-003). Candidates with only one nitrile (e.g., 2) or with terminal alkynes (which should show ≈3300 cm⁻¹ C≡C–H) are less consistent; candidate 2 also implies a carbonyl band near 1650–1750 cm⁻¹, not observed.",
+  "usage": {
+    "prompt_tokens": 4322,
+    "completion_tokens": 6220,
+    "total_tokens": 10542,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 6016
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2gzS3VSYRWI4TnuwwA9pP78pX",
+  "last_attempt_file": "gpt5/attempts/0081_1788964310772609000.json"
+}

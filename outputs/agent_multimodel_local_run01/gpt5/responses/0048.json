@@ -1,0 +1,21 @@
+{
+  "query_index": 48,
+  "content": "SELECTED_INDEX: 3\nCONFIDENCE: 0.83\nEXPLANATION: The spectrum shows a distinct S–H stretch at 2508 cm⁻¹ and an S–H bend at 1203 cm⁻¹ (GFQ-005), uniquely indicating a thiol/thiothioamide; only candidate 3 (CNC(=S)S) contains an SH group. The NH-related band at 935 cm⁻¹ (GFQ-002) and NH/CH stretches near 3200–3317 and 2837–2988 cm⁻¹ (GFQ-002, GFQ-003) match its NH and aliphatic CH groups. Additional bands around 1221–1256 cm⁻¹ are consistent with a thioamide C=S region. Other candidates lack SH and do not explain the 2508/1203 cm⁻¹ features.",
+  "usage": {
+    "prompt_tokens": 5503,
+    "completion_tokens": 3210,
+    "total_tokens": 8713,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3008
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBxuAMpQNhdoO8xuoHCdjvLN5gBX",
+  "last_attempt_file": "gpt5/attempts/0048_1788957912283012000.json"
+}

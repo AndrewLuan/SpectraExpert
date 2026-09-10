@@ -1,0 +1,21 @@
+{
+  "query_index": 118,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.68\nEXPLANATION: The intense 2125 cm⁻¹ band is consistent with an internal alkyne C≡C stretch (typical ~2100–2200) rather than a nitrile (expected ~2220–2260; none observed). Strong aliphatic C–H stretches at 2921/2938/2988 cm⁻¹ and CH bending near 1433/1458 cm⁻¹ (GFQ-003) match a saturated framework. Multiple bands in the 790–900 cm⁻¹ region are characteristic of cyclohexane ring modes, supporting the presence of a cyclohexyl group. Absence of O–H (~3200–3600) and N–H (~3300–3400) peaks disfavors candidates with OH or NH/C≡N. These features best fit CCC#CC1CC(C)C1.",
+  "usage": {
+    "prompt_tokens": 5930,
+    "completion_tokens": 2772,
+    "total_tokens": 8702,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2560
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBzDhso34fiNL0kzqg6nZiIK3Fcb",
+  "last_attempt_file": "gpt5/attempts/0118_1788957996932427000.json"
+}

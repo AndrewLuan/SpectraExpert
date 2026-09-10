@@ -1,0 +1,118 @@
+% 功能概述：官方数据协议复现附录；与统一 Test-200 比较严格分开。
+% 主要职责：整理完成的检索、生成和多模态复现；来源为 additional_sources.json 中的原始日志。
+% 代码库关系：由 main.tex 在附录中引入，不改变原模型或评分结果。
+\section{Native-Protocol Competitor Reproduction}
+\label{sec:native_results}
+The server also contains official-checkpoint reproduction runs on the methods' native datasets. We retain their latest corrected outputs as implementation checks. These use different candidate pools, modalities and, where marked, formula or mass information; they must not be merged with Test-200. No claim of matching a published number is needed to interpret these locally reproduced measurements.
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Vib2Mol retrieval under the native evaluation protocol}
+\label{tab:native_retrieval}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Variant}} & \PaperHead{Recall@1} & \PaperHead{Recall@3} & \PaperHead{Recall@5}\\[1pt]
+\midrule
+\PaperGroup{4}{RetBg}{QM9S / IR}
+\rowcolor{RetBg!55}
+Base & 91.94 & 98.37 & 99.11\\
+\rowcolor{RetBg!28}
+Rerank & 95.00 & 98.84 & 99.11\\
+\rowcolor{RetBg!55}
+Rerank + formula & 96.63 & 98.94 & 99.11\\
+\PaperGroup{4}{RetBg}{QM9S / Raman}
+\rowcolor{RetBg!55}
+Base & 95.13 & 99.06 & 99.48\\
+\rowcolor{RetBg!28}
+Rerank & 97.17 & 99.41 & 99.48\\
+\rowcolor{RetBg!55}
+Rerank + formula & 98.10 & 99.47 & 99.48\\
+\PaperGroup{4}{DirBg}{VB-Mols / IR}
+\rowcolor{DirBg!55}
+Base & 87.47 & 97.47 & 98.56\\
+\rowcolor{DirBg!28}
+Rerank & 91.39 & 98.21 & 98.56\\
+\rowcolor{DirBg!55}
+Rerank + formula & 93.38 & 98.46 & 98.56\\
+\PaperGroup{4}{DirBg}{VB-Mols / Raman}
+\rowcolor{DirBg!55}
+Base & 89.57 & 98.04 & 98.90\\
+\rowcolor{DirBg!28}
+Rerank & 93.19 & 98.71 & 98.90\\
+\rowcolor{DirBg!55}
+Rerank + formula & 94.65 & 98.86 & 98.90\\
+\PaperGroup{4}{KnwBg}{NIST / IR}
+\rowcolor{KnwBg!55}
+Base & 67.82 & 81.73 & 85.43\\
+\rowcolor{KnwBg!28}
+Rerank & 70.78 & 83.13 & 85.43\\
+\rowcolor{KnwBg!55}
+Rerank + formula & 83.62 & 85.43 & 85.43\\
+\bottomrule
+\end{tabularx}
+\arrayrulecolor{black}
+\PaperNote{Recall in \%. Formula variants receive target formula information unavailable in the primary Test-200 setting.}
+\end{table}
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\fontsize{7.5}{9}\selectfont}
+\caption{VibraCLIP native QM9S self-retrieval}
+\label{tab:native_vibraclip}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Configuration}} & \PaperHead{@1} & \PaperHead{@5} & \PaperHead{@10} & \PaperHead{@25}\\[1pt]
+\midrule
+\PaperGroup{5}{RetBg}{Without mass}
+\rowcolor{RetBg!55}
+IR & 12.06 & 35.73 & 48.32 & 63.89\\
+\rowcolor{RetBg!28}
+IR+Raman & 52.90 & 81.91 & 88.24 & 93.34\\
+\rowcolor{RetBg!55}
+IR+Raman all-pairs & 62.59 & 85.68 & 90.53 & 94.44\\
+\PaperGroup{5}{KnwBg}{With mass}
+\rowcolor{KnwBg!55}
+IR & 24.16 & 55.62 & 69.15 & 82.87\\
+\rowcolor{KnwBg!28}
+IR+Raman all-pairs & 81.67 & 95.79 & 97.66 & 98.86\\
+\bottomrule
+\end{tabularx}
+\arrayrulecolor{black}
+\PaperNote{Exact retrieval (\%) on the native 12,741-molecule test pool. Modalities and mass conditioning follow the original protocol.}
+\end{table}
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\fontsize{7.5}{9}\selectfont}
+\caption{Corrected Vib2Mol native generation results}
+\label{tab:native_generation}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Data / mode}} & \PaperHead{F} & \PaperHead{Greedy} & \PaperHead{B@1} & \PaperHead{B@10} & \PaperHead{R@1}\\[1pt]
+\midrule
+\PaperGroup{6}{RetBg}{QM9S}
+\rowcolor{RetBg!55}
+QM9S I & Yes & 82.006 & 83.215 & 91.265 & 86.789\\
+\rowcolor{RetBg!28}
+QM9S R & Yes & 87.275 & 88.037 & 93.922 & 90.656\\
+\rowcolor{RetBg!55}
+QM9S R & No & 84.417 & 85.603 & 93.530 & 89.016\\
+\rowcolor{RetBg!28}
+QM9S I+R & Yes & 92.320 & 92.983 & 96.980 & --\\
+\PaperGroup{6}{DirBg}{VB-Mols}
+\rowcolor{DirBg!55}
+VB-Mols I & Yes & 78.278 & 79.649 & 88.371 & 83.692\\
+\rowcolor{DirBg!28}
+VB-Mols R & Yes & 81.930 & 82.462 & 90.998 & 86.726\\
+\rowcolor{DirBg!55}
+VB-Mols I+R & Yes & 85.550 & 86.569 & 93.058 & 89.244\\
+\bottomrule
+\end{tabularx}
+\arrayrulecolor{black}
+\PaperNote{Accuracy in \%; beam size ten. I/R: IR/Raman; F: formula conditioning; B: beam; R@1: reranked top-1. The missing QM9S joint-modality reranker is not scored as zero.}
+\end{table}
+The generation tables use the corrected formula-enabled runs, superseding the first attempts that omitted the formula flag. Native multimodal results do not measure Raman-only transfer. The historical toy adapter checks served as interface diagnostics and are excluded from performance comparisons.

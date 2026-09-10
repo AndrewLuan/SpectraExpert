@@ -1,0 +1,10 @@
+{
+  "query_index": 179,
+  "model": "gpt-5",
+  "started_at": 1788964310.811896,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2JYyWytV003v94GorMmBjdZjw\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 10\\nCONFIDENCE: 0.66\\nEXPLANATION: The spectrum shows a strong benzene ring breathing band at ~998 cm⁻¹ and paired ring stretching bands at 1602/1588 cm⁻¹, consistent with a para-disubstituted aromatic ring rather than a monosubstituted one (the 797/767 cm⁻¹ pair matches typical para-ring out-of-plane patterns better than the ~700 cm⁻¹ monosubstituted signature). Candidate 10 is para-chloro substituted and contains a peroxide (O–O) group: the band at 923 cm⁻¹ fits an O–O stretch, and multiple C–O stretches appear around 1028/1079/1116 cm⁻¹ as expected for RO–O–R linkages. The aliphatic C–H stretches at 2880/2938/2981 cm⁻¹ and deformation bands near 1457/1302 cm⁻¹ match the alkyl chain. Absence of any OH/NH stretch supports a peroxide rather than an alcohol/amine. Weak bands at 615/594 cm⁻¹ are also compatible with C–Cl related modes. Overall, candidate 10 best matches the para-disubstituted aryl-peroxide features in the Raman data.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":6057,\"completion_tokens\":5088,\"total_tokens\":11145,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4800},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 61.24459529199521,
+  "error": null
+}

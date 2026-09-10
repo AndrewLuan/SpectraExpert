@@ -1,0 +1,21 @@
+{
+  "query_index": 51,
+  "content": "SELECTED_INDEX: 9\nCONFIDENCE: 0.76\nEXPLANATION: The spectrum shows a clear aldehyde signature: a strong C=O near 1727 cm⁻¹ and the characteristic aldehydic C–H Fermi resonance doublet at ~2719 and ~2795 cm⁻¹. The intense band at 767 cm⁻¹ is consistent with the aldehyde CH wagging mode. The CH-stretch cluster (2879–2972 cm⁻¹) and CH₃/CH₂ deformation at 1454 cm⁻¹ fit an aliphatic keto‑aldehyde. Candidates 4 and 10 (α-dicarbonyls) would more likely produce split/shifted carbonyl bands or extra CH₃ features (e.g., stronger ~1375 cm⁻¹) not observed. Candidate 9 (CCC(=O)CC=O) best matches the aldehyde plus ketone pattern without extra functionalities.",
+  "usage": {
+    "prompt_tokens": 5399,
+    "completion_tokens": 4694,
+    "total_tokens": 10093,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4480
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3N07NHIpPdh3TMUP7FqpNkmWA",
+  "last_attempt_file": "gpt5/attempts/0051_1788964310757642000.json"
+}

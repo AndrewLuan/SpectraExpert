@@ -1,0 +1,21 @@
+{
+  "query_index": 158,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.74\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2945/2840 cm⁻¹ (GFQ-003) and CH₃/CH₂ deformations at 1458 and 1370 cm⁻¹. A distinct band at 3330 cm⁻¹ indicates an O–H stretch (GFQ-001), and two strong bands at 1100 and 1133 cm⁻¹ are consistent with C–O stretches of alcohols. Nitro signatures are present: a νs(NO₂) near 1370 cm⁻¹ and a δ(NO₂) wag around 814 cm⁻¹ (GFQ-022). The absence of an aromatic ~1600 cm⁻¹ band supports an aliphatic system. Among the candidates, only 10 (a nitro diol) simultaneously accounts for OH, NO₂, and strong aliphatic features, matching the observed bands best.",
+  "usage": {
+    "prompt_tokens": 5030,
+    "completion_tokens": 5280,
+    "total_tokens": 10310,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5056
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3QnhdyfFclPpx1Ho5c7n5ml1e",
+  "last_attempt_file": "gpt5/attempts/0158_1788964310802945000.json"
+}

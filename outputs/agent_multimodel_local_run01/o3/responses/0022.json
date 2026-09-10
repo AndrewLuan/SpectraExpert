@@ -1,0 +1,21 @@
+{
+  "query_index": 22,
+  "content": "SELECTED_INDEX: 3\nCONFIDENCE: 0.46\nEXPLANATION: The spectrum is characteristic of a monosubstituted aromatic ketone.  \n• Very strong ring-breathing band of a phenyl group at 1005 cm⁻¹ and companion band at 1033 cm⁻¹ match the typical 1000–1030 cm⁻¹ doublet of monosubstituted benzene rings.  \n• Aromatic C=C stretches appear at 1588, 1606 and 1630 cm⁻¹; para- or mono-substituted phenyl rings commonly give intense lines near 1600 cm⁻¹.  \n• A conjugated C=O stretch is observed at 1681 cm⁻¹, appropriate for an aryl ketone.  \n• CH₃ deformation at 1394 cm⁻¹ and twisting/wagging near 1256–1206 cm⁻¹ indicate a methyl group attached to the carbonyl carbon (acetyl group).  \n• C–H stretches at 3065 cm⁻¹ (aromatic) and 2929 cm⁻¹ (aliphatic/methyl) are present.  \nAmong the candidates, molecule 3 (Cc1ccccc1C=O, acetophenone) uniquely contains a phenyl ring with a single acetyl (–COCH₃) substituent, providing both the required aromatic system and a conjugated carbonyl with a methyl group. Other candidates either lack the phenyl ring, the methyl ketone, or both, making them less consistent with the observed peak pattern.",
+  "usage": {
+    "prompt_tokens": 5337,
+    "completion_tokens": 2606,
+    "total_tokens": 7943,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2240
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBxuVuP4twzpoFwRQYTweGdaRm3C",
+  "last_attempt_file": "o3/attempts/0022_1788957912192352000.json"
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 195,
+  "content": "SELECTED_INDEX: 8\nCONFIDENCE: 0.68\nEXPLANATION: The spectrum shows a classic para-disubstituted benzene pattern: an intense ring-breathing band near 1000 cm⁻¹ (1008) and a strong p-CH out-of-plane bend near 850 cm⁻¹ (851). Aromatic bands at ~1600 cm⁻¹ (1599) and an aromatic C–H stretch near 3082 cm⁻¹ are present (consistent with GFQ-003 for C–H stretching and general FRQ-001 bond-order placement of aromatic C=C near 1600). A conjugated carbonyl is indicated by the broad, intense band at 1647 cm⁻¹ (ketone C=O lowered by conjugation). The presence of fluorine is supported by strong bands in the 1000–1150 cm⁻¹ region (1008, 1075, 1150) characteristic of aryl C–F modes. Lack of N–H stretches (~3300 cm⁻¹) disfavors amide/urea candidates, and the carbonyl frequency is lower than typical benzoic acids. These features best match para-fluoroacetophenone (candidate 8).",
+  "usage": {
+    "prompt_tokens": 5398,
+    "completion_tokens": 5010,
+    "total_tokens": 10408,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4736
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2RS8krUgCXW1B8GOUKSfuolN4",
+  "last_attempt_file": "gpt5/attempts/0195_1788964310818530000.json"
+}

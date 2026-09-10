@@ -1,0 +1,21 @@
+{
+  "query_index": 158,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.63\nEXPLANATION: The spectrum shows a clear OH/NH stretch (broad band at 3330 cm⁻¹), strong aliphatic C–H stretches (2840, 2945 cm⁻¹), a nitro-group symmetric stretch (1370 cm⁻¹), nitro wag/rock (814 cm⁻¹) and the C–N(NO₂) stretch (539 cm⁻¹). Peaks at 1100–1133 cm⁻¹ are consistent with C–O stretches of alcohols. Among the candidates, only molecule 10 (CCC(CO)(CO)[N+](=O)[O-]) simultaneously contains OH groups (explaining 3330 and 1100–1130 cm⁻¹) and a NO₂ group (explaining 1370, 814, 539 cm⁻¹) together with aliphatic chains (explaining the CH stretches). No other candidate has both OH and NO₂ functionalities.",
+  "usage": {
+    "prompt_tokens": 5030,
+    "completion_tokens": 1975,
+    "total_tokens": 7005,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 1728
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCICgGliOMyG15JnO8GVyYBQ5MZ2",
+  "last_attempt_file": "o3/attempts/0158_1788959172550185000.json"
+}

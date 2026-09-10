@@ -1,0 +1,21 @@
+{
+  "query_index": 85,
+  "content": "SELECTED_INDEX: 4\nCONFIDENCE: 0.75\nEXPLANATION: The strong band at 1786 cm⁻¹ is characteristic of an acyl chloride-type carbonyl and fits methyl chloroformate much better than ordinary esters (2, 6, 8) or other candidates lacking C=O; no nitrile band near ~2250 cm⁻¹ excludes 10. The very intense bands at 2972 and 2854 cm⁻¹ match aliphatic C–H stretches (GFQ-003). Multiple strong features in the 780–830 cm⁻¹ region (788, 821 cm⁻¹) are consistent with C–Cl stretching vibrations (cf. CCl₄ range in GFQ-046), supporting a –COCl group. The 1458 cm⁻¹ band is consistent with CH₃ deformation (GFQ-003), and bands at 1156 and 1214 cm⁻¹ align with C–O stretching of the chloroformate moiety. Overall, the high ν(C=O) and C–Cl region make 4 the best match.",
+  "usage": {
+    "prompt_tokens": 5133,
+    "completion_tokens": 5372,
+    "total_tokens": 10505,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5120
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2BlaizXeRDfPbrbmpAcF9Kgk1",
+  "last_attempt_file": "gpt5/attempts/0085_1788964310774230000.json"
+}

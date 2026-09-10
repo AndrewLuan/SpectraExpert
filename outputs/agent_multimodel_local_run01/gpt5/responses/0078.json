@@ -1,0 +1,21 @@
+{
+  "query_index": 78,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.64\nEXPLANATION: The spectrum shows a typical aliphatic C–H stretching envelope with strong bands at 2971, 2937 (broad, overlapping) and 2880 cm⁻¹, and a pronounced CH3/CH2 deformation at 1458 cm⁻¹ (GFQ-003). There is no O–H or N–H stretch, arguing against alcohols/ethers and secondary amines. Multiple bands in the 1000–1100 cm⁻¹ region (1003, 1023, 1070, 1087) are consistent with C–N/C–C skeletal and C–N stretching modes expected for a tertiary aliphatic amine like triethylamine; ethers would typically show a strong ~1120 cm⁻¹ band not observed. The 741 and 923 cm⁻¹ bands fit CH2/CH3 rocking/wagging modes of flexible aliphatic chains. Overall, the pattern best matches triethylamine (candidate 1).",
+  "usage": {
+    "prompt_tokens": 5190,
+    "completion_tokens": 3180,
+    "total_tokens": 8370,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2944
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByr7S5WgoG3RUUwARkaAc1kZJcs",
+  "last_attempt_file": "gpt5/attempts/0078_1788957966530550000.json"
+}

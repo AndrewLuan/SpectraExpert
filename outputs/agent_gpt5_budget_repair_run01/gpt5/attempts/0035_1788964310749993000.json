@@ -1,0 +1,10 @@
+{
+  "query_index": 35,
+  "model": "gpt-5",
+  "started_at": 1788964310.749995,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2MNwyYKL0QDk13TEm09eVcsRT\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.76\\nEXPLANATION: The spectrum shows a single carbonyl band at 1711 cm⁻¹, consistent with a ketone C=O and incompatible with imines (1,6), amides (3; would also show N–H near 3300 cm⁻¹), aldehydes (5,7,9,10; would show aldehydic C–H near 2720–2820 cm⁻¹), or an OH-bearing hydroxyketone (8; no O–H stretch observed). Strong aliphatic C–H stretches at 2870–2954 cm⁻¹ support a saturated aliphatic framework (GFQ-003). CH2 bending at 1454/1425 cm⁻¹ and multiple skeletal/ring modes at 1116, 1075, 1020, 994, 843, 754, and 657 cm⁻¹ are consistent with a cyclohexanone ring. Overall, cyclohexanone (2) best matches the observed Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5627,\"completion_tokens\":3636,\"total_tokens\":9263,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3392},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819172348-e0aef28f-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 58.77683266697568,
+  "error": null
+}

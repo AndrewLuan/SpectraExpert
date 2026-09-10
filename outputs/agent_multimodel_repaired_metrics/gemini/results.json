@@ -1,0 +1,5448 @@
+{
+  "summary": {
+    "n_queries": 200,
+    "api_errors": 0,
+    "strict": {
+      "valid_rate": 1.0,
+      "exact_match_rate": 0.165,
+      "group_match_rate": 0.165,
+      "tanimoto": {
+        "n": 200,
+        "mean": 0.29854363755322993,
+        "median": 0.16472868621349335
+      },
+      "legacy_ged_v1": {
+        "n": 200,
+        "mean": 8.57,
+        "median": 9.0
+      },
+      "chemical_ged_v2": {
+        "n": 192,
+        "mean": 5.46875,
+        "median": 5.5
+      }
+    },
+    "legacy": {
+      "valid_rate": 1.0,
+      "exact_match_rate": 0.165,
+      "group_match_rate": 0.165,
+      "tanimoto": {
+        "n": 200,
+        "mean": 0.29854363755322993,
+        "median": 0.16472868621349335
+      },
+      "legacy_ged_v1": {
+        "n": 200,
+        "mean": 8.57,
+        "median": 9.0
+      },
+      "chemical_ged_v2": {
+        "n": 192,
+        "mean": 5.46875,
+        "median": 5.5
+      }
+    }
+  },
+  "queries": [
+    {
+      "mol_id": 957,
+      "ground_truth_smiles": "ClCC#CCCl",
+      "group_hash": "b778fc0e8eb0b170d96b1ee19f2542e1",
+      "query_index": 0,
+      "api_error": null,
+      "strict_smiles": "CC(F)(F)P",
+      "legacy_smiles": "CC(F)(F)P",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad99cff1ddf0def615e5989ce3c1261d",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad99cff1ddf0def615e5989ce3c1261d",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 3706,
+      "ground_truth_smiles": "COC(C)(C)CC(C)=O",
+      "group_hash": "1d9cd226364a6b740ae6d176984cd0c5",
+      "query_index": 1,
+      "api_error": null,
+      "strict_smiles": "CC1CCC(=O)N1C",
+      "legacy_smiles": "CC1CCC(=O)N1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c31d796dbc4c7f9232fdaae2f541f74",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c31d796dbc4c7f9232fdaae2f541f74",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 5165,
+      "ground_truth_smiles": "CN(C)N",
+      "group_hash": "ea162b7270d3f2db91bcec5704674098",
+      "query_index": 2,
+      "api_error": null,
+      "strict_smiles": "CN(C)C(=N)N(C)C",
+      "legacy_smiles": "CN(C)C(=N)N(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ba8807c68d2d5a5b2e5a99083aa9d8bd",
+        "group_match": false,
+        "tanimoto": 0.23076923191547394,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ba8807c68d2d5a5b2e5a99083aa9d8bd",
+        "group_match": false,
+        "tanimoto": 0.23076923191547394,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 4892,
+      "ground_truth_smiles": "Cn1ccnc1S",
+      "group_hash": "ec116131a15e980a40d6819dc787fa0e",
+      "query_index": 3,
+      "api_error": null,
+      "strict_smiles": "Cc1ccc([N+](=O)[O-])[nH]1",
+      "legacy_smiles": "Cc1ccc([N+](=O)[O-])[nH]1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2ed3349cd460ec22c918e24a6785088f",
+        "group_match": false,
+        "tanimoto": 0.0833333358168602,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2ed3349cd460ec22c918e24a6785088f",
+        "group_match": false,
+        "tanimoto": 0.0833333358168602,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 3516,
+      "ground_truth_smiles": "CCC(C)C(C)C=O",
+      "group_hash": "5dea01a4e76a7732f7a6db0226695ed9",
+      "query_index": 4,
+      "api_error": null,
+      "strict_smiles": "CCCCCC=O",
+      "legacy_smiles": "CCCCCC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0e32da8dfcc85d2c3b05f922e95d0fd5",
+        "group_match": false,
+        "tanimoto": 0.23999999463558197,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0e32da8dfcc85d2c3b05f922e95d0fd5",
+        "group_match": false,
+        "tanimoto": 0.23999999463558197,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 9487,
+      "ground_truth_smiles": "CC(O)COCC(C)O",
+      "group_hash": "7a2c6f2951309ef72ce2650d2556c1ad",
+      "query_index": 5,
+      "api_error": null,
+      "strict_smiles": "CCOCCO",
+      "legacy_smiles": "CCOCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ee20c90791d362e515a84aae48b641cc",
+        "group_match": false,
+        "tanimoto": 0.22727273404598236,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ee20c90791d362e515a84aae48b641cc",
+        "group_match": false,
+        "tanimoto": 0.22727273404598236,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 9443,
+      "ground_truth_smiles": "CC(C)(C)c1ccccc1",
+      "group_hash": "b4ec33f4f20c485a00c8c203ef1bc8e2",
+      "query_index": 6,
+      "api_error": null,
+      "strict_smiles": "CC(C)(C)c1ccccc1",
+      "legacy_smiles": "CC(C)(C)c1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b4ec33f4f20c485a00c8c203ef1bc8e2",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b4ec33f4f20c485a00c8c203ef1bc8e2",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 1370,
+      "ground_truth_smiles": "OCCc1cccc(Cl)c1",
+      "group_hash": "7a43404bc11c5842d509ab34601cca2d",
+      "query_index": 7,
+      "api_error": null,
+      "strict_smiles": "CNCc1ccccc1",
+      "legacy_smiles": "CNCc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "50aa981259b1284db8abdabf31689ab7",
+        "group_match": false,
+        "tanimoto": 0.21875,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "50aa981259b1284db8abdabf31689ab7",
+        "group_match": false,
+        "tanimoto": 0.21875,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 4291,
+      "ground_truth_smiles": "CCC(CC)C(=O)O",
+      "group_hash": "8debdcab6d6cd1aff01f93f5d60675e9",
+      "query_index": 8,
+      "api_error": null,
+      "strict_smiles": "CC(C)CON=O",
+      "legacy_smiles": "CC(C)CON=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5d5460d0b7474aa0230328e3730d01e1",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5d5460d0b7474aa0230328e3730d01e1",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 7751,
+      "ground_truth_smiles": "CC1CC(=O)O1",
+      "group_hash": "202a77c07d3262991bebcfca7f6b19f6",
+      "query_index": 9,
+      "api_error": null,
+      "strict_smiles": "CC12CC3N1C3(C)C2=O",
+      "legacy_smiles": "CC12CC3N1C3(C)C2=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3c17d152e72d0a1077a535c0e2d1ba8e",
+        "group_match": false,
+        "tanimoto": 0.20000000298023224,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3c17d152e72d0a1077a535c0e2d1ba8e",
+        "group_match": false,
+        "tanimoto": 0.20000000298023224,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 1607,
+      "ground_truth_smiles": "CN(C)CCO",
+      "group_hash": "1ae34e566baeb0a2b83cae6db9938b76",
+      "query_index": 10,
+      "api_error": null,
+      "strict_smiles": "CCOCCO",
+      "legacy_smiles": "CCOCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ee20c90791d362e515a84aae48b641cc",
+        "group_match": false,
+        "tanimoto": 0.2380952388048172,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ee20c90791d362e515a84aae48b641cc",
+        "group_match": false,
+        "tanimoto": 0.2380952388048172,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 937,
+      "ground_truth_smiles": "COC(=O)c1ccccn1",
+      "group_hash": "f39a32b24ad28622ada6ea69ce277ed0",
+      "query_index": 11,
+      "api_error": null,
+      "strict_smiles": "COCSc1ccc(Cl)cc1",
+      "legacy_smiles": "COCSc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0122adec6a9212de3192e1d733d440fa",
+        "group_match": false,
+        "tanimoto": 0.15000000596046448,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0122adec6a9212de3192e1d733d440fa",
+        "group_match": false,
+        "tanimoto": 0.15000000596046448,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 8707,
+      "ground_truth_smiles": "CCc1ccc(C)cc1",
+      "group_hash": "a495264ff7def8dc5b0fa025af494153",
+      "query_index": 12,
+      "api_error": null,
+      "strict_smiles": "COc1ccc(O)cc1",
+      "legacy_smiles": "COc1ccc(O)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.14814814925193787,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.14814814925193787,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 7115,
+      "ground_truth_smiles": "O=Cc1ccc(Cl)cc1",
+      "group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+      "query_index": 13,
+      "api_error": null,
+      "strict_smiles": "O=Cc1ccc(Cl)cc1",
+      "legacy_smiles": "O=Cc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 7803,
+      "ground_truth_smiles": "COC(C)(C)OC",
+      "group_hash": "07b63bbb298918cdff4c6c2a90eab132",
+      "query_index": 14,
+      "api_error": null,
+      "strict_smiles": "COC(C)(C)OC",
+      "legacy_smiles": "COC(C)(C)OC",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "07b63bbb298918cdff4c6c2a90eab132",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "07b63bbb298918cdff4c6c2a90eab132",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 2232,
+      "ground_truth_smiles": "CC(Cl)(Cl)Cl",
+      "group_hash": "8224671831069af65605c6a2ae9f6e05",
+      "query_index": 15,
+      "api_error": null,
+      "strict_smiles": "CC(Cl)OP(Cl)Cl",
+      "legacy_smiles": "CC(Cl)OP(Cl)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "20f7a39eb8f95040d9e23d97df3f0596",
+        "group_match": false,
+        "tanimoto": 0.1111111119389534,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "20f7a39eb8f95040d9e23d97df3f0596",
+        "group_match": false,
+        "tanimoto": 0.1111111119389534,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 6401,
+      "ground_truth_smiles": "CC(Cl)COc1ccccc1",
+      "group_hash": "875a46943e25baf89a917851c3267f0b",
+      "query_index": 16,
+      "api_error": null,
+      "strict_smiles": "ClCCOc1ccccc1",
+      "legacy_smiles": "ClCCOc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": false,
+        "tanimoto": 0.4642857015132904,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": false,
+        "tanimoto": 0.4642857015132904,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 3367,
+      "ground_truth_smiles": "N#Cc1ccc(F)cc1",
+      "group_hash": "7457839cdd5062e73ff3e357f43d4d94",
+      "query_index": 17,
+      "api_error": null,
+      "strict_smiles": "N#Cc1ccc(F)cc1",
+      "legacy_smiles": "N#Cc1ccc(F)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "7457839cdd5062e73ff3e357f43d4d94",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "7457839cdd5062e73ff3e357f43d4d94",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 432,
+      "ground_truth_smiles": "CN1CCN(C)C1=O",
+      "group_hash": "5fab01161970c11d831f0f8e3bb8ea3f",
+      "query_index": 18,
+      "api_error": null,
+      "strict_smiles": "CN(C)[Si](C)(F)F",
+      "legacy_smiles": "CN(C)[Si](C)(F)F",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "69e0024729903ef78b76573ad77bbcf4",
+        "group_match": false,
+        "tanimoto": 0.04545454680919647,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "69e0024729903ef78b76573ad77bbcf4",
+        "group_match": false,
+        "tanimoto": 0.04545454680919647,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 7333,
+      "ground_truth_smiles": "ClCc1ccc(Cl)cc1",
+      "group_hash": "f434a47edec42af199c7ff4f22c5548e",
+      "query_index": 19,
+      "api_error": null,
+      "strict_smiles": "ClCOc1ccc(Br)cc1",
+      "legacy_smiles": "ClCOc1ccc(Br)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c382fa658f9d61782d7e1b706868c7ce",
+        "group_match": false,
+        "tanimoto": 0.2142857164144516,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c382fa658f9d61782d7e1b706868c7ce",
+        "group_match": false,
+        "tanimoto": 0.2142857164144516,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 7519,
+      "ground_truth_smiles": "CCN(CC)CCBr",
+      "group_hash": "5c8c63f8ffd5c4fb0bf8bbe52f02f1f6",
+      "query_index": 20,
+      "api_error": null,
+      "strict_smiles": "FCC1COS1",
+      "legacy_smiles": "FCC1COS1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0b33c91065c25cb91be1c8be52bda501",
+        "group_match": false,
+        "tanimoto": 0.0357142873108387,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0b33c91065c25cb91be1c8be52bda501",
+        "group_match": false,
+        "tanimoto": 0.0357142873108387,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 1143,
+      "ground_truth_smiles": "NN1CCCCC1",
+      "group_hash": "fcbbe8a71e922a344e087517d527f6dd",
+      "query_index": 21,
+      "api_error": null,
+      "strict_smiles": "CCCCCCOP(=O)(O)ON=C(N)N",
+      "legacy_smiles": "CCCCCCOP(=O)(O)ON=C(N)N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "13a6740c8ef1d785d9756965fcf63d09",
+        "group_match": false,
+        "tanimoto": 0.02500000037252903,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "13a6740c8ef1d785d9756965fcf63d09",
+        "group_match": false,
+        "tanimoto": 0.02500000037252903,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 5722,
+      "ground_truth_smiles": "O=CCCc1ccccc1",
+      "group_hash": "d95fc4912275d36247ca42d7124c273c",
+      "query_index": 22,
+      "api_error": null,
+      "strict_smiles": "Cc1ccccc1C=O",
+      "legacy_smiles": "Cc1ccccc1C=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3be3e7f3329f19bfbbe6d5e10ebbe0bd",
+        "group_match": false,
+        "tanimoto": 0.27586206793785095,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3be3e7f3329f19bfbbe6d5e10ebbe0bd",
+        "group_match": false,
+        "tanimoto": 0.27586206793785095,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 2822,
+      "ground_truth_smiles": "O=C1CCC(=O)N1Cl",
+      "group_hash": "ba5d7818e9c8d444c12703e3e1a5625c",
+      "query_index": 23,
+      "api_error": null,
+      "strict_smiles": "O=CNC(F)(F)Cl",
+      "legacy_smiles": "O=CNC(F)(F)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4c9f9da6a6dd3cd18bdf40dfd4ebe166",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4c9f9da6a6dd3cd18bdf40dfd4ebe166",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 8170,
+      "ground_truth_smiles": "Cc1ccc(C#N)cc1",
+      "group_hash": "933892c2e7b7432c14b46b205cc4510e",
+      "query_index": 24,
+      "api_error": null,
+      "strict_smiles": "Cc1ccc(C#N)cc1",
+      "legacy_smiles": "Cc1ccc(C#N)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "933892c2e7b7432c14b46b205cc4510e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "933892c2e7b7432c14b46b205cc4510e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 5226,
+      "ground_truth_smiles": "CCOC(=O)CC#N",
+      "group_hash": "3d3795e383ce475523570d815f431582",
+      "query_index": 25,
+      "api_error": null,
+      "strict_smiles": "CCOC(=O)CC#N",
+      "legacy_smiles": "CCOC(=O)CC#N",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "3d3795e383ce475523570d815f431582",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "3d3795e383ce475523570d815f431582",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 3938,
+      "ground_truth_smiles": "CCCCOCCC#N",
+      "group_hash": "8584a9b78b5039fc34e9ca21eb12386d",
+      "query_index": 26,
+      "api_error": null,
+      "strict_smiles": "CCCCOCCC#N",
+      "legacy_smiles": "CCCCOCCC#N",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "8584a9b78b5039fc34e9ca21eb12386d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "8584a9b78b5039fc34e9ca21eb12386d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 6152,
+      "ground_truth_smiles": "O=C=Nc1cccc(Br)c1",
+      "group_hash": "2b4a00bab4c4214d3f4788b616861a45",
+      "query_index": 27,
+      "api_error": null,
+      "strict_smiles": "NNC(=O)c1ccncc1",
+      "legacy_smiles": "NNC(=O)c1ccncc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3e62468ab215a6c385693014a34f0fd5",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3e62468ab215a6c385693014a34f0fd5",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 4000,
+      "ground_truth_smiles": "CC(C)=NO",
+      "group_hash": "8c151d9e87ef352c9aeeccbd4ff666cd",
+      "query_index": 28,
+      "api_error": null,
+      "strict_smiles": "CN(C)C(=O)Cl",
+      "legacy_smiles": "CN(C)C(=O)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7ec8a55991bc7827ce936c162c6de085",
+        "group_match": false,
+        "tanimoto": 0.11764705926179886,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7ec8a55991bc7827ce936c162c6de085",
+        "group_match": false,
+        "tanimoto": 0.11764705926179886,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 5414,
+      "ground_truth_smiles": "C#CC(C)(O)C(C)C",
+      "group_hash": "161fbce6ff61eba597114f5bba29a01c",
+      "query_index": 29,
+      "api_error": null,
+      "strict_smiles": "[2H][Si]([2H])(Br)CC",
+      "legacy_smiles": "[2H][Si]([2H])(Br)CC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d5ede5bba1ce5a3ca1d9dd151a4995b1",
+        "group_match": false,
+        "tanimoto": 0.0416666679084301,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d5ede5bba1ce5a3ca1d9dd151a4995b1",
+        "group_match": false,
+        "tanimoto": 0.0416666679084301,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 3675,
+      "ground_truth_smiles": "NNc1nncc2ccccc12",
+      "group_hash": "496d592ae9108b3907f8c912551c4be6",
+      "query_index": 30,
+      "api_error": null,
+      "strict_smiles": "Nc1cccc(=O)cn1",
+      "legacy_smiles": "Nc1cccc(=O)cn1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8b05a1548acdf052e2fc1edbd0d08f07",
+        "group_match": false,
+        "tanimoto": 0.18421052396297455,
+        "legacy_ged_v1": 20.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8b05a1548acdf052e2fc1edbd0d08f07",
+        "group_match": false,
+        "tanimoto": 0.18421052396297455,
+        "legacy_ged_v1": 20.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 1897,
+      "ground_truth_smiles": "Cc1ccc(N)cc1",
+      "group_hash": "d6e07ebd3fe0bb63f264cd37020f5555",
+      "query_index": 31,
+      "api_error": null,
+      "strict_smiles": "ClC(Cl)=C1CC=CS1",
+      "legacy_smiles": "ClC(Cl)=C1CC=CS1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "01f148ef9b581af2fadbfd67e1bd44e1",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 11.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "01f148ef9b581af2fadbfd67e1bd44e1",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 11.0
+      }
+    },
+    {
+      "mol_id": 7725,
+      "ground_truth_smiles": "CC(=O)OC(C)=O",
+      "group_hash": "b11915cad02f35019f3cbdaf528536d4",
+      "query_index": 32,
+      "api_error": null,
+      "strict_smiles": "CC(=O)[C@](F)(Cl)Br",
+      "legacy_smiles": "CC(=O)[C@](F)(Cl)Br",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a9b66931d31e2ab3765fc3eff14b6f05",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a9b66931d31e2ab3765fc3eff14b6f05",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 8531,
+      "ground_truth_smiles": "CC(C)=CC(=O)O",
+      "group_hash": "826b8cb9d696caa859116f4c14e0d75f",
+      "query_index": 33,
+      "api_error": null,
+      "strict_smiles": "COC(=O)/C(C)=C/CO",
+      "legacy_smiles": "COC(=O)/C(C)=C/CO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2251a32496287e61cf23534917800e17",
+        "group_match": false,
+        "tanimoto": 0.2222222238779068,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2251a32496287e61cf23534917800e17",
+        "group_match": false,
+        "tanimoto": 0.2222222238779068,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 488,
+      "ground_truth_smiles": "NC(=O)c1ccc(F)cc1",
+      "group_hash": "3b17e928a17eb9c293bfc6a867163da0",
+      "query_index": 34,
+      "api_error": null,
+      "strict_smiles": "Nc1cnoc1Cl",
+      "legacy_smiles": "Nc1cnoc1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "18aec3f96b7660cce644ca0d732d7592",
+        "group_match": false,
+        "tanimoto": 0.125,
+        "legacy_ged_v1": 18.0,
+        "chemical_ged_v2": 12.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "18aec3f96b7660cce644ca0d732d7592",
+        "group_match": false,
+        "tanimoto": 0.125,
+        "legacy_ged_v1": 18.0,
+        "chemical_ged_v2": 12.0
+      }
+    },
+    {
+      "mol_id": 7242,
+      "ground_truth_smiles": "O=C1CCCCC1",
+      "group_hash": "01277677cf1515ea1b4c8c66017fec1b",
+      "query_index": 35,
+      "api_error": null,
+      "strict_smiles": "O=C1CCCCC1",
+      "legacy_smiles": "O=C1CCCCC1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "01277677cf1515ea1b4c8c66017fec1b",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "01277677cf1515ea1b4c8c66017fec1b",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 6502,
+      "ground_truth_smiles": "NCC(=O)c1ccccc1",
+      "group_hash": "f615e630139f0ebfee563cbd33ee0dce",
+      "query_index": 36,
+      "api_error": null,
+      "strict_smiles": "O=C(c1ccccc1)C(O)c1ccccc1",
+      "legacy_smiles": "O=C(c1ccccc1)C(O)c1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5ea244f52f472fa9bc7a23fd5e344fe1",
+        "group_match": false,
+        "tanimoto": 0.37931033968925476,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5ea244f52f472fa9bc7a23fd5e344fe1",
+        "group_match": false,
+        "tanimoto": 0.37931033968925476,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 571,
+      "ground_truth_smiles": "O=C(O)c1cccc(Br)c1",
+      "group_hash": "9bd08bdd923048cf5bd0d15e5780e5ff",
+      "query_index": 37,
+      "api_error": null,
+      "strict_smiles": "C=C[C@H](Cl)c1ccccc1",
+      "legacy_smiles": "C=C[C@H](Cl)c1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6a725921cb3c1bd7550414d85ecc6e4f",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6a725921cb3c1bd7550414d85ecc6e4f",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 3723,
+      "ground_truth_smiles": "COCC=O",
+      "group_hash": "8ee3d72a23e69e10df7b1bee622c1138",
+      "query_index": 38,
+      "api_error": null,
+      "strict_smiles": "CNCC1CCCO1",
+      "legacy_smiles": "CNCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "16bfcc773e0c120eb55c2df99fdbdb06",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "16bfcc773e0c120eb55c2df99fdbdb06",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 8164,
+      "ground_truth_smiles": "CCCC(O)C(C)C",
+      "group_hash": "622c255cf5ed1b7359154f6b3adc5649",
+      "query_index": 39,
+      "api_error": null,
+      "strict_smiles": "CC1CC(C)C(C)(C)C1",
+      "legacy_smiles": "CC1CC(C)C(C)(C)C1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9f154ee2f9079eb202eabd9e94614d1e",
+        "group_match": false,
+        "tanimoto": 0.03333333507180214,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9f154ee2f9079eb202eabd9e94614d1e",
+        "group_match": false,
+        "tanimoto": 0.03333333507180214,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 7332,
+      "ground_truth_smiles": "C=CCOC=O",
+      "group_hash": "ef6d9f57935ac2bdfb3ce4e45533c94e",
+      "query_index": 40,
+      "api_error": null,
+      "strict_smiles": "C=CCOC=O",
+      "legacy_smiles": "C=CCOC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ef6d9f57935ac2bdfb3ce4e45533c94e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ef6d9f57935ac2bdfb3ce4e45533c94e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 3149,
+      "ground_truth_smiles": "C=C(C)C#N",
+      "group_hash": "8e6ae461f450b3c012d6bc0549dc14cd",
+      "query_index": 41,
+      "api_error": null,
+      "strict_smiles": "C=C(C)C#N",
+      "legacy_smiles": "C=C(C)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "8e6ae461f450b3c012d6bc0549dc14cd",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "8e6ae461f450b3c012d6bc0549dc14cd",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 5127,
+      "ground_truth_smiles": "Oc1c(Cl)cc(Cl)cc1Cl",
+      "group_hash": "40ecc6f02d9b6b15eca127d8597e0d7c",
+      "query_index": 42,
+      "api_error": null,
+      "strict_smiles": "Oc1cnc(F)c(F)n1",
+      "legacy_smiles": "Oc1cnc(F)c(F)n1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "48622b4254bea2c0174cc2a61198dfc9",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "48622b4254bea2c0174cc2a61198dfc9",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 4154,
+      "ground_truth_smiles": "CC1CN1",
+      "group_hash": "78ca07abe2f698498c6c7f9848c6d747",
+      "query_index": 43,
+      "api_error": null,
+      "strict_smiles": "CC1(C)C2OCC21O",
+      "legacy_smiles": "CC1(C)C2OCC21O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9a2f46e8ff6ecc8333a491313b962c1f",
+        "group_match": false,
+        "tanimoto": 0.1304347813129425,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9a2f46e8ff6ecc8333a491313b962c1f",
+        "group_match": false,
+        "tanimoto": 0.1304347813129425,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 6058,
+      "ground_truth_smiles": "CCCC(=O)CC",
+      "group_hash": "b1de7e06a16ec9a351c274cb1a610af7",
+      "query_index": 44,
+      "api_error": null,
+      "strict_smiles": "CCCCCCOC=O",
+      "legacy_smiles": "CCCCCCOC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c9564c8635d74d2f00cfa667259869f8",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c9564c8635d74d2f00cfa667259869f8",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 8188,
+      "ground_truth_smiles": "N#CCC(=O)O",
+      "group_hash": "cdb830d1406dd066e4c926ff10aaa3c1",
+      "query_index": 45,
+      "api_error": null,
+      "strict_smiles": "C#CC1=NC(C)C(=O)N1",
+      "legacy_smiles": "C#CC1=NC(C)C(=O)N1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4a25fc0435a5b388ef2ba628bbb41c65",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4a25fc0435a5b388ef2ba628bbb41c65",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 3935,
+      "ground_truth_smiles": "CC1(O)CCCCC1",
+      "group_hash": "c06db830dbd36862b687c4293b038c26",
+      "query_index": 46,
+      "api_error": null,
+      "strict_smiles": "CC1CCCCOC1C",
+      "legacy_smiles": "CC1CCCCOC1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "428e411e87cb59bfaf26dd0558bf8026",
+        "group_match": false,
+        "tanimoto": 0.1071428582072258,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "428e411e87cb59bfaf26dd0558bf8026",
+        "group_match": false,
+        "tanimoto": 0.1071428582072258,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 235,
+      "ground_truth_smiles": "CCOC(=O)CN",
+      "group_hash": "69fa4bd246967e414bd0d81e74482c9d",
+      "query_index": 47,
+      "api_error": null,
+      "strict_smiles": "CCOC(=O)C(CO)[N+](=O)[O-]",
+      "legacy_smiles": "CCOC(=O)C(CO)[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6ebd11f5d8aaaf12826593dc2c79e76",
+        "group_match": false,
+        "tanimoto": 0.32258063554763794,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6ebd11f5d8aaaf12826593dc2c79e76",
+        "group_match": false,
+        "tanimoto": 0.32258063554763794,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 1981,
+      "ground_truth_smiles": "CC(C)(C)NN",
+      "group_hash": "a45a108a47321c01dbb8a8fb042fb2ea",
+      "query_index": 48,
+      "api_error": null,
+      "strict_smiles": "CC1(O)OC1(Cl)Cl",
+      "legacy_smiles": "CC1(O)OC1(Cl)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b446edd99d1de79bff7516bb1f559fed",
+        "group_match": false,
+        "tanimoto": 0.05000000074505806,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b446edd99d1de79bff7516bb1f559fed",
+        "group_match": false,
+        "tanimoto": 0.05000000074505806,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 3425,
+      "ground_truth_smiles": "N#Cc1ccc(N)cc1",
+      "group_hash": "f0f41f1be4ce0098027d048da2a3f917",
+      "query_index": 49,
+      "api_error": null,
+      "strict_smiles": "N#Cc1cc(S)cc(Cl)c1",
+      "legacy_smiles": "N#Cc1cc(S)cc(Cl)c1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "45c4db5d25c1fe0c8f2248f278dec055",
+        "group_match": false,
+        "tanimoto": 0.27586206793785095,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "45c4db5d25c1fe0c8f2248f278dec055",
+        "group_match": false,
+        "tanimoto": 0.27586206793785095,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 1092,
+      "ground_truth_smiles": "CC(C)=CCO",
+      "group_hash": "e10000cd53283994db51a1b525e84eb6",
+      "query_index": 50,
+      "api_error": null,
+      "strict_smiles": "C=C1CCCCN1C(=O)OCCOCC",
+      "legacy_smiles": "C=C1CCCCN1C(=O)OCCOCC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a2e7a35ef227b8a019172c0f293435e4",
+        "group_match": false,
+        "tanimoto": 0.06976744532585144,
+        "legacy_ged_v1": 24.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a2e7a35ef227b8a019172c0f293435e4",
+        "group_match": false,
+        "tanimoto": 0.06976744532585144,
+        "legacy_ged_v1": 24.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 5405,
+      "ground_truth_smiles": "CC(C)(C)C=O",
+      "group_hash": "c2f96e5ced3cb8fd93eacde61b4eb4a2",
+      "query_index": 51,
+      "api_error": null,
+      "strict_smiles": "CC(C)(C)CC(=O)C=O",
+      "legacy_smiles": "CC(C)(C)CC(=O)C=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0971ff35f3daf4fc5fa60bb9d2e60be8",
+        "group_match": false,
+        "tanimoto": 0.30000001192092896,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0971ff35f3daf4fc5fa60bb9d2e60be8",
+        "group_match": false,
+        "tanimoto": 0.30000001192092896,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 4564,
+      "ground_truth_smiles": "CC(=O)N(C)C",
+      "group_hash": "79a2b4b2c339b4bc2cd65b544a0b341c",
+      "query_index": 52,
+      "api_error": null,
+      "strict_smiles": "CC(=O)N(C)C",
+      "legacy_smiles": "CC(=O)N(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "79a2b4b2c339b4bc2cd65b544a0b341c",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "79a2b4b2c339b4bc2cd65b544a0b341c",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 7325,
+      "ground_truth_smiles": "CC(C)=CC=C(C)C",
+      "group_hash": "15a3f5b8e26213e8744bc4d607a721fd",
+      "query_index": 53,
+      "api_error": null,
+      "strict_smiles": "C=C(C)C(=O)OCC",
+      "legacy_smiles": "C=C(C)C(=O)OCC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f8f10432e895151be4c2f005e1008380",
+        "group_match": false,
+        "tanimoto": 0.1304347813129425,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f8f10432e895151be4c2f005e1008380",
+        "group_match": false,
+        "tanimoto": 0.1304347813129425,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 8144,
+      "ground_truth_smiles": "CC(C)OC(=N)O",
+      "group_hash": "60ef0477cc4878253b247c286b64ff5d",
+      "query_index": 54,
+      "api_error": null,
+      "strict_smiles": "CC(C)OC(=O)N[N+](=O)[O-]",
+      "legacy_smiles": "CC(C)OC(=O)N[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cbe072e530709dee1d0b78f27637cadb",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cbe072e530709dee1d0b78f27637cadb",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 9366,
+      "ground_truth_smiles": "c1ncncn1",
+      "group_hash": "3267cf92d34bba35fce1f1151c00ed84",
+      "query_index": 55,
+      "api_error": null,
+      "strict_smiles": "O=Cc1cc([N+](=O)[O-])cc(F)c1O",
+      "legacy_smiles": "O=Cc1cc([N+](=O)[O-])cc(F)c1O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "49916f450b20636fd9393a692416cc86",
+        "group_match": false,
+        "tanimoto": 0.03030303120613098,
+        "legacy_ged_v1": 23.0,
+        "chemical_ged_v2": 17.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "49916f450b20636fd9393a692416cc86",
+        "group_match": false,
+        "tanimoto": 0.03030303120613098,
+        "legacy_ged_v1": 23.0,
+        "chemical_ged_v2": 17.0
+      }
+    },
+    {
+      "mol_id": 3855,
+      "ground_truth_smiles": "CC(=O)C1CCCCC1",
+      "group_hash": "78ffca152ccb8bd3b1ad858fdd2f22a0",
+      "query_index": 56,
+      "api_error": null,
+      "strict_smiles": "O=C1CCCCC1",
+      "legacy_smiles": "O=C1CCCCC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "01277677cf1515ea1b4c8c66017fec1b",
+        "group_match": false,
+        "tanimoto": 0.17391304671764374,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "01277677cf1515ea1b4c8c66017fec1b",
+        "group_match": false,
+        "tanimoto": 0.17391304671764374,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 9959,
+      "ground_truth_smiles": "COc1cccc(O)c1O",
+      "group_hash": "f848a1da7371804be57215e33b5efd78",
+      "query_index": 57,
+      "api_error": null,
+      "strict_smiles": "NCC(=O)c1ccccc1",
+      "legacy_smiles": "NCC(=O)c1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f615e630139f0ebfee563cbd33ee0dce",
+        "group_match": false,
+        "tanimoto": 0.1515151560306549,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f615e630139f0ebfee563cbd33ee0dce",
+        "group_match": false,
+        "tanimoto": 0.1515151560306549,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 8187,
+      "ground_truth_smiles": "NC1CCCCCCC1",
+      "group_hash": "ddc64f21699d403d346786180da0b83b",
+      "query_index": 58,
+      "api_error": null,
+      "strict_smiles": "CC1(O)CCCCC1",
+      "legacy_smiles": "CC1(O)CCCCC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c06db830dbd36862b687c4293b038c26",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c06db830dbd36862b687c4293b038c26",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 4554,
+      "ground_truth_smiles": "NCC1CCCCC1",
+      "group_hash": "e8d6a8d8408696454e48073994172623",
+      "query_index": 59,
+      "api_error": null,
+      "strict_smiles": "CC(CCCO)C(N)=O",
+      "legacy_smiles": "CC(CCCO)C(N)=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c104ebfd114d623037457e2dc00bffb",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c104ebfd114d623037457e2dc00bffb",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 7315,
+      "ground_truth_smiles": "CC(C)(C)N",
+      "group_hash": "4d3a518d04700e4dd1169f2b5fb2b33d",
+      "query_index": 60,
+      "api_error": null,
+      "strict_smiles": "CC(N)C(O)(C#N)C#N",
+      "legacy_smiles": "CC(N)C(O)(C#N)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3119c749cffd7deaa387ef57f540c489",
+        "group_match": false,
+        "tanimoto": 0.15000000596046448,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3119c749cffd7deaa387ef57f540c489",
+        "group_match": false,
+        "tanimoto": 0.15000000596046448,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 4844,
+      "ground_truth_smiles": "CCC(O)CCC(C)C",
+      "group_hash": "969afac8d58d713e9f920f40a74d671f",
+      "query_index": 61,
+      "api_error": null,
+      "strict_smiles": "OCC1CCCO1",
+      "legacy_smiles": "OCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 5351,
+      "ground_truth_smiles": "O=Cc1ccccc1",
+      "group_hash": "ba6ff3bb1e0874e76f7d0eed6255282d",
+      "query_index": 62,
+      "api_error": null,
+      "strict_smiles": "O=Cc1ccc(Cl)cc1",
+      "legacy_smiles": "O=Cc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": false,
+        "tanimoto": 0.5,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": false,
+        "tanimoto": 0.5,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 5055,
+      "ground_truth_smiles": "CC(C)C(Br)C(=O)O",
+      "group_hash": "ba8e94d16465d71dc0ce0ab7db57a25f",
+      "query_index": 63,
+      "api_error": null,
+      "strict_smiles": "CC12COC(=N)C1OC2",
+      "legacy_smiles": "CC12COC(=N)C1OC2",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd87633c744a46d8a27b0225124705cb",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd87633c744a46d8a27b0225124705cb",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 6400,
+      "ground_truth_smiles": "C#CC(C)(O)CC",
+      "group_hash": "9fa847ead6e6738fe06df4ebdd836f58",
+      "query_index": 64,
+      "api_error": null,
+      "strict_smiles": "CCPCC",
+      "legacy_smiles": "CCPCC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2fa1b3e462275d8c5f1c5e06f3987f0a",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2fa1b3e462275d8c5f1c5e06f3987f0a",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 6746,
+      "ground_truth_smiles": "CC1=CCCC1",
+      "group_hash": "72bc82249c27b2bc9eee4d5322bb0e6b",
+      "query_index": 65,
+      "api_error": null,
+      "strict_smiles": "CC(=O)N(C)C",
+      "legacy_smiles": "CC(=O)N(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "79a2b4b2c339b4bc2cd65b544a0b341c",
+        "group_match": false,
+        "tanimoto": 0.0416666679084301,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "79a2b4b2c339b4bc2cd65b544a0b341c",
+        "group_match": false,
+        "tanimoto": 0.0416666679084301,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5324,
+      "ground_truth_smiles": "NCCC(=O)O",
+      "group_hash": "93752924a2f7dda9532e1ea4e88ad13c",
+      "query_index": 66,
+      "api_error": null,
+      "strict_smiles": "CCC1(C)OC(=N)C1N",
+      "legacy_smiles": "CCC1(C)OC(=N)C1N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c5c2e0cd5bbd3386a3a2295c15c2870d",
+        "group_match": false,
+        "tanimoto": 0.06060606241226196,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c5c2e0cd5bbd3386a3a2295c15c2870d",
+        "group_match": false,
+        "tanimoto": 0.06060606241226196,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 8063,
+      "ground_truth_smiles": "CC(C)=CCl",
+      "group_hash": "9d2246cfd1ded23e623008439fb63d70",
+      "query_index": 67,
+      "api_error": null,
+      "strict_smiles": "C/C=C/C(=O)CC",
+      "legacy_smiles": "C/C=C/C(=O)CC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d90b1b7c12629ee5ed6755046e256d19",
+        "group_match": false,
+        "tanimoto": 0.13636364042758942,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d90b1b7c12629ee5ed6755046e256d19",
+        "group_match": false,
+        "tanimoto": 0.13636364042758942,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 9654,
+      "ground_truth_smiles": "CCOC(=O)C(C)(C)O",
+      "group_hash": "1f0ff8d868cab8e3f18455a095c97161",
+      "query_index": 68,
+      "api_error": null,
+      "strict_smiles": "CCC(=O)OC(C)C",
+      "legacy_smiles": "CCC(=O)OC(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "eae7ad59785dd489072bd724c79aec47",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "eae7ad59785dd489072bd724c79aec47",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 7885,
+      "ground_truth_smiles": "C=COCC(C)C",
+      "group_hash": "3c2de5ebb25f645675601854980347d7",
+      "query_index": 69,
+      "api_error": null,
+      "strict_smiles": "C=C(C)NC(=O)N1CCCC2(C1)N=N2",
+      "legacy_smiles": "C=C(C)NC(=O)N1CCCC2(C1)N=N2",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "30d2680dbeee0554e39ae0a335e7719a",
+        "group_match": false,
+        "tanimoto": 0.043478261679410934,
+        "legacy_ged_v1": 26.0,
+        "chemical_ged_v2": 18.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "30d2680dbeee0554e39ae0a335e7719a",
+        "group_match": false,
+        "tanimoto": 0.043478261679410934,
+        "legacy_ged_v1": 26.0,
+        "chemical_ged_v2": 18.0
+      }
+    },
+    {
+      "mol_id": 5348,
+      "ground_truth_smiles": "CCCC(=O)CCC",
+      "group_hash": "f459c7268aadacb0c81878defc4bab0f",
+      "query_index": 70,
+      "api_error": null,
+      "strict_smiles": "CCCCCCOC=O",
+      "legacy_smiles": "CCCCCCOC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c9564c8635d74d2f00cfa667259869f8",
+        "group_match": false,
+        "tanimoto": 0.19230769574642181,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c9564c8635d74d2f00cfa667259869f8",
+        "group_match": false,
+        "tanimoto": 0.19230769574642181,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 9894,
+      "ground_truth_smiles": "O=C1OC(=O)C(Cl)=C1Cl",
+      "group_hash": "cc9594cdb6a85e7c27f4b27a63fc3c3e",
+      "query_index": 71,
+      "api_error": null,
+      "strict_smiles": "O=C1OC(=O)C(Cl)=C1Cl",
+      "legacy_smiles": "O=C1OC(=O)C(Cl)=C1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "cc9594cdb6a85e7c27f4b27a63fc3c3e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "cc9594cdb6a85e7c27f4b27a63fc3c3e",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 3081,
+      "ground_truth_smiles": "CCCCCC=O",
+      "group_hash": "0e32da8dfcc85d2c3b05f922e95d0fd5",
+      "query_index": 72,
+      "api_error": null,
+      "strict_smiles": "CCCCOCCC=O",
+      "legacy_smiles": "CCCCOCCC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ea66775174ea6b3013f1f8e7b401d24c",
+        "group_match": false,
+        "tanimoto": 0.52173912525177,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ea66775174ea6b3013f1f8e7b401d24c",
+        "group_match": false,
+        "tanimoto": 0.52173912525177,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5905,
+      "ground_truth_smiles": "CC1=NCCN1",
+      "group_hash": "83a2ce4ebba6eada18643de6f2eacc4c",
+      "query_index": 73,
+      "api_error": null,
+      "strict_smiles": "CCN=CSC",
+      "legacy_smiles": "CCN=CSC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "396367de4e1366631a38f70cd8d5804b",
+        "group_match": false,
+        "tanimoto": 0.03333333507180214,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "396367de4e1366631a38f70cd8d5804b",
+        "group_match": false,
+        "tanimoto": 0.03333333507180214,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 1219,
+      "ground_truth_smiles": "COCCOC(C)=O",
+      "group_hash": "84816a356103077e3cc24c67af48453d",
+      "query_index": 74,
+      "api_error": null,
+      "strict_smiles": "COCCOC(C)=O",
+      "legacy_smiles": "COCCOC(C)=O",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "84816a356103077e3cc24c67af48453d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "84816a356103077e3cc24c67af48453d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 6404,
+      "ground_truth_smiles": "NCCN",
+      "group_hash": "1366306bbe4b465a84dfd314a2c4434f",
+      "query_index": 75,
+      "api_error": null,
+      "strict_smiles": "NCCCSCS(N)(=O)=O",
+      "legacy_smiles": "NCCCSCS(N)(=O)=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1cf1356e1198739afae203cf8260b8f4",
+        "group_match": false,
+        "tanimoto": 0.190476194024086,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 13.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1cf1356e1198739afae203cf8260b8f4",
+        "group_match": false,
+        "tanimoto": 0.190476194024086,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 13.0
+      }
+    },
+    {
+      "mol_id": 3004,
+      "ground_truth_smiles": "O=C1CCCCCCC1",
+      "group_hash": "3d13782bdc2914759ec5b9cb9b791faa",
+      "query_index": 76,
+      "api_error": null,
+      "strict_smiles": "CC(=O)C1CCCCC1",
+      "legacy_smiles": "CC(=O)C1CCCCC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "78ffca152ccb8bd3b1ad858fdd2f22a0",
+        "group_match": false,
+        "tanimoto": 0.17391304671764374,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "78ffca152ccb8bd3b1ad858fdd2f22a0",
+        "group_match": false,
+        "tanimoto": 0.17391304671764374,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 5628,
+      "ground_truth_smiles": "NNC(=O)c1ccc(O)cc1",
+      "group_hash": "98ba463436662c58e89a2fd86d7bf24e",
+      "query_index": 77,
+      "api_error": null,
+      "strict_smiles": "O=[N+]([O-])c1cc([SH](=O)=O)ccc1Cl",
+      "legacy_smiles": "O=[N+]([O-])c1cc([SH](=O)=O)ccc1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d15199d5a22a5283be54122dd9ec02f3",
+        "group_match": false,
+        "tanimoto": 0.095238097012043,
+        "legacy_ged_v1": 17.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d15199d5a22a5283be54122dd9ec02f3",
+        "group_match": false,
+        "tanimoto": 0.095238097012043,
+        "legacy_ged_v1": 17.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 7368,
+      "ground_truth_smiles": "CCN(CC)CC",
+      "group_hash": "b253d7b77a6779c63a5c48ebf56d7606",
+      "query_index": 78,
+      "api_error": null,
+      "strict_smiles": "CN1CCN(C)CC1",
+      "legacy_smiles": "CN1CCN(C)CC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d325a6a9f2e190da0c675e33c399434e",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d325a6a9f2e190da0c675e33c399434e",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5475,
+      "ground_truth_smiles": "CCCc1ccccc1",
+      "group_hash": "b379cea96e5981dbcc3b283102ce1c1b",
+      "query_index": 79,
+      "api_error": null,
+      "strict_smiles": "CCc1ccccc1",
+      "legacy_smiles": "CCc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.5789473652839661,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.5789473652839661,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 827,
+      "ground_truth_smiles": "CNc1ccccc1",
+      "group_hash": "7f2c5b47120647885f67c6d4cdcf2bc1",
+      "query_index": 80,
+      "api_error": null,
+      "strict_smiles": "COc1ccc(O)cc1",
+      "legacy_smiles": "COc1ccc(O)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 6619,
+      "ground_truth_smiles": "CC#N",
+      "group_hash": "3365383caaabfb9d13631af1e76cd909",
+      "query_index": 81,
+      "api_error": null,
+      "strict_smiles": "CC#CC1(C#CC)CO1",
+      "legacy_smiles": "CC#CC1(C#CC)CO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "aeab9b6eb0eee7b887eb385539575e43",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 14.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "aeab9b6eb0eee7b887eb385539575e43",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 14.0
+      }
+    },
+    {
+      "mol_id": 9830,
+      "ground_truth_smiles": "CCCCCCC=O",
+      "group_hash": "8fa8656dccbc1a1c779aa89c221228bb",
+      "query_index": 82,
+      "api_error": null,
+      "strict_smiles": "CCCC(O)CCC",
+      "legacy_smiles": "CCCC(O)CCC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b50370902800b823011015b788b59986",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b50370902800b823011015b788b59986",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 4409,
+      "ground_truth_smiles": "CC(NC=O)C(=O)O",
+      "group_hash": "bdbc52cf8b260d5dffc0bcb6bdbefac6",
+      "query_index": 83,
+      "api_error": null,
+      "strict_smiles": "N=C1CNCCC(=O)N1",
+      "legacy_smiles": "N=C1CNCCC(=O)N1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b9758ab53ee54fd298b2616fb183fdb5",
+        "group_match": false,
+        "tanimoto": 0.02631578966975212,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b9758ab53ee54fd298b2616fb183fdb5",
+        "group_match": false,
+        "tanimoto": 0.02631578966975212,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 464,
+      "ground_truth_smiles": "CCC#CCO",
+      "group_hash": "3c013cb6de4b8708e3769cf2efdac944",
+      "query_index": 84,
+      "api_error": null,
+      "strict_smiles": "CCC#CC(C)C#N",
+      "legacy_smiles": "CCC#CC(C)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.2916666567325592,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.2916666567325592,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 2463,
+      "ground_truth_smiles": "COC(=O)Cl",
+      "group_hash": "1873ca06dedda4f0346d4337518eb426",
+      "query_index": 85,
+      "api_error": null,
+      "strict_smiles": "COC(=O)C(Cl)(Cl)Cl",
+      "legacy_smiles": "COC(=O)C(Cl)(Cl)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6c325f5f199e88702d735c5157eee155",
+        "group_match": false,
+        "tanimoto": 0.4444444477558136,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6c325f5f199e88702d735c5157eee155",
+        "group_match": false,
+        "tanimoto": 0.4444444477558136,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 5626,
+      "ground_truth_smiles": "CCOCCO",
+      "group_hash": "ee20c90791d362e515a84aae48b641cc",
+      "query_index": 86,
+      "api_error": null,
+      "strict_smiles": "COCC(C)OCCO",
+      "legacy_smiles": "COCC(C)OCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cb0e3b150c716c2a17809f09edc2b6e1",
+        "group_match": false,
+        "tanimoto": 0.3199999928474426,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cb0e3b150c716c2a17809f09edc2b6e1",
+        "group_match": false,
+        "tanimoto": 0.3199999928474426,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 1515,
+      "ground_truth_smiles": "CCCCCCC1CO1",
+      "group_hash": "f84ef4d9af663dfde4b9c998fa54635e",
+      "query_index": 87,
+      "api_error": null,
+      "strict_smiles": "CCC1(C)OCC(C)O1",
+      "legacy_smiles": "CCC1(C)OCC(C)O1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d2e051c7d77c8bed29238f9b916b5d01",
+        "group_match": false,
+        "tanimoto": 0.21212121844291687,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d2e051c7d77c8bed29238f9b916b5d01",
+        "group_match": false,
+        "tanimoto": 0.21212121844291687,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 2785,
+      "ground_truth_smiles": "CCc1ccccc1",
+      "group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+      "query_index": 88,
+      "api_error": null,
+      "strict_smiles": "CCOc1ccccc1",
+      "legacy_smiles": "CCOc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "865bdb71406dc65a6b39d3713ae677b5",
+        "group_match": false,
+        "tanimoto": 0.40909090638160706,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "865bdb71406dc65a6b39d3713ae677b5",
+        "group_match": false,
+        "tanimoto": 0.40909090638160706,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 3143,
+      "ground_truth_smiles": "CCCCCCOC=O",
+      "group_hash": "c9564c8635d74d2f00cfa667259869f8",
+      "query_index": 89,
+      "api_error": null,
+      "strict_smiles": "CCC(C)C(C)C=O",
+      "legacy_smiles": "CCC(C)C(C)C=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5dea01a4e76a7732f7a6db0226695ed9",
+        "group_match": false,
+        "tanimoto": 0.2068965584039688,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5dea01a4e76a7732f7a6db0226695ed9",
+        "group_match": false,
+        "tanimoto": 0.2068965584039688,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5310,
+      "ground_truth_smiles": "NCCCN1CCOCC1",
+      "group_hash": "b9266290dd164b01ef0ec554aacefaeb",
+      "query_index": 90,
+      "api_error": null,
+      "strict_smiles": "NCCCN1CCOCC1",
+      "legacy_smiles": "NCCCN1CCOCC1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b9266290dd164b01ef0ec554aacefaeb",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b9266290dd164b01ef0ec554aacefaeb",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 3085,
+      "ground_truth_smiles": "CC(C)CCC(=O)O",
+      "group_hash": "50a4931a1d89fdd712d03f1acb44b095",
+      "query_index": 91,
+      "api_error": null,
+      "strict_smiles": "CCCCON=O",
+      "legacy_smiles": "CCCCON=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "43d34baafc343274d62ec1a891caae9e",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "43d34baafc343274d62ec1a891caae9e",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 4238,
+      "ground_truth_smiles": "OCc1cc(Cl)ccc1Cl",
+      "group_hash": "d9aa9e2bd1211b8bdfab82d40ca4f83a",
+      "query_index": 92,
+      "api_error": null,
+      "strict_smiles": "CCc1ccccc1",
+      "legacy_smiles": "CCc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 9725,
+      "ground_truth_smiles": "CCC(=O)OC(C)C",
+      "group_hash": "eae7ad59785dd489072bd724c79aec47",
+      "query_index": 93,
+      "api_error": null,
+      "strict_smiles": "CCC(=O)OC(C)C",
+      "legacy_smiles": "CCC(=O)OC(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "eae7ad59785dd489072bd724c79aec47",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "eae7ad59785dd489072bd724c79aec47",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 9530,
+      "ground_truth_smiles": "CN",
+      "group_hash": "76587f20dc2ec0dc8724a1ef4d31bd1c",
+      "query_index": 94,
+      "api_error": null,
+      "strict_smiles": "[2H][13C]([2H])([2H])[N+](=O)[O-]",
+      "legacy_smiles": "[2H][13C]([2H])([2H])[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad5ec1e5d9bc65074b29f610646863af",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad5ec1e5d9bc65074b29f610646863af",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 5561,
+      "ground_truth_smiles": "N#Cc1ccc(Br)cc1",
+      "group_hash": "0609a0fcbf6b9e61c20ae3389f352812",
+      "query_index": 95,
+      "api_error": null,
+      "strict_smiles": "N#Cc1ccc(Br)cc1",
+      "legacy_smiles": "N#Cc1ccc(Br)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "0609a0fcbf6b9e61c20ae3389f352812",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "0609a0fcbf6b9e61c20ae3389f352812",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 2332,
+      "ground_truth_smiles": "O=C(O)[C@@H]1C[C@@H](O)CN1",
+      "group_hash": "2e371deb71727507ed3d3c22cd5e8045",
+      "query_index": 96,
+      "api_error": null,
+      "strict_smiles": "CC12CC3C(O1)C3(O)C2",
+      "legacy_smiles": "CC12CC3C(O1)C3(O)C2",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9e474d7ee0c356b7ecc2125d2a525415",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9e474d7ee0c356b7ecc2125d2a525415",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 6350,
+      "ground_truth_smiles": "CCCCCOC(C)=O",
+      "group_hash": "94e5e3748001112a484a1cf53c667046",
+      "query_index": 97,
+      "api_error": null,
+      "strict_smiles": "CCCCCOC(C)=O",
+      "legacy_smiles": "CCCCCOC(C)=O",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "94e5e3748001112a484a1cf53c667046",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "94e5e3748001112a484a1cf53c667046",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 770,
+      "ground_truth_smiles": "OCC(F)(F)F",
+      "group_hash": "b00198663fe446156fd3c27b272b0037",
+      "query_index": 98,
+      "api_error": null,
+      "strict_smiles": "C[OH+][B-](F)(F)F",
+      "legacy_smiles": "C[OH+][B-](F)(F)F",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "26b37ad20a295300eaa89bc49eac7c31",
+        "group_match": false,
+        "tanimoto": 0.05882352963089943,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "26b37ad20a295300eaa89bc49eac7c31",
+        "group_match": false,
+        "tanimoto": 0.05882352963089943,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 2309,
+      "ground_truth_smiles": "NC1CCCCCC1",
+      "group_hash": "869500003bf42ba188b603fcb08219de",
+      "query_index": 99,
+      "api_error": null,
+      "strict_smiles": "C1CCC2CCC2CC1",
+      "legacy_smiles": "C1CCC2CCC2CC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9409b784c36d1fb6613903ec6dd8bd91",
+        "group_match": false,
+        "tanimoto": 0.4000000059604645,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9409b784c36d1fb6613903ec6dd8bd91",
+        "group_match": false,
+        "tanimoto": 0.4000000059604645,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 9082,
+      "ground_truth_smiles": "CC(=O)c1cccc(O)c1",
+      "group_hash": "b4da7e56c02e839355563b5e330c5472",
+      "query_index": 100,
+      "api_error": null,
+      "strict_smiles": "O=C1N=C(Nc2ccc(O)cc2)CS1",
+      "legacy_smiles": "O=C1N=C(Nc2ccc(O)cc2)CS1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a3e185c3aefb183f52d5d7a096f63e59",
+        "group_match": false,
+        "tanimoto": 0.1627907007932663,
+        "legacy_ged_v1": 19.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a3e185c3aefb183f52d5d7a096f63e59",
+        "group_match": false,
+        "tanimoto": 0.1627907007932663,
+        "legacy_ged_v1": 19.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 1916,
+      "ground_truth_smiles": "OCCCCO",
+      "group_hash": "813dec78c0965fad040511da7f2ec759",
+      "query_index": 101,
+      "api_error": null,
+      "strict_smiles": "OCCCCO",
+      "legacy_smiles": "OCCCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "813dec78c0965fad040511da7f2ec759",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "813dec78c0965fad040511da7f2ec759",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 8801,
+      "ground_truth_smiles": "CCCC#N",
+      "group_hash": "f87d43229f09d30e333aef26e0f04fa5",
+      "query_index": 102,
+      "api_error": null,
+      "strict_smiles": "CCC#CC(C)C#N",
+      "legacy_smiles": "CCC#CC(C)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 9269,
+      "ground_truth_smiles": "FC(F)(F)c1ccccc1",
+      "group_hash": "72167f15d29931aacfef112c57609ade",
+      "query_index": 103,
+      "api_error": null,
+      "strict_smiles": "Fc1cccc(Cl)c1S",
+      "legacy_smiles": "Fc1cccc(Cl)c1S",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2b5eb702985c194718ecf24552843009",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2b5eb702985c194718ecf24552843009",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 2899,
+      "ground_truth_smiles": "CN(C)C(=N)N(C)C",
+      "group_hash": "ba8807c68d2d5a5b2e5a99083aa9d8bd",
+      "query_index": 104,
+      "api_error": null,
+      "strict_smiles": "CN(C)C(=N)N(C)C",
+      "legacy_smiles": "CN(C)C(=N)N(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ba8807c68d2d5a5b2e5a99083aa9d8bd",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ba8807c68d2d5a5b2e5a99083aa9d8bd",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 6689,
+      "ground_truth_smiles": "CCOCCC(=O)O",
+      "group_hash": "318b54f2521f4d621492baf190c3e97f",
+      "query_index": 105,
+      "api_error": null,
+      "strict_smiles": "CCCCCCC=O",
+      "legacy_smiles": "CCCCCCC=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8fa8656dccbc1a1c779aa89c221228bb",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8fa8656dccbc1a1c779aa89c221228bb",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 5547,
+      "ground_truth_smiles": "CC(C)(C)Br",
+      "group_hash": "49f6bd68864fb7af1b3f068d4f595858",
+      "query_index": 106,
+      "api_error": null,
+      "strict_smiles": "COSC(Cl)(Cl)Cl",
+      "legacy_smiles": "COSC(Cl)(Cl)Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d197123afe7fc83a72564f20031d5d77",
+        "group_match": false,
+        "tanimoto": 0.11764705926179886,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d197123afe7fc83a72564f20031d5d77",
+        "group_match": false,
+        "tanimoto": 0.11764705926179886,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 8153,
+      "ground_truth_smiles": "Cc1cccc(C)n1",
+      "group_hash": "358ca480f277eae20db540c80ad2fbfe",
+      "query_index": 107,
+      "api_error": null,
+      "strict_smiles": "Cc1ccc(CCl)s1",
+      "legacy_smiles": "Cc1ccc(CCl)s1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8540efbab965e8495dcb6f7193fc1503",
+        "group_match": false,
+        "tanimoto": 0.18518517911434174,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8540efbab965e8495dcb6f7193fc1503",
+        "group_match": false,
+        "tanimoto": 0.18518517911434174,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5678,
+      "ground_truth_smiles": "NCCCO",
+      "group_hash": "16498d8c9cd7d0347814d765759216f6",
+      "query_index": 108,
+      "api_error": null,
+      "strict_smiles": "NCCCO",
+      "legacy_smiles": "NCCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "16498d8c9cd7d0347814d765759216f6",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "16498d8c9cd7d0347814d765759216f6",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 8558,
+      "ground_truth_smiles": "[C-]#[N+]C(C)(C)C",
+      "group_hash": "605a27fe05d54e0aa440f6a7d344a3da",
+      "query_index": 109,
+      "api_error": null,
+      "strict_smiles": "[2H]CC[SiH](C)C",
+      "legacy_smiles": "[2H]CC[SiH](C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "801d812637d9efe747f5a29bdf46e082",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "801d812637d9efe747f5a29bdf46e082",
+        "group_match": false,
+        "tanimoto": 0.0625,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5059,
+      "ground_truth_smiles": "CCO/C=C/C#N",
+      "group_hash": "c27a23956c25fa640c4b014971ac81de",
+      "query_index": 110,
+      "api_error": null,
+      "strict_smiles": "CC(Cl)(C#N)CC(Cl)C=O",
+      "legacy_smiles": "CC(Cl)(C#N)CC(Cl)C=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5d5a70fa9f2a24bd3131c47a62464159",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5d5a70fa9f2a24bd3131c47a62464159",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 381,
+      "ground_truth_smiles": "CC(C)CO",
+      "group_hash": "0963e1831ab666b7d2050af8cd0765b0",
+      "query_index": 111,
+      "api_error": null,
+      "strict_smiles": "CCCC(O)CCC",
+      "legacy_smiles": "CCCC(O)CCC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b50370902800b823011015b788b59986",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b50370902800b823011015b788b59986",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 3257,
+      "ground_truth_smiles": "OCC1CCCO1",
+      "group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+      "query_index": 112,
+      "api_error": null,
+      "strict_smiles": "OCC1CCCO1",
+      "legacy_smiles": "OCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 7481,
+      "ground_truth_smiles": "CC(C)OC(C)C",
+      "group_hash": "a41bbf363054681111924ec93c4d3814",
+      "query_index": 113,
+      "api_error": null,
+      "strict_smiles": "CC(C)OC(C)C",
+      "legacy_smiles": "CC(C)OC(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "a41bbf363054681111924ec93c4d3814",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "a41bbf363054681111924ec93c4d3814",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 9183,
+      "ground_truth_smiles": "Cc1cccc(C#N)c1",
+      "group_hash": "f1a56d87d77dd6576773b21c4e9152a5",
+      "query_index": 114,
+      "api_error": null,
+      "strict_smiles": "Cc1ccc(C#N)cc1",
+      "legacy_smiles": "Cc1ccc(C#N)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "933892c2e7b7432c14b46b205cc4510e",
+        "group_match": false,
+        "tanimoto": 0.5,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "933892c2e7b7432c14b46b205cc4510e",
+        "group_match": false,
+        "tanimoto": 0.5,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 4134,
+      "ground_truth_smiles": "CC(C)CC(C)(C)CO",
+      "group_hash": "dd17b4d1e635de97e3c077cca7096cd1",
+      "query_index": 115,
+      "api_error": null,
+      "strict_smiles": "OCC1CCCO1",
+      "legacy_smiles": "OCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.09677419066429138,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.09677419066429138,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 5312,
+      "ground_truth_smiles": "CC(=O)CO",
+      "group_hash": "a93c87c4ec668bffbe89f30a83ebc820",
+      "query_index": 116,
+      "api_error": null,
+      "strict_smiles": "CC1=NCC(=O)N1C",
+      "legacy_smiles": "CC1=NCC(=O)N1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3ab61541ad43f649ea8dd4916fe63d6e",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3ab61541ad43f649ea8dd4916fe63d6e",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 7660,
+      "ground_truth_smiles": "O=C(Cl)OCCCl",
+      "group_hash": "fe57bb65ff5275f8f1bb926668b9d0cb",
+      "query_index": 117,
+      "api_error": null,
+      "strict_smiles": "O=C1COC2CCC2O1",
+      "legacy_smiles": "O=C1COC2CCC2O1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "554ec8648fcdc66b3eb1e6921e9a89e8",
+        "group_match": false,
+        "tanimoto": 0.029411764815449715,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "554ec8648fcdc66b3eb1e6921e9a89e8",
+        "group_match": false,
+        "tanimoto": 0.029411764815449715,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 2995,
+      "ground_truth_smiles": "C#CCC(C)O",
+      "group_hash": "89f4350e8f8546b11aa8e19977b8f740",
+      "query_index": 118,
+      "api_error": null,
+      "strict_smiles": "CCC#CC(C)C#N",
+      "legacy_smiles": "CCC#CC(C)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9c76b0c93f3405927f37175e838ee1f2",
+        "group_match": false,
+        "tanimoto": 0.1785714328289032,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 9884,
+      "ground_truth_smiles": "CC(C)CN",
+      "group_hash": "b47ccb5e81b712226b9dc8a72ee83e40",
+      "query_index": 119,
+      "api_error": null,
+      "strict_smiles": "CCN[Si]Cl",
+      "legacy_smiles": "CCN[Si]Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "12056953425811f673a1f314bdd557d6",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "12056953425811f673a1f314bdd557d6",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 5696,
+      "ground_truth_smiles": "CCCC(O)CCC",
+      "group_hash": "b50370902800b823011015b788b59986",
+      "query_index": 120,
+      "api_error": null,
+      "strict_smiles": "CCNCCO",
+      "legacy_smiles": "CCNCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "46a12dfba6ea8c14e540cb2724e9d270",
+        "group_match": false,
+        "tanimoto": 0.1818181872367859,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "46a12dfba6ea8c14e540cb2724e9d270",
+        "group_match": false,
+        "tanimoto": 0.1818181872367859,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 7838,
+      "ground_truth_smiles": "C=CCOCCO",
+      "group_hash": "cbe8d3b6ab615f598ef252cfd0fd466d",
+      "query_index": 121,
+      "api_error": null,
+      "strict_smiles": "C=CCOCCO",
+      "legacy_smiles": "C=CCOCCO",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "cbe8d3b6ab615f598ef252cfd0fd466d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "cbe8d3b6ab615f598ef252cfd0fd466d",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 1689,
+      "ground_truth_smiles": "C#CCCCC",
+      "group_hash": "030f964f9ce84eb82cbdf07ec528cbe4",
+      "query_index": 122,
+      "api_error": null,
+      "strict_smiles": "CCCCOCCC#N",
+      "legacy_smiles": "CCCCOCCC#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8584a9b78b5039fc34e9ca21eb12386d",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "8584a9b78b5039fc34e9ca21eb12386d",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 9748,
+      "ground_truth_smiles": "ClC(Cl)=C(Cl)C(Cl)=C(Cl)Cl",
+      "group_hash": "058756f00d1c17360e743300e7b22525",
+      "query_index": 123,
+      "api_error": null,
+      "strict_smiles": "O=C1OC(=O)C(Cl)=C1Cl",
+      "legacy_smiles": "O=C1OC(=O)C(Cl)=C1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cc9594cdb6a85e7c27f4b27a63fc3c3e",
+        "group_match": false,
+        "tanimoto": 0.0555555559694767,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cc9594cdb6a85e7c27f4b27a63fc3c3e",
+        "group_match": false,
+        "tanimoto": 0.0555555559694767,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 9070,
+      "ground_truth_smiles": "Cc1cccc(CCO)c1",
+      "group_hash": "1926e119bb3b0485ecffff917c26c5a5",
+      "query_index": 124,
+      "api_error": null,
+      "strict_smiles": "Cc1cccc(CCO)c1",
+      "legacy_smiles": "Cc1cccc(CCO)c1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "1926e119bb3b0485ecffff917c26c5a5",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "1926e119bb3b0485ecffff917c26c5a5",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 5846,
+      "ground_truth_smiles": "Oc1ccc(Cl)cc1Cl",
+      "group_hash": "b21f344c8fb908a9712c97394da176c9",
+      "query_index": 125,
+      "api_error": null,
+      "strict_smiles": "Oc1ccc(Cl)cc1Cl",
+      "legacy_smiles": "Oc1ccc(Cl)cc1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b21f344c8fb908a9712c97394da176c9",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "b21f344c8fb908a9712c97394da176c9",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 6799,
+      "ground_truth_smiles": "C#CC(C)(O)CC(C)C",
+      "group_hash": "d7b3e58bd70094fd552f259b4c77f5fc",
+      "query_index": 126,
+      "api_error": null,
+      "strict_smiles": "CC1C(C)C(C#N)C1C",
+      "legacy_smiles": "CC1C(C)C(C#N)C1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7811907ec83f1078ebc375e49620373e",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7811907ec83f1078ebc375e49620373e",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 8463,
+      "ground_truth_smiles": "C=COCCCl",
+      "group_hash": "5715607f8ef7d37e28bafb1c31b5f19e",
+      "query_index": 127,
+      "api_error": null,
+      "strict_smiles": "CC1(C)C2C=CC(=O)C21",
+      "legacy_smiles": "CC1(C)C2C=CC(=O)C21",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5102a2a91272a65ad3293d74fe54fb92",
+        "group_match": false,
+        "tanimoto": 0.029411764815449715,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5102a2a91272a65ad3293d74fe54fb92",
+        "group_match": false,
+        "tanimoto": 0.029411764815449715,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 2027,
+      "ground_truth_smiles": "C/C=C/C(=O)CC",
+      "group_hash": "d90b1b7c12629ee5ed6755046e256d19",
+      "query_index": 128,
+      "api_error": null,
+      "strict_smiles": "N#CNN(N=[N+]=[N-])N=[N+]=[N-]",
+      "legacy_smiles": "N#CNN(N=[N+]=[N-])N=[N+]=[N-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3be1102c8049641f6ae7a606fbf3afcf",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 19.0,
+        "chemical_ged_v2": 14.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3be1102c8049641f6ae7a606fbf3afcf",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 19.0,
+        "chemical_ged_v2": 14.0
+      }
+    },
+    {
+      "mol_id": 514,
+      "ground_truth_smiles": "C1COCCO1",
+      "group_hash": "4be27d1d8866069080173c13c376778b",
+      "query_index": 129,
+      "api_error": null,
+      "strict_smiles": "CN(C)CCO",
+      "legacy_smiles": "CN(C)CCO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1ae34e566baeb0a2b83cae6db9938b76",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1ae34e566baeb0a2b83cae6db9938b76",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 5638,
+      "ground_truth_smiles": "C#CC1(O)CCCCC1",
+      "group_hash": "0a8ae986d9b88abafb747e8cf8aa180c",
+      "query_index": 130,
+      "api_error": null,
+      "strict_smiles": "C#CCC1CCOC1",
+      "legacy_smiles": "C#CCC1CCOC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a54049bb3d72449d5a1273525ef2eaa2",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a54049bb3d72449d5a1273525ef2eaa2",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 7281,
+      "ground_truth_smiles": "BrC(Br)C(Br)Br",
+      "group_hash": "83b7475e039d7168fff3530453610d70",
+      "query_index": 131,
+      "api_error": null,
+      "strict_smiles": "ClC1CC1Cl",
+      "legacy_smiles": "ClC1CC1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "007a4c3e2088c7ae568791d206175d3e",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "007a4c3e2088c7ae568791d206175d3e",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 1543,
+      "ground_truth_smiles": "CC1(C(=O)O)CC1",
+      "group_hash": "6eec408a73c3cc1ce8a9c257cfeb1fa6",
+      "query_index": 132,
+      "api_error": null,
+      "strict_smiles": "CN(C=N)C(=O)C1CC1",
+      "legacy_smiles": "CN(C=N)C(=O)C1CC1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4882f71f14f288d5a4745bdb9f2fb0e6",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "4882f71f14f288d5a4745bdb9f2fb0e6",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 357,
+      "ground_truth_smiles": "C=C(C)CCO",
+      "group_hash": "17a02b50b12edaaea7fe84619c26bd66",
+      "query_index": 133,
+      "api_error": null,
+      "strict_smiles": "CC(C)=CCl",
+      "legacy_smiles": "CC(C)=CCl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9d2246cfd1ded23e623008439fb63d70",
+        "group_match": false,
+        "tanimoto": 0.15789473056793213,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9d2246cfd1ded23e623008439fb63d70",
+        "group_match": false,
+        "tanimoto": 0.15789473056793213,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 9785,
+      "ground_truth_smiles": "OCc1ccc(Cl)cc1",
+      "group_hash": "c6d0fdc27b503289de361f50e68e108e",
+      "query_index": 134,
+      "api_error": null,
+      "strict_smiles": "ClCCOc1ccccc1",
+      "legacy_smiles": "ClCCOc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 5270,
+      "ground_truth_smiles": "c1ccc(C2CO2)cc1",
+      "group_hash": "abd89cd9e87a56b68252e0078670db87",
+      "query_index": 135,
+      "api_error": null,
+      "strict_smiles": "O=S1(=O)CCc2ccccc21",
+      "legacy_smiles": "O=S1(=O)CCc2ccccc21",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6e7a9206906d12c5dea59571f8384de2",
+        "group_match": false,
+        "tanimoto": 0.1875,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "6e7a9206906d12c5dea59571f8384de2",
+        "group_match": false,
+        "tanimoto": 0.1875,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 9280,
+      "ground_truth_smiles": "ClCCCCBr",
+      "group_hash": "dd5185286406a24b05808c24b4e62bb8",
+      "query_index": 136,
+      "api_error": null,
+      "strict_smiles": "CCSP(=O)(F)F",
+      "legacy_smiles": "CCSP(=O)(F)F",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0c2d45348de7634b3a04fbc7d8e0ba9b",
+        "group_match": false,
+        "tanimoto": 0.03846153989434242,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0c2d45348de7634b3a04fbc7d8e0ba9b",
+        "group_match": false,
+        "tanimoto": 0.03846153989434242,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 6645,
+      "ground_truth_smiles": "CC1CC(C)CC(O)C1",
+      "group_hash": "a5547e5f669b84e2920ee644fea1ed1d",
+      "query_index": 137,
+      "api_error": null,
+      "strict_smiles": "CC1CCCCOC1C",
+      "legacy_smiles": "CC1CCCCOC1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "428e411e87cb59bfaf26dd0558bf8026",
+        "group_match": false,
+        "tanimoto": 0.14814814925193787,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "428e411e87cb59bfaf26dd0558bf8026",
+        "group_match": false,
+        "tanimoto": 0.14814814925193787,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 1274,
+      "ground_truth_smiles": "CCC(Br)CBr",
+      "group_hash": "b70045f09f8e712547cca72fa721153c",
+      "query_index": 138,
+      "api_error": null,
+      "strict_smiles": "O=S1OCCO1",
+      "legacy_smiles": "O=S1OCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b85578a8124893b20e6400d32580c20b",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b85578a8124893b20e6400d32580c20b",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 9430,
+      "ground_truth_smiles": "C1COCCN1",
+      "group_hash": "73d68978127ed72afb8ad1aea1e3d732",
+      "query_index": 139,
+      "api_error": null,
+      "strict_smiles": "CC(O)(C#N)CO",
+      "legacy_smiles": "CC(O)(C#N)CO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "76c0d57c1a4e328d15b94bae47726b51",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "76c0d57c1a4e328d15b94bae47726b51",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 5698,
+      "ground_truth_smiles": "Cc1cccc(CO)c1",
+      "group_hash": "6e036cc347fa09b1039356d692f86296",
+      "query_index": 140,
+      "api_error": null,
+      "strict_smiles": "CCc1ccccc1",
+      "legacy_smiles": "CCc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 5991,
+      "ground_truth_smiles": "OCCc1ccc(F)cc1",
+      "group_hash": "c4e30d3a89f56169a7331a6946069197",
+      "query_index": 141,
+      "api_error": null,
+      "strict_smiles": "OCc1ccc(Cl)cc1",
+      "legacy_smiles": "OCc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6d0fdc27b503289de361f50e68e108e",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6d0fdc27b503289de361f50e68e108e",
+        "group_match": false,
+        "tanimoto": 0.3076923191547394,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 9153,
+      "ground_truth_smiles": "CCCC(C)C(C)=O",
+      "group_hash": "a7c5e457cc75167006592676981df81f",
+      "query_index": 142,
+      "api_error": null,
+      "strict_smiles": "COC1CCC(C)C1=O",
+      "legacy_smiles": "COC1CCC(C)C1=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5fadb47181a0073e648bb8d9f1411ef9",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "5fadb47181a0073e648bb8d9f1411ef9",
+        "group_match": false,
+        "tanimoto": 0.05714285746216774,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 4140,
+      "ground_truth_smiles": "O=C=NCCCCCCN=C=O",
+      "group_hash": "fee0fc23d254ccc9b542cf8482c0d1f9",
+      "query_index": 143,
+      "api_error": null,
+      "strict_smiles": "CC1CC(C)C(C)(C)C1",
+      "legacy_smiles": "CC1CC(C)C(C)(C)C1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9f154ee2f9079eb202eabd9e94614d1e",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 17.0,
+        "chemical_ged_v2": null
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9f154ee2f9079eb202eabd9e94614d1e",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 17.0,
+        "chemical_ged_v2": null
+      }
+    },
+    {
+      "mol_id": 5885,
+      "ground_truth_smiles": "CC(O)C(C)(C)C",
+      "group_hash": "ad9aa96a4074627d20189bc47474fd01",
+      "query_index": 144,
+      "api_error": null,
+      "strict_smiles": "CCP(O)(O)=S",
+      "legacy_smiles": "CCP(O)(O)=S",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad74e4b787913ddfb8d90c4f026d0b15",
+        "group_match": false,
+        "tanimoto": 0.10526315867900848,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ad74e4b787913ddfb8d90c4f026d0b15",
+        "group_match": false,
+        "tanimoto": 0.10526315867900848,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 592,
+      "ground_truth_smiles": "ClCCOc1ccccc1",
+      "group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+      "query_index": 145,
+      "api_error": null,
+      "strict_smiles": "ClCCOc1ccccc1",
+      "legacy_smiles": "ClCCOc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "5afbea2ee7ed1db28be3dfbf68ce4dca",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 7443,
+      "ground_truth_smiles": "CC(C)CC(O)C(C)C",
+      "group_hash": "a0e908ee57bb1c5003609c3fa9b110aa",
+      "query_index": 146,
+      "api_error": null,
+      "strict_smiles": "CC1CC(C)CC(O)C1",
+      "legacy_smiles": "CC1CC(C)CC(O)C1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a5547e5f669b84e2920ee644fea1ed1d",
+        "group_match": false,
+        "tanimoto": 0.07999999821186066,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a5547e5f669b84e2920ee644fea1ed1d",
+        "group_match": false,
+        "tanimoto": 0.07999999821186066,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 4243,
+      "ground_truth_smiles": "O=C1CCCC1",
+      "group_hash": "f2ec07b07749687017368540c0d69651",
+      "query_index": 147,
+      "api_error": null,
+      "strict_smiles": "CC1CC(C)(C=O)O1",
+      "legacy_smiles": "CC1CC(C)(C=O)O1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f89abe7f923fd87d036ca8a5981bc42a",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f89abe7f923fd87d036ca8a5981bc42a",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 7811,
+      "ground_truth_smiles": "NNC(=O)c1cccs1",
+      "group_hash": "51249b2a9c2b0c8ed028a81774185309",
+      "query_index": 148,
+      "api_error": null,
+      "strict_smiles": "NC(=NC1CC1)N[N+](=O)[O-]",
+      "legacy_smiles": "NC(=NC1CC1)N[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f432890660cdad90433c37a654a15b80",
+        "group_match": false,
+        "tanimoto": 0.09302325546741486,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 13.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f432890660cdad90433c37a654a15b80",
+        "group_match": false,
+        "tanimoto": 0.09302325546741486,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 13.0
+      }
+    },
+    {
+      "mol_id": 4308,
+      "ground_truth_smiles": "C=C(C)CO",
+      "group_hash": "aa3ccf1d22e5400b94c8eeecbf580ba8",
+      "query_index": 149,
+      "api_error": null,
+      "strict_smiles": "C=C(C)CO",
+      "legacy_smiles": "C=C(C)CO",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "aa3ccf1d22e5400b94c8eeecbf580ba8",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "aa3ccf1d22e5400b94c8eeecbf580ba8",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 8513,
+      "ground_truth_smiles": "COC(=O)CF",
+      "group_hash": "913a8315bb0ea10c7b67265ad5faf6bf",
+      "query_index": 150,
+      "api_error": null,
+      "strict_smiles": "COC(=O)CF",
+      "legacy_smiles": "COC(=O)CF",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "913a8315bb0ea10c7b67265ad5faf6bf",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "913a8315bb0ea10c7b67265ad5faf6bf",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 2800,
+      "ground_truth_smiles": "O=C(c1ccccc1)C(O)c1ccccc1",
+      "group_hash": "5ea244f52f472fa9bc7a23fd5e344fe1",
+      "query_index": 151,
+      "api_error": null,
+      "strict_smiles": "NNC(=O)c1ccncc1",
+      "legacy_smiles": "NNC(=O)c1ccncc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3e62468ab215a6c385693014a34f0fd5",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 24.0,
+        "chemical_ged_v2": 16.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3e62468ab215a6c385693014a34f0fd5",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 24.0,
+        "chemical_ged_v2": 16.0
+      }
+    },
+    {
+      "mol_id": 9239,
+      "ground_truth_smiles": "OCCc1ccccc1Cl",
+      "group_hash": "abb3b20ce0e86d8849e13137b6c88ea2",
+      "query_index": 152,
+      "api_error": null,
+      "strict_smiles": "OCc1ccc(Cl)cc1",
+      "legacy_smiles": "OCc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6d0fdc27b503289de361f50e68e108e",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c6d0fdc27b503289de361f50e68e108e",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 998,
+      "ground_truth_smiles": "Cc1ccc(C)cc1",
+      "group_hash": "2e2627c8e494dee2cc7abe459062827d",
+      "query_index": 153,
+      "api_error": null,
+      "strict_smiles": "COc1ccc(O)cc1",
+      "legacy_smiles": "COc1ccc(O)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.20000000298023224,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": false,
+        "tanimoto": 0.20000000298023224,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 8370,
+      "ground_truth_smiles": "COc1ccc(O)cc1",
+      "group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+      "query_index": 154,
+      "api_error": null,
+      "strict_smiles": "COc1ccc(O)cc1",
+      "legacy_smiles": "COc1ccc(O)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "2f09692eaf82f187cf5a1507cc119e06",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 7704,
+      "ground_truth_smiles": "CCC(C)C(N)C(=O)O",
+      "group_hash": "beb6256ca59ba2f54708f28608aba7ce",
+      "query_index": 155,
+      "api_error": null,
+      "strict_smiles": "C1CNc2n[nH]nc2C1",
+      "legacy_smiles": "C1CNc2n[nH]nc2C1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bb2abb488676924dcc77507ade9b67a3",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bb2abb488676924dcc77507ade9b67a3",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 2551,
+      "ground_truth_smiles": "CC(=O)CC(C)(C)C",
+      "group_hash": "f3553c0fc5af700fd8eb358ee1b9d9e3",
+      "query_index": 156,
+      "api_error": null,
+      "strict_smiles": "CC(=O)OC(C)(C)C",
+      "legacy_smiles": "CC(=O)OC(C)(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a2243ad87ca7a20eed4355b32afb0bd7",
+        "group_match": false,
+        "tanimoto": 0.3333333432674408,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 1.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "a2243ad87ca7a20eed4355b32afb0bd7",
+        "group_match": false,
+        "tanimoto": 0.3333333432674408,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 1.0
+      }
+    },
+    {
+      "mol_id": 7140,
+      "ground_truth_smiles": "C=CC(=O)OC",
+      "group_hash": "f089593e37efb4b9ecdacfe4254bc380",
+      "query_index": 157,
+      "api_error": null,
+      "strict_smiles": "COc1ccc([N+](=O)[O-])cc1C=O",
+      "legacy_smiles": "COc1ccc([N+](=O)[O-])cc1C=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ede530f332b7d1ae9763cc219b855820",
+        "group_match": false,
+        "tanimoto": 0.12820513546466827,
+        "legacy_ged_v1": 23.0,
+        "chemical_ged_v2": 18.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ede530f332b7d1ae9763cc219b855820",
+        "group_match": false,
+        "tanimoto": 0.12820513546466827,
+        "legacy_ged_v1": 23.0,
+        "chemical_ged_v2": 18.0
+      }
+    },
+    {
+      "mol_id": 6955,
+      "ground_truth_smiles": "COC(CN)OC",
+      "group_hash": "b45bab17e0231f69f4c77aa15576511f",
+      "query_index": 158,
+      "api_error": null,
+      "strict_smiles": "CCC(CO)(CO)[N+](=O)[O-]",
+      "legacy_smiles": "CCC(CO)(CO)[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd32cc01f6c027d1971b0b6c0c51ea7a",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd32cc01f6c027d1971b0b6c0c51ea7a",
+        "group_match": false,
+        "tanimoto": 0.06666667014360428,
+        "legacy_ged_v1": 14.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 5202,
+      "ground_truth_smiles": "CCC(CC)CO",
+      "group_hash": "233c700c7a56a2c11b2e3cffce18d24d",
+      "query_index": 159,
+      "api_error": null,
+      "strict_smiles": "OCC1CCCO1",
+      "legacy_smiles": "OCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.1111111119389534,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.1111111119389534,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 5967,
+      "ground_truth_smiles": "CCC(C)C(C)O",
+      "group_hash": "aa78e55a3f89cdbe70ccb1702b69b4be",
+      "query_index": 160,
+      "api_error": null,
+      "strict_smiles": "CC(C)CC(C)(C)CO",
+      "legacy_smiles": "CC(C)CC(C)(C)CO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "dd17b4d1e635de97e3c077cca7096cd1",
+        "group_match": false,
+        "tanimoto": 0.2083333283662796,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "dd17b4d1e635de97e3c077cca7096cd1",
+        "group_match": false,
+        "tanimoto": 0.2083333283662796,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 3532,
+      "ground_truth_smiles": "CO",
+      "group_hash": "e54f0405b9a97c3c419ad76a542543d8",
+      "query_index": 161,
+      "api_error": null,
+      "strict_smiles": "CNC",
+      "legacy_smiles": "CNC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c8ce3a4696dee0a8c3ac82a5965edd23",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c8ce3a4696dee0a8c3ac82a5965edd23",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 3.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 9384,
+      "ground_truth_smiles": "CCCC(C)C(=O)O",
+      "group_hash": "7d71d65d57211610370fafc20bb49ab9",
+      "query_index": 162,
+      "api_error": null,
+      "strict_smiles": "CCNC(=O)CC(C)C",
+      "legacy_smiles": "CCNC(=O)CC(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d146e201ae3688ad6aaa0d3398a3bd97",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d146e201ae3688ad6aaa0d3398a3bd97",
+        "group_match": false,
+        "tanimoto": 0.2857142984867096,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 2726,
+      "ground_truth_smiles": "C=CC(C)OC(C)=O",
+      "group_hash": "e6db1e8b64f4efc262e68eb5d144bee7",
+      "query_index": 163,
+      "api_error": null,
+      "strict_smiles": "COC(=O)/C(C)=C/CO",
+      "legacy_smiles": "COC(=O)/C(C)=C/CO",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2251a32496287e61cf23534917800e17",
+        "group_match": false,
+        "tanimoto": 0.21875,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2251a32496287e61cf23534917800e17",
+        "group_match": false,
+        "tanimoto": 0.21875,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 8808,
+      "ground_truth_smiles": "O=C([O-])[O-]",
+      "group_hash": "d1a6955880d61a121e9cac6a0d2b8859",
+      "query_index": 164,
+      "api_error": null,
+      "strict_smiles": "O=C[N+](=O)[O-]",
+      "legacy_smiles": "O=C[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2772055fd69242aff64296af4250a0cc",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "2772055fd69242aff64296af4250a0cc",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 3990,
+      "ground_truth_smiles": "O=C(Cl)Oc1ccccc1",
+      "group_hash": "44f68910dd303546d4cc6c86e19da4e3",
+      "query_index": 165,
+      "api_error": null,
+      "strict_smiles": "ClCc1ccc(Cl)cc1",
+      "legacy_smiles": "ClCc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f434a47edec42af199c7ff4f22c5548e",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f434a47edec42af199c7ff4f22c5548e",
+        "group_match": false,
+        "tanimoto": 0.13333334028720856,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 3980,
+      "ground_truth_smiles": "Br[C@H]1C[C@@H]2CC[C@H]1C2",
+      "group_hash": "a0052c4452557e5c757b42dc37841c64",
+      "query_index": 166,
+      "api_error": null,
+      "strict_smiles": "OC12CCC34OC(C13)C24",
+      "legacy_smiles": "OC12CCC34OC(C13)C24",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0cbac46f35af23677df91c5aa0fa3866",
+        "group_match": false,
+        "tanimoto": 0.09375,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0cbac46f35af23677df91c5aa0fa3866",
+        "group_match": false,
+        "tanimoto": 0.09375,
+        "legacy_ged_v1": 11.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 3342,
+      "ground_truth_smiles": "O=Cc1ccc(Cl)cc1Cl",
+      "group_hash": "0699e1067441cc6980003a394d5d935c",
+      "query_index": 167,
+      "api_error": null,
+      "strict_smiles": "O=C(Cl)c1cccc(C(=O)Cl)c1",
+      "legacy_smiles": "O=C(Cl)c1cccc(C(=O)Cl)c1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "412aae20154adbe01a9acf0c5a098cee",
+        "group_match": false,
+        "tanimoto": 0.19354838132858276,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "412aae20154adbe01a9acf0c5a098cee",
+        "group_match": false,
+        "tanimoto": 0.19354838132858276,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 5646,
+      "ground_truth_smiles": "OCCOCCCl",
+      "group_hash": "ade2a0e1aaed1b1e449ed493c7044b9b",
+      "query_index": 168,
+      "api_error": null,
+      "strict_smiles": "ClCC1COCO1",
+      "legacy_smiles": "ClCC1COCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b2fef30efd58468d04ea7e84a49cbce4",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b2fef30efd58468d04ea7e84a49cbce4",
+        "group_match": false,
+        "tanimoto": 0.10000000149011612,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 3944,
+      "ground_truth_smiles": "CCOC(=O)CC(C)C",
+      "group_hash": "c1849bb24deb099c6a868027e5e7ecc3",
+      "query_index": 169,
+      "api_error": null,
+      "strict_smiles": "CCCCCOC(C)=O",
+      "legacy_smiles": "CCCCCOC(C)=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "94e5e3748001112a484a1cf53c667046",
+        "group_match": false,
+        "tanimoto": 0.2666666805744171,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "94e5e3748001112a484a1cf53c667046",
+        "group_match": false,
+        "tanimoto": 0.2666666805744171,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 3145,
+      "ground_truth_smiles": "CC(=O)c1ccc(C)cc1",
+      "group_hash": "5017abd307c40b56ab2ca980d4930259",
+      "query_index": 170,
+      "api_error": null,
+      "strict_smiles": "CC(=O)c1ccc(C)cc1",
+      "legacy_smiles": "CC(=O)c1ccc(C)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "5017abd307c40b56ab2ca980d4930259",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "5017abd307c40b56ab2ca980d4930259",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 8518,
+      "ground_truth_smiles": "CC(=O)c1ccc(F)cc1",
+      "group_hash": "ad421d5e427e9467dd4309c7d70a4b3a",
+      "query_index": 171,
+      "api_error": null,
+      "strict_smiles": "CC(=O)c1ccc(F)cc1",
+      "legacy_smiles": "CC(=O)c1ccc(F)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ad421d5e427e9467dd4309c7d70a4b3a",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "ad421d5e427e9467dd4309c7d70a4b3a",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 8279,
+      "ground_truth_smiles": "CC(C)=O",
+      "group_hash": "d3be55abdd69c226af4325d49afaceed",
+      "query_index": 172,
+      "api_error": null,
+      "strict_smiles": "[C]=CC(=O)CC",
+      "legacy_smiles": "[C]=CC(=O)CC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d8731d2cc0a51d4c0369753d3676ce38",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d8731d2cc0a51d4c0369753d3676ce38",
+        "group_match": false,
+        "tanimoto": 0.23529411852359772,
+        "legacy_ged_v1": 7.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 5480,
+      "ground_truth_smiles": "CC(O)CC(=O)O",
+      "group_hash": "b2464df3dafa1c856dae4bdfb22ce74e",
+      "query_index": 173,
+      "api_error": null,
+      "strict_smiles": "CCCCN(C(=O)OCC)[N+](=O)[O-]",
+      "legacy_smiles": "CCCCN(C(=O)OCC)[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ec6c2b2d69f91150519e0a8f46511208",
+        "group_match": false,
+        "tanimoto": 0.1315789520740509,
+        "legacy_ged_v1": 18.0,
+        "chemical_ged_v2": 15.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ec6c2b2d69f91150519e0a8f46511208",
+        "group_match": false,
+        "tanimoto": 0.1315789520740509,
+        "legacy_ged_v1": 18.0,
+        "chemical_ged_v2": 15.0
+      }
+    },
+    {
+      "mol_id": 1821,
+      "ground_truth_smiles": "CC(C)C#N",
+      "group_hash": "7a74ca3631af410f17a89e3d49a18d7c",
+      "query_index": 174,
+      "api_error": null,
+      "strict_smiles": "CCC1COC1(C)C#N",
+      "legacy_smiles": "CCC1COC1(C)C#N",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "334ffaf196e58f287c2f871133ccbc6a",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "334ffaf196e58f287c2f871133ccbc6a",
+        "group_match": false,
+        "tanimoto": 0.1428571492433548,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 8562,
+      "ground_truth_smiles": "C=COC(=O)C(=C)C",
+      "group_hash": "de126e2187f4e56917f5e123c8102b77",
+      "query_index": 175,
+      "api_error": null,
+      "strict_smiles": "C=COC(=O)C(=C)C",
+      "legacy_smiles": "C=COC(=O)C(=C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "de126e2187f4e56917f5e123c8102b77",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "de126e2187f4e56917f5e123c8102b77",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 2843,
+      "ground_truth_smiles": "COC(C)CCO",
+      "group_hash": "2aadfc31d8a02fadee5b4305d0e2a650",
+      "query_index": 176,
+      "api_error": null,
+      "strict_smiles": "CC1COCOCC1C",
+      "legacy_smiles": "CC1COCOCC1C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "81a0d1c297f8aad5bd5a36a8122c7cf8",
+        "group_match": false,
+        "tanimoto": 0.0357142873108387,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "81a0d1c297f8aad5bd5a36a8122c7cf8",
+        "group_match": false,
+        "tanimoto": 0.0357142873108387,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 4654,
+      "ground_truth_smiles": "CCOC(=N)O",
+      "group_hash": "394de176c400b86ae86af5d63634070f",
+      "query_index": 177,
+      "api_error": null,
+      "strict_smiles": "CC1(O)CN(C=N)C1=O",
+      "legacy_smiles": "CC1(O)CN(C=N)C1=O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "fc67f39d70fc366dd0b013904cf1e6fd",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "fc67f39d70fc366dd0b013904cf1e6fd",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 7965,
+      "ground_truth_smiles": "CCC(C)Br",
+      "group_hash": "a91dc7aeb69655a4af8b75ddf1a35164",
+      "query_index": 178,
+      "api_error": null,
+      "strict_smiles": "CO[Si](C)(CCC(F)(F)F)OC",
+      "legacy_smiles": "CO[Si](C)(CCC(F)(F)F)OC",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "706a1e05eced05a20887c123e70edbb7",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": 16.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "706a1e05eced05a20887c123e70edbb7",
+        "group_match": false,
+        "tanimoto": 0.07407407462596893,
+        "legacy_ged_v1": 21.0,
+        "chemical_ged_v2": 16.0
+      }
+    },
+    {
+      "mol_id": 7456,
+      "ground_truth_smiles": "CCOc1ccccc1",
+      "group_hash": "865bdb71406dc65a6b39d3713ae677b5",
+      "query_index": 179,
+      "api_error": null,
+      "strict_smiles": "CCc1ccccc1",
+      "legacy_smiles": "CCc1ccccc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.40909090638160706,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 3.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "37d4007ea78fdad0d8ce04528a1ae109",
+        "group_match": false,
+        "tanimoto": 0.40909090638160706,
+        "legacy_ged_v1": 4.0,
+        "chemical_ged_v2": 3.0
+      }
+    },
+    {
+      "mol_id": 6092,
+      "ground_truth_smiles": "CC(CCl)CBr",
+      "group_hash": "3821486247b24d6e9fb101039cf95e85",
+      "query_index": 180,
+      "api_error": null,
+      "strict_smiles": "C1CC2C3COC1CC23",
+      "legacy_smiles": "C1CC2C3COC1CC23",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "356f6ba819e53ad2f9e4c35e97763e82",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 11.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "356f6ba819e53ad2f9e4c35e97763e82",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 11.0
+      }
+    },
+    {
+      "mol_id": 2696,
+      "ground_truth_smiles": "BrCCCc1ccccc1",
+      "group_hash": "dfdedc9bc28dc7d0d39a68d3e47d9a68",
+      "query_index": 181,
+      "api_error": null,
+      "strict_smiles": "OCCc1cccc(Cl)c1",
+      "legacy_smiles": "OCCc1cccc(Cl)c1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7a43404bc11c5842d509ab34601cca2d",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "7a43404bc11c5842d509ab34601cca2d",
+        "group_match": false,
+        "tanimoto": 0.25,
+        "legacy_ged_v1": 6.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 414,
+      "ground_truth_smiles": "CC(C)C[C@@H](N)C(=O)O",
+      "group_hash": "cd0d1ea4e3919bc9e74837b8354c3c64",
+      "query_index": 182,
+      "api_error": null,
+      "strict_smiles": "CCC(CO)(CO)[N+](=O)[O-]",
+      "legacy_smiles": "CCC(CO)(CO)[N+](=O)[O-]",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd32cc01f6c027d1971b0b6c0c51ea7a",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "bd32cc01f6c027d1971b0b6c0c51ea7a",
+        "group_match": false,
+        "tanimoto": 0.12121212482452393,
+        "legacy_ged_v1": 15.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 8932,
+      "ground_truth_smiles": "O=Cc1ccc(F)cc1",
+      "group_hash": "227f4595842f61a86f887982056a9779",
+      "query_index": 183,
+      "api_error": null,
+      "strict_smiles": "O=Cc1ccc(Cl)cc1",
+      "legacy_smiles": "O=Cc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": false,
+        "tanimoto": 0.523809552192688,
+        "legacy_ged_v1": 1.0,
+        "chemical_ged_v2": 1.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "abdff195cf7b82f8af359f7ad71ce47a",
+        "group_match": false,
+        "tanimoto": 0.523809552192688,
+        "legacy_ged_v1": 1.0,
+        "chemical_ged_v2": 1.0
+      }
+    },
+    {
+      "mol_id": 5047,
+      "ground_truth_smiles": "CCBr",
+      "group_hash": "1d7b79832a7c6fdc4b4496af028794f4",
+      "query_index": 184,
+      "api_error": null,
+      "strict_smiles": "C[Se]CCl",
+      "legacy_smiles": "C[Se]CCl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "78b2f31c017cc232571ae09f3c497126",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "78b2f31c017cc232571ae09f3c497126",
+        "group_match": false,
+        "tanimoto": 0.1538461595773697,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 3581,
+      "ground_truth_smiles": "CN(C)C(C)(C)CO",
+      "group_hash": "33e0d5e2229b698ccc98c01e779860a7",
+      "query_index": 185,
+      "api_error": null,
+      "strict_smiles": "CN1CCS(=O)(=O)N(C)C1",
+      "legacy_smiles": "CN1CCS(=O)(=O)N(C)C1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9bed756d1debe07a9c36fc2a2315b603",
+        "group_match": false,
+        "tanimoto": 0.032258063554763794,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9bed756d1debe07a9c36fc2a2315b603",
+        "group_match": false,
+        "tanimoto": 0.032258063554763794,
+        "legacy_ged_v1": 16.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 9546,
+      "ground_truth_smiles": "C=C(C)CC(C)(C)C",
+      "group_hash": "f8e1a7ba4a1e9ed67b90beead4795f76",
+      "query_index": 186,
+      "api_error": null,
+      "strict_smiles": "CC1=NOCC1O",
+      "legacy_smiles": "CC1=NOCC1O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9732508ddc09e32ab40a284ed1a98c0f",
+        "group_match": false,
+        "tanimoto": 0.06451612710952759,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "9732508ddc09e32ab40a284ed1a98c0f",
+        "group_match": false,
+        "tanimoto": 0.06451612710952759,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 8948,
+      "ground_truth_smiles": "BrC(Br)C(Br)(Br)Br",
+      "group_hash": "b0e92803df96ff1edab8e64795490928",
+      "query_index": 187,
+      "api_error": null,
+      "strict_smiles": "O=P(Cl)(OCl)OCl",
+      "legacy_smiles": "O=P(Cl)(OCl)OCl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1d26b4d149a40ffcf8a0fe0df7b0d831",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "1d26b4d149a40ffcf8a0fe0df7b0d831",
+        "group_match": false,
+        "tanimoto": 0.0,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 10.0
+      }
+    },
+    {
+      "mol_id": 793,
+      "ground_truth_smiles": "OCc1cccc(Br)c1",
+      "group_hash": "0f252a430f00161e076447af35d49164",
+      "query_index": 188,
+      "api_error": null,
+      "strict_smiles": "COCSc1ccc(Cl)cc1",
+      "legacy_smiles": "COCSc1ccc(Cl)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0122adec6a9212de3192e1d733d440fa",
+        "group_match": false,
+        "tanimoto": 0.10526315867900848,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "0122adec6a9212de3192e1d733d440fa",
+        "group_match": false,
+        "tanimoto": 0.10526315867900848,
+        "legacy_ged_v1": 13.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 4,
+      "ground_truth_smiles": "CNC",
+      "group_hash": "c8ce3a4696dee0a8c3ac82a5965edd23",
+      "query_index": 189,
+      "api_error": null,
+      "strict_smiles": "CC(C#N)PCl",
+      "legacy_smiles": "CC(C#N)PCl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "220d570b77aca9e03b880ed0cb70c941",
+        "group_match": false,
+        "tanimoto": 0.0555555559694767,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "220d570b77aca9e03b880ed0cb70c941",
+        "group_match": false,
+        "tanimoto": 0.0555555559694767,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 8795,
+      "ground_truth_smiles": "COCCCl",
+      "group_hash": "d59ad3d01eb7b1e29131f8a158bfa2cf",
+      "query_index": 190,
+      "api_error": null,
+      "strict_smiles": "COC1C2OC1C2C",
+      "legacy_smiles": "COC1C2OC1C2C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f23ab4aab5098499a160254cbfae82f8",
+        "group_match": false,
+        "tanimoto": 0.11999999731779099,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 9.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "f23ab4aab5098499a160254cbfae82f8",
+        "group_match": false,
+        "tanimoto": 0.11999999731779099,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 9.0
+      }
+    },
+    {
+      "mol_id": 1841,
+      "ground_truth_smiles": "O=C(O)c1cccc(O)c1",
+      "group_hash": "236598652a6e40affef6ae5554c6db48",
+      "query_index": 191,
+      "api_error": null,
+      "strict_smiles": "O=C(O)c1cccc(Cl)c1",
+      "legacy_smiles": "O=C(O)c1cccc(Cl)c1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cb7ead303dcd6eeb7e25b2443e20ecba",
+        "group_match": false,
+        "tanimoto": 0.5769230723381042,
+        "legacy_ged_v1": 1.0,
+        "chemical_ged_v2": 1.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "cb7ead303dcd6eeb7e25b2443e20ecba",
+        "group_match": false,
+        "tanimoto": 0.5769230723381042,
+        "legacy_ged_v1": 1.0,
+        "chemical_ged_v2": 1.0
+      }
+    },
+    {
+      "mol_id": 8127,
+      "ground_truth_smiles": "C=C(C)C(=O)OCC",
+      "group_hash": "f8f10432e895151be4c2f005e1008380",
+      "query_index": 192,
+      "api_error": null,
+      "strict_smiles": "C=C(C)C(=O)OCC",
+      "legacy_smiles": "C=C(C)C(=O)OCC",
+      "strict": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "f8f10432e895151be4c2f005e1008380",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": true,
+        "predicted_group_hash": "f8f10432e895151be4c2f005e1008380",
+        "group_match": true,
+        "tanimoto": 1.0,
+        "legacy_ged_v1": 0.0,
+        "chemical_ged_v2": 0.0
+      }
+    },
+    {
+      "mol_id": 9686,
+      "ground_truth_smiles": "CC(O)CC(C)(C)O",
+      "group_hash": "e6d1280645f968a9d585d4fc27d60e3d",
+      "query_index": 193,
+      "api_error": null,
+      "strict_smiles": "CC12CC(C)(C1)C2O",
+      "legacy_smiles": "CC12CC(C)(C1)C2O",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c553dfc9e4fd1aa4bb04e1c77067885f",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "c553dfc9e4fd1aa4bb04e1c77067885f",
+        "group_match": false,
+        "tanimoto": 0.07692307978868484,
+        "legacy_ged_v1": 5.0,
+        "chemical_ged_v2": 5.0
+      }
+    },
+    {
+      "mol_id": 8133,
+      "ground_truth_smiles": "CCN(O)CC",
+      "group_hash": "86d27d01f8f2292bef3b5be7dedceb62",
+      "query_index": 194,
+      "api_error": null,
+      "strict_smiles": "CC(O)CSC(C)C",
+      "legacy_smiles": "CC(O)CSC(C)C",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ea3a55325f0ad56d004610993f0f5a36",
+        "group_match": false,
+        "tanimoto": 0.13636364042758942,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "ea3a55325f0ad56d004610993f0f5a36",
+        "group_match": false,
+        "tanimoto": 0.13636364042758942,
+        "legacy_ged_v1": 9.0,
+        "chemical_ged_v2": 7.0
+      }
+    },
+    {
+      "mol_id": 3301,
+      "ground_truth_smiles": "O=C(O)c1cccc(Cl)c1",
+      "group_hash": "cb7ead303dcd6eeb7e25b2443e20ecba",
+      "query_index": 195,
+      "api_error": null,
+      "strict_smiles": "NC(=O)Nc1ccc(Br)cc1",
+      "legacy_smiles": "NC(=O)Nc1ccc(Br)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "38808b25d83f69e0b66f53bd3daf1578",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "38808b25d83f69e0b66f53bd3daf1578",
+        "group_match": false,
+        "tanimoto": 0.1666666716337204,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 6.0
+      }
+    },
+    {
+      "mol_id": 6583,
+      "ground_truth_smiles": "Oc1ccc(Cl)c(Cl)c1",
+      "group_hash": "59c7b3b54d77a2170a41cf9da6b7a575",
+      "query_index": 196,
+      "api_error": null,
+      "strict_smiles": "Oc1ccc(Cl)cc1Cl",
+      "legacy_smiles": "Oc1ccc(Cl)cc1Cl",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b21f344c8fb908a9712c97394da176c9",
+        "group_match": false,
+        "tanimoto": 0.375,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b21f344c8fb908a9712c97394da176c9",
+        "group_match": false,
+        "tanimoto": 0.375,
+        "legacy_ged_v1": 2.0,
+        "chemical_ged_v2": 2.0
+      }
+    },
+    {
+      "mol_id": 5997,
+      "ground_truth_smiles": "OC(CBr)CBr",
+      "group_hash": "640e5b7dd028941e1ac7d0d6b5adb455",
+      "query_index": 197,
+      "api_error": null,
+      "strict_smiles": "ClCC1CO1",
+      "legacy_smiles": "ClCC1CO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b21329f18b391a8c7d8f825f6afca0ef",
+        "group_match": false,
+        "tanimoto": 0.04545454680919647,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "b21329f18b391a8c7d8f825f6afca0ef",
+        "group_match": false,
+        "tanimoto": 0.04545454680919647,
+        "legacy_ged_v1": 10.0,
+        "chemical_ged_v2": 4.0
+      }
+    },
+    {
+      "mol_id": 4278,
+      "ground_truth_smiles": "CN1CCN(C)CC1",
+      "group_hash": "d325a6a9f2e190da0c675e33c399434e",
+      "query_index": 198,
+      "api_error": null,
+      "strict_smiles": "OCC1CCCO1",
+      "legacy_smiles": "OCC1CCCO1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.03999999910593033,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 8.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "d57cd7fffc3d0281088f6dd9368cd353",
+        "group_match": false,
+        "tanimoto": 0.03999999910593033,
+        "legacy_ged_v1": 12.0,
+        "chemical_ged_v2": 8.0
+      }
+    },
+    {
+      "mol_id": 8101,
+      "ground_truth_smiles": "NNC(=O)c1ccncc1",
+      "group_hash": "3e62468ab215a6c385693014a34f0fd5",
+      "query_index": 199,
+      "api_error": null,
+      "strict_smiles": "NC(=O)c1ccc(F)cc1",
+      "legacy_smiles": "NC(=O)c1ccc(F)cc1",
+      "strict": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3b17e928a17eb9c293bfc6a867163da0",
+        "group_match": false,
+        "tanimoto": 0.25806450843811035,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      },
+      "legacy": {
+        "valid": true,
+        "exact_match": false,
+        "predicted_group_hash": "3b17e928a17eb9c293bfc6a867163da0",
+        "group_match": false,
+        "tanimoto": 0.25806450843811035,
+        "legacy_ged_v1": 8.0,
+        "chemical_ged_v2": 4.0
+      }
+    }
+  ]
+}

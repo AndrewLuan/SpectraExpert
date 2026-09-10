@@ -1,0 +1,10 @@
+{
+  "query_index": 186,
+  "model": "gpt-5",
+  "started_at": 1788964310.814296,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2b42yuaYe4FnxohLjl90u5ezH\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 6\\nCONFIDENCE: 0.58\\nEXPLANATION: The spectrum is dominated by aliphatic C–H stretches at 2871–2960 cm⁻¹ (consistent with GFQ-003), with no clear OH/NH stretching band, which disfavors candidates bearing free OH/NH. Key diagnostic features include a strong band at 1643 cm⁻¹ consistent with a C=N (oxime/nitrone-type) stretch, paired N–O stretching features at 931 and 910 cm⁻¹ typical for N–O single bonds, and a medium band near 1239–1204 cm⁻¹ matching a phosphoryl P=O stretch expected for a phosphate ester. Additional bands at 826 and 767 cm⁻¹ fall in the N–O deformation region (cf. GFQ-022) and 561 cm⁻¹ can arise from P–O skeletal modes. Candidate 6 uniquely contains both a P=O phosphate triester and an imidate/nitroso-like C=N–O fragment, accounting for the 1643, 1239–1204, and 910–931 cm⁻¹ features. Nitro/nitrate candidates (e.g., 2, 4, 5) would typically show strong NO₂ stretches near ~1530 and ~1350 cm⁻¹, which are absent, and several others have OH/NH groups that should produce >3200 cm⁻¹ bands not observed.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5809,\"completion_tokens\":6787,\"total_tokens\":12596,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":6464},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821150245-617ad29e-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 78.4625635840057,
+  "error": null
+}

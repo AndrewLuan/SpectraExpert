@@ -1,0 +1,21 @@
+{
+  "query_index": 143,
+  "content": "SELECTED_INDEX: 2\nCONFIDENCE: 0.68\nEXPLANATION: The spectrum is characteristic of a saturated, branched/cyclic hydrocarbon: very strong CH stretch at 2927 cm⁻¹ and strong CH₂ scissoring near 1436 cm⁻¹ (GFQ-003), moderate CH₃ deformation around 1360 cm⁻¹, and prominent C–C skeletal stretches near 1067–1096 cm⁻¹ (consistent with single-bond region; GFQ-010). The cluster of ring-type modes at 797/834/864 cm⁻¹ aligns well with cyclohexane breathing/deformation features, and the absence of a strong diagnostic band near 2200–2300 cm⁻¹ rules out isocyanate (candidate 5) or diazo (candidate 9). No clear O–H stretch near 3200–3600 cm⁻¹ is observed, making alcohol-containing candidates less likely. Among the hydrocarbons, a substituted cyclohexane (candidate 2) best matches this Raman pattern.",
+  "usage": {
+    "prompt_tokens": 4951,
+    "completion_tokens": 4527,
+    "total_tokens": 9478,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4288
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2m4TXzdOn2qMSiBPuzQLkQFPy",
+  "last_attempt_file": "gpt5/attempts/0143_1788964310797103000.json"
+}

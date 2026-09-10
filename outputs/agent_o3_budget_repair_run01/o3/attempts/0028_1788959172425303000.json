@@ -1,0 +1,10 @@
+{
+  "query_index": 28,
+  "model": "o3",
+  "started_at": 1788959172.425309,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCIFoXsg0rNifYXGeE1YkPtnEG5Q\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4  \\nCONFIDENCE: 0.35  \\nEXPLANATION:  \\nThe spectrum shows:  \\n• Strong C–H stretches at 2930/2964/2997 cm⁻¹ → several alkyl CH₃ groups (Rule GFQ-003).  \\n• A prominent carbonyl stretch at 1677 cm⁻¹ → amide-type C=O (amide I region).  \\n• Bands at 1437 and 1390 cm⁻¹ typical of CH₃ asymmetric/symmetric bends and also characteristic of N-nitroso/NO vibrations.  \\n• Peaks at 1079 cm⁻¹ (N–N stretch of N-nitroso, cf. literature ≈1050–1100 cm⁻¹) and 826 cm⁻¹ (in-plane N=O bending, Rule GFQ-022 range 786–826 cm⁻¹).  \\n• Band at 603 cm⁻¹ matches amide V / N=O wag (~600 cm⁻¹).  \\nAmong the candidates, only molecule 4 (CN(C)C(=O)N=O) contains\\n  – an amide carbonyl (C(=O)–) giving the 1677 cm⁻¹ band,\\n  – an N-nitroso group (–N=O) supplying the 1437, 1079, 826 and 603 cm⁻¹ vibrations,\\n  – two N-methyl groups providing the strong CH₃ C–H and bending bands.\\n\\nNo other candidate simultaneously offers both an amide carbonyl and an N-nitroso functionality required to account for this specific pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959179,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4971,\"completion_tokens\":7808,\"total_tokens\":12779,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":7424},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822224822-de80e01c-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 88.87046816700604,
+  "error": null
+}

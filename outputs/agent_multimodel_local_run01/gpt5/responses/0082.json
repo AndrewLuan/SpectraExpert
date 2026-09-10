@@ -1,0 +1,21 @@
+{
+  "query_index": 82,
+  "content": "SELECTED_INDEX: 3\nCONFIDENCE: 0.74\nEXPLANATION: The medium band at 2728 cm⁻¹ is characteristic of an aldehydic/formyl C–H band arising via Fermi resonance with a bending overtone, a hallmark of –CHO/formate groups (SPC-002). Among the candidates, only hexyl formate (3) contains a formyl hydrogen. The strong aliphatic C–H stretches at 2879–2906 cm⁻¹ and CH2 scissoring at 1442 cm⁻¹ fit a saturated alkyl chain (GFQ-003). The 1078 cm⁻¹ band matches a C–O stretch typical for ester/ether linkages present in 3. Absence of bands near 2100–2250 cm⁻¹ disfavours nitrile/azide-containing candidates. The 894 cm⁻¹ band is consistent with C–O–C/formyl-related deformation.",
+  "usage": {
+    "prompt_tokens": 4441,
+    "completion_tokens": 3097,
+    "total_tokens": 7538,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2880
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByyepuzRAAVAbY9vJmsiWWaa5kD",
+  "last_attempt_file": "gpt5/attempts/0082_1788957967374371000.json"
+}

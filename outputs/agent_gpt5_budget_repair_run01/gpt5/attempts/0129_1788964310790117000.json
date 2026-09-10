@@ -1,0 +1,10 @@
+{
+  "query_index": 129,
+  "model": "gpt-5",
+  "started_at": 1788964310.790118,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2qWGSbYMgsadt8TNrj2hx0yMJ\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 6\\nCONFIDENCE: 0.64\\nEXPLANATION: The spectrum is that of a saturated aliphatic amine with a six‑membered ring: a very intense skeletal mode at 836 cm⁻¹ is consistent with a ring breathing/deformation of a cyclohexane‑like framework (expected strong Raman in the 800–850 cm⁻¹ region), the CH stretching cluster at 2862/2895/2972 cm⁻¹ and CH bending at 1446 cm⁻¹ match saturated aliphatic groups (GFQ-003), and bands near 1015–1129 cm⁻¹ are typical for C–N/C–C stretches in tertiary amines. The weak band at 2720 cm⁻¹ is consistent with a CH₃ Fermi resonance (SPC-002), expected for N-methyl substituents. Candidates bearing strong functional-group stretches (e.g., isocyanate C≡N ~2150–2270 cm⁻¹ for 3 per GFQ-031) or C–F signatures were not evidenced. CN1CCN(C)CC1 (dimethylpiperazine) fits best overall.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5085,\"completion_tokens\":4169,\"total_tokens\":9254,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3904},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 54.09284633299103,
+  "error": null
+}

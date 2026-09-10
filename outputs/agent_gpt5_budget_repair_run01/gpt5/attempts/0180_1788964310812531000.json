@@ -1,0 +1,10 @@
+{
+  "query_index": 180,
+  "model": "gpt-5",
+  "started_at": 1788964310.812532,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3TEaKfLN5J9kz46LRqT3VGj9C\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.66\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2966–2895 cm⁻¹ (GFQ-003), a distinct band at 1069 cm⁻¹ consistent with an S=O stretch of a sulfoxide, and multiple intense low-wavenumber bands in the 600–760 cm⁻¹ region (623, 654, 695, 732, 763) characteristic of C–S stretching and ring modes. Among the candidates, only 1 contains a sulfoxide; candidate 9 has S but no S=O and would not account for the 1069 cm⁻¹ band. Lack of C=N or carbonyl bands disfavors candidates with imine/amide functionalities. Hence the cyclic sulfoxide (1) best matches the observed Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5741,\"completion_tokens\":3846,\"total_tokens\":9587,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3648},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822192612-c7ef91de-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 50.16481529100565,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 5,
+  "content": "",
+  "usage": {
+    "prompt_tokens": 5066,
+    "completion_tokens": 4096,
+    "total_tokens": 9162,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4096
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "length",
+  "response_id": "chatcmpl-EMBxqZvPOpbBvmysMstC6wXMXTBKn",
+  "last_attempt_file": "gpt5/attempts/0005_1788957912129307000.json"
+}

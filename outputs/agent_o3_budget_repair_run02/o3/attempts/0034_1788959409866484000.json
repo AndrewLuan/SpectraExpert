@@ -1,0 +1,10 @@
+{
+  "query_index": 34,
+  "model": "o3",
+  "started_at": 1788959409.866488,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCM04gnRzdizn2Fjpr0ZE7YPXZwS\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 5\\nCONFIDENCE: 0.22\\nEXPLANATION: The spectrum is dominated by bands typical of an aromatic system with one or two hetero-atom substituents.  \\n\\n• Strong C–H stretching at 3082 cm⁻¹ together with intense ring ν(C=C) bands at 1609 and 1572 cm⁻¹ indicate an sp²-rich (benzene-like) framework.  \\n• Two very strong C–H out-of-plane deformation bands at 847 and 830 cm⁻¹ are characteristic of a 1,2,4-substituted benzene ring, matching the substitution pattern of O=c1cc(Br)cco1.  \\n• The 632 cm⁻¹ band fits the typical ν(C–Br) stretch of aryl bromides (600–650 cm⁻¹), supporting the presence of a bromine substituent found only in candidate 5.  \\n• Bands at 1157 and 1235 cm⁻¹ correspond to C–O (aryl–O) and C–O–C stretches of an aromatic ring incorporating an oxygen, again consistent with the benzofuran-one skeleton of candidate 5.  \\n• Additional medium bands at 1428 and 1403 cm⁻¹ are normal aromatic C–C/C–H deformations.\\n\\nNo other candidate combines an aromatic ring, an internal hetero-oxygen (C–O–C), a conjugated carbonyl, and an aromatic C–Br bond required to explain the key 632 cm⁻¹ peak. Therefore candidate 5 best fits the observed Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959412,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5171,\"completion_tokens\":7473,\"total_tokens\":12644,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":7104},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260817064417-5170c2c3-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 92.48567687498871,
+  "error": null
+}

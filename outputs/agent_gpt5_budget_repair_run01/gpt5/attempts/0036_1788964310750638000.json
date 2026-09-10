@@ -1,0 +1,10 @@
+{
+  "query_index": 36,
+  "model": "gpt-5",
+  "started_at": 1788964310.7506392,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3yj7qSgFK2dUKuX6XXkhRVWul\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.72\\nEXPLANATION: The spectrum shows a very strong 1006 cm⁻¹ band characteristic of the pyridine/benzene ring-breathing mode (noted near 1008 cm⁻¹ for pyridine), a strong aromatic C=C/C=N stretch at 1599 cm⁻¹, and a prominent carbonyl at 1700 cm⁻¹ consistent with an aromatic ester. The strong 1242 cm⁻¹ band matches an ester C–O stretch, and CH stretches at 3074 cm⁻¹ (aromatic) plus 2955/2988 cm⁻¹ (alkyl O–CH₃) are present (support: GFQ-003). Absence of aldehydic CH (~2720–2830) disfavors 10; absence of NH stretches (~3300) disfavors 6; lack of OH evidence disfavors 5. Overall, COC(=O)c1ccccn1 best fits the observed pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5357,\"completion_tokens\":5798,\"total_tokens\":11155,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5568},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822192612-c7ef91de-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 73.20248649999849,
+  "error": null
+}

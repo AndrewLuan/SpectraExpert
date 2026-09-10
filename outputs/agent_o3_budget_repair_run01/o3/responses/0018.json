@@ -1,0 +1,21 @@
+{
+  "query_index": 18,
+  "content": "SELECTED_INDEX: 7\nCONFIDENCE: 0.34\nEXPLANATION: The spectrum shows:  \n• Strong C–H stretches at 2870-3000 cm⁻¹ → alkyl groups (most candidates fit).  \n• A very strong band at 769 cm⁻¹, typical of an aromatic ring out-of-plane deformation; only candidates 3 and 7 contain an aromatic ring.  \n• Medium bands at 585 and 523 cm⁻¹ together with a strong 1033 cm⁻¹ band match PO₄/PO₃ vibrations (GFQ-024), indicating a phosphoryl group; this is present in candidates 7 and 8, but absent in 3.  \n• A band at 1188 cm⁻¹ coincides with the characteristic symmetric S=O stretch of sulfones (~1150-1200 cm⁻¹; GFQ-005), and only candidate 7 has an SO₂ (sulfone) group.  \n• The 1690 cm⁻¹ band is consistent with an amide C=O stretch, present in 7.  \nThus the simultaneous presence of P=O / P–O–C modes (523–1033 cm⁻¹), sulfone S=O stretch (1188 cm⁻¹), an aromatic ring deformation (769 cm⁻¹), and an amide carbonyl (1690 cm⁻¹) is uniquely satisfied by candidate 7 (CCOP(=O)(CN(C)S(=O)(=O)c1conc1C)OCC).",
+  "usage": {
+    "prompt_tokens": 5285,
+    "completion_tokens": 2669,
+    "total_tokens": 7954,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2304
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCIBDYMfoblJfX5TtkvbJySB5PNQ",
+  "last_attempt_file": "o3/attempts/0018_1788959172414960000.json"
+}

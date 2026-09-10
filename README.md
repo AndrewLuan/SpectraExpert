@@ -1,6 +1,6 @@
 # SpectraExpert: A Retrieval-Transition-Reasoning Framework for Molecular Identification from Raman Spectra
 
-**[Paper]** · **[Knowledge Base](knowledge_base/)** · **[Benchmark Results](results/BENCHMARK_REPORT.md)**
+**[Paper](output/pdf/SpectraExpert_camera_ready.pdf)** · **[Knowledge Base](knowledge_base/)** · **[Frozen Results](paper/results/)** · **[Artifact Manifest](REPOSITORY_MANIFEST.md)**
 
 ---
 
@@ -8,11 +8,11 @@
 
 SpectraExpert (Fingerprint Reasoner) identifies molecular structures from Raman spectra by decomposing the problem into three sequential stages that mirror the workflow of a human spectroscopist:
 
-1. **Contrastive Retrieval** — A SpectrumTransformer encoder (SimCLR, 5M parameters) trained on 129,817 QM9S spectra retrieves the top-*K* structurally related candidates via cosine similarity in a learned embedding space.
+1. **Contrastive Retrieval** — A coverage-aware spectral Transformer trained with experimental–theoretical pairs retrieves the top-*K* candidate structures by cosine similarity in a learned embedding space.
 2. **Spectral Analysis** — Detected peaks are matched against 181 empirical group-frequency rules digitized from Nakamoto's authoritative textbook, producing a structured peak–rule annotation.
 3. **LLM-Guided Reasoning** — A frontier LLM performs 4-step chain-of-thought reasoning over the candidates and Nakamoto rule annotations, then issues a structured decision: **SELECT** a candidate, **MODIFY** it, or declare **UNCERTAIN**.
 
-![Pipeline overview](paper/fig/pipeline.pdf)
+![Pipeline overview](paper/figures/spectraexpert_agent_workflow.pdf)
 
 ---
 
@@ -35,7 +35,9 @@ spectraexpert/          # Core Python package
   eval/                 # Evaluation harness (all 5 modes)
 scripts/                # Data preparation & figure generation
 knowledge_base/         # 181 Nakamoto group-frequency rules (JSON + Markdown)
-paper/fig/              # Paper figures
+paper/figures/          # Paper figures
+paper/results/          # Compact frozen evidence used to verify paper tables
+outputs/                # Frozen multi-model requests, responses, and scores
 ```
 
 ---
@@ -185,17 +187,18 @@ python spectraexpert/eval/evaluate.py --mode agentic \
 
 ---
 
-## Benchmark Results
+## Paper Results
 
-| Method | GED (mean) | Tanimoto | Parsed | N |
-|--------|-----------|---------|--------|---|
-| Encoder best@10 | 16.93 | 0.058 | 100% | 211 |
-| KNN best@10 | 17.04 | 0.056 | 100% | 211 |
-| LLM+KB O3 | **13.52** | **0.075** | 84% | 50 |
-| Agentic Claude | 16.16 | 0.045 | 100% | 20 |
-| Agentic DeepSeek | 15.73 | 0.063 | 85% | 20 |
+| Method | Exact | Tanimoto | Chemical GED | Valid |
+|--------|------:|---------:|-------------:|------:|
+| Frozen encoder top-1 | 41/200 | — | — | 200/200 |
+| Full Agent, GPT-5 | 37/200 | 0.3082 | 5.4603 (n=189) | 200/200 |
+| Full Agent, o3 | 41/200 | 0.3352 | 5.0890 (n=191) | 200/200 |
+| Full Agent, Claude Sonnet 4.6 | **58/200** | **0.4207** | **4.4404 (n=193)** | 199/200 |
+| Full Agent, Gemini 2.5 Flash | 33/200 | 0.2985 | 5.4688 (n=192) | 200/200 |
+| Full Agent, DeepSeek v4 Flash-Ascend | 44/200 | 0.3575 | 5.0785 (n=191) | 200/200 |
 
-Key finding: the agentic pipeline achieves **best-case GED 8.0** on small molecules, while Claude Sonnet 4.6 maintains **100% valid-SMILES output** across all evaluation modes.
+All rows use the same frozen seed-0 encoder candidates and the same 200-query closed-library benchmark. "Valid" is the final scorable-output count after the documented recovery policy; it is not the initial formatting-compliance rate. The complete statistics, denominators, confidence intervals, and provenance hashes are stored in [`paper/results/agent-multimodel-20260909/summary.json`](paper/results/agent-multimodel-20260909/summary.json).
 
 ---
 
@@ -214,7 +217,9 @@ Each rule includes a unique ID (e.g., `GFQ-042`), frequency range, confidence le
 - **QM9S** (training): 129,817 computed Raman spectra, molecules ≤9 heavy atoms. Download from [figshare](https://doi.org/10.6084/m9.figshare.24235333.v3).
 - **ChEMBL Raman** (evaluation): held-out test set of ~211 pharmaceutically relevant molecules. From [Liang et al. 2025, *Scientific Data*](https://doi.org/10.1038/s41597-025-04184-1).
 
-Pre-processed test set: `data/processed/chembl_test_set.parquet` (not included in this repo due to size; see `scripts/build_benchmark.py` to reproduce).
+Raw spectral corpora, generated parquet files, and model checkpoints are not duplicated in ordinary Git because of size and upstream distribution constraints. Download the source datasets from the links above, then use the preparation scripts in `scripts/`. Compact derived metrics and provenance snapshots needed to audit the paper tables are included under `paper/results/` and `outputs/agent_multimodel_repaired_*`. See [`REPOSITORY_MANIFEST.md`](REPOSITORY_MANIFEST.md) for the exact publication boundary.
+
+Raw inference requests and responses for the five-model comparison are included under `outputs/`; no API credentials are stored there.
 
 ---
 
@@ -237,9 +242,9 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 ```bibtex
 @inproceedings{luan2026spectraexpert,
-  title     = {SpectraExpert: A Retrieval-Transition-Reasoning Framework for
-               Molecular Identification from Raman Spectra},
-  author    = {Luan, Denghong and Lu, Zaifan},
+  title     = {SpectraExpert: Expert-Like Reasoning Agent for Spectrum-Based
+               Molecular Identification},
+  author    = {Luan, Denghong and Lu, Zaifan and Wang, Wenjie and Hu, Wei and Jiang, Jun},
   booktitle = {IEEE Conference},
   year      = {2026}
 }

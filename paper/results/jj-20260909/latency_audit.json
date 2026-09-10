@@ -1,0 +1,1690 @@
+{
+  "derived_at_utc": "2026-09-09T10:39:53.813498+00:00",
+  "root": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02",
+  "definition": "Successful received HTTP attempt duration; excludes queueing, earlier failures, retrieval and local parsing; no new API requests.",
+  "groups": {
+    "model": {
+      "n": 200,
+      "mean_s": 21.499486087560655,
+      "median_s": 21.268213272094727,
+      "p95_s": 46.31974911689758,
+      "min_s": 1.864931344985962,
+      "max_s": 84.7227897644043
+    },
+    "raw_knn": {
+      "n": 200,
+      "mean_s": 21.640432785749436,
+      "median_s": 20.734469413757324,
+      "p95_s": 42.955907583236694,
+      "min_s": 2.062955141067505,
+      "max_s": 108.27053618431091
+    }
+  },
+  "reported_usage": {
+    "buckets": {
+      "all": {
+        "attempts": 587,
+        "attempts_with_usage": 400,
+        "numeric_usage_totals": {
+          "completion_tokens": 165662,
+          "prompt_tokens": 271828,
+          "total_tokens": 437490,
+          "prompt_tokens_details.cached_tokens": 512
+        }
+      },
+      "method:model": {
+        "attempts": 292,
+        "attempts_with_usage": 200,
+        "numeric_usage_totals": {
+          "completion_tokens": 83386,
+          "prompt_tokens": 135452,
+          "total_tokens": 218838,
+          "prompt_tokens_details.cached_tokens": 0
+        }
+      },
+      "key_slot:1": {
+        "attempts": 201,
+        "attempts_with_usage": 201,
+        "numeric_usage_totals": {
+          "completion_tokens": 83526,
+          "prompt_tokens": 136626,
+          "total_tokens": 220152,
+          "prompt_tokens_details.cached_tokens": 512
+        }
+      },
+      "method:raw_knn": {
+        "attempts": 295,
+        "attempts_with_usage": 200,
+        "numeric_usage_totals": {
+          "completion_tokens": 82276,
+          "prompt_tokens": 136376,
+          "total_tokens": 218652,
+          "prompt_tokens_details.cached_tokens": 512
+        }
+      },
+      "key_slot:2": {
+        "attempts": 192,
+        "attempts_with_usage": 98,
+        "numeric_usage_totals": {
+          "completion_tokens": 40030,
+          "prompt_tokens": 66247,
+          "total_tokens": 106277,
+          "prompt_tokens_details.cached_tokens": 0
+        }
+      },
+      "key_slot:3": {
+        "attempts": 194,
+        "attempts_with_usage": 101,
+        "numeric_usage_totals": {
+          "completion_tokens": 42106,
+          "prompt_tokens": 68955,
+          "total_tokens": 111061,
+          "prompt_tokens_details.cached_tokens": 0
+        }
+      }
+    },
+    "note": "Totals include every response reporting usage, including retries. Missing usage is unavailable, not zero. Interrupted parent requests without received responses have unknown usage, so totals are reported usage only. Nested token fields may overlap; do not add them together. No inferred pricing."
+  },
+  "sources": [
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0000_1788892878811567222.json",
+      "sha256": "f88916bf9ea7d99b2ffe6ad740b822b894e0453f80510257e8df74bf17f479a2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0001_1788893357939760516.json",
+      "sha256": "31d288874b1630dbd39e803b0a65641347301cc529716ebf881b4aec9f0bae31"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0002_1788893357955566120.json",
+      "sha256": "db3fa1f725c97cc7ad96ed7c9474f662b8c2658a9ab5e1478589c0046f22bc00"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0003_1788892880174690321.json",
+      "sha256": "db1e10fee221215551d8728e81d1ab045cbdf9b92f93a9d2f6d121cd69206bb8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0004_1788893357956354291.json",
+      "sha256": "04c661c6a7ddba36363cd4541a5733d917dfcf915a1d2303d375cb9249a3676d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0005_1788893361143547733.json",
+      "sha256": "546e11d6b923a303613a149c26e519f2c97f46bd9f9c40cd473f851f61081202"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0006_1788892884238992694.json",
+      "sha256": "47afb99067627eb34ca3455e7ee57f1bb8eb1bae234fb348744cf3e9f9ef35a4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0007_1788893361156402444.json",
+      "sha256": "c2e5baf66fc17b3eaca145778199c6763f83c5be7e2f10700a7c480db8b5d701"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0008_1788893361157152565.json",
+      "sha256": "fcbe74491e91d2245df2865943f085f6eab6003f9ae2ac09f8e660c17b55b216"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0009_1788892904571073409.json",
+      "sha256": "d1106f5e14587b14545d4f9fc8ab89eaa77f360dd70f0fe7a868a95d637706fa"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0010_1788893364347722290.json",
+      "sha256": "0f56f9e98704821d2f97c8db6844022909c2237c2687a16a60fcfc449816809c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0011_1788893364358338039.json",
+      "sha256": "2cee3eb817855092279ef1114bdd08e01bfaa280c24ab5347d0e2271ca556bb8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0012_1788892889582759002.json",
+      "sha256": "a7e43b43170f6a4c3e1ffcf016b7ae6617bc808b7e8a1d3e6c3af205826d58c1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0013_1788893364360745331.json",
+      "sha256": "bab1078a24653adcb544f29530d52d5543cef7a32566ce0fbebbac7eec98f5a2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0014_1788893367551459987.json",
+      "sha256": "64b896fd4325aec4524c2775568210ec323c96461b4354e32931a9e14cf29987"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0015_1788893367559030093.json",
+      "sha256": "e7d764aad9f3a4338212fb1e7b2dae7f10ea8499b09dd2328040f10690a3152b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0016_1788893367562784406.json",
+      "sha256": "e10d4d6c0c6b71736f632ce1605c9084b79bf1b220aa85ef9207405206bdd4d9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0017_1788893370756444084.json",
+      "sha256": "c0a90ebdddfd71bd356af3d4fff2b3fd5f424043638121d3e864f07d8d34847d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0018_1788893370760077288.json",
+      "sha256": "543662e5c1e7ea33bc6a1f299cb1da0fc4a0cf83bdc971be99fe537aeecd107e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0019_1788892893835730241.json",
+      "sha256": "6a9563e44df29705f6cf60326bc071619ccfd458199740b6a5b3004783df7afd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0020_1788892896815241340.json",
+      "sha256": "1f97c1eedada23dfb657923d6fd0181c5663e228af301969452cf050869c9e00"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0021_1788893370763204840.json",
+      "sha256": "d85bd1346c0cc83d74ef007f2a46817f02269a46de03b30012a839deeea6ac7f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0022_1788892900037489303.json",
+      "sha256": "c6b2dd538ef72a67da6e305d0b6ab7d6847a1605064628c9b9bbb960b837ab83"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0023_1788893376526051807.json",
+      "sha256": "348dbc7a0683588bc399191f7d6136de0c73be184f6345c43e2a41091f86e6d2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0024_1788893377019406480.json",
+      "sha256": "775d1396f4f49bcb87e55dc46de97f788010c421484195b87621a87f73223c11"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0025_1788893383340985148.json",
+      "sha256": "19d5e9d3e3e77ee26d901394467139835be7fcdf4a772d426dddb2918f3a39f7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0026_1788893386544538365.json",
+      "sha256": "59602045112d610030c35f73bc4aa10bb1b2bead45acfcf60c106c303891bc8f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0027_1788893386718510618.json",
+      "sha256": "561a32aa551141e638427cc90b7a013bd6154dece2a8d813ca61cb895260ea86"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0028_1788892902508121245.json",
+      "sha256": "6bd72d1d22670ab5bf5de34e436e3a51b77d304041bc2803347b24f32ab3eec4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0029_1788893389920070472.json",
+      "sha256": "ab0f68866f3aeb549cb79edc3e09af7e318d3bb926e5541c2673c2da00f958ca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0030_1788892905849917534.json",
+      "sha256": "02a657b725f00032d715f56855ae6383a10eccc0299432f5e7d016ea44480cdc"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0031_1788893393123783959.json",
+      "sha256": "3ecd4abee8b080a99e842873f0613a0e3406a8f4430fd0450831c0a94ebad66f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0032_1788893396326078124.json",
+      "sha256": "a7ca76e482b7c477b751dd5007a990c0ccb182458ba066e3591d1649815bada0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0033_1788893391107627216.json",
+      "sha256": "466abcb2fd387bbb959a6883bbe20de6f5d03378e2196aae25f56bb234bc56c9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0034_1788892929350842425.json",
+      "sha256": "60d8983cde9e3a04463c6971a9f6858b5080f6e1247f709dc4ade59416e1860b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0035_1788893395259572447.json",
+      "sha256": "ff0e8a978040490c1837f44b79b9be5407d52612bc299d6b9dfc78d87b52d87c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0036_1788893396869990463.json",
+      "sha256": "5f41070884c52c93f14f91be90404a9e92b0e7dc7c7d220cafb641e2dff9ec63"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0037_1788892913728595440.json",
+      "sha256": "f14446090d4c816bdce1d8e6f797977402f2fb59092e08c668bf5c4969e9f192"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0038_1788893401029761840.json",
+      "sha256": "013283d2166b119d3e3cf69f347b4156761feecbabd5ef82c1d53ce45bf220bb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0039_1788893401345166747.json",
+      "sha256": "dedb822c1b5c915a56119d8445b2a1a0d760db694faed450595af03088b96620"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0040_1788892916216654477.json",
+      "sha256": "09533cbb26586e64c7dab0b726555630932ee1daab06eee80c4cdd7a419eefdb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0041_1788893404546789462.json",
+      "sha256": "81c112061e56d475b80aa58b0297d08af9e04afffcd6fce54204f42f9f274a23"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0042_1788893409004696121.json",
+      "sha256": "d8af5558b113ff7a21f2a644b780650dc3dd90f81d36dd2067019efa945c58d6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0043_1788892921981317106.json",
+      "sha256": "49746faea510024f7c5dbebec8db1e11f5427a03a8434f53054296b5e871f0d3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0044_1788892923209895276.json",
+      "sha256": "b22ce96c7a45e1735e916f28abc39014cc79a5cc95b4f0c29d98f0b5f7dcf9b3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0045_1788893414279682838.json",
+      "sha256": "50af48b440bc3afe1e103a907892fdeccbf08c01600b4c553b6e87cca30551b4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0046_1788893417481132543.json",
+      "sha256": "e5ef37d02dfc7e36db0117efebdfcaab544f901553133ccff142f14704a94f43"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0047_1788893417228434241.json",
+      "sha256": "13cc8b48cb2dda160ac9f7e27b132c93a02d5ec8540c8aa6d71a8512f28a790c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0048_1788893420682275727.json",
+      "sha256": "7377ecbdbbdf19edcb0f4ab58b395ab3314d329138323cbbe1a06156d322bfa2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0049_1788893423883808882.json",
+      "sha256": "b1b58ad607040d100f08d08e413c830cf1599e1d3e1885e21f75b6736a249660"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0050_1788893420429549485.json",
+      "sha256": "4687d3c81abcab651dd24bf21e3e3235ef650c34783ecc7dbe29ad38f8556284"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0051_1788892925867332052.json",
+      "sha256": "ce5d9eda8ccee4c388bcbe88223698dca5bc2497aca96b0163a0b14fd033f0c7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0052_1788892928484906434.json",
+      "sha256": "f17c0e80173fa02b892a980034837d90b5f8a0c7ce7ad95bbddf3f65adb9bd5c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0053_1788893419553658785.json",
+      "sha256": "7ee8f93e5d0677893f4435ccd11110b4685d1efed19fc2ba2d4801b522b5fa65"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0054_1788893422757565642.json",
+      "sha256": "2149ffa086b22bfde9795bfa9aa01041acf6702552bee327ae865a532e2354c5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0055_1788893425958197276.json",
+      "sha256": "b711e8731de596f3e98bdca5f6bd63eb5fbd0615dc8db61061b604cac4f532f6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0056_1788893429159516200.json",
+      "sha256": "e5267ab91dfefb7a08b14212b0b09f83beac51a52ccd5ed893221f035f9600dd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0057_1788892934507789029.json",
+      "sha256": "e2d7fb9b07cba57f05cc053675b049da2e22cd4ab90f4394c92eaa6321879589"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0058_1788893425369913059.json",
+      "sha256": "478b639d1710eecbd8965be68f09ebc39698b0947087381df18acc5a0039b77c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0059_1788893432360655335.json",
+      "sha256": "1dbcf94cea816b3611ee1a69ee9aa67e85c18de65becca6de37879f5d73f1a46"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0060_1788892940260444696.json",
+      "sha256": "88b1c4b8671ffb00f2ab266f13b259d5b371bfc22e87db0dad234cb11bf8d2ab"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0061_1788892941277060660.json",
+      "sha256": "7f4fd37cbd6cbd6092ad9c63bee0db904551f0f16db824e7773fa4b24a345cdf"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0062_1788893428571295653.json",
+      "sha256": "db703fef815f863710a4c491a1402db8f0df0e5ecef1bf7e63eeb3d9e22f7ff6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0063_1788893431772245907.json",
+      "sha256": "02cb6e3b0a191d70ed4d8e0a0776296035f6269a01a3ff2acdd2b4bb73ee05d8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0064_1788892944402042157.json",
+      "sha256": "311f5200170fd08382b94c0834bfde787323cd75e40f5e1f2587b8d57e9caa33"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0065_1788892946943250441.json",
+      "sha256": "ffff9736ae82d9adf71c9c06dc58850a914bdba06bba5c945521f1a60cfbd75e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0066_1788893433975274514.json",
+      "sha256": "67de6d00bd6c99d6b88bb996476ae9cd46ca7eafa1496bacf4cf855bd6174f30"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0067_1788893438048385135.json",
+      "sha256": "536132d94214f65890a8e8dd9e81aad0b1a4d496cfb2214745585a20bb80b0f3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0068_1788893441249798070.json",
+      "sha256": "12c80b28ea57da188f7c493701e1666971bac16a6a0220e49e207846beec7f59"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0069_1788893444450777654.json",
+      "sha256": "6efeb0338c6e4fd3679da253d024d0ddef050e1e5973bf9da1b92b5010e636ef"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0070_1788892948228028631.json",
+      "sha256": "5ce0fe9c709a3a28ba23f303f3305577cf14d7826a439264872087a2fac32743"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0071_1788893447651815458.json",
+      "sha256": "4bc101ae19a7b4909e4ed61f5b069368b51a1ab547f34a9e0ba09557d3c3fa79"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0072_1788893443371662155.json",
+      "sha256": "818e2b4a6ad4e4b827d035be137a5622ef3440d320e580278ed336370cb9aa96"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0073_1788893444346345312.json",
+      "sha256": "bfafff6165b56cc1fe02b93a0d65b173e9b9fd41205a9bf22f70f452fbfb8cef"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0074_1788893447549769068.json",
+      "sha256": "678cc26be0b55ee01b01bb5b451836371a846339f76e0b8e799a84384bfb5d13"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0075_1788892951527843962.json",
+      "sha256": "0b088a34c4c2cd63aadde0aa34a96bd8ff03b4eede62588f61ce71cfd65c9519"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0076_1788892970747045389.json",
+      "sha256": "d59fd11ca008b52977efbe98b5531d38140fd23494274a05047851549fbd5c24"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0077_1788893446719906159.json",
+      "sha256": "c6be00b3a96528938d941a096af6029157a952ddc3e91edb210249631a78ce56"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0078_1788893449923148395.json",
+      "sha256": "ea7d538db10bd0089b0cafab1b03f1df114d7509e010a330b872a7c20a4997e6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0079_1788892958014487565.json",
+      "sha256": "1448e3bc4159622f879324687c937af3a3970d4255412b468e0c5afeb14ad232"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0080_1788893453317472679.json",
+      "sha256": "d2e153c4602bc18d9d046609210e8e87f674cc7d1592eef0fbd6686d718d7552"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0081_1788893455505186293.json",
+      "sha256": "2f51e1d465b82496c5512eb4918143196ae8e5e037a86499d9b7404596c0c5f4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0082_1788892962320561581.json",
+      "sha256": "8677bf76b02dc9f3f02b2c2f5694a5b7dea068ca602e43ff6e0cc63d4901812f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0083_1788892964579091416.json",
+      "sha256": "048cdb4fe88dea6c6100d90cb20fda722ec904b8a9764e7f49da4a051e5830ba"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0084_1788893458707687558.json",
+      "sha256": "063a5ab23c5f4a69e37d8e97ffb49cc1910afb76190e67dbccf42e44d7bf4337"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0085_1788893461909655103.json",
+      "sha256": "7341fa64e68b7c0c3e50db23f63a08b90a477beb5038fe29a9abd25558cdd711"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0086_1788892982933410253.json",
+      "sha256": "2399d6fc191c06738630dc947c080a86a51fa2c6e61a91b4d9bdc67f0f5acd04"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0087_1788893463793115919.json",
+      "sha256": "5c703cb406672d7713b4abe7f30048026f0011ecf641b1254f805ff39d4e07c9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0088_1788893464053175548.json",
+      "sha256": "f48c2d3bd061629972dab12e2488223e0e8f14ab776ddcaa2b982a69504523af"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0089_1788893471267976811.json",
+      "sha256": "55e0ff2f88688a45e2c18ae787c31eae1fe6e78f9976ae96ea2174ad04b75e67"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0090_1788893471272762405.json",
+      "sha256": "2445dcdfd47308cf2b9339587adff61ce54ba3e13c1ccd0dd86298976e66a616"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0091_1788892970410696403.json",
+      "sha256": "02e93b67c687d3e739d4ef02f47ed0f40e5e18a663d72c8a38c78f8f9c2489a4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0092_1788893471391317919.json",
+      "sha256": "4d011fb794d1ce70672ffdcaea3bf01f5baa2c16e0a6853b786285b6b5a2d7f9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0093_1788893474473538779.json",
+      "sha256": "be542d25af5ea207644f0a010bdd308e35ffef392fdbe16d7534ebfacb7a0566"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0094_1788893474471336387.json",
+      "sha256": "5257ccd37300b2b17285b288ccab087b2a73bf7069b0d489b9291c84084e6d52"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0095_1788893477675093814.json",
+      "sha256": "9dddf0a6adaaa1d014f45356bca040307d521eab1d6b0806739e548fd7471d3c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0096_1788892973874936409.json",
+      "sha256": "ee58bc5b91d64669408acfa514bf129819aa65eb13649ab82a6c1768b002abc8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0097_1788892976973865893.json",
+      "sha256": "e7408a1005230cdde9494b21ab7cf15bdcc6b9217ddea6d8a1fddeeb8df9d7a5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0098_1788893475119484267.json",
+      "sha256": "490ced3b116f194818fa09dbe79fa9717603328fc7bce81eebc1b3ac53772498"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0099_1788893478321269642.json",
+      "sha256": "7acf997d72dbb92cc63cde0a44954d65d994c8f46e3f209c3ff61291892ca114"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0100_1788893480325470664.json",
+      "sha256": "8d2a27d0ef6cf3d867da1f11d4dc320df4906f50d3140d24f5cb4b38ace8b5c5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0101_1788893481523008797.json",
+      "sha256": "97bca26a668d7ceb3b5174d82cb94b0e9b1c3671f16539c3894cc3c4106cd9e5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0102_1788892981637571853.json",
+      "sha256": "85530a4437488808187add4048b035bc4b41841b74d284a6751f1d65cd3a1ef0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0103_1788892984697104313.json",
+      "sha256": "0911f44385b74c0a9fe4d9a965091bc01fdae8aed46757c9d3d77a732dc50d77"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0104_1788893485231464617.json",
+      "sha256": "4a4b65053593b64eb4eadbdb301cb3c37e8cb677f16157e92318f1c9f6844a30"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0105_1788893486954278782.json",
+      "sha256": "2fa6be18fcd6287affc71830da8b93bad01d52e3fd24d14d4d54d7aea2ddf822"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0106_1788892986040041674.json",
+      "sha256": "bfea286a630d82d262f6901ce6a44907d41ded5f3697d055f812da2558a9b277"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0107_1788893488384747449.json",
+      "sha256": "ca68dd92cf88b51a3169c0a7c9f4e082ca57036442c8097977d05645c81321ed"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0108_1788893489405514077.json",
+      "sha256": "2352d03d628dc5326cd3eba20189a1be11f84a3dbad1cbc0fe76a9a5b79bbc10"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0109_1788892989454077956.json",
+      "sha256": "539c7021a59f1357d57b4b0c5fb91d2eba1f8161a5040d45c970c4222c5b59a6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0110_1788893492608245422.json",
+      "sha256": "72f2a5d5dd3742d7902dcdb67f0c2ff9196d36fbccfae876ed1c514ba8dc1bdd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0111_1788893491586518924.json",
+      "sha256": "5a51866dcdab4950dccef9f1a98d7eddd5dcf5a036cde4508415832e589d4c55"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0112_1788893499080659333.json",
+      "sha256": "6d008708c730d2de4852328a6d7dfbfbdff366298bc771a622628f1c54449b1b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0113_1788893500489818622.json",
+      "sha256": "d983167d83730bb3962d3ea26d6226bd962de8caa528c340ef50d06c31a7994f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0114_1788892992837826940.json",
+      "sha256": "601ccaf44fd92cb5b9404c44ceda270f78d1f0636a80704095f8eb55807adf53"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0115_1788892995494254906.json",
+      "sha256": "b4440233e75eb5c9bbbb96c311b9fc391f65d7cdafb1db0e53b765b702a2f8de"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0116_1788893503694178329.json",
+      "sha256": "429ae479c126d5d506245d355bc90b80ac16856274fcb82017e0afa6022e14d6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0117_1788892998674013642.json",
+      "sha256": "0ba9651848242a519a2c8d7b268ed2664928b8920cb66311bd78f7f35bf1f24a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0118_1788893002230476598.json",
+      "sha256": "ccc16007d23cddb447c153e29e5ffa1d6e620e09bedab0246d1f1042f658ada5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0119_1788893504933391448.json",
+      "sha256": "d95780b209cd89737dc9617c739d244350c7ceb8c4a8336e29542a78e4233b6b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0120_1788893505729342848.json",
+      "sha256": "10f923476435cdf19be96d1249015ebcdda84dda7ce4b7f30ad253dadcd31643"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0121_1788893508931010623.json",
+      "sha256": "e770f8064da8385a7fa934a265838de07e0c8de9df1cddb8afbb82321c832975"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0122_1788893005120430529.json",
+      "sha256": "5b2a0b79b7e24974cb1c430e42ab2adb2f4d741a0878a5b492e7444ea46a5f85"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0123_1788893010035446350.json",
+      "sha256": "7ca5583f7aa604b54e061e9b16d680ec3f71f363c73bae0afaa29238ee5db0a8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0124_1788893508135539793.json",
+      "sha256": "3ce59b7febf90604a120f20dcdbe40ded78e7380ed8eaec9cf62ffad0ecb8a26"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0125_1788893512132058067.json",
+      "sha256": "6e5f557cd2ff57b7b5ee296aa54142d70b1003438ae1ae9ba7e8d41efd57f341"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0126_1788893011974689865.json",
+      "sha256": "adc73f1b01a3b82d7b0461649b3c09a464792eaeb31c14f98fdb778a797e1d87"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0127_1788893515336602055.json",
+      "sha256": "f5134c6af865261ff0a01707b0d6b436f6b37743b3fc2dc2e3b41da5432dcc9f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0128_1788893512167195498.json",
+      "sha256": "7b8dbb309276855fbad9d8a9d6290f1cfe6da8943de3bf58607515e6c1191c53"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0129_1788893515562263783.json",
+      "sha256": "4da069a603179169ed7b9cbb11b7faff88c81bfb72cd1d1bf5a086f9b2280da9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0130_1788893015384687053.json",
+      "sha256": "2f97d1fd3733a829c2b52cc3bf1f99866bd2306ebd69f8116304de99067f5c45"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0131_1788893518539314520.json",
+      "sha256": "5c9cf60583456ef7aa1e366d301829447bc8f8049558e3d9411079f38d1e539b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0132_1788893521740005964.json",
+      "sha256": "02acacaa75b603de72ffdb3ce2fb6cf90c5f75bcdff23380a48df34f2420c2a7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0133_1788893519821041307.json",
+      "sha256": "6020de5cf6f6a2e0771ce7405b0bffa517fa5992a31769c38de8be5fb1c478db"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0134_1788893021260637629.json",
+      "sha256": "948cce086e4134f235015739ea9f2412d9e2c3fbbff9b3338fa4b2507cbc582d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0135_1788893523022628072.json",
+      "sha256": "208536a6b0d13159aacd30acb5644deb00700bd02579fb75ec46f1b87b8a8633"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0136_1788893521523374294.json",
+      "sha256": "2f3489d793eef63e5fd394b4d9af5f327a47336dce89ec7a872214b0ae272abe"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0137_1788893021383010396.json",
+      "sha256": "8a7abad2a1d973a5cfca05402219da6356c469001ec51f5900504f0c32676f0e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0138_1788893524725305309.json",
+      "sha256": "e4c92064888895720f0e80c59add1ff9cf1eb60c18428750249861eb27c04ad3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0139_1788893526224576267.json",
+      "sha256": "88a1b1ebb9d40a82c0aa23ae5b79149de34a3edfb0e269bf5cfa1a71c6cf9f2b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0140_1788893534960629487.json",
+      "sha256": "544f4838226f5992e2aa9e37ef77b11996976ee3a0c26c44dc86dea31b253f55"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0141_1788893536424374344.json",
+      "sha256": "9d4378cd8503b2eb3405858aa1bbb1e7667a80c9e82b54b4431c9b787259773c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0142_1788893034415601194.json",
+      "sha256": "bc51e855036854ae3ab2c717935ab4dee51a31c6424bb70330544cabf7e63053"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0143_1788893028300833388.json",
+      "sha256": "86588071d271697600288ffc803aa0843fee1d82089cd981f06bd3bb3e8d66cb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0144_1788893538162296052.json",
+      "sha256": "42162cf90ac12f0afa875498cda59c36e684b00316205e4e93f53530cae7ae9c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0145_1788893538899955301.json",
+      "sha256": "8a7f3bed5df5503c225575e1cf6400aacdedc9d48d5738d0a71b4ad7f160f92e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0146_1788893034129106852.json",
+      "sha256": "b338cbb9304b7c640f94f02fe129d032c2d998851b6ab32e9f797a3115e02b76"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0147_1788893541364257977.json",
+      "sha256": "6d5541af9eaa9738da0314fc05b1c9c11157ef586728438127c134eb7a0f90fe"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0148_1788893540765943241.json",
+      "sha256": "bbc485684b1323e4a389904dfa3d634c125cd247b979e968c07a0e7efe4c57fd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0149_1788893542101212725.json",
+      "sha256": "1c8a2387f7db91c647a2984718dbc81f5d0c461e48c222f775c8222380ceffe1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0150_1788893543968007216.json",
+      "sha256": "ff040b3a3b57bce01c31cd8dda2a3a9a855bf6d43ea53abb401729aaaf624938"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0151_1788893035612937067.json",
+      "sha256": "c409e79ddb5d4f62027ba84099b1e76cd901ef0d297074f103586504b275a1e1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0152_1788893037483228621.json",
+      "sha256": "08b048fd270131a872439dd44f7dd3c16b8c79c5e7b71b2aa52fa2b37158b7df"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0153_1788893544565437432.json",
+      "sha256": "694941ec30d21864fd3e1136d24e32f3c640840fbdd95a27f11622f615cea895"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0154_1788893548951762488.json",
+      "sha256": "affd7be96d87a16adbcc06e400dbf10c1a88539c4739a3002bfcee40f46a4260"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0155_1788893551154360064.json",
+      "sha256": "8f166e743fbb00eac89fc16c87e88c4f4522b3221ef618792b292777a74b13c9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0156_1788893551761225448.json",
+      "sha256": "56275ea5c76a34a1bdc1231aae236576035a4d436ff9239824f6a1c35816240e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0157_1788893040585468109.json",
+      "sha256": "54cfe65711adf7f7f5fc71352556f0e3893c88e26a1f9325d828e37bfb2f990b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0158_1788893554962362212.json",
+      "sha256": "d5ac34597ad24138eaec29540ddbacb502641a8b5e3e82e3bc18d4c1fa5adac1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0159_1788893554356737880.json",
+      "sha256": "23f1792aed5b6f260333f7da56b0de4ae0b32e8ba5a4dd3571b8fc3d4e93fdaa"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0160_1788893554991478438.json",
+      "sha256": "870ddd6d6f113e5eebf0515c79dc30096fd3bf4431226b52792d35229c7acde4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0161_1788893557557670184.json",
+      "sha256": "28189cdaac5841a4839e363c3016a1934c4c5fa817196a3e68b7099180cec102"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0162_1788893046359631365.json",
+      "sha256": "ab3e014c741bce83a4e13d3b4ee779be0c200258122a81de75e9e7940a1e7e48"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0163_1788893063566122962.json",
+      "sha256": "912031825260e54aa1bfaf7b08f215f173c4bbdf20f5c2e8e95813f62ba7d4d5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0164_1788893560759767589.json",
+      "sha256": "532e4d26e8606e425b668717b248ddea02a22fed1e7445cccf0d7dea7a67fdfb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0165_1788893563963329495.json",
+      "sha256": "b9a74a37609306d300d1e685c9e646d5f7ce44d9b876c337e5da9b435be1d520"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0166_1788893050626495106.json",
+      "sha256": "2ca39b6fa972650076c2443a85bd98e3a22bc9d74f92a01bebedaaa7a6fa7102"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0167_1788893053251982874.json",
+      "sha256": "fd45cb46be3ae70f620ff7f562f03182218f3644218ae87d83d3b75931619bfd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0168_1788893562025190002.json",
+      "sha256": "9bad7c08f62644d5520a75f6bc04298e794473902c4f0a7afbcf87469fa890d0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0169_1788893565950536313.json",
+      "sha256": "3731ffb537d5058f6ce48da339f46823e89627d5bfd135d832407960bddc82d0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0170_1788893056609755357.json",
+      "sha256": "ef241613826d22158282be2b459511ca350b15b2866c954dc5558632347e9244"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0171_1788893569151379617.json",
+      "sha256": "5bd6ebfcbb322f772aae4553a12b70e5f1c6321749b743f5a63170f1c9ab8a3a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0172_1788893568207120637.json",
+      "sha256": "a0626bf0c61672cd3baf441f7037a1b519b292419f7e0d69b3e1bddfae9db50d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0173_1788893572353583022.json",
+      "sha256": "d4e4f7d8717a1dae468fce644061d12ecc5e54d013e83eb955048c03f8bb5848"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0174_1788893571409265242.json",
+      "sha256": "7a8c8c31ae91826bd9977e88e6bea855f3275da86c40a42a07166fe45f2e5501"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0175_1788893061835270551.json",
+      "sha256": "0c9085602f81799de840a97616800e002a1860fec0b9190c9a952afcaeeb945a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0176_1788893574610062096.json",
+      "sha256": "3c86686f790b3ab843be945a964e4f804fe6360eff24e96e47940091e0810924"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0177_1788893575555331527.json",
+      "sha256": "a813d53be87e23e926d432394d378252a38bc9ab075f3d3cd807335cd4813965"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0178_1788893063265017188.json",
+      "sha256": "dcc734325dc7e06135390d3e08e33b3096ba4f0892feb7c0523068297124a2b1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0179_1788893573154861647.json",
+      "sha256": "2511a2929dcc2c3f5a5827cde2955ce8b11cf795f650f92c23d8e1471633f770"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0180_1788893576357389672.json",
+      "sha256": "2dd7cd808a2cd77fecafb7bc728e47d5c137893208816e770a4383e5c3360c28"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0181_1788893066674400225.json",
+      "sha256": "462e7c07a56d78b8f815d5167e88d9592e5e39fcb8513a5474eeffa7f9c18af9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0182_1788893577863745326.json",
+      "sha256": "6de5c05aaaab8eaeac293dd4c9081914be9713c848482b79026349de35987c86"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0183_1788893579559097737.json",
+      "sha256": "8e0d832b8b6975189d55dae3944426740233ad43d25f62a048e9ad6d04ebf630"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0184_1788893070176373384.json",
+      "sha256": "c2ad25d4b514d23ef540fb78bedef65330efd2448be12e74b7d8e1ddf1a03795"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0185_1788893582763244704.json",
+      "sha256": "0c91ddd18598339a2ccde1b36316ea7729c506016f0cddf76c326fad01d6cc64"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0186_1788893583946274794.json",
+      "sha256": "3eea0a407c064c11a0899137e698cf7ad12e6afee31f5138f2c455d3ddb18fbb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0187_1788893584482985756.json",
+      "sha256": "237bd8d42a124a025deb0727e87e6b5136d0f9aa90e4e2d43386540c5220a994"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0188_1788893590367436959.json",
+      "sha256": "ad9bda8ec7208059182ceedd4bcaeb4836c3386cffedc4d751daa486e5025388"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0189_1788893075030228351.json",
+      "sha256": "25e09dc28ba012ee4cf967eb6a711b8c97817bfe1b32eb0e76d38c66ff09b808"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0190_1788893082723699525.json",
+      "sha256": "6127be25aba1edd5bddc1ec27adba23d35e6e803c640e18b828f072d7a532605"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0191_1788893079318541871.json",
+      "sha256": "d1fac64b0bda1c4b0dc8899ef25f4b405753d06d1ef5aa7bf9b3233948947cf6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0192_1788893590954688816.json",
+      "sha256": "4518826b2eb3903be32b5fe51373b630e9969638a6794c2bd74583d53c55a74c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0193_1788893591701743572.json",
+      "sha256": "743c0f65fbc1781214ebf28d8d8a365d813add6ef7ed81fb06df453dd23edd0e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0194_1788893082188456014.json",
+      "sha256": "016c8db75ff5498b281fe8a4940681a34818e33cc70a1d3acf09bf628dd5419f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0195_1788893594156844311.json",
+      "sha256": "865f61ab80cbdde6ef591bc1668613c310f068a8763f163dcefcce8bccb72d81"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0196_1788893595828218500.json",
+      "sha256": "0fae402e2aea27b4bdcf7219df0018dae2324f4d63dab53f14752bb521066a35"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0197_1788893085860188913.json",
+      "sha256": "8460109cef40d4690a9ef6f78126b053362e56bda689340a54e1cece4ca6ab6d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0198_1788893599030074845.json",
+      "sha256": "476b30065217959a13d1a3e865b29a2f0cd2f5d32f5b0994459126d453b625b7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0199_1788893598425028643.json",
+      "sha256": "706abc06d977a89edfe0f88d438321c91beb6ef231b9e66deda856c7f0536e23"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0200_1788893599720037902.json",
+      "sha256": "86f53a5da0ee653b715dba0ef15b14d151489a753b944253083e21ffb686916b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0201_1788893601626426908.json",
+      "sha256": "58f6e7f58ed488f8039ba7f0036dfd3f9d88b8b5fd22d458062d4699a394b00d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0202_1788893088559449696.json",
+      "sha256": "4c57f1984057d2d396c6d7d67dfd73ed9173777f5f92ac8d3371e8e2ac23d25f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0203_1788893602231718400.json",
+      "sha256": "1b2796cfb44237cb7e3e7d8745d9cdbaead85c00c5d00b1a0ed14a5ec2633b0f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0204_1788893603304921863.json",
+      "sha256": "8803f0a551b99c6621fcf877320634d767d0dfebfabf00b382e29f6dd8e998f2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0205_1788893092118530115.json",
+      "sha256": "e5d4bd77b9a07d74e04b90ed8a8d31471aa6cef1540cef00c3ec977e775d06bd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0206_1788893605433020164.json",
+      "sha256": "676b8db2de79693c33bec9899d1860f57f5dbd640251f095bc93d63dcf32011a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0207_1788893609582930263.json",
+      "sha256": "fab05ee06c47fa832e3a0d9f83bd91bfbfed7717d698a561005d79668deae2ed"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0208_1788893095320822180.json",
+      "sha256": "4da4d300c7b75f97bc39e259a7d579f6cd341a7550594c22ac7dab16c262b193"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0209_1788893098448354610.json",
+      "sha256": "6e2a4e487f4aca12e30cf488862fe1d883abee715e67bb5ebd22e086e2e049b0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0210_1788893610475700018.json",
+      "sha256": "082fa2eae0b097f706a71572512522d5450ba94645d7b120e7d1e312d5d03609"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0211_1788893101772153112.json",
+      "sha256": "7c35f912890e9b69515cace0febba3b3546f805076d08116c2cc1ae012e1b2c6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0212_1788893613677802373.json",
+      "sha256": "9d2e4e4c840f296553c9729bacdc4b4af07d2abc4709edb87b6233944eb35f29"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0213_1788893612785097278.json",
+      "sha256": "c506c4e8dceb1eb30bc6627ac065160645724715abcbefc6f20be454dbd84b9d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0214_1788893104970729384.json",
+      "sha256": "c039c8d19ac73a6d520cabd41435681ef786e353c9f5b894172a0f716ab9efb6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0215_1788893611781173486.json",
+      "sha256": "04012d06508c74872b71add0447d0d5c7b9e248669a64f45f16a9d811ace0bca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0216_1788893616879698758.json",
+      "sha256": "0996eb9f7b426f8888e26af18d488d48b7b26b3d1fbeafcef9991cf2fb07f29a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0217_1788893108538636721.json",
+      "sha256": "7ab8bcb9581b6440fd0cad2e82b95ae9f1a36b2adc710bb3e4347d1aa3e152ca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0218_1788893615986292892.json",
+      "sha256": "6aa56e48b5aab3b39699d1c8bd8669b8f9fef76b2b495ddadf4d4ef99d56d360"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0219_1788893617486470701.json",
+      "sha256": "0cc279f990d8a2347942603a757a1a9474d22ebd8f9899c1429aaab21376b9fb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0220_1788893619596904657.json",
+      "sha256": "2402b12ec65ee282254c57a613834cf052f5b1871f1f8de4b78db7873da9d2c4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0221_1788893111455041975.json",
+      "sha256": "4162d18340fa9ace5ea902fac2058cf105114a43409d7b94702c9637140ab539"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0222_1788893622798124181.json",
+      "sha256": "c93c330aa3f1d63176ddf846a4458d8be6b7b3b511782996e611c28445b3d5f3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0223_1788893622549581223.json",
+      "sha256": "468540d0866ca0ea1044cbadb5588e19621f60a6bcc6e94d6e4f3990a3cc1e03"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0224_1788893114674237975.json",
+      "sha256": "fb50f229f70da53367372f191b3ee0dc2d13a6a50f476094597027c7deae458a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0225_1788893625753418349.json",
+      "sha256": "8e0e765e9de3e97fd265998b876994a7a00c42a896c91b364bb76c291f686b75"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0226_1788893632644279948.json",
+      "sha256": "a1ad702713ae02fa8487365107cfecca15e76e98d69abb4ddbcc7f697b2dd8f2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0227_1788893134483079720.json",
+      "sha256": "708b786e951f666c78b43d834778c6398f238e068007feb7c683e51873aec873"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0228_1788893633246901747.json",
+      "sha256": "6148982d2f5a97e1fb3694b5dccaba4d59ea4e02e0b2abf803fc85c4b6594a3c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0229_1788893636447510011.json",
+      "sha256": "c70784208670a785f9f667b87337e5d0f5dd5d90890240917f7d2fab81bee94a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0230_1788893120370695673.json",
+      "sha256": "b89c0148e75d67533f45729e0dad882b9e61fad30f0a138e5ebd871c374cdf79"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0231_1788893639743646659.json",
+      "sha256": "aea47fa754b1444006609bad3aaecb0900c39e71d74833c83c36335cec437dab"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0232_1788893642327815321.json",
+      "sha256": "ca4595ad7c140b0275acf3ccec5c2a486653e350500f73dd816f8717f2e48672"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0233_1788893124100440672.json",
+      "sha256": "d92a96f2ad2f797098d24c4a0fc2abff8caae86777ad04eb9b80169641ad3fc2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0234_1788893645529269676.json",
+      "sha256": "1f46321328a0e32b21c125c8ed0ab14942c0fa0e4eca020f3f4784f97718349c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0235_1788893644377844363.json",
+      "sha256": "add65486a8de6d73fcda9cbd85dc7fd7310a3bd550792ba14169a3486919f556"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0236_1788893128282891919.json",
+      "sha256": "791e7fb8f2560e0b6c3dd835f0fd8de98643d01a424f771a8a300262eb9022ba"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0237_1788893647580382049.json",
+      "sha256": "3fa4668f098359b805017578b5a2a1f726d90fa817c7da4d6d2965cbee9a1508"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0238_1788893645904538166.json",
+      "sha256": "943232135534f8676b2a3c6beba6f41556515d3f3b2413963c37f3180e851ae1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0239_1788893132007117033.json",
+      "sha256": "b0823b706969e5433d637eb0816c6393dd0fa1abcc63267bb0258987b0aff499"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0240_1788893649072785341.json",
+      "sha256": "018cd26372c8d535c6ed543021ffd17a570ecaddafad095fe863efb53356e08e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0241_1788893650782505564.json",
+      "sha256": "8ef6378f840f73cf0d6bf01646e0f00bfce8a038ffa07ff37051ff573aa676c4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0242_1788893655100421540.json",
+      "sha256": "138ef8c32f08b69f8b226e924331d6450a691dcc7e564f4fb29552b1421fab13"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0243_1788893659851748388.json",
+      "sha256": "4f5a99ffb687bfd5f368e6c7d3e6e43ade37a89c7b21f9a965fdc36c21e0454c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0244_1788893135238857425.json",
+      "sha256": "b9b7fbdda225eadfaab1aae6b9dacd6e973b72e0bb03db1ba3fd359c4c737f75"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0245_1788893663053278272.json",
+      "sha256": "5c1029b5b07599678c007d621c32d551715e4d90006a3ce17e2e09201c80dbb5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0246_1788893661874849256.json",
+      "sha256": "e06178cdf5e3999c3f42d8fa94f59d765425da9483e3a7eefeb4538c6a740ca3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0247_1788893151495193517.json",
+      "sha256": "c1d9448765f57f923a70600fee50c1fe3ce73e95c0f69ff1c30eefba7ca19293"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0248_1788893662093926359.json",
+      "sha256": "c0459d798601e3582c9e6f4530073b498d54c448ee4762e0dc1368525351f414"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0249_1788893665076581781.json",
+      "sha256": "cf4208916e6bf2c58ee5271b06f53d3d5dc5ac28f92b441c8ccdc81f9a9c2761"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0250_1788893666254234216.json",
+      "sha256": "4ae6d26af1247fef20b93061875e885986dfa1e5f03e85992b3591c3b712b765"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0251_1788893665294432362.json",
+      "sha256": "566e230cc89090836f36559dac9fa3932e48b61fbda682faf6091496c139c40b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0252_1788893141941744878.json",
+      "sha256": "9e3bc106c9d197f383e3909dbc7b3ea0256fe07dded0bb38eaa4345a53f826e6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0253_1788893668279420197.json",
+      "sha256": "35e69a3733abfc2cd69d5d68e7a92a5d9edfa5659cc707b5d39f21939bdc4a11"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0254_1788893670663675353.json",
+      "sha256": "5c6fdc5a50fcee0370c768f5754bffca5f4aef0668db82e8b024fb78e314980d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0255_1788893146340786995.json",
+      "sha256": "64e19046d95307fc5f782a9c9ee2660f71cc6a02ba024eb475d3e15c9e72c773"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0256_1788893672667384015.json",
+      "sha256": "b28f34df0e30eab60b623d60092edf275efa7ad844c30b93058fb0a698103aca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0257_1788893673864762997.json",
+      "sha256": "a4bb68a85b18ba6466752953474f4428b6b80250ecc0e27d9e868345062b7253"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0258_1788893146224253723.json",
+      "sha256": "0b81f2e2b051a14b2db6d906c523a814a862aa29da41ed40083de4b02d4d82e1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0259_1788893149180032582.json",
+      "sha256": "a08ed578036fc345391b19cc66f942a0a5ecc2d7c2f0cf8e6ac304d8d53365f0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0260_1788893673343698829.json",
+      "sha256": "287c6378ca87dad3b0f5aeecb279f3e50fd4503b8880da071c57504544005111"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0261_1788893676545558204.json",
+      "sha256": "845b5072826f223e376543e762291aa70f9f234be2717a0ae247ead0cd96f213"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0262_1788893678983422737.json",
+      "sha256": "775e54e780a7151c332103a7026159e0405e1aa1e40e221bb577a183b88e56bc"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0263_1788893152936809674.json",
+      "sha256": "373969e5cf3ac1193997a3468ebf6d38d1c98a4d985e7ea84dac2749d8f81ca9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0264_1788893681166009286.json",
+      "sha256": "fa14c89a3d5fceb6aa05b7a8492d46ac83b0385a5ba9c69d3fe83e0b4e62b2cb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0265_1788893681955787591.json",
+      "sha256": "62491838b666a08c3b7b96f69872d9a529f90c8708ea54d416d3525d9266f5a5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0266_1788893155950593374.json",
+      "sha256": "838e1568488aed827af356ae75b63c55b325c0554ec4c37c7fde676cd01805b9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0267_1788893169957437478.json",
+      "sha256": "5be7e3344c2f8337124103d773f5b5abdfeec423857df8d800c27e6e67c6e40d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0268_1788893684367425641.json",
+      "sha256": "a61fedd57f6402d87240e8977bff68f3c2115ec646824fef266c7c893e93f3ae"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0269_1788893685157771276.json",
+      "sha256": "4d72700ccf9dfc507919da3276dc05bf5f681f52a81b5af42057264dfcd5d1c8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0270_1788893163085079626.json",
+      "sha256": "5ef979a0afa3826a48ccc7f26fa20d918b832ff73d8307b3bada966a1689a776"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0271_1788893683115540370.json",
+      "sha256": "2b2aa277166db2253bfb673bbd6e063b428392205724195b52fbdca927ac652a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0272_1788893686317292715.json",
+      "sha256": "114b46c79a031f4eb7b4121ef782b4aa5d6bc09463999ee045bce912a5c34a7a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0273_1788893688359092310.json",
+      "sha256": "56b5fcc97717ef6c246c36ac0c2ed0fbe407ca4d53a8bbcd3ec5acd66fec80a8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0274_1788893166236562437.json",
+      "sha256": "ac52f83c842737a067c41f60984cce0b97599f016c30b236e8cf6dbe518f532e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0275_1788893169011813287.json",
+      "sha256": "3a0b8f8db8b02ebe178295c334cbaf6e5530e04b1c776575e77bacd6e90a3178"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0276_1788893687569265536.json",
+      "sha256": "fca839d997ddb2f75c40af96e07d469009fb823b6c7d7d0527b400b6b49ad4a9"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0277_1788893697616485749.json",
+      "sha256": "9ca66134c165c17277e0e50c52d4769fc01454a7c4ca83d82155d63db621906e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0278_1788893172390260687.json",
+      "sha256": "1d93c56a64b579885386536a8d9e62029bfd3591c356f5f42a5bc26b3060603e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0279_1788893699692753235.json",
+      "sha256": "a1b481090d2b5bf54e5307aedde99ec74d6b601f862b62d54346cc8af7e7f3d5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0280_1788893700565335411.json",
+      "sha256": "654554c5795f8d9a7859dceadc9ec573724a72ad0fcb324cfe0e96aea1f43025"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0281_1788893703768076857.json",
+      "sha256": "dedfbc8d61606cd368a1ce6e6531c0749827c27efeb19f7d05ac080b6cbde93d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0282_1788893706972198864.json",
+      "sha256": "bebaa732571d4c0a8ac501fa2064004e2978075f628811519a40bd9901ad0325"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0283_1788893710324392451.json",
+      "sha256": "846b5e76aaa1a6d4b514cb5167fe0121b58be19296e95c5e1b52fd86d1513ff3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0284_1788893715204184492.json",
+      "sha256": "8b9702e1a43581a558a96e11e1b357f437ea8db157474d5c40624024f3fde433"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0285_1788893718405627896.json",
+      "sha256": "ad21f864c96c00595adef87bd4074fb2a01dd2e25165791a93c97e08a7f3bcf3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0286_1788893716821646054.json",
+      "sha256": "1a1ffcf482a9c54974df676c5f379775315a180924884399c55098ba5b8ea3ef"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0287_1788893720023350038.json",
+      "sha256": "cad915d22b7b452f77df6c478f72de85d8ed0ef2831b1198be983899b8463205"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0288_1788893723223543612.json",
+      "sha256": "fd4397f73b78634040661d68233ae288aece48fc0db0a0d75d91f50abafcb859"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0289_1788893723205511166.json",
+      "sha256": "b5694f90d49137a9343a2df8934f422f3ed8cdd46bde8a841cda767fd04703d3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0290_1788893726409178923.json",
+      "sha256": "948705ff98230870d2fae60bbc9aee2e95af0685985b07d80c439d51c394b25b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0291_1788893732369305003.json",
+      "sha256": "86255e083ca5d884a5d8fda8506aa99aefef45255b711cabe31a56162e0bb965"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0292_1788893735571495788.json",
+      "sha256": "db0d271ca93b8cb1bd043159199bf1ffa1a258dd34fb8ba7e33582acffb223cb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0293_1788893734682185696.json",
+      "sha256": "8d56dea9fe15e05b6acd8f9509afb67ba772ad8b4d107cd4448d633398981b5d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0294_1788893738013092965.json",
+      "sha256": "86e52a2ba6a1e493f8b9b192965fff48500a164e9552492755fbcdf0ed93d545"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0295_1788893740346146785.json",
+      "sha256": "b16929494ef6ee91ca4d37867b90f9fb91cc00f1b139b6f1691f5661aa9c14f8"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0296_1788893741764015812.json",
+      "sha256": "e34740c15e2630824167d6885c42a66a6dbea0fca6c747097dadcd038b59850f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0297_1788893746812971371.json",
+      "sha256": "2cc0bc898c520ed8bcf6b33a0cafc6c0b0286fb45e5ddb100c0d179c40336793"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0298_1788893752769232738.json",
+      "sha256": "d9dd690ff4c1201ec49a9896b5549cb7e403d91fc588d591421903c4fa8a5e4c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0299_1788893756318163358.json",
+      "sha256": "b8c0b31bc781f9852550f4b4fb7d86bfbb3818eea409c39ddadeb664d7a32770"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0300_1788893757917152024.json",
+      "sha256": "0d48874804656c80fbe552342e4aa940b20ed0ee9a2cf21dde9bf9a69fc559c4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0301_1788893761055514973.json",
+      "sha256": "3982813d0519bfdabd8fca6e552b59496027bec9da33bad0204700aa2bb1381c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0302_1788893764257527808.json",
+      "sha256": "c94ae720c371402f6a9d51b52dabdd3f5b8420ec3517403843b5e365c1c9df74"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0303_1788893762484579199.json",
+      "sha256": "31dc65ec4bcd78e74adafc55d5005543c57c81e7f1b5d6424add17189bb8d2dd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0304_1788893762922473164.json",
+      "sha256": "b6284a097c39bebc5e850ad177270c13ea4ec420589aed42c9d12299dacb8d33"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0305_1788893766124638809.json",
+      "sha256": "b78f7145f55f032a34b82b1e24b0477052c32659f13efaf2f5ca204e76403194"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0306_1788893769326302644.json",
+      "sha256": "138c9b02270abdf2a030fd0f9fc5cf44d2022b44e101218bfb3ab78dc85c2c41"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0307_1788893768743554522.json",
+      "sha256": "ef335b08b37dc8db3085d8bea7b8acaeaf4e2d9ce52a924ba7215f8328da001d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0308_1788893771944146825.json",
+      "sha256": "26491d90e137833eea9a56e77d37b16c4bf7644b8a1d1579d3d01b454b7f0ed4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0309_1788893772527443098.json",
+      "sha256": "045b26961ecf08d35ce9214993dbea86073addd909ad4c948b566f32a0c7b7b2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0310_1788893773550247708.json",
+      "sha256": "8a04fa105347e4e89a5d5bfe314df098a4573d1dfbef9e5af414e85884b09aca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0311_1788893776754316354.json",
+      "sha256": "2944ad89654e50052b3ae7fb82d4dd91ad33fa5ac49669105a6be3472da45a6b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0312_1788893776840420650.json",
+      "sha256": "50883d3e5e629f4117819c1b7db96eefeded4e82f421b8631f89f84ae257df9f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0313_1788893779958202951.json",
+      "sha256": "8dd03639c06543496958bff655c849163164007aea212016a6526b1c70303d5a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0314_1788893783158841555.json",
+      "sha256": "2c9869502060f28d9e5c56a8fcf32751695a05dcd14d6c64a991ab655f0206d0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0315_1788893782897246095.json",
+      "sha256": "7a6ca2fa9f87d2e2e6ba67c20e1e038973a9b5684b43bb1dc92ee0afe57ae6ae"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0316_1788893783813710641.json",
+      "sha256": "6821ac81e8740910e66a970222baee8de943e5545b5be06d821a0bd77eba3bd1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0317_1788893786099346160.json",
+      "sha256": "f70e57dbe5524bea2342de4b9aa4564fe88699b1dcf12a437f49874295770514"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0318_1788893789300846475.json",
+      "sha256": "a075059f53e0ecb9ac097d7198231a67f1653ca1f082674599a6200615b3e39f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0319_1788893787015402406.json",
+      "sha256": "7362832da5cb77ca2a89c086e24d636d844f5eac7d1787fe9694244fa45cb914"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0320_1788893792502099470.json",
+      "sha256": "570775ec3ee3581873623ad2c2f2d22be345391bc492ebe89b77ceab50ac2bb5"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0321_1788893790048067732.json",
+      "sha256": "4a8f985768dcd0c4474d552f30d7268507fe37232602c84727c862376486591e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0322_1788893791843465190.json",
+      "sha256": "510381179c792823d178a9a2095c7ef44a94663aba76b6c94d21096d374536a1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0323_1788893795706003406.json",
+      "sha256": "e164276710c6426100a4f10641ece752d1832e9d1b3562abe3cd66c2e40fdcb3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0324_1788893795790011470.json",
+      "sha256": "098d736252cfc216eec29955289d37e4fdf66c33305900c30a3ed422e154c034"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0325_1788893799946614884.json",
+      "sha256": "cbc99319eab9270faa6c9023561bed541fed9e74bd001c43b26e6ad65c011965"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0326_1788893803067367168.json",
+      "sha256": "69c60e7b7ce94e3e19d37915e1e6ba5a6bcc26f72a44d91a65a17e41be6c597f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0327_1788893804047659490.json",
+      "sha256": "1a048e45b8c0b4755c2ad684d85cbaa4c3c57bbef8f221863888c14995a2b157"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0328_1788893807249506965.json",
+      "sha256": "572a121d1827fe4508e5e1561a77f90cc731ba9ddbf6c2f93993da228178777d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0329_1788893804964416016.json",
+      "sha256": "8b6657625c762415d520fd80a38578237d59021b60e3be71343dd5769bec6e64"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0330_1788893808166334601.json",
+      "sha256": "32ec099acd76d8382ba3dba1507ce7b45e5fc81a5515d3050ec902ca5f4ebebd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0331_1788893810451097610.json",
+      "sha256": "ef7cbca4a91eedfbe2dfd44a697715d4fe22357fa9a1fc1f43299ca3cd51a8d4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0332_1788893811367578045.json",
+      "sha256": "f73455c6903955d2a7a3687d0eec85233b2206af14bf68c4a08b8b273dc12b60"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0333_1788893810242612556.json",
+      "sha256": "8d96f045f2eb68f7caf8c491b547a702a6adf0bf7a5cf6a3dc8ffb6e87787e97"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0334_1788893813445510262.json",
+      "sha256": "e3135f4353cf8d7b9ba6c36030b13613d5f0ef2c893f52bb55a70b862eebefe6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0335_1788893816649434709.json",
+      "sha256": "bbd9bd07365a749aca7d080e49066393803493157effdd189a58f39e76125e11"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0336_1788893819850543903.json",
+      "sha256": "328386cd8e0051994054f7c1b151e621fe936ae3496e381ee990ba8347dafa50"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0337_1788893820141809959.json",
+      "sha256": "331c32dcc8fbe273e983849d0d20300e63e97d63410aa3562eae8e65f5cad67f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0338_1788893821108254269.json",
+      "sha256": "518ba6275c8bc476c0264c87c88204e5211664cbe54592421328a60aeefd2702"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0339_1788893823051739428.json",
+      "sha256": "ec9564529f24919a856b17bd4eb2bb9ba002a1da02954fb39441774fd96ba057"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0340_1788893823343779365.json",
+      "sha256": "2183848178395d590a945a333cc4aadfcec9dd9590b1377c632ac7d355a69855"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0341_1788893826546288080.json",
+      "sha256": "e2776a41964c9459badd48c4216c10030152d7b635328672bca968437b77ce08"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0342_1788893824310026244.json",
+      "sha256": "b68f9922093a45cb04e6d3c9c99be0729a8436f86d34fed17cb09c640d469cbf"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0343_1788893829747292244.json",
+      "sha256": "3ca6ab8dddace1e297592cd92a1059717b65de314a854a5ebb21792be2374409"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0344_1788893829502077639.json",
+      "sha256": "01f85a81366c76b5e1718b9ca0c3192fb20ee2876cae77719e05c90763e24b0d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0345_1788893829741314389.json",
+      "sha256": "00ca5d7aa19116e0de4d0ed663a6582d4e9c3a9520ed4f777d68d523cd1cedf2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0346_1788893832943064024.json",
+      "sha256": "ebb27337c245e0a912e66396a76caafe1181e0edf0125e3001c61e9be17adf15"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0347_1788893832947446498.json",
+      "sha256": "9667452937f93c2ca68367e88fb3549af1aff2f18601c822d9f810caebca2ffb"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0348_1788893836147983542.json",
+      "sha256": "e707c15ef42b40f2fa7dc9ab49cc8213386095f7aa1811ca030b5b53e9387c16"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0349_1788893835108913238.json",
+      "sha256": "d7693fe1b8709d6e081b32eabf06f3b558d19f22f7379a8d374dc86ac7250f1b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0350_1788893836143491998.json",
+      "sha256": "a445c9dbc1716b727ee5af7577ee949201269a9db87a4b37664c3eb792eda86a"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0351_1788893838310323492.json",
+      "sha256": "403a063a5cc7c7ed527ae88404f651e4457b22cea8e1f3602198d890de2eccc6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0352_1788893841514319969.json",
+      "sha256": "8880606c2af606f5d0ce47396ca060060af58cafb1cf698538ad16ebb250f9d3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0353_1788893841540223442.json",
+      "sha256": "5858ca9a00c5ef4b6d11b80dbedc894d7ba68f5fd3369fd1e8ca822270b569ab"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0354_1788893841543748015.json",
+      "sha256": "4808809088cf05259136a49327ebe9b8bb0e6ed1225d618e519bc94bd061b359"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0355_1788893844740847266.json",
+      "sha256": "5ce2e3abf34d88e1554c80450fae8a323bf911bbea0639db7fa3083c02c04470"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0356_1788893844715308763.json",
+      "sha256": "e768e75263ee00a5d57a1bd8dccb38102f27b161bf57210e5ee823d1d8683953"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0357_1788893846915022737.json",
+      "sha256": "10f4b79bd68ea9f01b7a5677e7429e00f204740189fe917bfc63e5a47ecda8b1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0358_1788893848716521961.json",
+      "sha256": "29152a40cc407e2161ddc1505653e423688a58e25c201b26a71722339c00658e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0359_1788893852666566994.json",
+      "sha256": "7b3af57f9474e8aa935aaa5ccf37ff99cfde614d6abd273a3ec12029b3d43885"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0360_1788893854538026610.json",
+      "sha256": "bf14a2eedb68ef221ced745ccdb4437e26cb619c62d33fe00c05d42d6c8d7f59"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0361_1788893854628725669.json",
+      "sha256": "7d8e92db4e3e785cec6e2d187333621f3444e4a810b6248872e6e35e32f49e07"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0362_1788893857831040605.json",
+      "sha256": "230c11277c203bdf22b31fc0b5c7960af4fe464a556f13f1fa988598be7a2420"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0363_1788893858442293522.json",
+      "sha256": "d6aff64ec99301c0087865b3c0668d26d02be73d8c820998ba42ba82588dac28"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0364_1788893862564848866.json",
+      "sha256": "51381cda32cc3d3c92c73da50840208fd74f0b8149ced5572ed3e32b966ac66b"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0365_1788893864501240479.json",
+      "sha256": "967e8890ee917afa42332ed6f19818dfd49ad3dab1c90032a944c437ca512921"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0366_1788893865765481460.json",
+      "sha256": "a53ccffe178ac05403c86760fcf92517903cc4622c026b123192baf44741bfef"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0367_1788893868967276315.json",
+      "sha256": "97cb8ab684558bdaf8d7e85f6300db28ea8d2ae72a00ddff898c6b65413e4f3c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0368_1788893867702728413.json",
+      "sha256": "fdc4785a9a7ae25cc4723b1a5ca6c09e71e0053a926ce525dde48a1b9a7c80e7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0369_1788893867899003216.json",
+      "sha256": "306544210834d2ff175c0fd9212c2d009d7b150f82ee8c223483c8347a386911"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0370_1788893871100454760.json",
+      "sha256": "eab4aa2578ed172389483eb2b30e54522ee5bfb41c0b531609f1d30531ecc0d2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0371_1788893874300947464.json",
+      "sha256": "dca792cf93790af506ecb8f3503cc020f4e96db569aaa86b8d96870dd7c6871f"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0372_1788893872942758900.json",
+      "sha256": "d6321be7321c0b5e0d5a120bcb70fd0f936984a83fe62c09e7fe08427d369d05"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0373_1788893876144146735.json",
+      "sha256": "87e2c5f2477bfad41aa1a3d7a87e0983bac0e6d473559e7b03acccc58a543a54"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0374_1788893879346273810.json",
+      "sha256": "31637840c5d002d5f32e8b3696dc22444b9d3466fd30dd5ffeb72da481dccfd1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0375_1788893878238816096.json",
+      "sha256": "1edc1c2a149fac00f5b8912b5e78564dfd951b1bffd3d6c959494ca9e777a425"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0376_1788893881615552125.json",
+      "sha256": "16bf421232982f46f8f781354c9e05d2000163b9f772271a169b48dadee79df0"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0377_1788893882704508982.json",
+      "sha256": "7affb8e603421894adb3412a2f0a27a9fbc43e90d377d909e0b7ffc70777a87c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0378_1788893885906386728.json",
+      "sha256": "1cd7eed6e1fc2b76e39ee3bbe3d79a673a2f3d377c348439f8047787726407a3"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0379_1788893884563912537.json",
+      "sha256": "f01d090ee498e017f4d98e63a8b6f722a5aac1788915f4e4facbed80fd0b7554"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0380_1788893886482021494.json",
+      "sha256": "ad2e8506bec023473cfd29d6d7e7d1ef51cced74341e1c45c8e2dc5635a56768"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0381_1788893889107479262.json",
+      "sha256": "5be9b62218cba730e8351e71279983a093cc68cce9798101645dc250ab7a53fd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0382_1788893889683261648.json",
+      "sha256": "bb0c78c459e35a68de373958d480a8fc2775336ce9b6c5093820990e19a6eb3c"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0383_1788893892310769198.json",
+      "sha256": "4d81cd448e52cd4a6d5d78705f367e17701a14cf569d56a71bed8bae276be3a6"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0384_1788893892885141233.json",
+      "sha256": "6ea76bd9457c5eddff8bbe983b6e158bf7a716adca022b5ef0b4e6a2c5a32962"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0385_1788893896622086198.json",
+      "sha256": "9a8cfab5257cbb09fe54ae039cc71da7d94941b77b957683845c9e882b2c6e30"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0386_1788893898600853868.json",
+      "sha256": "4bf68eb2de210b704c37643c19e8d8fbd7c9e9deed4cdd0958dca07ce6bb7883"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0387_1788893901804208334.json",
+      "sha256": "e408b7aa3f8a3c335dd6f62d41b0daed205dd34e36e29f9714e4f279920bbccd"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0388_1788893899823404703.json",
+      "sha256": "5270587d8b6f04c0bec494359be764d3193b409fc03053637b1cb28287a63847"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0389_1788893899544011547.json",
+      "sha256": "ea42dd874faba904d433c31f45b13939ee15e9a1fefacee28bc225dab092cade"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0390_1788893903025256968.json",
+      "sha256": "7f48da767b8ad53d7004cf38595624aa2b355e12eb6ea22eaec5ed1209e7aeb1"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0391_1788893906228018754.json",
+      "sha256": "7219cabe856039eb936f0387d6f481bd9175e604e360474868315f8c39cad49d"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0392_1788893906324689859.json",
+      "sha256": "e300ba49328dc3068ef7d96623b813b10b3affbc6992898596ec139d1a13dab7"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0393_1788893912168811366.json",
+      "sha256": "76588be28f1d11d1182d77520d23cfa900c593297537a09ae5b55e06b24f75b4"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0394_1788893913769678464.json",
+      "sha256": "bc8d5ba00cb20eb4b20ec50ebc1bd797a6078aba838b074f064ae722cf7e9bd2"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0395_1788893913858615962.json",
+      "sha256": "1024be320d1d6ad540eb06328a51fd5d6b9ac94bc32d5e796ca9c4e4230d4265"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0396_1788893916971011968.json",
+      "sha256": "2fa89f6a8ba55e40206cd3e0ec43213d4cef92e528e7b94d700b57e680c45a4e"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0397_1788893917059858397.json",
+      "sha256": "8954d14f3a1b356c13e19ad19f6feb7e2c960305fc7bb8cda09e00a452c3d2ca"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0398_1788893920263028063.json",
+      "sha256": "024bfbb8d1afd1156459e8b92000caf5308bd2c56d202023a9735530fefdf254"
+    },
+    {
+      "path": "/home/user/IRfingerprints/SpectrExpert/outputs/raman_top10_llm_selection_ascend_run02/attempts/0399_1788893923465605108.json",
+      "sha256": "1bf4d0d6821418112d02a1851cc56bf6bbf9e427e83b88cd452d42bd7385c320"
+    }
+  ]
+}

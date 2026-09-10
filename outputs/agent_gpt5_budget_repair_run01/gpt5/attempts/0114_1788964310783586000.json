@@ -1,0 +1,10 @@
+{
+  "query_index": 114,
+  "model": "gpt-5",
+  "started_at": 1788964310.783587,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2vrCs5gkF8w7rcFJE5GYpVfMI\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 10\\nCONFIDENCE: 0.78\\nEXPLANATION: The spectrum shows a very strong band at 2234 cm⁻¹ consistent with a nitrile C≡N stretch, and an intense ring-breathing mode at 1003 cm⁻¹ that is characteristic of a para-substituted benzene. Aromatic C=C stretches at 1605 and 1585 cm⁻¹, aromatic/aliphatic C–H stretches at 3073 and 2930 cm⁻¹ (supported by GFQ-003), and a CH₃ deformation near 1382 cm⁻¹ further support a p-methylbenzonitrile structure. Candidate 10 (Cc1ccc(C#N)cc1) matches these features best, whereas candidates lacking an aromatic nitrile or showing other functional groups (e.g., alkyne, isocyanate, azo) are less consistent.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5141,\"completion_tokens\":3791,\"total_tokens\":8932,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3584},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 51.975235207995865,
+  "error": null
+}

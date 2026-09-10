@@ -1,0 +1,10 @@
+{
+  "query_index": 92,
+  "model": "gpt-5",
+  "started_at": 1788957974.075871,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBz1r9jEqWeQViQu6Ay4fjV4EfoH\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"length\",\"content_filter_results\":{},\"index\":0,\"logprobs\":null}],\"created\":1788957987,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4997,\"completion_tokens\":4096,\"total_tokens\":9093,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4096},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260814004622-dd8a4d74-default-r2-dp0-default\"},\"prompt_filter_results\":[{\"prompt_index\":0,\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"jailbreak\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}}}],\"service_tier\":\"default\"}",
+  "elapsed_seconds": 74.46931779099395,
+  "error": null
+}

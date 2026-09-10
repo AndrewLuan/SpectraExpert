@@ -1,0 +1,10 @@
+{
+  "query_index": 194,
+  "model": "o3",
+  "started_at": 1788958065.249632,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMC0d5rboXumosvGO4JvUNYpUpVEJ\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.53\\nEXPLANATION: The spectrum is dominated by aliphatic C–H stretches at 2946 / 2887 cm⁻¹ and a strong CH₂/CH₃ deformation at 1450 cm⁻¹, indicating a purely aliphatic molecule.  \\nTriethylamine (CCN(CC)CC) is known to show:\\n\\n• a very strong C–N stretch near 1065 cm⁻¹ – matching the 1057 cm⁻¹ peak (and the weaker 1079 cm⁻¹ companion).  \\n• CH₃/CH₂ rocking-type skeletal modes near 920 cm⁻¹ (observed 919 cm⁻¹) and near 820 cm⁻¹ (observed 831 cm⁻¹).  \\n• Additional low-frequency C–C skeletal bands around 740-780 cm⁻¹ (observed 771 cm⁻¹).  \\n\\nNo bands are seen in the 2100–2200 cm⁻¹ (Si-H) or 2300–2400 cm⁻¹ (N≡N, S-H, P-H) regions, ruling out silicon-containing or azide/diazo candidates.  \\nThe presence of two characteristic C–O stretches expected for ethers (~1050 & 1150 cm⁻¹) is not required, making the ether and thioether candidates less consistent.\\n\\nOverall, the pattern of CH stretches, a single strong C–N stretch, and the specific skeletal bands at 919/831/771 cm⁻¹ best fits triethylamine.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788958087,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4970,\"completion_tokens\":3198,\"total_tokens\":8168,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2816},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822205854-d5c79ffd-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 84.36446904198965,
+  "error": null
+}

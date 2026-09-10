@@ -1,0 +1,10 @@
+{
+  "query_index": 33,
+  "model": "o3",
+  "started_at": 1788957912.225719,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBxuh3sc58hrgNOm0tFcpJxX7BY6\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 8\\nCONFIDENCE: 0.27\\nEXPLANATION: The spectrum shows the typical NO₂ Raman pattern: a strong ν_s(NO₂) band at 1378 cm⁻¹ together with accompanying deformation/rocking modes near 830 cm⁻¹ (837 cm⁻¹) and 700 cm⁻¹. Among the ten candidates only molecule 8 (C/C=C\\\\C(=NC)[N+](=O)[O-]) contains a nitro group, so it alone can account for this triad of peaks. The intense 1644 cm⁻¹ line is readily assigned to the C=N stretch of the imine function present in 8, while the medium band at 1243 cm⁻¹ fits the C–N stretch. Aliphatic and vinylic C–H stretches observed between 2923–3056 cm⁻¹ are also consistent with the hydrocarbon framework of 8. No other candidate offers a coherent explanation for the NO₂-specific bands, making candidate 8 the most plausible match.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957918,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5371,\"completion_tokens\":3069,\"total_tokens\":8440,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2816},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819143739-97441ef6-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 48.72362545898068,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 94,
+  "content": "SELECTED_INDEX: 8\nCONFIDENCE: 0.82\nEXPLANATION: The spectrum shows an OH stretch near 3328–3385 cm⁻¹ (GFQ-001, with hydrogen-bonding broadening per ENV-001), strong CH stretches at 2967/2905/2828 cm⁻¹ (GFQ-003), a very strong band at ~1037 cm⁻¹ consistent with the C–O stretch of an alcohol, and a CH₃ deformation near 1479 cm⁻¹ (within the C–H bending range per GFQ-003). This pattern is characteristic of methanol (CO) and fits better than amines (which would also show NH bending near ~1600 cm⁻¹, GFQ-002, not observed).",
+  "usage": {
+    "prompt_tokens": 4454,
+    "completion_tokens": 3507,
+    "total_tokens": 7961,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3328
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByzZoRLi2ClNg3jyt4GNT0PXAQg",
+  "last_attempt_file": "gpt5/attempts/0094_1788957974122773000.json"
+}

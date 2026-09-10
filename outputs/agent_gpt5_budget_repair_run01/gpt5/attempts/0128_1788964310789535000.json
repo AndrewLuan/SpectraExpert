@@ -1,0 +1,10 @@
+{
+  "query_index": 128,
+  "model": "gpt-5",
+  "started_at": 1788964310.789536,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2ZQjy95iHoEidgMtQRrju9vdh\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.68\\nEXPLANATION: The spectrum shows hallmark Si–H features: a strong bend near 904 cm⁻¹ and another at 869 cm⁻¹, consistent with Si–H bending modes (GFQ-004). The intense bands at 2151 and 2171 cm⁻¹ fall in the Si–H stretching region (GFQ-004). Candidate 4 has multiple Si–H groups (SiH2, SiH, SiH3), which can produce several closely spaced stretching/bending bands, matching the multiplicity observed. Additionally, Si=Si stretching is expected around ~589 cm⁻¹ (GFQ-052), aligning with the peaks at 611 and 540 cm⁻¹. The 2255 cm⁻¹ feature could be a higher-frequency Si–H stretch in a distinct environment or a combination band; overall, the Si–H/Si=Si pattern strongly supports [SiH2]=[SiH]O[SiH3].\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5066,\"completion_tokens\":4710,\"total_tokens\":9776,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4480},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 53.23651799999061,
+  "error": null
+}

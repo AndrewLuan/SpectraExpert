@@ -1,0 +1,21 @@
+{
+  "query_index": 136,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.64\nEXPLANATION: The two strongest low-frequency bands at 644 and 554 cm⁻¹ are well matched by a ν(P=S) stretch near ~650 cm⁻¹ together with a P–O-related mode (often δ(POH)/ν(P–O) in the ~540–570 cm⁻¹ range) typical for phosphonothioic acids. Additional bands at 1017 and 961 cm⁻¹ fit P–O stretching modes for tetrahedral P–O units (cf. analogous phosphate ν3≈1017 and ν1≈938; GFQ-024), and the C–H stretches at 2905–3005 cm⁻¹ (GFQ-003) align with the ethyl group. The absence of a strong ~1290 cm⁻¹ P=O band disfavors the P=O-containing candidate (7), and the pattern is less consistent with purely halogenated or sulfite structures.",
+  "usage": {
+    "prompt_tokens": 5431,
+    "completion_tokens": 6689,
+    "total_tokens": 12120,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 6464
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3N4wLeZZDFDUM43NEppPxXPGL",
+  "last_attempt_file": "gpt5/attempts/0136_1788964310794009000.json"
+}

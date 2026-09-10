@@ -1,0 +1,21 @@
+{
+  "query_index": 48,
+  "content": "SELECTED_INDEX: 3\nCONFIDENCE: 0.75\nEXPLANATION: The spectrum shows a clear S–H stretch at 2508 cm⁻¹ together with the characteristic S–H bending mode at 1203 cm⁻¹ (rule GFQ-005). Only candidate 3 (CNC(=S)S) contains an –SH group. It also has an N–H bond, matching the 3200–3317 cm⁻¹ N–H stretches (rule GFQ-002), and C–S/C=S vibrations that can account for the strong 734 cm⁻¹ band and the 855–935 cm⁻¹ region. The aliphatic C–H stretches at 2837–2988 cm⁻¹ fit the methyl group present. No other candidate simultaneously provides S–H, N–H and aliphatic C–H functional groups, so candidate 3 best matches the experimental Raman peaks.",
+  "usage": {
+    "prompt_tokens": 5503,
+    "completion_tokens": 2275,
+    "total_tokens": 7778,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2048
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBy7D0GjtD1PG5y9OIdn7GKHY4GN",
+  "last_attempt_file": "o3/attempts/0048_1788957912283995000.json"
+}

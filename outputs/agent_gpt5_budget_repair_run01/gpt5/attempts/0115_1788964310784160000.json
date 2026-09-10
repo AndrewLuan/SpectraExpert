@@ -1,0 +1,10 @@
+{
+  "query_index": 115,
+  "model": "gpt-5",
+  "started_at": 1788964310.784162,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3xTHbv6U3BfgVJmuQEhcwXCbK\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 8\\nCONFIDENCE: 0.64\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2878/2912/2963 cm⁻¹ and a clear CH₂/CH₃ deformation near 1454 cm⁻¹, consistent with a saturated aliphatic amine rather than an alcohol (no evident OH stretch). A prominent band at ~751 cm⁻¹ and multiple bands in the 900–970 cm⁻¹ region (940, 956) with a band near 1171 cm⁻¹ match known Raman features of triethylamine (skeletal/C–N-related modes and CH rocking/wagging). The weak 2719 cm⁻¹ feature can be assigned to an overtone/combination (Fermi-type) rather than a functional-group stretch. Candidates with OH or C=S/N≡N groups are less consistent (lack of OH/N≡N bands; C=S would typically give a stronger ~1050–1200 cm⁻¹ signature). Supported by CH region assignments (GFQ-003) and overtone behavior (SPC-002).\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5307,\"completion_tokens\":5437,\"total_tokens\":10744,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5184},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260824092313-261c5c4d-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 67.11254883298534,
+  "error": null
+}

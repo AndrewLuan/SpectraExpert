@@ -1,0 +1,21 @@
+{
+  "query_index": 98,
+  "content": "SELECTED_INDEX: 9  \nCONFIDENCE: 0.24  \nEXPLANATION:  \nKey experimental bands are (cm⁻¹):  \n• 2971 & 2896 – strong C–H stretches of a methyl group (GFQ-003) – requires at least one CH₃ group (present in CC(Cl)OP(Cl)Cl).  \n• 1458 – CH₃ deformation (GFQ-003) – again needs a methyl group.  \n• 831 – intense P–O–C / C–C stretching of alkyl phosphites/phosphorochloridates; such a very strong Raman band is characteristic for P–O–C linkages.  \n• 551 – strong P–Cl stretching (literature P–Cl ν₄ ≈ 520–560 cm⁻¹; CHG-001).  \n• 666 – C–Cl (or additional P–Cl) stretching; CCl₄/alkyl-Cl give ν(C–Cl) 650–700 cm⁻¹ (GFQ-046).  \n• 1101 & 1152 – ν(P–O) symmetric/antisymmetric stretches of PO₂(–) groups, expected near 1050–1150 cm⁻¹ in organophosphorus oxy-chlorides.  \nNo aromatic C=C (∼1600 cm⁻¹) or strong O–H stretch is observed among the major peaks, so candidates containing aromatic rings or multiple O-H groups are disfavoured.  \nOnly candidate 9 (CC(Cl)OP(Cl)Cl) simultaneously contains:  \n• a methyl group (explains 2971/2896 & 1458 cm⁻¹),  \n• two P–Cl bonds (∼550–670 cm⁻¹ doublet),  \n• P–O and P–O–C linkages (∼830–1150 cm⁻¹ region),  \n• a C–Cl bond on carbon (extra intensity near 660 cm⁻¹).  \n\nThus CC(Cl)OP(Cl)Cl best rationalizes the observed Raman pattern.",
+  "usage": {
+    "prompt_tokens": 5069,
+    "completion_tokens": 8732,
+    "total_tokens": 13801,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 8256
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCIBmSIzJ9ox2I6JOMzoVimJG2E3",
+  "last_attempt_file": "o3/attempts/0098_1788959172487298000.json"
+}

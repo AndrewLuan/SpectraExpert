@@ -1,0 +1,21 @@
+{
+  "query_index": 60,
+  "content": "SELECTED_INDEX: 10  \nCONFIDENCE: 0.30  \nEXPLANATION: The spectrum shows a strong band at 2273 cm⁻¹ together with additional features at 2331 cm⁻¹ and 2415 cm⁻¹, characteristic of C≡N stretching vibrations (often appearing as a Fermi-split doublet/triplet when two or more nitrile groups are present). Among the ten candidates, only molecule 10 (CC(N)C(O)(C#N)C#N) contains any nitrile groups, and it carries two –C≡N substituents, matching the observed multiple bands in the 2250–2450 cm⁻¹ region.  \n\nFurther support:  \n• Broad/medium bands at 3225 and 3258 cm⁻¹ match N–H/O–H stretches expected for the amino and hydroxyl functions present in 10.  \n• Strong C–H stretches at 2928 and 2985 cm⁻¹ are consistent with the aliphatic methyl groups of 10.  \n• Bands near 1458 cm⁻¹ (CH₃ deformation) and 1588 cm⁻¹ (NH₂ scissoring / H-bonded OH bend) fit the functional groups in 10.  \n\nNo other candidate possesses nitrile groups, making compound 10 the only structure compatible with the key 2273–2415 cm⁻¹ region.",
+  "usage": {
+    "prompt_tokens": 5926,
+    "completion_tokens": 3531,
+    "total_tokens": 9457,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3200
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByMoM63pIAl7gvtRASLr0qbaPj9",
+  "last_attempt_file": "o3/attempts/0060_1788957942664174000.json"
+}

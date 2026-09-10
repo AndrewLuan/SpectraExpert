@@ -1,0 +1,37 @@
+{
+  "verified_at": "2026-09-09T18:59:04.632118+08:00",
+  "page_limit_including_references": 10,
+  "before_pages": 14,
+  "pages": 9,
+  "pdf_sha256": "736fc72a782774bc1681f5355eeb054e7d19b503382eea7ff83832f713892bc7",
+  "numbered_tables": 6,
+  "table_data_rows_checked": 31,
+  "figures": 1,
+  "out_of_page_glyphs": 0,
+  "overfull_boxes": 0,
+  "undefined_references": 0,
+  "title_authors_preserved": true,
+  "font_and_page_geometry": "IEEEtran conference defaults; no body-font reduction, margin change or negative-spacing compression",
+  "visual_review": "Rendered all pages; final figure checked separately after label refinement; tables, equations, prompts and balanced ending inspected.",
+  "source_files": {
+    "main.tex": "aac8d05cce0ad9ba0641e2ccee7e99bce081aa29a2c948928770717e8aadd1f9",
+    "domain_method.tex": "a6cdbd3315213d4255c00ad99140761d4f201a085e543643e01c7d85b9002b8f",
+    "latest_results.tex": "76d23c54f741e958138122a1486a0b83bf950d715e2ba25000dac7faa5185620",
+    "discussion_repro.tex": "99de0eb0a426a9cb32b101b9e5addc5443adcf27f1d7030c745d96167e4713ea",
+    "table_style.tex": "81e330722975701e8d0497a8cc5d2bb7467a96f0de56fa0560daa84a986fc3ed",
+    "figures/draw_domain_pipeline.py": "5e3bcbb6caf12b1171548b75619a685425d011deb3eb80cebcde8aef030e407f",
+    "figures/domain_shift_pipeline.pdf": "434dce5dff6bccfa3525c74e91372bb43bdeb60cc8f2333f635bfd218ca9ca8d",
+    "ref/ref.bib": "ac8c9cfe49ef19c0ab185784bdaf6fd602ae6d97ad148ce024f7f5757c41b2bf"
+  },
+  "result_sources": [
+    "snapshot.json",
+    "additional_sources.json",
+    "source_recheck.json",
+    "latency_audit.json"
+  ],
+  "numeric_audit_files": [
+    "tmp/pdfs/ten-page/numeric_audit.json",
+    "tmp/pdfs/ten-page/additional_numeric_audit.json"
+  ],
+  "scientific_limits": "See REVIEW_RESPONSE_AUDIT.md; no additional experiment or API request was executed."
+}

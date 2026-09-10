@@ -1,0 +1,21 @@
+{
+  "query_index": 31,
+  "content": "SELECTED_INDEX: 4\nCONFIDENCE: 0.66\nEXPLANATION: The spectrum shows both aromatic and aliphatic C–H stretches (3040–3057 and 2870–2921 cm⁻¹; GFQ-003) and a conjugated/aromatic carbonyl near 1620 cm⁻¹ consistent with an aryl ketone whose C=O is lowered by conjugation (GFQ-011). The phenolic O–H stretch appears around 3343–3427 cm⁻¹ (GFQ-001), and a strong band near 1221 cm⁻¹ matches a phenolic/aromatic C–O stretch. The 1383 cm⁻¹ band fits a CH₃ deformation in the acetyl group (within CH bending region per GFQ-003). Strong ring modes at 842 and 650 cm⁻¹ are consistent with substituted benzene ring vibrations. Candidates lacking OH (e.g., 2, 9, 10) do not explain the 3343–3427 cm⁻¹ features; sulfur-hydride (1) would require an S–H stretch near 2550–2620 cm⁻¹ (GFQ-005), which is absent. Overall, CC(=O)c1cccc(O)c1 best matches the combined aromatic, carbonyl, and phenolic features.",
+  "usage": {
+    "prompt_tokens": 5047,
+    "completion_tokens": 3818,
+    "total_tokens": 8865,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3520
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2nGUmy4dbtiIFZoMAxymUkem6",
+  "last_attempt_file": "gpt5/attempts/0031_1788964310747886000.json"
+}

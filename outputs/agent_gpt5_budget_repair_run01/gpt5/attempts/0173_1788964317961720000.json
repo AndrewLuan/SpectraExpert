@@ -1,0 +1,10 @@
+{
+  "query_index": 173,
+  "model": "gpt-5",
+  "started_at": 1788964317.962834,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd9P7RYetS94GhMBnpAkXjiOFG0\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.66\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2981/2937 cm⁻¹ (GFQ-003) and a single carbonyl near 1719 cm⁻¹ consistent with an ester/carbamate C=O. The presence of nitro-group signatures is supported by bands in the 1376–1416 cm⁻¹ region (1415 cm⁻¹; GFQ-022) and a strong deformation/wag region near 850–900 cm⁻¹ (857 and 897 cm⁻¹), plus an N–N/NO-related band around 952 cm⁻¹ typical of nitramines. These features fit an N-nitro carbamate (candidate 1) better than plain esters or non-nitro candidates.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964319,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5155,\"completion_tokens\":3458,\"total_tokens\":8613,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3264},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819172348-e0aef28f-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 52.451465874997666,
+  "error": null
+}

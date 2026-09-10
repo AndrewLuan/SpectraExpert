@@ -1,0 +1,10 @@
+{
+  "query_index": 144,
+  "model": "o3",
+  "started_at": 1788959172.535331,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCIClzD0cUh3bXfWzNcnqupes2wm\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 7\\nCONFIDENCE: 0.30\\nEXPLANATION: The spectrum shows features typical for an organophosphorothioate.  \\n• A strong P=S stretch appears in Raman near 600–700 cm⁻¹; the band at 566 cm⁻¹ fits this (rule‐of‐thumb for P=S).  \\n• O-,S-substituted phosphorus compounds give P–O–C stretches in the 900–1030 cm⁻¹ region; the intense doublet at 935 / 919 cm⁻¹ and the 847 cm⁻¹ band correspond well.  \\n• Phosphorus compounds that contain a P=O or P=S bond often show a band near 1250 cm⁻¹; the 1259 cm⁻¹ peak matches this thio-phosphoryl deformation.  \\n• Alkyl C–H stretches at 2880–2950 cm⁻¹ and CH₂/CH₃ bending at 1454 cm⁻¹ confirm an aliphatic molecule.  \\n\\nAmong the candidates, only “CCP(O)(O)=S” (index 7) contains the required P=S bond together with P–O and P–C linkages that can account for the 566, 935/919 and 847 cm⁻¹ bands, while also matching the aliphatic C–H features. Other candidates either lack phosphorus, lack sulfur, or would introduce characteristic high-frequency modes (e.g., N=C=S, C≡C, N=C=O) that are absent from the experimental spectrum.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959176,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5135,\"completion_tokens\":2352,\"total_tokens\":7487,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":1984},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260818140209-22968ec0-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 35.72899520798819,
+  "error": null
+}

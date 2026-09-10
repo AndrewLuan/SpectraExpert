@@ -1,0 +1,21 @@
+{
+  "query_index": 121,
+  "content": "SELECTED_INDEX: 6\nCONFIDENCE: 0.66\nEXPLANATION: The spectrum shows a strong C=C band at 1648 cm⁻¹, high-frequency =C–H stretches at 3022 and 3090 cm⁻¹, and the characteristic pair of =CH₂ out-of-plane deformation bands at ~999 and ~923 cm⁻¹, all indicating a terminal alkene. Multiple CH stretches centered at 2873–2990 cm⁻¹ and CH deformations at 1458/1424 cm⁻¹ fit an alkyl substituent (isopropyl). Notably, there is no clear O–H or N–H stretch near 3300–3500 cm⁻¹, disfavoring candidates with OH/NH (e.g., 1, 3, 2). The broad band near 1094 cm⁻¹ and the feature at 1247 cm⁻¹ are consistent with C–O–C stretching in an ether. Overall, these features best match a vinyl ether, supporting candidate 6 (C=COCC(C)C).",
+  "usage": {
+    "prompt_tokens": 5401,
+    "completion_tokens": 4854,
+    "total_tokens": 10255,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4608
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd25G44UGWGNZg9tyuUdhnOmUve",
+  "last_attempt_file": "gpt5/attempts/0121_1788964310786026000.json"
+}

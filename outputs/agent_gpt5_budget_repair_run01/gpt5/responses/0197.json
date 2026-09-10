@@ -1,0 +1,21 @@
+{
+  "query_index": 197,
+  "content": "SELECTED_INDEX: 6\nCONFIDENCE: 0.64\nEXPLANATION: The spectrum shows multiple intense low‑frequency bands at 604, 640, 686, and 720 cm⁻¹, consistent with heavy halogen stretches in a multi‑halogenated alkane: C–Br typically appears ~500–650 cm⁻¹ and C–Cl ~600–800 cm⁻¹ (cf. halide vibrational ranges illustrated by tetrahalides in GFQ-046). The strong C–H stretching cluster at 2916/2973/3030 cm⁻¹ and C–H bending near 1430 cm⁻¹ match saturated hydrocarbons (GFQ-003). No carbonyl band is observed, which disfavours the carbonyl-containing candidates (e.g., 2 and 9). The presence of several intense halogen-region peaks is most compatible with ClCC(Cl)CBr, which has two C–Cl and one C–Br bonds, rather than molecules with only one halogen or none.",
+  "usage": {
+    "prompt_tokens": 5161,
+    "completion_tokens": 5544,
+    "total_tokens": 10705,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5312
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd25FO4FYGKs4naezWGBwlNzOgZ",
+  "last_attempt_file": "gpt5/attempts/0197_1788964310819697000.json"
+}

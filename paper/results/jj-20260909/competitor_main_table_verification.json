@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-09-09T20:38:59.231915+08:00",
+  "pages": 9,
+  "page_limit_including_references": 10,
+  "numbered_tables": 5,
+  "main_table_number": 3,
+  "main_table_page": 6,
+  "main_table_rows": 10,
+  "measured_main_table_rows": 9,
+  "unavailable_main_table_rows": 1,
+  "total_table_rows": 32,
+  "remote_reaggregation": "competitor_main_table_refresh.json",
+  "checks": [
+    "3 competitor rows recomputed from 600 existing scored query predictions on JJ",
+    "6 pre-existing main-table rows unchanged",
+    "all shared metrics and computable counts matched",
+    "separate competitor table and all its references removed",
+    "compiled without overfull boxes or undefined references",
+    "all pages rendered; merged main table visually checked"
+  ],
+  "out_of_page_glyphs": 0,
+  "pdf_sha256": "24c22049e67e1328d0e2e39fe5efd548dd3aea5ff8f1d22fb379aebe6624a184",
+  "changed_source_sha256": {
+    "latest_results.tex": "edb30937064eb369e2fdf688dfb35f32c46e8b7a414f6b21557c2848838cdc9f",
+    "REVIEW_RESPONSE_AUDIT.md": "472a30d5e594ff235eedf1005f73a0d53d28e0cc32cd77aa18f4b7cfba0dfbdf"
+  },
+  "no_new_model_inference": true
+}

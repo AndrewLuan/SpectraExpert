@@ -1,0 +1,10 @@
+{
+  "query_index": 122,
+  "model": "gpt-5",
+  "started_at": 1788964310.786551,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3tPpZ8FP9jahUVi5qDOhb8iGS\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.66\\nEXPLANATION: The intense band at 2123 cm⁻¹ is consistent with an internal alkyne C≡C stretch (typical ~2100–2140) rather than a nitrile (usually ~2240–2260), favoring an alkyne over nitrile candidates. Candidate 4 (CCC#CCCOC) contains an internal alkyne and an ether; its ether C–O–C stretches plausibly account for the 1108 and 1058 cm⁻¹ bands, while the aliphatic CH stretches at 2921/2880 and CH₂ scissoring at 1446 cm⁻¹ match general hydrocarbon features (GFQ-003). Absence of a ~3300 cm⁻¹ band disfavors terminal alkynes or alcohol OH (ruling out 3, 6, 7, 9), and the 2123 cm⁻¹ position is too low for a C≡N stretch (ruling out 1, 5, 8, 10). Candidate 2 (isothiocyanate) is less consistent with the observed ether-like 1108/1058 cm⁻¹ pair.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5293,\"completion_tokens\":3606,\"total_tokens\":8899,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3328},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260820012748-7db9b848-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 48.079934334004065,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 190,
+  "content": "SELECTED_INDEX: 10  \nCONFIDENCE: 0.28  \nEXPLANATION: The spectrum shows:  \n• Very strong C–H stretches at 2969, 2897 and 2837 cm⁻¹, consistent with several CH₃ groups present in CC(F)S(=O)₂N(CH₃)₂.  \n• A very intense band at 670 cm⁻¹ matching a C–S stretch expected for an alkyl-sulfonyl compound.  \n• A band at 818 cm⁻¹ characteristic of S–F stretching in sulfonyl fluorides (rule GFQ-042/040 ranges 797-837 cm⁻¹).  \n• A prominent line at 1007 cm⁻¹ in the typical region for the symmetric SO₂ stretch of sulfones/sulfonyl fluorides (GFQ-037 analog, ~1000–1060 cm⁻¹).  \n• A medium band at 1259 cm⁻¹ agreeing with the asymmetric SO₂ stretch (~1250–1350 cm⁻¹ for R–SO₂–X).  \n• A lower-frequency band at 510 cm⁻¹ matching S–O/S–F bending vibrations (GFQ-035 range 484–524 cm⁻¹).  \n\nAmong the candidates, only molecule 10 (CC(F)S(=O)(=O)N(C)C) contains the distinctive sulfonyl-fluoride group together with multiple methyl (C–H) groups, providing a coherent explanation for the key Raman peaks. Other candidates lack the SO₂ and S–F functional groups needed to account for the strong 818, 1007, 1259 and 510 cm⁻¹ bands.",
+  "usage": {
+    "prompt_tokens": 5358,
+    "completion_tokens": 3404,
+    "total_tokens": 8762,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3008
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMC0bmQoP78lO0hdy9qjPuO7dv0y2",
+  "last_attempt_file": "o3/attempts/0190_1788958062366598000.json"
+}

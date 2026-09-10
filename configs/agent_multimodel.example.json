@@ -1,0 +1,12 @@
+{
+  "source_run": "outputs/raman_encoder_kb_llm_run01",
+  "concurrency": 200,
+  "timeout_seconds": 600,
+  "max_attempts": 3,
+  "models": [
+    {"tag": "gpt5", "model": "gpt-5", "base_url_env": "AGENT_BASE_URL", "api_key_env": "AGENT_API_KEY"},
+    {"tag": "o3", "model": "o3", "base_url_env": "AGENT_BASE_URL", "api_key_env": "AGENT_API_KEY"},
+    {"tag": "claude", "model": "claude-sonnet-4-6", "base_url_env": "AGENT_BASE_URL", "api_key_env": "AGENT_API_KEY"},
+    {"tag": "gemini", "model": "gemini-2.5-flash", "base_url_env": "AGENT_BASE_URL", "api_key_env": "AGENT_API_KEY"}
+  ]
+}

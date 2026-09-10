@@ -1,0 +1,74 @@
+{
+  "checked_at_utc": "2026-09-09T12:31:53.080328+00:00",
+  "summary_path": "/home/user/repro/unified/scored/raman_exact_v2_test200_20260909_all5/summary.json",
+  "summary_sha256": "d3d4eefcf089d7f85a68538dec724809dd7d93b648e2851f16406d4c64862e5d",
+  "summary_mtime_utc": "2026-09-09T07:20:04.946499+00:00",
+  "schema": "camera_ready_competitor_main_table_v1",
+  "policy": "Read-only aggregation of existing scored predictions; no model inference or raw spectral data access; missing GED remains missing.",
+  "methods": [
+    {
+      "tag": "vib2mol_retrieval_rerank",
+      "n": 200,
+      "scored_path": "/home/user/repro/unified/scored/raman_exact_v2_test200_20260909_all5/vib2mol_retrieval_rerank.json",
+      "scored_sha256": "b89f2819a5d9758704fe58cacd47186ec3ccd61da78f66f039dd1b38e792fdb4",
+      "valid_rate": 1,
+      "canonical_exact_rate": 0,
+      "tanimoto": {
+        "n": 200,
+        "mean": 0.06443082368001342
+      },
+      "chemical_ged_v2": {
+        "n": 150,
+        "mean": 12.566666666666666
+      },
+      "canonical_hit_at_1": 0,
+      "canonical_hit_at_5": 0,
+      "canonical_hit_at_10": 0,
+      "canonical_hit_at_25": 0.005
+    },
+    {
+      "tag": "vib2mol_generation_rerank",
+      "n": 200,
+      "scored_path": "/home/user/repro/unified/scored/raman_exact_v2_test200_20260909_all5/vib2mol_generation_rerank.json",
+      "scored_sha256": "95bb96dc46151cf591c74e7c18fc24bddb4ba0d06a542da0813e805c075a4ba3",
+      "valid_rate": 0.81,
+      "canonical_exact_rate": 0,
+      "tanimoto": {
+        "n": 162,
+        "mean": 0.05815701789142173
+      },
+      "chemical_ged_v2": {
+        "n": 159,
+        "mean": 9.169811320754716
+      },
+      "canonical_hit_at_1": 0,
+      "canonical_hit_at_5": 0,
+      "canonical_hit_at_10": 0,
+      "canonical_hit_at_25": 0
+    },
+    {
+      "tag": "vibraclip_retrieval_nomass",
+      "n": 200,
+      "scored_path": "/home/user/repro/unified/scored/raman_exact_v2_test200_20260909_all5/vibraclip_retrieval_nomass.json",
+      "scored_sha256": "3d056940d9ef5d028930b1d57798dad73ce1a317e2579b939164107ef0bcd4d2",
+      "valid_rate": 1,
+      "canonical_exact_rate": 0,
+      "tanimoto": {
+        "n": 200,
+        "mean": 0.04895108024589717
+      },
+      "chemical_ged_v2": {
+        "n": 184,
+        "mean": 9.945652173913043
+      },
+      "canonical_hit_at_1": 0,
+      "canonical_hit_at_5": 0,
+      "canonical_hit_at_10": 0.005,
+      "canonical_hit_at_25": 0.01
+    }
+  ],
+  "molspectllm": {
+    "status": "unavailable",
+    "reason": "No compatible Raman model/run directory in inspected /home/user/repro and unified result locations; no statistics can be recovered from nonexistent predictions."
+  }
+}

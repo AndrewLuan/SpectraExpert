@@ -1,0 +1,10 @@
+{
+  "query_index": 161,
+  "model": "gpt-5",
+  "started_at": 1788958036.159588,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBzptX0HTwjJo5WJkS4Qxzi6kC74\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.86\\nEXPLANATION: Two strong C–H stretching bands at 2837 and 2946 cm⁻¹ and a CH₂/CH₃ deformation at 1454 cm⁻¹ are consistent with aliphatic alcohols (GFQ-003). The strong band at 1036 cm⁻¹ matches the typical C–O stretch of methanol (~1020–1050 cm⁻¹). Absence of N–H stretches (~3300 cm⁻¹) disfavors amines (e.g., 2, 8), and candidates with Si–Cl, P=O, nitro, or aromatic motifs would show other characteristic bands not observed. Methanol (SMILES CO) best fits the observed pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"protected_material_code\":{\"detected\":false,\"filtered\":false},\"protected_material_text\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"index\":0,\"logprobs\":null}],\"created\":1788958037,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":3841,\"completion_tokens\":2163,\"total_tokens\":6004,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":1984},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260823210141-f3446337-default-r1-dp0-default\"},\"prompt_filter_results\":[{\"prompt_index\":0,\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"jailbreak\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}}}],\"service_tier\":\"default\"}",
+  "elapsed_seconds": 26.73669508297462,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 91,
+  "content": "",
+  "usage": {
+    "prompt_tokens": 5327,
+    "completion_tokens": 4096,
+    "total_tokens": 9423,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 4096
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "length",
+  "response_id": "chatcmpl-EMBz1NeBB4sFOHIw44Stns3zh0UO3",
+  "last_attempt_file": "o3/attempts/0091_1788957974043725000.json"
+}

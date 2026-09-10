@@ -1,0 +1,10 @@
+{
+  "query_index": 144,
+  "model": "gpt-5",
+  "started_at": 1788964310.797605,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3MROESSuTJaTUqvUhbWdl2wW0\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 7\\nCONFIDENCE: 0.64\\nEXPLANATION: Strong aliphatic C–H features (2880–2950 cm⁻¹ and 1454 cm⁻¹; cf. GFQ-003) indicate a simple alkyl system. The most intense band at 721 cm⁻¹ is characteristic of a ν(P=S) stretch in phosphorothioates, and the paired bands at 919/935 cm⁻¹ fit P–O(H) stretching modes. The weak 1206–1259 cm⁻¹ features do not show a dominant P=O band expected for phosphinic/oxide candidates, and there are no signatures for isocyanate (~2270 cm⁻¹), isothiocyanate (~2100 cm⁻¹), or C≡C (~2100 cm⁻¹), excluding other options. Thus CC P(O)(O)=S (phosphonothioic acid derivative) best matches the Raman pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5135,\"completion_tokens\":5982,\"total_tokens\":11117,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5760},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822192612-c7ef91de-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 75.61434691600152,
+  "error": null
+}

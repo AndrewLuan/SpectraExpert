@@ -1,0 +1,21 @@
+{
+  "query_index": 116,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.42\nEXPLANATION: The spectrum shows a coherent set of bands that are typical for an organophosphate ester containing a C=O group.  Key matches are: (a) a strong ν(C=O) at 1723 cm⁻¹, compatible with the ketone/ester carbonyl present only in candidate 1; (b) a group of phosphate-related bands – ν(P=O) / ν(PO₂) asymmetric at 1235–1192 cm⁻¹, ν(PO–C) at 1087 cm⁻¹, ν(PO₃) symmetric at 974 cm⁻¹, and P–O–C / P–C deformation near 816, 619 and 585 cm⁻¹ – matching the expected fingerprint of a dialkyl phosphonate; (c) strong C–H stretches at 2932 cm⁻¹ and CH bending at 1441 cm⁻¹, consistent with the isopropyl groups in candidate 1. None of the other candidates contain a phosphoryl (P=O) group capable of generating the full 1235/1190/1087/974/816 cm⁻¹ pattern, and some lack a 1720 cm⁻¹ carbonyl. Therefore, candidate 1 (CC(C)OP(=O)(OC(C)C)C(C=O)=NO) best accounts for the observed Raman peaks.",
+  "usage": {
+    "prompt_tokens": 5289,
+    "completion_tokens": 2454,
+    "total_tokens": 7743,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2112
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBzDKii5GKi78mDgspbJ2HA4o5ZS",
+  "last_attempt_file": "o3/attempts/0116_1788957994267008000.json"
+}

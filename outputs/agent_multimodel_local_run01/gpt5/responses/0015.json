@@ -1,0 +1,21 @@
+{
+  "query_index": 15,
+  "content": "SELECTED_INDEX: 9\nCONFIDENCE: 0.7\nEXPLANATION: Strong halogen-related band at 525 cm⁻¹ is consistent with P–Cl stretching in phosphorochloridates; the 716 cm⁻¹ band matches typical C–Cl stretching of a CHCl group; the 1071 cm⁻¹ band fits a P–O–C stretch in phosphate esters; and the CH stretches at 2946 and 3014 cm⁻¹ plus the 1450 cm⁻¹ CH bending are consistent with an ethyl substituent (GFQ-003 for CH stretches/bends). This pattern best matches CC(Cl)OP(Cl)Cl.",
+  "usage": {
+    "prompt_tokens": 4223,
+    "completion_tokens": 4063,
+    "total_tokens": 8286,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3904
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBxq0jwclKPOcSlT4GnWV7YrsTEv",
+  "last_attempt_file": "gpt5/attempts/0015_1788957912167284000.json"
+}

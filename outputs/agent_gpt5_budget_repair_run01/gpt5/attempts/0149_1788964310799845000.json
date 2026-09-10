@@ -1,0 +1,10 @@
+{
+  "query_index": 149,
+  "model": "gpt-5",
+  "started_at": 1788964310.799847,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3n8DmsH4l7WWXXqV9RJmQK1Rp\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 9\\nCONFIDENCE: 0.64\\nEXPLANATION: The spectrum shows a strong C=C stretch at 1661 cm⁻¹ and sp² C–H stretches up to ~3083 cm⁻¹, consistent with an alkene. Key halogen signatures support a vinylic C–F/C–Br system: strong bands at 1024 and 1074 cm⁻¹ match C–F stretching, and bands at 535–560 cm⁻¹ match C–Br stretching. A =CH out-of-plane wag near 999 cm⁻¹ is also present. The absence of a strong 1700–1800 cm⁻¹ carbonyl band and lack of an OH stretch argue against ester/acid chloride/alcohol candidates. These features align best with CC/C=C(\\\\F)Br (candidate 9).\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5566,\"completion_tokens\":5632,\"total_tokens\":11198,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5440},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260820012748-7db9b848-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 80.0702701669943,
+  "error": null
+}

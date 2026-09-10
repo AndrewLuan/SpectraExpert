@@ -1,0 +1,10 @@
+{
+  "query_index": 39,
+  "model": "o3",
+  "started_at": 1788957912.246658,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBxtI1IE2Rmart2DtKxyxoH9ocjP\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"length\",\"index\":0,\"logprobs\":null}],\"created\":1788957917,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5349,\"completion_tokens\":4096,\"total_tokens\":9445,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4096},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819135549-79c573a3-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 49.284228208009154,
+  "error": null
+}

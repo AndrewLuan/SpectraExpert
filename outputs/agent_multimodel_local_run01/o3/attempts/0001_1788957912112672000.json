@@ -1,0 +1,10 @@
+{
+  "query_index": 1,
+  "model": "o3",
+  "started_at": 1788957912.112674,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBxstYwa3kqn6GM8ptvC4monaCeP\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.34\\nEXPLANATION: Key bands match a tert-butyl ketone that also contains a methoxy (ether) group.  \\n• 1707 cm⁻¹ – C=O stretch of a non-conjugated ketone.  \\n• 1442 cm⁻¹ – CH₃ asymmetric deformation, intense for multiple methyls.  \\n• 734 cm⁻¹ – very strong CH₃ rocking band typical of a (CH₃)₃C (tert-butyl) group.  \\n• 1079 cm⁻¹ and 931 cm⁻¹ – strong C–O–C stretching modes characteristic of a methoxy ether; candidate 1 is the only tert-butyl ketone that also contains an O–CH₃ single bond.  \\nOther candidates with a methoxy group lack the large tert-butyl group (so would not give the dominant 734 cm⁻¹ peak), while the simple tert-butyl ketone (candidate 2) cannot account for the strong 1079 cm⁻¹ C–O stretch.  \\nThus COC(C)(C)CC(C)=O (candidate 1) best fits the observed Raman pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957916,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5205,\"completion_tokens\":3362,\"total_tokens\":8567,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3072},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260817064417-5170c2c3-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 35.04612066599657,
+  "error": null
+}

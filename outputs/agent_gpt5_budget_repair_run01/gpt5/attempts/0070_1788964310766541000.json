@@ -1,0 +1,10 @@
+{
+  "query_index": 70,
+  "model": "gpt-5",
+  "started_at": 1788964310.7665439,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2LYcC55nZIo7pM0Vrbjadj23T\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.62\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2884/2910/2939 cm⁻¹ (GFQ-003) and a clear carbonyl band at 1712 cm⁻¹ consistent with a saturated ketone (GFQ-011). Esters (1, 6, 8) typically have ν(C=O) ≈1735–1750 cm⁻¹, imine (2) lacks C=O, alcohol (10) lacks C=O, aldehyde (7) would show aldehydic C–H bands near 2720–2820 cm⁻¹ (absent), and nitrite/diazo (5, 9) do not fit the carbonyl position. The mid-frequency bands at ~1040 and 1120 cm⁻¹ are compatible with aliphatic C–C skeletal modes, supporting an unfunctionalized chain ketone like candidate 3.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4927,\"completion_tokens\":4258,\"total_tokens\":9185,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4032},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-10e6a11d-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 58.22056225000415,
+  "error": null
+}

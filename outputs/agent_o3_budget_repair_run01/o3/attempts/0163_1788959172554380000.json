@@ -1,0 +1,10 @@
+{
+  "query_index": 163,
+  "model": "o3",
+  "started_at": 1788959172.554386,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCIURXYo0JI9Uh6spQo1VMCbDbzi\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.46\\nEXPLANATION: The spectrum shows (1) a very strong C=O stretch at 1737 cm⁻¹, typical for a non-conjugated ester carbonyl; (2) a medium band at 1651 cm⁻¹ that fits an isolated C=C stretch; (3) the pair 995 / 953 cm⁻¹ and an additional band at 839–872 cm⁻¹, characteristic of the =CH₂ out-of-plane wags and twists of a terminal vinyl group; (4) a strong C–O/CO stretch near 1294 cm⁻¹ expected for esters; and (5) C–H stretches for both sp² (3022, 3098 cm⁻¹) and sp³ (2888–2997 cm⁻¹) sites.  \\n\\nAmong the candidates, only molecule 2 (C=CCOC=O, vinyl formate) simultaneously contains (a) a saturated ester C=O, (b) a terminal vinyl group, and (c) no O–H or N–H groups (absence of 3200–3600 cm⁻¹ band). Other ester-containing candidates either have an O–H stretch that is not observed (5), or carbonyl types expected at lower frequency (1: conjugated ketone; 3: thio-ester; 7: mixed anhydride/aldehyde). Therefore candidate 2 best explains the key Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959194,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5708,\"completion_tokens\":4256,\"total_tokens\":9964,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3904},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260722013846-16cbefe0-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 56.892332417017315,
+  "error": null
+}

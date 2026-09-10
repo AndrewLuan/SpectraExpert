@@ -1,0 +1,10 @@
+{
+  "query_index": 143,
+  "model": "o3",
+  "started_at": 1788958022.739389,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBzeXkNqKE1j623RIMH79OczvzK9\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.55\\nEXPLANATION: The spectrum is dominated by alkyl C–H stretch (2927 cm⁻¹) and C–H bending (1436 cm⁻¹) typical for saturated chains, fitting an aliphatic molecule.  Two medium-intensity bands at 864 cm⁻¹ and 1265 cm⁻¹ coincide with the characteristic δ(HOO) doublet of hydroperoxides/peroxides (rule GFQ-069: 864/1266 cm⁻¹), indicating an –O–O– linkage.  Among the candidates, only CCCC(CC)OO (index 3) contains an O–O bond; the other molecules lack this functional group.  Additional bands at 1096 cm⁻¹ (C–O stretch) and 797–834 cm⁻¹ (skeletal/rocking modes) are consistent with an alkyl hydroperoxide, supporting selection of candidate 3.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788958026,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4951,\"completion_tokens\":1199,\"total_tokens\":6150,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":960},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822230908-677df27f-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 19.619521249987883,
+  "error": null
+}

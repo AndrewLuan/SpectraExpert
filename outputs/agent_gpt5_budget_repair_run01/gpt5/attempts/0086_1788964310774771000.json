@@ -1,0 +1,10 @@
+{
+  "query_index": 86,
+  "model": "gpt-5",
+  "started_at": 1788964310.774772,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3LZtTSvOQPeApzMNb4BHkDfwd\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.63\\nEXPLANATION: The spectrum shows typical aliphatic C–H stretches at 2877/2936/2980 cm⁻¹ and a CH2 scissoring band at 1462 cm⁻¹ (GFQ-003), plus a cluster of strong bands at 1125, 1087, and 1048 cm⁻¹ consistent with multiple C–O–C stretching modes of an ether (C–C/C–O region per GFQ-010). Additional bands at 892 and 834 cm⁻¹ fit C–O–C deformation/rocking seen in open-chain ethers. No clear O–H stretch is evident, disfavoring alcohol-containing candidates. Among candidates lacking O–H, #3 is a dialkyl ether and best matches the observed ether-specific band pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4930,\"completion_tokens\":4548,\"total_tokens\":9478,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4352},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260824014239-2eb7df35-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 60.37830558299902,
+  "error": null
+}

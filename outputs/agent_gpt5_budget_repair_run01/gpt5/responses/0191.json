@@ -1,0 +1,21 @@
+{
+  "query_index": 191,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.62\nEXPLANATION: The spectrum shows a prototypical aromatic Raman pattern: a very strong ring-breathing band at 1004 cm⁻¹ and a strong ring C=C stretch near 1618 cm⁻¹, plus aromatic C–H stretches around 3081 cm⁻¹ (consistent with GFQ-003). The out-of-plane C–H deformation at 763 cm⁻¹ accompanied by a lower band near 665 cm⁻¹ is characteristic of a monosubstituted benzene ring, which fits candidate 10. In contrast, candidates bearing carbonyl or amide functions (1–6, 8, 9) should show a distinct C=O/amide I band near ~1650–1720 cm⁻¹ and/or N–H stretches near 3300–3400 cm⁻¹, which are not observed. Halogenated candidates (2–6, 9) would also typically display stronger characteristic C–X stretches; the low-frequency features here are better assigned to ring modes rather than heavy-atom stretches. Thus, the monosubstituted aromatic with no carbonyl/N–H/O–H (candidate 10) best matches the observed Raman features.",
+  "usage": {
+    "prompt_tokens": 5512,
+    "completion_tokens": 6614,
+    "total_tokens": 12126,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 6336
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd263ty8oGNb0vuOEFrA6y9ruBL",
+  "last_attempt_file": "gpt5/attempts/0191_1788964310816776000.json"
+}

@@ -1,0 +1,10 @@
+{
+  "query_index": 113,
+  "model": "o3",
+  "started_at": 1788957990.236651,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBzAkLjvlziuHl6as2MhdZptkcka\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.35\\nEXPLANATION: Spectrum is dominated by aliphatic C-H bands (strong triplet 2880-2980 cm⁻¹ and CH₃/CH₂ deformations at 1458 cm⁻¹ and 1387 cm⁻¹) with no bands for ≡C–N (≈2200 cm⁻¹), Si-H (≈2100-2200 cm⁻¹), B–F (≈1050-1400 cm⁻¹, usually intense) or N=N (≈2100 cm⁻¹). A strong C–O–C stretch of an aliphatic ether appears at 1126 cm⁻¹, and isopropyl CH₃ rocking and C–C stretches give the 797 cm⁻¹, 851 cm⁻¹, 906 cm⁻¹ and 935 cm⁻¹ bands—exactly the pattern reported for di-isopropyl ether. Among the candidates only molecule 1 (CC(C)OC(C)C, di-isopropyl ether) possesses two isopropyl groups linked by an ether oxygen, fitting all observed features, whereas the other candidates contain heteroatoms or functional groups that should give diagnostic bands which are absent.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957996,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5274,\"completion_tokens\":2166,\"total_tokens\":7440,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":1856},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260817064417-2a49f6bc-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 25.09271466700011,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 23,
+  "content": "SELECTED_INDEX: 7\nCONFIDENCE: 0.6\nEXPLANATION: The strong carbonyl at 1770 cm⁻¹ is characteristic of an acyl chloride (chloroformate-like) C=O, and the pair of intense low-frequency bands at 529 and 656 cm⁻¹ fit heavy-atom stretches expected for C–Cl and C–S in a molecule containing both Cl and S. The CH stretches at 2956 and 3005 cm⁻¹ (GFQ-003) indicate a –CH₂– fragment, which O=C(Cl)OCS provides. Additional bands at 964–1011 and 1234–1425 cm⁻¹ are consistent with C–O and CH₂ bending/rocking modes in an O–CH₂–S group. Overall, this matches O=C(Cl)OCS best among the candidates; other halogenated options lack CH or the right carbonyl frequency, and non-halogenated imide/borate options do not explain the pair of strong ~530/650 cm⁻¹ bands.",
+  "usage": {
+    "prompt_tokens": 5278,
+    "completion_tokens": 8369,
+    "total_tokens": 13647,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 8128
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2z3Vy0ig7aXg7HcAmE0H9TaQm",
+  "last_attempt_file": "gpt5/attempts/0023_1788964310744751000.json"
+}

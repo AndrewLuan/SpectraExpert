@@ -1,0 +1,10 @@
+{
+  "query_index": 47,
+  "model": "gpt-5",
+  "started_at": 1788964310.756203,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2Dac8UqpmMYDLGU7lAp8eajjU\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.78\\nEXPLANATION: The spectrum shows a strong ester carbonyl near 1752 cm⁻¹ and characteristic aliphatic C–H stretches (2888–3078 cm⁻¹) consistent with an alkyl ester (GFQ-003). Critically, the pair of bands at 1298 and 1550 cm⁻¹ matches the symmetric and antisymmetric ν(NO₂) of a nitro group (GFQ-022), and the bending near 814 cm⁻¹ further supports NO₂ (GFQ-022). The strong C–O bands around 1100 and 1234 cm⁻¹ are typical for esters. Among the candidates, only 3 (CCOC(=O)C(CO)[N+](=O)[O-]) contains both an ester and a nitro group, explaining these key features; the weak 2745 cm⁻¹ band can be a CH Fermi resonance (SPC-002).\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5983,\"completion_tokens\":3748,\"total_tokens\":9731,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3520},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 40.87270687500131,
+  "error": null
+}

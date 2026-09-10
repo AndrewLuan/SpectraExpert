@@ -1,0 +1,10 @@
+{
+  "query_index": 120,
+  "model": "gpt-5",
+  "started_at": 1788957998.6852171,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBzGoYKdF8H7e8tg0X9O6b1rZG0F\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.4\\nEXPLANATION: The spectrum shows a simple aliphatic pattern: three strong bands at 2879–2937 cm⁻¹ consistent with sp³ C–H stretches and a band at 1450 cm⁻¹ consistent with CH₂/CH₃ bending (GFQ-003). There is no evidence for N–H stretches (~3200–3500 cm⁻¹) or NH₂ scissoring (~1600 cm⁻¹), disfavoring candidates with N–H. Azide-containing options (6, 7) would show a strong ~2100 cm⁻¹ band, which is absent. Candidate 4 (an ether with only sp³ C–H and no N–H/O–H) best matches the observed Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"protected_material_code\":{\"detected\":false,\"filtered\":false},\"protected_material_text\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"index\":0,\"logprobs\":null}],\"created\":1788958002,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":2989,\"completion_tokens\":2939,\"total_tokens\":5928,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2752},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260814001827-8d49d07a-default-r1-dp0-default\"},\"prompt_filter_results\":[{\"prompt_index\":0,\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"jailbreak\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}}}],\"service_tier\":\"default\"}",
+  "elapsed_seconds": 39.437092167005176,
+  "error": null
+}

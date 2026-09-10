@@ -1,0 +1,10 @@
+{
+  "query_index": 119,
+  "model": "gpt-5",
+  "started_at": 1788964310.7853818,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2aXtzPqtZE2BryYWk2IFcUyoK\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.58\\nEXPLANATION: The spectrum is dominated by aliphatic C–H stretches at 2873/2913/2930/2956 cm⁻¹ (GFQ-003), consistent with an alkyl-rich molecule. A distinct band at 3333 cm⁻¹ indicates an N–H stretch (GFQ-002), and the 957 cm⁻¹ feature aligns with N–H bending/wagging (GFQ-002). The pair at 1062 and 1133 cm⁻¹ is consistent with C–O/N–O stretching in an alkoxyamine. CC(C)CCON (an O–N–H alkoxyamine) matches these features better than candidates lacking N–H or having functionalities (e.g., Si–Cl, aromatic, P=O) that would produce strong bands not observed.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5239,\"completion_tokens\":4746,\"total_tokens\":9985,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4544},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 55.93749666700023,
+  "error": null
+}

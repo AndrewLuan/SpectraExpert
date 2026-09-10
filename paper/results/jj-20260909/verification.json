@@ -1,0 +1,14 @@
+{
+  "table_count": 12,
+  "sources_unchanged": true,
+  "five_seed_mean": true,
+  "static_kb_latest": true,
+  "llm_kb_exact": true,
+  "latest_ged": true,
+  "native_tables": 3,
+  "latex_unresolved": false,
+  "latex_overfull": false,
+  "pdf_sha256": "b123299afd3a0be507f79b5516614aabd06b049c5306de7091a5b17f3b638029",
+  "pdf_path": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/output/pdf/SpectraExpert_camera_ready.pdf",
+  "pages": 13
+}

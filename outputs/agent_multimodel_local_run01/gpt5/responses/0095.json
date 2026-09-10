@@ -1,0 +1,21 @@
+{
+  "query_index": 95,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.74\nEXPLANATION: The intense 2232 cm⁻¹ band is a C≡N stretch (GFQ-009). The strong 1587 cm⁻¹ band fits an aromatic C=C mode region (GFQ-010), and 3073 cm⁻¹ corresponds to aromatic C–H stretching (GFQ-003). Crucially, the 645 cm⁻¹ peak is characteristic for aryl C–Br stretching, supporting a bromobenzonitrile over other nitrile candidates (no OH/NH stretches seen, excluding hydroxy/amine derivatives). The 775 cm⁻¹ and 1071–1197 cm⁻¹ bands are consistent with substituted benzene ring deformation/breathing modes. Overall, these features best match N#Cc1ccc(Br)cc1.",
+  "usage": {
+    "prompt_tokens": 4638,
+    "completion_tokens": 3971,
+    "total_tokens": 8609,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3776
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMByzSaGzJDcIp7svKaRuuRmcpX4T",
+  "last_attempt_file": "gpt5/attempts/0095_1788957974151847000.json"
+}

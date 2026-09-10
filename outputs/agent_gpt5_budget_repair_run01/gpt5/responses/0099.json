@@ -1,0 +1,21 @@
+{
+  "query_index": 99,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.62\nEXPLANATION: The spectrum is dominated by aliphatic CH stretches at 2925/2861 cm⁻¹ and a strong CH₂ scissoring band at 1445 cm⁻¹ (consistent with saturated hydrocarbons; GFQ-003). The absence of a clear 2960 cm⁻¹ CH₃ band indicates few/no CH₃ groups, matching a fully saturated bicyclic hydrocarbon like decalin. Strong bands at 724 and 760 cm⁻¹ and moderate bands at 1124 and 1049 cm⁻¹ fit CH₂ rocking and C–C skeletal stretches typical of saturated hydrocarbons, rather than requiring C–O or NH functionalities. This favors the pure hydrocarbon candidate over oxygen- or nitrogen-containing alternatives.",
+  "usage": {
+    "prompt_tokens": 5555,
+    "completion_tokens": 5944,
+    "total_tokens": 11499,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5760
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3G8XdCM09lfSXWmUTzyyVUzJK",
+  "last_attempt_file": "gpt5/attempts/0099_1788964310778168000.json"
+}

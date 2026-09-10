@@ -1,0 +1,2002 @@
+[
+  {
+    "query_index": 0,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0000.json",
+    "source_sha256": "d022d5db64c352d6dede5fe8ebb5fd70f5deecdd37a4efdd46379614e9105b77"
+  },
+  {
+    "query_index": 1,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4 (CC1CCC(=O)N1C)"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0001.json",
+    "source_sha256": "7c558d5553e14eb04826f4b221bfe0528c7608fcb7f01330419bf2fbcb7399a3"
+  },
+  {
+    "query_index": 2,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CN(C)C(=N)N(C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0002.json",
+    "source_sha256": "618a1e5c8bc8f8593e8ea1c6dda344e370afe18fcd3801e3f6f9a87168baa1cc"
+  },
+  {
+    "query_index": 3,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0003.json",
+    "source_sha256": "a355d3232789a515e6adf4c6237c4984af6a8bcf1c6316bec201924908f838be"
+  },
+  {
+    "query_index": 4,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6. CCCCCC=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0004.json",
+    "source_sha256": "4b816715950d6cfdb354511e6100fa1cc88288b3e2def8fc89687d5f491a38f0"
+  },
+  {
+    "query_index": 5,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCOCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0005.json",
+    "source_sha256": "95d156fdcddf44719419079419fc62c729362fd31505e5bba7cb31e5637d8f06"
+  },
+  {
+    "query_index": 6,
+    "index": 0,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0006.json",
+    "source_sha256": "84fd1d8bf9bf22a4f681210966e841c7b4a17e5823f765aceb7045835acc2aa4"
+  },
+  {
+    "query_index": 7,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0007.json",
+    "source_sha256": "e300b4be19a2600019342b3bfec07114307039a5827635d59aac6e5a4f0422ac"
+  },
+  {
+    "query_index": 8,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0008.json",
+    "source_sha256": "43f8003a0c22b830512bf27b46b1eec888c253b402eb33e7b3076a22b25f4a5b"
+  },
+  {
+    "query_index": 9,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CC12CC3N1C3(C)C2=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0009.json",
+    "source_sha256": "c5ba5f00f3787875642672b3f915d124c732f6c2a936a6563d9af23bf641ec7b"
+  },
+  {
+    "query_index": 10,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CCOCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0010.json",
+    "source_sha256": "9891889cefb016e407bc81cf50a240060c02264b0a6e46392ac75f6100102822"
+  },
+  {
+    "query_index": 11,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. COCSc1ccc(Cl)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0011.json",
+    "source_sha256": "6613a91347877a302e4f72dbeaa020e4cda9b2aba1f310d0adc17c268c2a54fe"
+  },
+  {
+    "query_index": 12,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0012.json",
+    "source_sha256": "712828426d28cfc0fa31fdcce31b77342e04aae56d57eaff81d68a37ebe3fe31"
+  },
+  {
+    "query_index": 13,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0013.json",
+    "source_sha256": "14f9bd09c96666ba10868241ac0a31f309712bd4f279c305279476a79bd1d13e"
+  },
+  {
+    "query_index": 14,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. COC(C)(C)OC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0014.json",
+    "source_sha256": "903c524051924dff17116188037ed65357169246d2a13687621374fe4c0585cb"
+  },
+  {
+    "query_index": 15,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0015.json",
+    "source_sha256": "6eacabb275cdb82e71729d08e0f3e7a1046a9a6d189548798043d7f0ba414301"
+  },
+  {
+    "query_index": 16,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "ClCCOc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0016.json",
+    "source_sha256": "10aedfa754308d75c587e7db58357cdeffa682f6c45c7068a881507db54905da"
+  },
+  {
+    "query_index": 17,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0017.json",
+    "source_sha256": "694bc348e823230e421084bbdd22256082068490eb7fbd32539a64999546d8ac"
+  },
+  {
+    "query_index": 18,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5. CN(C)[Si](C)(F)F"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0018.json",
+    "source_sha256": "fbbe467c464dfe11ac9702908b449e0dc8501fd02e63a53cdf073290fee8b8b1"
+  },
+  {
+    "query_index": 19,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. ClCOc1ccc(Br)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0019.json",
+    "source_sha256": "a21a2e70e28815e237da155de6c32838abe80c89a6ecae3c26bbea8062ac4a61"
+  },
+  {
+    "query_index": 20,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0020.json",
+    "source_sha256": "c5aa707aafd4d22318ef6914a39bb46eb7e3d2bbe529d28ad3821a8177998e9d"
+  },
+  {
+    "query_index": 21,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CCCCCCOP(=O)(O)ON=C(N)N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0021.json",
+    "source_sha256": "825f8be671a4d6cfdae92db511b5b116717fcfcf66dc5a55d203f5ddfe8f8639"
+  },
+  {
+    "query_index": 22,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. Cc1ccccc1C=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0022.json",
+    "source_sha256": "23b884f28af95171f2869985179794e38b514ff04082fd55f336c861b5cdf887"
+  },
+  {
+    "query_index": 23,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "O=CNC(F)(F)Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0023.json",
+    "source_sha256": "447803f9a0083c0f55ba27fdb34224de1a9cb4795b992b401c882394d6f58ed4"
+  },
+  {
+    "query_index": 24,
+    "index": 1,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "Candidate 2: Cc1ccc(C#N)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0024.json",
+    "source_sha256": "bcc6b8fbf25b8002a719f99ebb9be753e65a840f89c8d26f46c1c2b3df53cbca"
+  },
+  {
+    "query_index": 25,
+    "index": 0,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0025.json",
+    "source_sha256": "06b6a21b46d28768bf84f086554e3cc07664f209f68784bf133f3e39621c588f"
+  },
+  {
+    "query_index": 26,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCOCCC#N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0026.json",
+    "source_sha256": "209e705fe1eeb2e39e556358e289a44a173426a647cd4bb16884c31894290e5d"
+  },
+  {
+    "query_index": 27,
+    "index": 0,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "1. NNC(=O)c1ccncc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0027.json",
+    "source_sha256": "9340be6f8c808124a39e06d162e090d563e975ee2f541b27a743822a70935891"
+  },
+  {
+    "query_index": 28,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0028.json",
+    "source_sha256": "d0d1047ab30a211b5413f303d7068de5a529aea2ad3790b8602d162a05b8c444"
+  },
+  {
+    "query_index": 29,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0029.json",
+    "source_sha256": "e636a82e827f8fc7f6c89623b2343352e53d125349d54cef62667c111b4d69de"
+  },
+  {
+    "query_index": 30,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. Nc1cccc(=O)cn1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0030.json",
+    "source_sha256": "46d346261ef9784bdec4a53e70482040ce11400b29d6d444fd30ebc74f456c39"
+  },
+  {
+    "query_index": 31,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. ClC(Cl)=C1CC=CS1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0031.json",
+    "source_sha256": "31b32bf150be75b50e3c2b27aa9a94af3805a7da8ec889575279a1d59f11f058"
+  },
+  {
+    "query_index": 32,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8. CC(=O)[C@](F)(Cl)Br"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0032.json",
+    "source_sha256": "5e060b8dde60d6642968d71ac3fe23ff9b6222f8d2657546aac896d187573302"
+  },
+  {
+    "query_index": 33,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. COC(=O)/C(C)=C/CO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0033.json",
+    "source_sha256": "202a335feadb2922704d477de84f536a3c439ac9111b57c6c017bb6d49785fb8"
+  },
+  {
+    "query_index": 34,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "Nc1cnoc1Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0034.json",
+    "source_sha256": "938557b3f56c47d80d5711a46787419d79d6ff0eb13d5d8f5272d850e0cf32c3"
+  },
+  {
+    "query_index": 35,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. O=C1CCCCC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0035.json",
+    "source_sha256": "ec3a30347821fde5d36f57711442b2851e3df692505fe684b07b0f789ca733e6"
+  },
+  {
+    "query_index": 36,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5. O=C(c1ccccc1)C(O)c1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0036.json",
+    "source_sha256": "40531b7f92f6c797abcb7f7377e3a2240c65fc7b082ba113293b906d8f362572"
+  },
+  {
+    "query_index": 37,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0037.json",
+    "source_sha256": "80912b50b7600f534bd74bb065d8b162f474d48c3f6c9cafc21ac760ced6d458"
+  },
+  {
+    "query_index": 38,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8. CNCC1CCCO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0038.json",
+    "source_sha256": "c611220fee7ed616dda95a5c005e65f1badfc62aba3b8e3c1fe8501cd3313329"
+  },
+  {
+    "query_index": 39,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CC1CC(C)C(C)(C)C1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0039.json",
+    "source_sha256": "0fa514eb5708ace48131d95871e2d743388d33fe29d0157e5af34f8689763cda"
+  },
+  {
+    "query_index": 40,
+    "index": 3,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0040.json",
+    "source_sha256": "298dfa22711108c4032782dab3642425572bbe809160e2ee930db13e10d365d1"
+  },
+  {
+    "query_index": 41,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C=C(C)C#N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0041.json",
+    "source_sha256": "30b12618130e8018c3b1c06656f9673dd3374777697f875cfd7da4742fa3824e"
+  },
+  {
+    "query_index": 42,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. Oc1cnc(F)c(F)n1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0042.json",
+    "source_sha256": "cdc56ae86c8a20b401e2c53cfd275c832370b6ef3ce8746d36293e4a4ebdf7e5"
+  },
+  {
+    "query_index": 43,
+    "index": 3,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "Candidate 4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0043.json",
+    "source_sha256": "b30de566da2106a7cf6bf3c52f7dce81fd87e50b7832732833205487673f7248"
+  },
+  {
+    "query_index": 44,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCCCOC=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0044.json",
+    "source_sha256": "83961139bd1323b106f74c468c519dbf4a535ac8aba9d7ccf2209f192d488cee"
+  },
+  {
+    "query_index": 45,
+    "index": 0,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0045.json",
+    "source_sha256": "71a972acc00c1478bfed68b38505ebaeff76d10e32a922d27331137de8b9819b"
+  },
+  {
+    "query_index": 46,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0046.json",
+    "source_sha256": "b2788b99ee8c23c8ea0c2af17d8048580107a6d9130d69716c0d1bb968a55c44"
+  },
+  {
+    "query_index": 47,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. CCOC(=O)C(CO)[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0047.json",
+    "source_sha256": "226a3ca4c693809932c7b02af16ba5b4927a28fc47ad9acb5b493fbd1f30b86f"
+  },
+  {
+    "query_index": 48,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CC1(O)OC1(Cl)Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0048.json",
+    "source_sha256": "57578fa626ed74200fae3473046cad2c12a180209c633f46305b9114669bfca7"
+  },
+  {
+    "query_index": 49,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. N#Cc1cc(S)cc(Cl)c1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0049.json",
+    "source_sha256": "d808bad2c56bc62c7a19e545cca350ceae4dfecc457cc10dfc36d59747a218de"
+  },
+  {
+    "query_index": 50,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C=C1CCCCN1C(=O)OCCOCC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0050.json",
+    "source_sha256": "201eb41d97f8a228d5ca3ec0755a80352e5ebe42fb030a861baa8d009aef3b92"
+  },
+  {
+    "query_index": 51,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0051.json",
+    "source_sha256": "ef6b9fad2ea3ce9185e0d10ef578b4f7d3a9d4cdf5d701367e8ecf1bf87f5d83"
+  },
+  {
+    "query_index": 52,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0052.json",
+    "source_sha256": "2f79c3fb6da7b90146d3a8536a7da842ead0fbf8a400bc2a3c1c83bb3181dcf5"
+  },
+  {
+    "query_index": 53,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. C=C(C)C(=O)OCC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0053.json",
+    "source_sha256": "f5fd23d2a199183dda3bd565bcf3627aa0bb9b3d27cc02364f4befc9c57ab85d"
+  },
+  {
+    "query_index": 54,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CC(C)OC(=O)N[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0054.json",
+    "source_sha256": "527a3ced3bc06bc6cee033bebc978ae648492e4e33deb51ec63977de50be1b24"
+  },
+  {
+    "query_index": 55,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. O=Cc1cc([N+](=O)[O-])cc(F)c1O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0055.json",
+    "source_sha256": "d4a699c338c6d2b71f853b4deab4eccfcee4e2ec1ed03bffd86caec96a2a7094"
+  },
+  {
+    "query_index": 56,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. O=C1CCCCC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0056.json",
+    "source_sha256": "2da31663de001d7c9a929acc86e6581730c150fe131b98f7bf7cfb7fba555796"
+  },
+  {
+    "query_index": 57,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0057.json",
+    "source_sha256": "509611c0b180517c5e6ddfa4e9b8069b5cbdfc23c8365da156b8bd9115eaefb4"
+  },
+  {
+    "query_index": 58,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CC1(O)CCCCC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0058.json",
+    "source_sha256": "8939ccee286334c8339bbaecd68f1b9be7636848d75f714a01a076f2dc2c4eb2"
+  },
+  {
+    "query_index": 59,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. CC(CCCO)C(N)=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0059.json",
+    "source_sha256": "e620a46949538c93cf363a57336a7daf2f9def7372368d75c82d3b9197bf4cc1"
+  },
+  {
+    "query_index": 60,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0060.json",
+    "source_sha256": "aafd0c916a30052b722108420b0b62838acc3c297f1a95f11a2ff3f02a3cc449"
+  },
+  {
+    "query_index": 61,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0061.json",
+    "source_sha256": "a4ee07be6a84455742c7aed9c879e15692458dd196f54d5a7797480dd8a08ddf"
+  },
+  {
+    "query_index": 62,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0062.json",
+    "source_sha256": "eb1f0507c2bc047e53692447af343e844946c33f87dba0618da48d59393434c1"
+  },
+  {
+    "query_index": 63,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC12COC(=N)C1OC2"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0063.json",
+    "source_sha256": "477455a203ed47b7bdb92b1b95068256ee0d68de1516a4ce2a68af01274a1dd7"
+  },
+  {
+    "query_index": 64,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CCPCC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0064.json",
+    "source_sha256": "3b28bcde53226fc6ab37c59d97e718cb7801f0a7aa55e558b125e43b2ad3d33b"
+  },
+  {
+    "query_index": 65,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC(=O)N(C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0065.json",
+    "source_sha256": "04133b3dc663afe069c37d8efbae8ff9a3e523ef54cc8966d727a8930b4869b6"
+  },
+  {
+    "query_index": 66,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CCC1(C)OC(=N)C1N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0066.json",
+    "source_sha256": "4de3ae1dfd641b2011395208f10895194e9807370a4ab803931d7b82e3dfd131"
+  },
+  {
+    "query_index": 67,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0067.json",
+    "source_sha256": "a90e8409cc7d7f591751a5dd26130522796a9be370d09a53c348c2f0e27cbc7e"
+  },
+  {
+    "query_index": 68,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0068.json",
+    "source_sha256": "fd7b01fc58b95cd230ffdb3b0e5e922e9399398dba9d8a372510c53fb4a91c35"
+  },
+  {
+    "query_index": 69,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0069.json",
+    "source_sha256": "375ae31b42fc2f8e72aa20f89a43ada09d049af01c2c6b7174a04b0fb0c3bdd3"
+  },
+  {
+    "query_index": 70,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCCCOC=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0070.json",
+    "source_sha256": "93e593b82b6b1e0e5f29704ac1ea0481ac06f9152969041d93d5d3fd8aa3a72f"
+  },
+  {
+    "query_index": 71,
+    "index": 0,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "1. O=C1OC(=O)C(Cl)=C1Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0071.json",
+    "source_sha256": "465120d1cfe6b63bc499dd8a1bad5ef60fd1228d46fd4ea71ce173b035d2c632"
+  },
+  {
+    "query_index": 72,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0072.json",
+    "source_sha256": "aa284b3b75225f1589927b4d27aacfd9be7bdd4b24565fbe5929e8bc6917dc82"
+  },
+  {
+    "query_index": 73,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CCN=CSC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0073.json",
+    "source_sha256": "49c17791e3832eff20da6f080fbff52d55641d29ebafa2c597ebce8ca32537dc"
+  },
+  {
+    "query_index": 74,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. COCCOC(C)=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0074.json",
+    "source_sha256": "632d6a0ecd115733d980e9bd0be6ed7a8513135a6c25d54e0650bdd3af1fda27"
+  },
+  {
+    "query_index": 75,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8. NCCCSCS(N)(=O)=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0075.json",
+    "source_sha256": "af059d60e5e3b21f55099696e6e2ce4b28a62aa88db0e4ade6b8b9856b460b99"
+  },
+  {
+    "query_index": 76,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6. CC(=O)C1CCCCC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0076.json",
+    "source_sha256": "11885874a156f0c3a9b4a28acecf38391e0650917ccabb807d2719e9952b9c58"
+  },
+  {
+    "query_index": 77,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0077.json",
+    "source_sha256": "4cb93a401dab29f610e5c20750169d71be914af77321cfdd50bb2c34a7d87837"
+  },
+  {
+    "query_index": 78,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CN1CCN(C)CC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0078.json",
+    "source_sha256": "a2509ab9827b7d3f4e1e00038fa3a3f4a2de01b92207de8f06ef468d777b2504"
+  },
+  {
+    "query_index": 79,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. CCc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0079.json",
+    "source_sha256": "df4adbef7005f70d6ca0da552529bdac40375aa1b2c33c89a35b290ff23d175a"
+  },
+  {
+    "query_index": 80,
+    "index": 4,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "5."
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0080.json",
+    "source_sha256": "f6f25c82439b2c4795155fcfbe18217f712afe72535ed5c3f21394b13bb82a85"
+  },
+  {
+    "query_index": 81,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CC#CC1(C#CC)CO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0081.json",
+    "source_sha256": "40974c80da68f30e95a01d17c0507fffd22e232b018a5a939333283c5a5211b5"
+  },
+  {
+    "query_index": 82,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCC(O)CCC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0082.json",
+    "source_sha256": "3d8b403ba6ca208e9bb0fc66cd1be1a5aa62ed7092241ffa1f67037cc5ee09fa"
+  },
+  {
+    "query_index": 83,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. N=C1CNCCC(=O)N1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0083.json",
+    "source_sha256": "58f2f3c3e2e47cf5d8e833d10181228f594f971a03826eab78542e40c906a324"
+  },
+  {
+    "query_index": 84,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0084.json",
+    "source_sha256": "3c6dc441da38c1dc7d1f1f388b7a31ecd234ae69fc386ba31f33be2a0fdf52c4"
+  },
+  {
+    "query_index": 85,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0085.json",
+    "source_sha256": "edabf704e685a8a173ca9e8d4c96388bc21c84cf2ffcb6f6ae1fa826f3bad72e"
+  },
+  {
+    "query_index": 86,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. COCC(C)OCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0086.json",
+    "source_sha256": "800d1d5fecdbc5ab440b41712d963b639925eecd540081a43d710ae8c7693dd1"
+  },
+  {
+    "query_index": 87,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0087.json",
+    "source_sha256": "57dcdc2bf67f772d2edf81e65d497500ab75d57a58fab7beff9d12083ee7f878"
+  },
+  {
+    "query_index": 88,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. CCOc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0088.json",
+    "source_sha256": "8a1cd1f211631c9a73e25f5126842dcd38daa6c8a5661db4be6e3d35f21677ac"
+  },
+  {
+    "query_index": 89,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. CCC(C)C(C)C=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0089.json",
+    "source_sha256": "8a3a71c9bad7854a7349ba53aa20c9f9eb2db4e48bec5f3a3059e02d049a3445"
+  },
+  {
+    "query_index": 90,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. NCCCN1CCOCC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0090.json",
+    "source_sha256": "52b4138b1cd9f623ddc34fa7056fd6f085a156fe8647177c175f12e5ac046930"
+  },
+  {
+    "query_index": 91,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCON=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0091.json",
+    "source_sha256": "aea2659a52b2a78e27371031f00e955920427e33bf94ffb6bf5dcd0889ed0c20"
+  },
+  {
+    "query_index": 92,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CCc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0092.json",
+    "source_sha256": "50081742305b45de99dd6da029ee1f673fe761f6451228b85853a4e68c5e12a2"
+  },
+  {
+    "query_index": 93,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCC(=O)OC(C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0093.json",
+    "source_sha256": "e33ebc79b90dc6edfb4db03a59237a9acfbfc7e0feb0bfa99dd458029dab62aa"
+  },
+  {
+    "query_index": 94,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0094.json",
+    "source_sha256": "9a35706fdbab1e02fd0768e69a7798ba9f56af624c429452b32813d6258480a0"
+  },
+  {
+    "query_index": 95,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. N#Cc1ccc(Br)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0095.json",
+    "source_sha256": "b50e7ddb920d8b8d74e13763e43c4dab5d0f3ed201106c31a5bedba537b77465"
+  },
+  {
+    "query_index": 96,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC12CC3C(O1)C3(O)C2"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0096.json",
+    "source_sha256": "4a1d42162d3d554a118aff40c8696c383577c320fe5b604872e79ad6c25ac0aa"
+  },
+  {
+    "query_index": 97,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCCOC(C)=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0097.json",
+    "source_sha256": "c05fad8780f15023093237d6e391c31c9fa4577a2c8474c22a460ca288652efd"
+  },
+  {
+    "query_index": 98,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0098.json",
+    "source_sha256": "201b4340911426bb27defac3af8d52f1fc3440cced26db5b5a35693a0344bc07"
+  },
+  {
+    "query_index": 99,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C1CCC2CCC2CC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0099.json",
+    "source_sha256": "ef8e9de577fae317445e2902e39e529cc230458a954cbede5eba407400c3b03c"
+  },
+  {
+    "query_index": 100,
+    "index": 5,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "Candidate 6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0100.json",
+    "source_sha256": "092b3fbf5095c2c2b447f9040e933ea44e4ff33e98d5557e184eb9e74e7d0cd4"
+  },
+  {
+    "query_index": 101,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. OCCCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0101.json",
+    "source_sha256": "9ad5093275ed9a64ceeac91831a746d3a10c18279c6b61c52b69e8cf90a0fa69"
+  },
+  {
+    "query_index": 102,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCC#CC(C)C#N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0102.json",
+    "source_sha256": "07545f34ff6deaa4cf4fd8c9849263d81c3f6445f368edced14ba34ad9091cd8"
+  },
+  {
+    "query_index": 103,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. Fc1cccc(Cl)c1S"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0103.json",
+    "source_sha256": "63ab41812d606de103361631587a89d108a55c71e72ad077aba0bf9f7d350b89"
+  },
+  {
+    "query_index": 104,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0104.json",
+    "source_sha256": "f533d544268bc4bd214c15bbb291f8b7075d3cf67cbb5b3d768fa01cb836e3e6"
+  },
+  {
+    "query_index": 105,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCCCC=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0105.json",
+    "source_sha256": "7be17ced4486fed832543a847f386d4bbae3637e7b0912c6fe9ec5626de71ed3"
+  },
+  {
+    "query_index": 106,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0106.json",
+    "source_sha256": "a57f1f061fd9d2d7878793b038349077013a9c59526e387307a4704a5a661521"
+  },
+  {
+    "query_index": 107,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. Cc1ccc(CCl)s1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0107.json",
+    "source_sha256": "fefa0ef204bb90ad1dc546fe943c38c11e95bed4f0064aa136c6f9e2f0e6fba8"
+  },
+  {
+    "query_index": 108,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "NCCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0108.json",
+    "source_sha256": "844f6713f3a47faeeff2e3360d995e500accea04174d6286764dda9f4624fda2"
+  },
+  {
+    "query_index": 109,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0109.json",
+    "source_sha256": "90ab8fcb995eca7fabb0a5a215bb4b0dee9d93f776a1ee99fbd238b3add977fb"
+  },
+  {
+    "query_index": 110,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC(Cl)(C#N)CC(Cl)C=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0110.json",
+    "source_sha256": "37ead519aebf716775c4044a467e8faff6891c4216dcfb4251df82747810b000"
+  },
+  {
+    "query_index": 111,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0111.json",
+    "source_sha256": "f451e20e60caf9eadb2b10b459d2fd7b3c1da870ed2595a4a3381a03e0b7a8c2"
+  },
+  {
+    "query_index": 112,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0112.json",
+    "source_sha256": "42dfecb4df0406c33ccc793088fd6388ce9430479da099ff7bea2c51860d1f02"
+  },
+  {
+    "query_index": 113,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC(C)OC(C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0113.json",
+    "source_sha256": "761f416532ac18e5dd0f064e4433fa97436873f7467d9741f06d40812dd22d77"
+  },
+  {
+    "query_index": 114,
+    "index": 9,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "Candidate 10: Cc1ccc(C#N)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0114.json",
+    "source_sha256": "61bf77f7b021b8a3fb86652c9b2952376b0a71624e82b4716cb5fd9bb43731ff"
+  },
+  {
+    "query_index": 115,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0115.json",
+    "source_sha256": "58bb624ee858fd068778748b22af81e1ec235cd1d57a5ef1ca1f796acdd23d98"
+  },
+  {
+    "query_index": 116,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. CC1=NCC(=O)N1C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0116.json",
+    "source_sha256": "eb00ed10ef352ffc26c2d150472eb1894d4f524a54ea845078cad2db6ceb52a7"
+  },
+  {
+    "query_index": 117,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0117.json",
+    "source_sha256": "bee047a45bb6e6f23174a4077eaf3bee4c5744c5078f23490e8f81bde2ee452f"
+  },
+  {
+    "query_index": 118,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CCC#CC(C)C#N"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0118.json",
+    "source_sha256": "9b99ec075575b2a5f7cb6a486bb8fb46e47caf2481c98ca66c623e3cfd393a4e"
+  },
+  {
+    "query_index": 119,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCN[Si]Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0119.json",
+    "source_sha256": "9c84601d8dfce8fc3696b3c1e75df69f3c2b62e011b631acaa85a5d6c66e88aa"
+  },
+  {
+    "query_index": 120,
+    "index": 8,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "9. CCNCCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0120.json",
+    "source_sha256": "2feb2f1b9f40ce5351c6e64e6f822e7db16bdddc12d7b6d8e8137184e5938c29"
+  },
+  {
+    "query_index": 121,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0121.json",
+    "source_sha256": "8846d1b50e932559f0dc715779889206098586e79aaebb80363a304f54b330b3"
+  },
+  {
+    "query_index": 122,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0122.json",
+    "source_sha256": "fcbe4df441a7401c98072cd3a6335ed5a68a0b74bea8a132a38114aaf39e985d"
+  },
+  {
+    "query_index": 123,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0123.json",
+    "source_sha256": "5561215bcb5aaa0a710d7d69b690b7e9f4c5d6a09b2c47ffac342a4db0ce7047"
+  },
+  {
+    "query_index": 124,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. Cc1cccc(CCO)c1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0124.json",
+    "source_sha256": "c88286d8b98388820641882a20d0f25eda1233180194447e8505f338dc694fa2"
+  },
+  {
+    "query_index": 125,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0125.json",
+    "source_sha256": "e621acc629c7a01af4808b2bf709ae4fa3bbc2b2a9334a81963bf5d49c70fc03"
+  },
+  {
+    "query_index": 126,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0126.json",
+    "source_sha256": "423e46b5324fae8ac278e8e7473188718d7da1490bafa1814512b24b34f1e8c1"
+  },
+  {
+    "query_index": 127,
+    "index": 3,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "Candidate 4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0127.json",
+    "source_sha256": "fd4f5401afafef9d0c2b65af77598257f1c60810039856d7c2af51c4229af188"
+  },
+  {
+    "query_index": 128,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0128.json",
+    "source_sha256": "b0afbfb3dcb89c7eaf2ccb376cc5d87611908c589d025b93456d85b1edbe0e68"
+  },
+  {
+    "query_index": 129,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "CN(C)CCO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0129.json",
+    "source_sha256": "7f5e991ee5f7d01631665b9cb3b19051337a2c93b65767c5fdbe0090e9d34e74"
+  },
+  {
+    "query_index": 130,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. C#CCC1CCOC1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0130.json",
+    "source_sha256": "4a96a9b9ce9aab276ac79ab282fdf0a636d6edc9a7b797f4e9cf21b745b45568"
+  },
+  {
+    "query_index": 131,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5. ClC1CC1Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0131.json",
+    "source_sha256": "496ca236efaadfd6f95808218a46bce5cd6579edc430f51239ca6fe0bdd9c5c3"
+  },
+  {
+    "query_index": 132,
+    "index": 0,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0132.json",
+    "source_sha256": "22b4c59a90fcd56abb593b022aef0d15fb29c516089dd1205c825420eacb01ac"
+  },
+  {
+    "query_index": 133,
+    "index": 0,
+    "reason": "terminal_candidate_field",
+    "evidence": [
+      "Candidate: CC(C)=CCl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0133.json",
+    "source_sha256": "779a54735e7f4908e44f8aaee8d79528e80c60a63f051a3f7d0a8c35e08ebefd"
+  },
+  {
+    "query_index": 134,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. ClCCOc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0134.json",
+    "source_sha256": "d148d07da39485a098bbcbb4ceb32bdcd2f63285477d32e675cf9e12e643b947"
+  },
+  {
+    "query_index": 135,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0135.json",
+    "source_sha256": "799e4ba2fda0229bac1856a45966d9444c8e9b17738bcf6159e143c95d2d2357"
+  },
+  {
+    "query_index": 136,
+    "index": 6,
+    "reason": "standalone_final_line",
+    "evidence": [
+      "Candidate 7"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0136.json",
+    "source_sha256": "a4c50da00fe266dd1c170ce038bf810807f6b29d21b2cf2cc201bc06e7bf7de7"
+  },
+  {
+    "query_index": 137,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CC1CCCCOC1C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0137.json",
+    "source_sha256": "b5d2e3a768691aa0779e09fb943f95cfca2f14deddc3ed5ac3f8a41ab002b80e"
+  },
+  {
+    "query_index": 138,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. O=S1OCCO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0138.json",
+    "source_sha256": "5cee5c96e65b56109a8f893d364fb1c4a52e5eb57f5124e65b8098f7fff17fc8"
+  },
+  {
+    "query_index": 139,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC(O)(C#N)CO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0139.json",
+    "source_sha256": "b4cdc2e0b1333ea1f55fd13ad5373a2a96ae86756c9ba8fc6fa59e5377fd30da"
+  },
+  {
+    "query_index": 140,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CCc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0140.json",
+    "source_sha256": "0415d2bd348396cc1d4d6202b2a32da5fb6401d2b1d4f43c122073e430e3a885"
+  },
+  {
+    "query_index": 141,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. OCc1ccc(Cl)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0141.json",
+    "source_sha256": "bd1ef3bb0b3f1ca3bcfe16ab6e81ff55fb1efbd5455727e0f63d3f55926107b3"
+  },
+  {
+    "query_index": 142,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0142.json",
+    "source_sha256": "aa0f510a879fdb7ed8b45f060ec889552894b11676358a422bcc705865c2845d"
+  },
+  {
+    "query_index": 143,
+    "index": 9,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "10. CC1CC(C)C(C)(C)C1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0143.json",
+    "source_sha256": "5a9fe845a8b61985720cb495a0f6702445f8fb9b14c4fb01b908b0caff0f905d"
+  },
+  {
+    "query_index": 144,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CCP(O)(O)=S"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0144.json",
+    "source_sha256": "efb9efa80e80d3475588b41d5365ea88394ab12df04303a879d759321b107cfb"
+  },
+  {
+    "query_index": 145,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. ClCCOc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0145.json",
+    "source_sha256": "084aa03a6b37a23513060a01cee849561025ff41321125e65093bb5446f9d864"
+  },
+  {
+    "query_index": 146,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0146.json",
+    "source_sha256": "6c6754e19e16e9fcb28bf86305900f6580119dba4d2d56dcf8bdf690fdbadf83"
+  },
+  {
+    "query_index": 147,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0147.json",
+    "source_sha256": "e79f714210bfe08e1b4ca41a377960388ec785460689da26683be27deb669751"
+  },
+  {
+    "query_index": 148,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8. NC(=NC1CC1)N[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0148.json",
+    "source_sha256": "b7b6aba94efcf53b71aa6c2efa56ef9acf1f2a7d63f0137f9660ae880d1a4395"
+  },
+  {
+    "query_index": 149,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C=C(C)CO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0149.json",
+    "source_sha256": "a0ca78cc8eb7f173df942508cb25d6472780878f90fbeb34709e2ebfa5bce3d3"
+  },
+  {
+    "query_index": 150,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. COC(=O)CF"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0150.json",
+    "source_sha256": "060b05cd20b3e4e05c8c853dbe2c2a39c5b1f03a76dcb3f47ad664df4f63fad7"
+  },
+  {
+    "query_index": 151,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. NNC(=O)c1ccncc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0151.json",
+    "source_sha256": "c7878ed0c34a0d6f4fe33549d71588abdb6fb1145713510338b5befa81bfe0dd"
+  },
+  {
+    "query_index": 152,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0152.json",
+    "source_sha256": "16506a0d32d7c3529e8cfebb9553543a1260592bc08843b8ce527ebe9427891d"
+  },
+  {
+    "query_index": 153,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. COc1ccc(O)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0153.json",
+    "source_sha256": "562cfa43e80d62645c23acfea115e37aef7a4e204e3bfdecb349f25076202182"
+  },
+  {
+    "query_index": 154,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. COc1ccc(O)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0154.json",
+    "source_sha256": "3a591bfbcebb55a0d4d4c728e3f69f7879f4a2eb0b416449bc3b7dc7732051f0"
+  },
+  {
+    "query_index": 155,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0155.json",
+    "source_sha256": "72c72ca525413e4f0dced6dc06285c977f23a3b3c0a9c976d17e882ac56bb69f"
+  },
+  {
+    "query_index": 156,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0156.json",
+    "source_sha256": "d0f85cc8800a07cee94fd57d5054939bc580efa27fb569b21cdbfc5af583bf32"
+  },
+  {
+    "query_index": 157,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. COc1ccc([N+](=O)[O-])cc1C=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0157.json",
+    "source_sha256": "111685e2172ad52d0e738cd07193152d5b92694797cb06d284022b0f3d5b9e1f"
+  },
+  {
+    "query_index": 158,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CCC(CO)(CO)[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0158.json",
+    "source_sha256": "d9fbbb1c6efdd684886a92e25abdbf102cd6719ab54007be0a1ee53fa7d6e50b"
+  },
+  {
+    "query_index": 159,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. OCC1CCCO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0159.json",
+    "source_sha256": "d0f9e9c16227be76204e6cf50a348bb71dd76dffd1c6939c0fec668087d3cd91"
+  },
+  {
+    "query_index": 160,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. CC(C)CC(C)(C)CO"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0160.json",
+    "source_sha256": "4d34c0a4f4b38b98713977e3446f7cb0af22b06b1f5b737ee1f494ccfd8e7ee9"
+  },
+  {
+    "query_index": 161,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0161.json",
+    "source_sha256": "4eceab5e346da7020684cb44a8e93dc93343c8196a0f9646a75d3e2d419a0d9c"
+  },
+  {
+    "query_index": 162,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. CCNC(=O)CC(C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0162.json",
+    "source_sha256": "4df054d11069fd964ae34942f5730ea67e0de11fa3f6269c294961d208680500"
+  },
+  {
+    "query_index": 163,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0163.json",
+    "source_sha256": "7fad7446e063243ada3d6273f153be4ca55ab0948dd318b8ebe5cfd83303aa53"
+  },
+  {
+    "query_index": 164,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0164.json",
+    "source_sha256": "615944af963cb3e3e6d9d6157e5e5ae0fca58a70f28e7e1e93b56005326d67c8"
+  },
+  {
+    "query_index": 165,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10. ClCc1ccc(Cl)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0165.json",
+    "source_sha256": "174bdae0a236b6b109165817b5a9b13a0467babe17c8a1e3eb4485766c5a214f"
+  },
+  {
+    "query_index": 166,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0166.json",
+    "source_sha256": "e30d154b5b40d3724823350578b9e45c57248def0bc5f19630170c50f18f8abc"
+  },
+  {
+    "query_index": 167,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8 (O=C(Cl)c1cccc(C(=O)Cl)c1)"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0167.json",
+    "source_sha256": "fb6aecefb92384da1a043e6e2b284942e7b738296c58965691c71b6552060c58"
+  },
+  {
+    "query_index": 168,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. ClCC1COCO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0168.json",
+    "source_sha256": "78da5f9aea54f3c8a94e115b7f9beaf076b113fe082cfda0d2a09f6648ca5c25"
+  },
+  {
+    "query_index": 169,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. CCCCCOC(C)=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0169.json",
+    "source_sha256": "f5ff0eee5fb7a9d809afdfc456462f6b2008eff9b4636031fccf3e78030b6333"
+  },
+  {
+    "query_index": 170,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. CC(=O)c1ccc(C)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0170.json",
+    "source_sha256": "d36234c1f2fe71e35d7bf3a37c5af0c1d3d2b4ee359610eaf2c5fc0d97c58b7f"
+  },
+  {
+    "query_index": 171,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CC(=O)c1ccc(F)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0171.json",
+    "source_sha256": "d8f68fb9b2febcb418d058da35e9894ef3508a1fff71b6f6f875d2b5db97f75e"
+  },
+  {
+    "query_index": 172,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0172.json",
+    "source_sha256": "ef37b37d9fabe22ee99fcbca22c1f5779265d711e955379fb1d357c40e0d58ec"
+  },
+  {
+    "query_index": 173,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. CCCCN(C(=O)OCC)[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0173.json",
+    "source_sha256": "447e18b5d4541b76ce506743f761264e5a23ddf32bb8ecec91216277118f812c"
+  },
+  {
+    "query_index": 174,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0174.json",
+    "source_sha256": "580b280ff2973f4edf8809b0a5298263c23f9f9f468ab9340cd1c1b8b0353513"
+  },
+  {
+    "query_index": 175,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C=COC(=O)C(=C)C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0175.json",
+    "source_sha256": "b7a9982086a8fcaca1df371bdbbce07ecac8415bcf8f191622ddb4421d33c7f3"
+  },
+  {
+    "query_index": 176,
+    "index": 4,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "5. CC1COCOCC1C"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0176.json",
+    "source_sha256": "9fb69550ab426cb5d81e2ce8ec60963a0fd50ac724349fd5fed537432136488e"
+  },
+  {
+    "query_index": 177,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8. CC1(O)CN(C=N)C1=O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0177.json",
+    "source_sha256": "4f279092dc2a740e153b9413a6d58fbe1be9d8aff1718fd2941eace01f70bbcf"
+  },
+  {
+    "query_index": 178,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7. CO[Si](C)(CCC(F)(F)F)OC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0178.json",
+    "source_sha256": "a5b3b8915e7d2c51f42bd8def85c41110c093175c36792773d3a45e9abab08f0"
+  },
+  {
+    "query_index": 179,
+    "index": 8,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "9. CCc1ccccc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0179.json",
+    "source_sha256": "3d19e0de9ef4732331c9ed3325b832fe12621d023ec81a9c6bc991cb93470be1"
+  },
+  {
+    "query_index": 180,
+    "index": 7,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0180.json",
+    "source_sha256": "17d8e09c90b1a87806c196199a9cdc0e4672be97cbdf3e0ab6023aeb9e42329e"
+  },
+  {
+    "query_index": 181,
+    "index": 7,
+    "reason": "terminal_candidate_field",
+    "evidence": [
+      "Candidate: 8"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0181.json",
+    "source_sha256": "670dac71816d47151cce8e684a479a766e69d39f804bb342e08b47b7d7c4c2d4"
+  },
+  {
+    "query_index": 182,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. CCC(CO)(CO)[N+](=O)[O-]"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0182.json",
+    "source_sha256": "3485f9b3826c5dde9cad91c62eed18bf3718e682b751ceb22f8a690b05fbd61f"
+  },
+  {
+    "query_index": 183,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. O=Cc1ccc(Cl)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0183.json",
+    "source_sha256": "7fd082b148996e506f3f264cdaee3d03419a301b5aa4a6a07e4d0ce30078cf88"
+  },
+  {
+    "query_index": 184,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. C[Se]CCl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0184.json",
+    "source_sha256": "d05e0661a8d8e783ced7a52837a7096f81af3886d93f637a739757994d5e5db6"
+  },
+  {
+    "query_index": 185,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0185.json",
+    "source_sha256": "9a5511fcc6d933ab2e861e5b6b9b0c885a0cd8e9ba8c7ca807d9178b6678ecc3"
+  },
+  {
+    "query_index": 186,
+    "index": 6,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "7"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0186.json",
+    "source_sha256": "0853bad0b6b663522258a2ef74a2a12c2d2acb3ab6ee037b80cb92fef262aec1"
+  },
+  {
+    "query_index": 187,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0187.json",
+    "source_sha256": "e05cb820e2e3437b27be151a4eb8ebcd10ead5b3418909eba6c1c0e5e2dcdf16"
+  },
+  {
+    "query_index": 188,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. COCSc1ccc(Cl)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0188.json",
+    "source_sha256": "ed76aee2a46e1148ccf7d42b7a3bbf83729c1247705ba91b2ade61cb973f75cf"
+  },
+  {
+    "query_index": 189,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0189.json",
+    "source_sha256": "7e10bf712130e98e0a58e5cec7e56cd7c577e2277e04983e0a261bb93c894228"
+  },
+  {
+    "query_index": 190,
+    "index": 5,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "6"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0190.json",
+    "source_sha256": "e68d27faa4ef8d38ae002edab671cf80cd7f317e8f80294586d5dd2470909598"
+  },
+  {
+    "query_index": 191,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "2. O=C(O)c1cccc(Cl)c1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0191.json",
+    "source_sha256": "213518f80cde020b11a1c7963467f9021f9e9bc92b24a49ef66ffe2530d98444"
+  },
+  {
+    "query_index": 192,
+    "index": 3,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "4. C=C(C)C(=O)OCC"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0192.json",
+    "source_sha256": "236d8ede0d540e084ef09880aca96ff0f196f9d660f11d5160957f654cc563d4"
+  },
+  {
+    "query_index": 193,
+    "index": 0,
+    "reason": "terminal_index_and_smiles",
+    "evidence": [
+      "1. CC12CC(C)(C1)C2O"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0193.json",
+    "source_sha256": "64d335bd3bce1523fac4963b28b4718e75fcae61aa0ae03157542bc6dc0b4585"
+  },
+  {
+    "query_index": 194,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0194.json",
+    "source_sha256": "4e0ac1b66c5b0f9c48ce9e51029dbd65e60d12ef90d80eb77e600777857dd21a"
+  },
+  {
+    "query_index": 195,
+    "index": 9,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "10"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0195.json",
+    "source_sha256": "cb017d6f6137c54fc0f737bd7d0ed64e93bc3f4825756da06bb09bf96ae82487"
+  },
+  {
+    "query_index": 196,
+    "index": 1,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "Oc1ccc(Cl)cc1Cl"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0196.json",
+    "source_sha256": "dc6b081102cbe73aa6e6a93406025448d40dae3e9ed9fe05a017a20f0200bc11"
+  },
+  {
+    "query_index": 197,
+    "index": 0,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "1. ClCC1CO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0197.json",
+    "source_sha256": "94335f45b8b5b508ccd4abb10c5580fe87361661838e6e2946b7eb68062cfdbf"
+  },
+  {
+    "query_index": 198,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. OCC1CCCO1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0198.json",
+    "source_sha256": "885cfed2780ca444e8632e8b0b6648ac4ab018f1341502b7622b70c3e7b7c38f"
+  },
+  {
+    "query_index": 199,
+    "index": 2,
+    "reason": "explicit_final_field",
+    "evidence": [
+      "3. NC(=O)c1ccc(F)cc1"
+    ],
+    "source_response": "/Users/andrewluan/Desktop/Projects/IRfingerprints/Code_repo/SpectraExpert/outputs/agent_multimodel_local_run01/gemini/responses/0199.json",
+    "source_sha256": "96c7038d0b3a5f04e22a632c8c4376c754d16c50d78d1b870c384c44cdd85cdb"
+  }
+]

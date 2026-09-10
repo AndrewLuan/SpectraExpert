@@ -14,12 +14,13 @@ _phase 错误同步后才进入 setup materialization，由 rank 0 创建目录�
 materialize_pending_checkpoints 在成功/失败时清除待写列表和循环变量；恢复阶段提取 epoch/step/
 best/normalizer 后删除完整 payload、来源及历史 best 快照，不把大状态带入 epoch 循环。
 _ValidationDataset 提供无增强原始验证光谱；_phase 同步 rank 异常；_run 执行实际 epoch 循环；
-_prepare_data 校验来源和 split 身份隔离，_sha256 分块计算文件 hash，_validate_config
+_prepare_data 校验来源和 split 身份隔离，闭库清单额外委托 closed_library_split 验证冻结
+采样哈希、理论来源及保护组后生成规范化身份哈希；_sha256 分块计算文件 hash，_validate_config
 拒绝非法训练规模；_seed_worker 固定 worker 随机性，_validation_collate 保持图和标签对齐，
 main 将 CLI 参数转换为配置。v1 只有光谱模型和动态 NT-Xent，v2 消费 Task 5 完整结构目标。
 代码库关系：复用 Task 4 模型、Task 5 gather/objective、Task 6 dataset/collate；直接消费五维
 element_presence。候选分别为 spectrum/graph，无需预先建立检索 index；train/val 不接触 test。
-输入输出与副作用：读取显式 data_dir 三件套及现有 split manifest，写 output_dir；seed 与
+输入输出与副作用：读取显式 data_dir 三件套及 scaffold/SpecGPT frozen split manifest，写 output_dir；seed 与
 每 epoch sampler 固定，DDP 使用等长 DistributedSampler 并 set_epoch。单 CPU 可 smoke，
 多 GPU 由 torchrun --ddp 启动并使用 NCCL；创建的 process group 在成功或异常后销毁。
 """
@@ -44,6 +45,7 @@ from torch.nn.parallel import DistributedDataParallel
 from torch.utils.data import DataLoader, Dataset, DistributedSampler
 
 from spectraexpert.data.molecular_graph import collate_graphs
+from spectraexpert.data.closed_library_split import validate_closed_library_split
 from spectraexpert.data.structure_dataset import (StructureAwareSpectralDataset,
     canonical_smiles_sha256, canonicalize_smiles, structure_aware_collate)
 from spectraexpert.data.structure_features import DescriptorNormalizer, StructureFeatureConfig
@@ -164,7 +166,8 @@ def _validation_collate(items):
 def _prepare_data(config):
     manifest_bytes = config.split_manifest.read_bytes()
     manifest = json.loads(manifest_bytes)
-    if manifest.get("schema_version") != "scaffold_split_v1":
+    closed_library = manifest.get("schema_version") == "raman_closed_library_train_v1"
+    if manifest.get("schema_version") not in {"scaffold_split_v1", "specgpt_frozen_v1", "raman_closed_library_train_v1"}:
         raise ValueError("split manifest schema_version mismatch")
     files = {name: _sha256(config.data_dir / name) for name in
              ("spectra.parquet", "smiles.parquet", "wavenumber.parquet")}
@@ -173,11 +176,13 @@ def _prepare_data(config):
     smiles = pd.read_parquet(config.data_dir / "smiles.parquet")
     if "mol_id" not in smiles or smiles["mol_id"].duplicated().any():
         raise ValueError("split manifest source requires unique mol_id")
+    if closed_library:
+        validate_closed_library_split(config.data_dir, manifest, files, smiles)
     column = "smiles_canonical" if "smiles_canonical" in smiles else "smiles"
     canonical = [canonicalize_smiles(value) for value in smiles[column]]
     all_ids = smiles["mol_id"].tolist()
     source_hash = canonical_smiles_sha256(all_ids, canonical)
-    if manifest.get("source_smiles_sha256") != source_hash:
+    if not closed_library and manifest.get("source_smiles_sha256") != source_hash:
         raise ValueError("split manifest source_smiles_sha256 mismatch")
     assignments = []
     identity_sets = []

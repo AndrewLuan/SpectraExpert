@@ -1,0 +1,8 @@
+{
+  "query_index": 173,
+  "model": "gpt-5",
+  "started_at": 1788964310.80933,
+  "state": "finished",
+  "elapsed_seconds": 5.148876916995505,
+  "error": "ConnectError"
+}

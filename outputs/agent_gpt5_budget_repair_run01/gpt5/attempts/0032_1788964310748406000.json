@@ -1,0 +1,10 @@
+{
+  "query_index": 32,
+  "model": "gpt-5",
+  "started_at": 1788964310.7484071,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd35xNcwI6w9KdXQv0jT1hxZ5RI\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 8\\nCONFIDENCE: 0.64\\nEXPLANATION: The spectrum shows a strong carbonyl region with two bands at 1821 and 1759 cm⁻¹ consistent with a highly electron-withdrawing environment raising ν(C=O) (e.g., α-halogenated ketones often shift toward ~1760 cm⁻¹; the higher band can be a combination/Fermi feature). Multiple strong low-frequency bands at 531, 564, 654, and 673 cm⁻¹ indicate heavy-halogen stretches consistent with C–Br and C–Cl, while a band at 1015 cm⁻¹ fits a C–F stretch. Aliphatic C–H stretches at 2946–3031 cm⁻¹ and CH bending around 1374–1436 cm⁻¹ (GFQ-003) align with an aliphatic carbonyl compound. Among candidates, only 8 (CC(=O)[C@](F)(Cl)Br) contains F, Cl, Br and a carbonyl, matching the combined halogen- and carbonyl-related Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5575,\"completion_tokens\":3511,\"total_tokens\":9086,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3264},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260822200305-73128551-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 42.71922537498176,
+  "error": null
+}

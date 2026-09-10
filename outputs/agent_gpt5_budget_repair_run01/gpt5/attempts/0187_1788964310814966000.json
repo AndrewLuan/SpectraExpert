@@ -1,0 +1,10 @@
+{
+  "query_index": 187,
+  "model": "gpt-5",
+  "started_at": 1788964310.814968,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3ZJgAvsDjwolb5krO857xRdv6\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.52\\nEXPLANATION: The spectrum is dominated by a strong doublet at 742/733 cm⁻¹ consistent with CF₃ deformation modes, plus bands in the C–F stretching region: a broad/weak feature at 1217 cm⁻¹ and a mid-intensity band at 999 cm⁻¹. Trifluoromethyl hypofluorite (CF₃OF) naturally accounts for these: O–F stretching near ~950–1000 cm⁻¹ and CF₃/C–F modes in the 1000–1300 cm⁻¹ range, while CF-bending/deformation can appear near 600–750 cm⁻¹. The weak 607 cm⁻¹ band fits a CF bending-type region (compare CF₄ ν₄ ≈ 631 cm⁻¹), and no clear S=O band (~1050–1150 cm⁻¹) expected for sulfinyl chlorides is evident, arguing against candidate 1. Supporting rules: GFQ-046 (CF₄: C–F stretches at 908/1283 and bend at 631 cm⁻¹, nakamoto2008infrared), which benchmarks the observed 999/1217/607 cm⁻¹ features as C–F related. The weak 2980 cm⁻¹ band is likely a background/overtone rather than C–H (GFQ-003), since CF₃OF has no H.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4544,\"completion_tokens\":6989,\"total_tokens\":11533,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":6656},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260820012748-7db9b848-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 87.53410704198177,
+  "error": null
+}

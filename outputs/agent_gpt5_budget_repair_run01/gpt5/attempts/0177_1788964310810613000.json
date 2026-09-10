@@ -1,0 +1,10 @@
+{
+  "query_index": 177,
+  "model": "gpt-5",
+  "started_at": 1788964310.810615,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2LA1VsY5NkwH01RBkXQ7E6rad\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 6\\nCONFIDENCE: 0.74\\nEXPLANATION: The spectrum shows clear nitro signatures: a strong νs(NO2) near 1277 cm⁻¹ and an νas(NO2) around 1487 cm⁻¹ (GFQ-022). There are multiple N–H stretches in the 3212–3418 cm⁻¹ region and an N–H bend near 1627 cm⁻¹ (GFQ-002), consistent with an NH-bearing nitramine. A strong carbonyl band at 1694 cm⁻¹ fits a carbamate C=O, and intense aliphatic C–H stretches at 2943–2987 cm⁻¹ are present (GFQ-003). The 1002 cm⁻¹ band aligns with an N–N stretch typical of nitramines. Candidate 6 (an isopropyl carbamate with an N-nitro group) uniquely matches this combination of NO2, NH, and C=O features; candidates lacking NO2 or X–H bands are less compatible.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5881,\"completion_tokens\":5235,\"total_tokens\":11116,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4992},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 64.24685862500337,
+  "error": null
+}

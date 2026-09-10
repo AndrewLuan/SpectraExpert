@@ -1,0 +1,21 @@
+{
+  "query_index": 185,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.68\nEXPLANATION: The spectrum is dominated by aliphatic C–H features: a strong C–H stretch at 2941 cm⁻¹ and CH₂/CH₃ deformation near 1450 cm⁻¹ (consistent with GFQ-003). Crucially, there are two intense bands at 691 and 720 cm⁻¹, which are characteristic of C–S stretching and CH₂ rocking; the separate thioether in candidate 10 accounts well for this pair. The distinct band at 964 cm⁻¹ matches the typical S–N stretch of sulfonamides, and the 578 cm⁻¹ feature is consistent with SO₂ deformation. Absence of an OH/NH stretch (>3200 cm⁻¹) disfavors alcohols (1,2) and secondary/primary amines; lack of a strong carbonyl amide I band (~1650 cm⁻¹) rules out amide-containing candidates (7,8); and phosphates (5,9) would be expected to show a strong P=O band in the 1250–1350 cm⁻¹ region, which is not observed. Candidate 10 (a tertiary amine sulfonamide with a thioether) best matches the sulfur-related bands alongside the aliphatic C–H profile.",
+  "usage": {
+    "prompt_tokens": 5066,
+    "completion_tokens": 5483,
+    "total_tokens": 10549,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5184
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2y5OVQ1YT2kWIPwMvxGCunYxz",
+  "last_attempt_file": "gpt5/attempts/0185_1788964310813751000.json"
+}

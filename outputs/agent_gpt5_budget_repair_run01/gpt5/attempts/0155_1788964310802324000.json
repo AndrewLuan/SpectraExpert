@@ -1,0 +1,10 @@
+{
+  "query_index": 155,
+  "model": "gpt-5",
+  "started_at": 1788964310.802325,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd28I99Q05vcU1fGlOJWVPXFjBc\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 4\\nCONFIDENCE: 0.82\\nEXPLANATION: The spectrum shows aliphatic C–H stretches at 2964/2946/2887 cm⁻¹ (GFQ-003), no aromatic ~1600 cm⁻¹ and no carbonyl 1650–1750 cm⁻¹ band, but multiple strong features diagnostic of a sulfonamide/sulfamate: νas(SO2) near 1357 cm⁻¹ and νs(SO2) in the 1130–1180 cm⁻¹ cluster (1134/1171/1183), strong bands near 994/1023 cm⁻¹ consistent with N–O/S–N stretching, a prominent S–O deformation around 539 cm⁻¹, and several S–O–C-related modes in the 770–900 cm⁻¹ region (801/826/872). These collectively fit CC(C)COS(=O)(=O)NO (sulfamate ester) best among the candidates.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":6404,\"completion_tokens\":5352,\"total_tokens\":11756,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5120},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260818203843-ca3134e3-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 74.78786279199994,
+  "error": null
+}

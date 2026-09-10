@@ -1,0 +1,21 @@
+{
+  "query_index": 132,
+  "content": "SELECTED_INDEX: 4\nCONFIDENCE: 0.78\nEXPLANATION: The spectrum shows clear alkene signatures: strong =C–H stretches at 3022/3098 cm⁻¹ (supported by GFQ-003) and a C=C stretch at 1635 cm⁻¹, plus the characteristic terminal vinyl out-of-plane bands normally near ~990/910 cm⁻¹ appearing here at 957 and 893 cm⁻¹. A strong carbonyl near 1748 cm⁻¹ is consistent with a peroxide/ester-type C=O (higher than typical acids/amides). Very intense bands at 1299 and 1041 cm⁻¹ match ester C–O stretching components, and prominent bands in the 830–900 cm⁻¹ region (837, 893 cm⁻¹) support an O–O stretch from a peroxide. This unique combination of a terminal alkene and peroxy-ester functionalities best fits C=CCOC(=O)OOO (candidate 4); other candidates (amides, acids, aldehydes, N-oxides) would show different key features (e.g., amide/acid C=O near 1650–1725, aldehyde C–H at 2720–2820, or strong N→O around 1250 without peroxide O–O bands).",
+  "usage": {
+    "prompt_tokens": 6614,
+    "completion_tokens": 5738,
+    "total_tokens": 12352,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5440
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd23eg2XUkHQ3KNJk7LIVGz5KMc",
+  "last_attempt_file": "gpt5/attempts/0132_1788964310791871000.json"
+}

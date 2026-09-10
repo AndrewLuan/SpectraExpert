@@ -1,0 +1,10 @@
+{
+  "query_index": 2,
+  "model": "gpt-5",
+  "started_at": 1788964310.735976,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2PAKSjM6Cct5tsUhl3WH5bfgA\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.65\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches and deformations (2955, 2854–2896, 1454 cm⁻¹; GFQ-003), two intense bands at 2773 and 2820 cm⁻¹ suggestive of a characteristic split CH stretch from Fermi resonance (SPC-002) often seen for aldehydic/acetal-type CH environments, a very strong band near 810 cm⁻¹ consistent with an NH₂ wag, and medium features at 1019 and 1150 cm⁻¹ consistent with ether C–O stretching. The presence of an NH stretch near 3342 cm⁻¹ (GFQ-002) further supports a primary amine. Candidate 2 (COC(CN)OC) uniquely combines a primary amine with two ether (methoxy) groups and an acetal CH, matching the CH/O/N pattern and the distinctive 2773/2820 pair.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5049,\"completion_tokens\":7333,\"total_tokens\":12382,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":7104},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821150245-617ad29e-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 87.2854418750212,
+  "error": null
+}

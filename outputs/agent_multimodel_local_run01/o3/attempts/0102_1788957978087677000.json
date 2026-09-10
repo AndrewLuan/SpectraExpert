@@ -1,0 +1,10 @@
+{
+  "query_index": 102,
+  "model": "o3",
+  "started_at": 1788957978.087691,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBz1eWpRSBw1tLGyS4qdthtxFPff\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.61\\nEXPLANATION: The dominant Raman band at 2255 cm⁻¹ matches the characteristic ν(C≡N) stretch of a nitrile; only candidate 1 (CCC#CC(C)C#N) contains a nitrile group. The strong aliphatic C–H stretches at 2940 and 2888 cm⁻¹ and the CH₂/CH₃ bending bands at 1457/1430 cm⁻¹ are consistent with its alkyl chain. No other candidate offers a nitrile to account for the 2255 cm⁻¹ peak, making candidate 1 the best fit.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957987,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5363,\"completion_tokens\":936,\"total_tokens\":6299,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":768},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260818122740-38c506cf-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 22.589319625025382,
+  "error": null
+}

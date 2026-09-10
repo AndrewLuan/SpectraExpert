@@ -1,0 +1,21 @@
+{
+  "query_index": 91,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.25\nEXPLANATION: The spectrum shows three strong C–H stretching bands at 2877, 2932 and 2964 cm⁻¹, typical of an aliphatic R-CH₃/R-CH₂ system.  \nKey functional-group clues are the set 1664 cm⁻¹, 1341 cm⁻¹ and 826 cm⁻¹.  Alkyl nitrites (R-O–N=O) characteristically give a strong N=O stretch near 1660–1670 cm⁻¹, a symmetric N–O stretch around 1320–1350 cm⁻¹ and an N–O bending (δ(NO–N–O)) mode close to 800–830 cm⁻¹ (rule GFQ-022).  All three are present here (1664, 1341, 826 cm⁻¹), strongly indicating an alkyl nitrite.  \n\nAmong the candidates only molecules 1 (CCCCON=O, n-butyl nitrite) and 7 (isopropyl nitrite) contain the O–N=O grouping.  The spectrum also contains a CH₂ rocking band near 915 cm⁻¹, which favours the n-butyl chain (three CH₂ groups) of candidate 1 over the more branched isopropyl chain in candidate 7.  Hence candidate 1 best matches both the functional-group and chain-type features of the observed Raman peaks.",
+  "usage": {
+    "prompt_tokens": 5327,
+    "completion_tokens": 4322,
+    "total_tokens": 9649,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3968
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMCIBRaoktsDSScp6ajM6gETtPh5c",
+  "last_attempt_file": "o3/attempts/0091_1788959172481537000.json"
+}

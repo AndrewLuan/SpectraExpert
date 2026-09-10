@@ -1,0 +1,10 @@
+{
+  "query_index": 123,
+  "model": "o3",
+  "started_at": 1788959172.5088,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCICuFcLyQFdIueY0zWS3Q5NYm0Q\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 7\\nCONFIDENCE: 0.78\\nEXPLANATION: The spectrum shows the characteristic pattern of a fully chlorinated conjugated diene (hexachlorobutadiene): two strong C=C stretching bands at 1613 cm⁻¹ and 1567 cm⁻¹ (antisymmetric / symmetric modes of the C=C–C=C system), a medium band at 1171 cm⁻¹ assigned to C=C–Cl coupled stretching, a strong out-of-plane mode at 855 cm⁻¹ typical for CCl₂-substituted vinyl groups, and two C–Cl stretching bands at 658 cm⁻¹ and 586 cm⁻¹ (rule GFQ-046 range 652–692 cm⁻¹). Hexachloro-1,3-butadiene, SMILES ClC(Cl)=C(Cl)C(Cl)=C(Cl)Cl (candidate 7), contains no X–H bonds (absence of >3000 cm⁻¹ bands) and matches all observed peaks, whereas candidates with nitrile, carbonyl or nitro groups would require strong bands near 2250 cm⁻¹ or 1700–1800 cm⁻¹ that are not present.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959176,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4526,\"completion_tokens\":3047,\"total_tokens\":7573,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2752},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819135549-293bcb73-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 41.840723207977135,
+  "error": null
+}

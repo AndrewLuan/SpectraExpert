@@ -1,0 +1,10 @@
+{
+  "query_index": 112,
+  "model": "gpt-5",
+  "started_at": 1788964310.7825742,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2AWLhO3lBaqUtRMSp8EpIdL5G\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 3\\nCONFIDENCE: 0.66\\nEXPLANATION: The spectrum is dominated by aliphatic C–H stretches at 2878 and 2952 cm⁻¹ and a CH₂/CH₃ deformation near 1450 cm⁻¹ (consistent with GFQ-003), indicating a saturated hydrocarbon backbone. A strong band at ~923 cm⁻¹ together with a C–O-related feature near 1057 cm⁻¹ is characteristic of a five-membered cyclic ether (THF-type ring breathing and C–O stretch), which fits OCC1CCCO1. Candidates lacking a cyclic ether ring or with only open-chain ether/amine motifs are less compatible with the prominent ~923 cm⁻¹ band.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5126,\"completion_tokens\":4266,\"total_tokens\":9392,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4096},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-10e6a11d-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 51.75495987499016,
+  "error": null
+}

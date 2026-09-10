@@ -1,0 +1,25 @@
+% 功能概述：统一 camera-ready 结果表的视觉样式，复用早期 IEEE 主表的深蓝表头及四色方法分组。
+% 主要职责：PaperTableSetup 设置局部字号和间距；PaperHead 设置白色粗体表头；PaperGroup 和 PaperNote 分别排版分组及说明。
+% 代码库关系：由 main.tex 在导言区载入，供 latest_results、native_results、historical_results 的编号表调用。
+% 输入输出与副作用：只影响显式调用的表格；颜色无数值排名含义，不改动指标、样本或统计口径。
+\usepackage{tabularx}
+\usepackage{caption}
+\captionsetup[table]{font=small,labelfont=bf,skip=6pt,justification=centering}
+\definecolor{HdrBg}{HTML}{1E3A5F}
+\definecolor{RetBg}{HTML}{DBEAFE}
+\definecolor{DirBg}{HTML}{DCFCE7}
+\definecolor{KnwBg}{HTML}{FEF3C7}
+\definecolor{AgtBg}{HTML}{FCE7F3}
+\definecolor{SecTxt}{HTML}{1E293B}
+\newcommand{\PaperTableSetup}[1]{%
+  #1\renewcommand{\arraystretch}{1.38}%
+  \setlength{\tabcolsep}{5pt}%
+  \setlength{\aboverulesep}{0pt}%
+  \setlength{\belowrulesep}{0pt}%
+  \arrayrulecolor{HdrBg}}
+\newcommand{\PaperHead}[1]{{\color{white}\bfseries #1}}
+\newcommand{\PaperGroup}[3]{%
+  \rowcolor{#2}\multicolumn{#1}{l}{\color{SecTxt}\bfseries\itshape #3}\\}
+\newcommand{\PaperNote}[1]{%
+  \par\vspace{4pt}\begin{minipage}{\linewidth}%
+  \footnotesize\raggedright #1\end{minipage}}

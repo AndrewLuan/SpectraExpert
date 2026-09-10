@@ -1,0 +1,10 @@
+{
+  "query_index": 163,
+  "model": "gpt-5",
+  "started_at": 1788964310.805005,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2Tzg6TCzTHaBg0Ap1Sl4v7BBq\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 5\\nCONFIDENCE: 0.7\\nEXPLANATION: The spectrum shows a strong ester carbonyl near 1737 cm⁻¹ and a very strong C=C band at 1651 cm⁻¹, consistent with an α,β-unsaturated ester. Multiple vinylic C–H stretches (3022 and 3098 cm⁻¹) and prominent C–H stretches in the 2900–3100 cm⁻¹ region (GFQ-003) support an alkene with sp² C–H. The bands at 1294 and 1057 cm⁻¹ fit C–O stretching from an ester and an alcohol, respectively—unique to candidate 5 among the unsaturated esters here. Vinylic out-of-plane C–H wags around 953–995–872 cm⁻¹ are compatible with a disubstituted alkene. The absence of an aldehydic C–H doublet (~2720/2820 cm⁻¹) disfavors formate/aldehyde candidates (2, 7); lack of an N–H stretch (~3300 cm⁻¹) rules out the amide (9); and the thioester (3), nitroalkene (10), and acid (6) are inconsistent with the observed carbonyl position and/or missing signature bands.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5708,\"completion_tokens\":8809,\"total_tokens\":14517,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":8512},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 86.56763779200264,
+  "error": null
+}

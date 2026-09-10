@@ -1,0 +1,21 @@
+{
+  "query_index": 139,
+  "content": "SELECTED_INDEX: 4\nCONFIDENCE: 0.55\nEXPLANATION: The spectrum shows a nitrile stretch near 2281 cm⁻¹ (typical for C≡N) and a distinct O–H stretch around 3200 cm⁻¹ (GFQ-001), with strong aliphatic C–H stretches at 2860–3000 cm⁻¹ (GFQ-003). Multiple bands in the 1020–1170 cm⁻¹ region (1024, 1048, 1128, 1141, 1167 cm⁻¹) are consistent with alcohol C–O stretching. Prominent bands at ~847 and ~746 cm⁻¹ suggest ring-related modes, favoring a cyclic structure. Among nitrile-containing candidates with an OH, candidate 4 (a cyclopropyl cyanohydrin) best matches these features; candidate 1 would be a diol and would more likely show a broader/stronger OH envelope. The 2384 cm⁻¹ band is not diagnostic for these organics and may be extrinsic or a weak combination band.",
+  "usage": {
+    "prompt_tokens": 5915,
+    "completion_tokens": 6202,
+    "total_tokens": 12117,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5952
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3tz3UVkxaeyhZac2lKBiKykTU",
+  "last_attempt_file": "gpt5/attempts/0139_1788964310795508000.json"
+}

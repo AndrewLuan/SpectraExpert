@@ -1,0 +1,10 @@
+{
+  "query_index": 74,
+  "model": "gpt-5",
+  "started_at": 1788964310.768224,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2sqkxdrk8O20ECgMqplrNyhxv\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 10\\nCONFIDENCE: 0.78\\nEXPLANATION: The strong band at 1739 cm⁻¹ indicates an ester/carbamate C=O rather than a ketone or amide; 10 contains a carbamate carbonyl fitting this. The pair of bands at 1285 and 1133 cm⁻¹ match the characteristic antisymmetric/symmetric SO₂ stretches of a sulfone, and the 948 cm⁻¹ band aligns with an S–N stretch in sulfonamides; the strong 640 cm⁻¹ peak is consistent with a C–S/SO₂ deformation. These SO₂/S–N features are unique to candidate 10 among the list. The aliphatic C–H stretches at 2945/2904/2845/2829 cm⁻¹ are consistent with saturated chains (GFQ-003). Absence of an N–H stretch near ~3300 cm⁻¹ disfavors candidates with secondary amines (e.g., 1). Overall, only 10 coherently explains the 1739, 1285, 1133, 948, and 640 cm⁻¹ pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5515,\"completion_tokens\":5252,\"total_tokens\":10767,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4992},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124956-0c3fe136-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 81.49295262497617,
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "query_index": 30,
+  "content": "SELECTED_INDEX: 8\nCONFIDENCE: 0.32\nEXPLANATION: The spectrum shows the characteristic SO₂ pattern: a very strong asymmetric stretch doublet at 1369–1386 cm⁻¹, the symmetric stretch near 1100 cm⁻¹ and the SO₂ bending band at 640 cm⁻¹. Only candidate 8 (NCc1ccc(S(N)(=O)=O)cc1) contains an SO₂ (sulfonamide) group. Peaks at 1588/1622 cm⁻¹ fit N-H bending of the sulfonamide and benzyl-amine, while the strong aromatic C–H stretch at 3057 cm⁻¹ and ring modes at 750, 1033 and 1490 cm⁻¹ match a para-disubstituted benzene. No strong C=O band (~1700 cm⁻¹) is present, disfavoring candidates bearing carbonyl groups. Thus candidate 8 best matches the observed Raman peaks.",
+  "usage": {
+    "prompt_tokens": 5590,
+    "completion_tokens": 3121,
+    "total_tokens": 8711,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2880
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBxqd4gdjVe7wm9wqsZDtikoQHcv",
+  "last_attempt_file": "o3/attempts/0030_1788957912216114000.json"
+}

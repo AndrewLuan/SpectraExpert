@@ -1,0 +1,10 @@
+{
+  "query_index": 15,
+  "model": "gpt-5",
+  "started_at": 1788957912.167288,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBxq0jwclKPOcSlT4GnWV7YrsTEv\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 9\\nCONFIDENCE: 0.7\\nEXPLANATION: Strong halogen-related band at 525 cm⁻¹ is consistent with P–Cl stretching in phosphorochloridates; the 716 cm⁻¹ band matches typical C–Cl stretching of a CHCl group; the 1071 cm⁻¹ band fits a P–O–C stretch in phosphate esters; and the CH stretches at 2946 and 3014 cm⁻¹ plus the 1450 cm⁻¹ CH bending are consistent with an ethyl substituent (GFQ-003 for CH stretches/bends). This pattern best matches CC(Cl)OP(Cl)Cl.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"protected_material_code\":{\"detected\":false,\"filtered\":false},\"protected_material_text\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}},\"index\":0,\"logprobs\":null}],\"created\":1788957914,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4223,\"completion_tokens\":4063,\"total_tokens\":8286,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3904},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260824201011-8f328486-default-r2-dp0-default\"},\"prompt_filter_results\":[{\"prompt_index\":0,\"content_filter_results\":{\"hate\":{\"filtered\":false,\"severity\":\"safe\"},\"jailbreak\":{\"detected\":false,\"filtered\":false},\"self_harm\":{\"filtered\":false,\"severity\":\"safe\"},\"sexual\":{\"filtered\":false,\"severity\":\"safe\"},\"violence\":{\"filtered\":false,\"severity\":\"safe\"}}}],\"service_tier\":\"default\"}",
+  "elapsed_seconds": 73.57318208299694,
+  "error": null
+}

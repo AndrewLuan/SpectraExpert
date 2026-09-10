@@ -1,0 +1,10 @@
+{
+  "query_index": 75,
+  "model": "gpt-5",
+  "started_at": 1788964310.768895,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2t3Xq8VOBUEW5NypAngdvMH2r\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 9\\nCONFIDENCE: 0.62\\nEXPLANATION: The strong 1057 cm⁻¹ band is characteristic of a single S=O stretch (sulfoxide/sulfinamide), while molecules with SO₂ (candidates 1, 4, 7, 8) should show two S=O stretches including a symmetric band near ~1145 cm⁻¹ that is not observed (per GFQ-023). The pair at 927–943 cm⁻¹ is consistent with S–N related modes expected for a sulfinamide. The 1337 cm⁻¹ feature can be assigned to CH bending/other framework modes rather than a second S=O stretch. Aliphatic C–H stretches at 2981/2917/2820 cm⁻¹ (GFQ-003) fit candidate 9’s saturated framework. Overall, a mono-oxo sulfur (sulfinamide) best matches the observed pattern, favoring candidate 9.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4885,\"completion_tokens\":7647,\"total_tokens\":12532,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":7424},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260818203843-ca3134e3-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 100.9250980419747,
+  "error": null
+}

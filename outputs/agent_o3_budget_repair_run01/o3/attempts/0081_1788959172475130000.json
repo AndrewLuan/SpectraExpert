@@ -1,0 +1,10 @@
+{
+  "query_index": 81,
+  "model": "o3",
+  "started_at": 1788959172.475137,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCIDHKU8vzydEsBhPhWmLn1fuBYp\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 9\\nCONFIDENCE: 0.30\\nEXPLANATION: The spectrum shows two C≡N‐type stretches: a very intense band at 2255 cm⁻¹ and a weaker one at 2297 cm⁻¹. A molecule with two nonequivalent nitrile groups can give two ν(C≡N) bands in this region; rule GFQ-030 places nitrile stretches between 2270–2310 cm⁻¹.  \\nCandidate 9, N#CN(C#N)CO, contains two nitrile groups attached to an electron-rich N atom, making one ν(C≡N) slightly blue-shifted (≈2297 cm⁻¹) and the other nearer the normal value (≈2255 cm⁻¹).  \\n\\nAdditional matches:  \\n• CH stretching peaks at 2945 cm⁻¹ and 3006 cm⁻¹ correspond to the CH₃ group of the methoxy fragment (rule GFQ-003).  \\n• The CH₃ symmetric bend of the same group typically appears at 1360–1380 cm⁻¹, matching the 1375 cm⁻¹ Raman band.  \\n• A medium band near 920 cm⁻¹ is consistent with C–O or C–N skeletal vibrations of a methoxy-substituted nitrile system.  \\n\\nNo other candidate possesses two nitrile groups to account for both 2255 and 2297 cm⁻¹ while also supplying CH₃-derived bands. Hence candidate 9 best fits the experimental Raman peaks.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959177,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":4322,\"completion_tokens\":3241,\"total_tokens\":7563,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":2880},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819135549-293bcb73-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 47.82983841598616,
+  "error": null
+}

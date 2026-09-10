@@ -1,0 +1,10 @@
+{
+  "query_index": 68,
+  "model": "o3",
+  "started_at": 1788959172.466756,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMCIDnV9ua1pUNF1Yvc2gnCTPEoVX\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 6\\nCONFIDENCE: 0.25\\nEXPLANATION: The spectrum shows dominant aliphatic C–H stretches (2988, 2940, 2880 cm⁻¹) and a single strong C=O stretch at 1731 cm⁻¹, characteristic of a saturated ester rather than a ketone (≈1715 cm⁻¹) or an anhydride (which would give two C=O bands near 1760 & 1820 cm⁻¹). Ester C–O stretches are present at 1114, 1100 and 1152 cm⁻¹, and C–C–O / CH₃ rocking modes of an isopropyl group typically give bands near 830–880 cm⁻¹ (observed 831 & 868 cm⁻¹) and ~780 cm⁻¹. Candidate 6 (CCC(=O)OC(C)C, isopropyl propionate) contains only saturated alkyl groups and a single ester carbonyl, fitting all these key features, while other ester-containing candidates have additional functional groups (OH, NO₂, NCO, second C=O) whose characteristic Raman bands are absent.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788959177,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5777,\"completion_tokens\":5598,\"total_tokens\":11375,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5312},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821191347-2cb74e6f-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 48.199603415996535,
+  "error": null
+}

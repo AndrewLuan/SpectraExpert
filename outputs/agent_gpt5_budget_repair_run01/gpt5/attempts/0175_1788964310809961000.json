@@ -1,0 +1,10 @@
+{
+  "query_index": 175,
+  "model": "gpt-5",
+  "started_at": 1788964310.809963,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2j7a7KqhWBmRiaiTwZaWpYwOe\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.76\\nEXPLANATION: Strong ester C=O stretch at 1733 cm⁻¹ and intense C=C band at 1642 cm⁻¹ fit an allyl methacrylate-type ester. Multiple vinylic/aliphatic C–H stretches at 2938, 3005, 3056, and 3124 cm⁻¹ are consistent with a terminal vinyl group plus substituted C=C. Bands at 1302 and 1327 cm⁻¹ match methacrylate C–O/CH bending features, and weak CH₃ deformation near 1442/1407/1382 cm⁻¹ supports a methyl-substituted double bond. Aldehyde candidates would show aldehyde C–H stretches (~2720–2830 cm⁻¹), absent here; cyclic carbonate/anhydride options would shift/split ν(C=O) higher than observed.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5593,\"completion_tokens\":3991,\"total_tokens\":9584,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3776},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 47.950641041999916,
+  "error": null
+}

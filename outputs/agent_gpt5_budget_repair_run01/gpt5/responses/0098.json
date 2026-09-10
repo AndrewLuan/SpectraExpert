@@ -1,0 +1,21 @@
+{
+  "query_index": 98,
+  "content": "SELECTED_INDEX: 2\nCONFIDENCE: 0.64\nEXPLANATION: The spectrum shows a strong band at 831 cm⁻¹, consistent with a PO–C symmetric stretch typical of phosphate esters, plus bands at 1101 and 1152 cm⁻¹ that fit P–O/PO–C stretching. A medium band at 1286 cm⁻¹ matches a P=O stretch in phosphoryl compounds. The low-frequency band at 551 cm⁻¹ can be attributed to P–O deformation/rocking in a cyclic phosphate. The CH stretches at 2971/2896 cm⁻¹ and CH deformation at 1458 cm⁻¹ are consistent with an alkyl substituent (GFQ-003). Alternatives with BF₃ (candidate 10) would require strong BF₃ bands near ~888 and ~1506 cm⁻¹ (GFQ-034), not observed, and P–Cl species (candidate 9) would emphasize P–Cl stretches ~540–560 cm⁻¹ without the clear P=O signature near 1280–1300 cm⁻¹. Sulfur-rich (candidate 3) would center strongest bands near ~510 and ~650 cm⁻¹, not at 831 cm⁻¹.",
+  "usage": {
+    "prompt_tokens": 5069,
+    "completion_tokens": 5979,
+    "total_tokens": 11048,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5696
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd3UMyyAjRvK6GtlfFO6b7ANGVh",
+  "last_attempt_file": "gpt5/attempts/0098_1788964310777706000.json"
+}

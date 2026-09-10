@@ -1,0 +1,14 @@
+{
+  "query_index": 170,
+  "content": "SELECTED_INDEX: 2",
+  "usage": {
+    "prompt_tokens": 6130,
+    "completion_tokens": 386,
+    "total_tokens": 6516
+  },
+  "response_model": "gemini-2.5-flash",
+  "finish_reason": "stop",
+  "response_id": "msg_01gtFMWTngMX4zPHvcX5lQYF",
+  "last_attempt_file": "gemini/attempts/0170_1788958041178718000.json",
+  "normalization": "explicit final answer extraction"
+}

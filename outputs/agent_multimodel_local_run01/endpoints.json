@@ -1,0 +1,6 @@
+{
+  "gpt5": "https://api.chatanywhere.tech/v1",
+  "o3": "https://api.chatanywhere.tech/v1",
+  "claude": "https://api.chatanywhere.tech/v1",
+  "gemini": "https://api.chatanywhere.tech/v1"
+}

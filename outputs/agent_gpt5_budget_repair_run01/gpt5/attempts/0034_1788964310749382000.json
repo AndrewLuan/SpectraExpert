@@ -1,0 +1,10 @@
+{
+  "query_index": 34,
+  "model": "gpt-5",
+  "started_at": 1788964310.749384,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2AA1DOSZb1tiPoZLipOA3Yp3K\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 5\\nCONFIDENCE: 0.63\\nEXPLANATION: The spectrum shows an aromatic/heteroaromatic pattern: strong bands at 1609, 1572, 1522, 1428 cm⁻¹ (aromatic C=C region) and an sp2 C–H stretch at 3082 cm⁻¹ consistent with unsaturated rings (GFQ-003). Two intense bands at 1235 and 1157 cm⁻¹ are characteristic of C–O stretches in a lactone/heteroaromatic ester system, which fits a pyrone ring. A band at 632 cm⁻¹ is consistent with a C–halogen stretch region (cf. halogen stretches 611–651 cm⁻¹ in GFQ-046), matching the Br substituent. Crucially, there is no N–H stretch near 3300–3400 cm⁻¹, which disfavors candidates with N–H (GFQ-002). Among NH-free candidates, only O=c1cc(Br)cco1 (index 5) contains a lactone (to account for both 1157 and 1235 cm⁻¹) and a halogen (to account for ~632 cm⁻¹). Candidate 1 lacks a C–O single bond, making the paired 1157/1235 features less plausible, and candidate 2 would exhibit dominant Si–Cl modes not observed.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5171,\"completion_tokens\":4602,\"total_tokens\":9773,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4288},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124956-0c3fe136-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 72.97468262500479,
+  "error": null
+}

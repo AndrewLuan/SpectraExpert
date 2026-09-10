@@ -1,0 +1,10 @@
+{
+  "query_index": 88,
+  "model": "gpt-5",
+  "started_at": 1788964310.775242,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2SZa7ygI66z52Cnfhlv2Pgg01\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.72\\nEXPLANATION: The spectrum shows the classic monosubstituted benzene Raman pattern: a very strong ring-breathing band at 1005 cm⁻¹ with the companion band at 1032 cm⁻¹, strong aromatic C–H stretch at 3064 cm⁻¹ (supported by GFQ-003), the ring C=C stretching doublet at 1606/1585 cm⁻¹, and characteristic out-of-plane/low-frequency aromatic modes near 771 and 624 cm⁻¹. The aliphatic C–H stretch multiplet (2879–3005 cm⁻¹) and CH deformation near 1446 cm⁻¹ indicate a small alkyl substituent (CH3/CH2) without heteroatom stretches (no OH/NH bands). This best fits ethylbenzene (candidate 1) over disubstituted or heteroatom-containing candidates.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5459,\"completion_tokens\":3865,\"total_tokens\":9324,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3648},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 42.16887554200366,
+  "error": null
+}

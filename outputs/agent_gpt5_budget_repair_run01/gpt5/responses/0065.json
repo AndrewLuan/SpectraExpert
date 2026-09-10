@@ -1,0 +1,21 @@
+{
+  "query_index": 65,
+  "content": "SELECTED_INDEX: 2\nCONFIDENCE: 0.74\nEXPLANATION: The spectrum shows a strong band at 1660 cm⁻¹ consistent with an alkene C=C stretch, a clear sp2 C–H stretch at 3048 cm⁻¹, and intense aliphatic C–H stretches at 2853/2915/2954 cm⁻¹ (GFQ-003), plus a strong CH2 scissoring band at 1445 cm⁻¹ typical of saturated chains. Vinyl C–H deformation/out-of-plane modes near 880–900 and ~1000 cm⁻¹ are suggested by peaks at 881, 856, and 1011 cm⁻¹. These features match an alkenic hydrocarbon like 1-methylcyclopentene (candidate 2) and disfavor carbonyl-rich candidates (which should show an additional strong 1700–1750 cm⁻¹ band not observed), nitro-bearing species (missing the strong ~1520–1560 cm⁻¹ NO₂ band), and purely saturated amides (which should lack the 3048 cm⁻¹ sp2 C–H stretch).",
+  "usage": {
+    "prompt_tokens": 5524,
+    "completion_tokens": 3524,
+    "total_tokens": 9048,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3264
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2hjaO36XsIPyfPKGpuBAJGjl8",
+  "last_attempt_file": "gpt5/attempts/0065_1788964310763890000.json"
+}

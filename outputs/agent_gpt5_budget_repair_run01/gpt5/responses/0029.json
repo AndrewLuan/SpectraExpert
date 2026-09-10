@@ -1,0 +1,21 @@
+{
+  "query_index": 29,
+  "content": "SELECTED_INDEX: 8\nCONFIDENCE: 0.65\nEXPLANATION: The strong band at 2117 cm⁻¹ is consistent with a C≡C stretch; the absence of a ≡C–H stretch near ~3300 cm⁻¹ indicates an internal alkyne rather than a terminal one, favoring candidate 8 over 2. No band appears near ~2220–2260 cm⁻¹, which disfavors all nitrile-bearing candidates (1, 3, 4, 5, 6, 7). The prominent aliphatic C–H stretches at 2888/2946/2989 cm⁻¹ and CH bending near 1454 cm⁻¹ match saturated ring/alkyl features (supported by GFQ-003). The remaining mid-frequency bands (860–963 cm⁻¹ and ~700 cm⁻¹) are plausible ring/skeletal modes for a cycloalkyl-alkyne, consistent with CCC#CC1CC(C)C1.",
+  "usage": {
+    "prompt_tokens": 5630,
+    "completion_tokens": 3301,
+    "total_tokens": 8931,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3072
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd2ped69TiiBCIgNPFqIqN5PzI4",
+  "last_attempt_file": "gpt5/attempts/0029_1788964310746794000.json"
+}

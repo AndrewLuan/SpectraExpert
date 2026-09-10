@@ -1,0 +1,21 @@
+{
+  "query_index": 21,
+  "content": "SELECTED_INDEX: 4\nCONFIDENCE: 0.73\nEXPLANATION: The spectrum shows a typical aliphatic CH stretching pattern with multiple bands at 2862–2943 cm⁻¹ and a strong CH2 scissoring band at 1441 cm⁻¹ (consistent with GFQ-003). The series of weaker bands at 2677–2787 cm⁻¹ is consistent with overtone/combination bands (Fermi resonance) with the 1441 cm⁻¹ mode (SPC-002). Strong C–O related bands appear at 1040, 1066, 1101, 1126, and 1155 cm⁻¹, and characteristic polyol skeletal modes near 856 and 770 cm⁻¹ are present. A broad, weak OH stretching feature near 3144 cm⁻¹ fits hydrogen-bonded polyols. This pattern closely matches glycerol-type Raman fingerprints, favoring OCC(CO)CO over amine- or C–F-containing candidates.",
+  "usage": {
+    "prompt_tokens": 5670,
+    "completion_tokens": 4005,
+    "total_tokens": 9675,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3776
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBxqobBPggQckeLrPoAukqhokPpe",
+  "last_attempt_file": "gpt5/attempts/0021_1788957912188147000.json"
+}

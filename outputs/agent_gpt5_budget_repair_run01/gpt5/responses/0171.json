@@ -1,0 +1,21 @@
+{
+  "query_index": 171,
+  "content": "SELECTED_INDEX: 10\nCONFIDENCE: 0.78\nEXPLANATION: The spectrum shows a strong carbonyl band at 1686 cm⁻¹ consistent with a conjugated aldehyde C=O, intense aromatic ring bands at 1600 and 1509 cm⁻¹, and aromatic C–H stretches at 3081/3014 cm⁻¹ with aliphatic CH at 2930 cm⁻¹ (consistent with GFQ-003). The pair of strong bands at 1159 and 1268 cm⁻¹ are characteristic of sulfonyl (SO₂) symmetric/asymmetric stretches found in sulfonamides, and the absence of any N–H stretch supports an N,N-dimethyl sulfonamide. The strong 822/839 cm⁻¹ features match out-of-plane aromatic C–H modes of a tri-substituted ring, and the 636 cm⁻¹ band aligns with an aryl C–Br stretch. These combined features best fit CN(C)S(=O)(=O)c1ccc(C=O)c(Br)c1.",
+  "usage": {
+    "prompt_tokens": 5707,
+    "completion_tokens": 5428,
+    "total_tokens": 11135,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 5184
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMDd29fRrXtlw80SrmNyNNs6XbPM2",
+  "last_attempt_file": "gpt5/attempts/0171_1788964310808113000.json"
+}

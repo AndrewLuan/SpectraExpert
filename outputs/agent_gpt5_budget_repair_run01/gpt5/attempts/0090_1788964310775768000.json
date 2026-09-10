@@ -1,0 +1,10 @@
+{
+  "query_index": 90,
+  "model": "gpt-5",
+  "started_at": 1788964310.775769,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2yJoS2VhRsMwyRUS4tQTUhAkb\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 2\\nCONFIDENCE: 0.55\\nEXPLANATION: The spectrum is dominated by aliphatic C–H features (2955, 2862; GFQ-003) and a strong CH2 scissoring band at 1446 cm⁻¹, consistent with a saturated backbone. The weak, single band at 3317 cm⁻¹ fits a secondary N–H/O–H stretch (GFQ-001, GFQ-002), favoring a molecule with one N–H and one O–H rather than multiple donors. The medium bands at 863 and 1036 cm⁻¹ are characteristic of cyclic ether ring modes (C–O–C ring breathing/stretch) expected for a morpholine ring, and the 1134–1209 cm⁻¹ region suits C–O/C–N stretches in such heterocycles. OCC[C@H]1COCCN1 (a morpholine with a hydroxyethyl side chain) matches this pattern better than candidates lacking a ring ether or having no N–H.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5529,\"completion_tokens\":9069,\"total_tokens\":14598,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":8832},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819124955-7a363876-default-r2-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 99.90163987499545,
+  "error": null
+}

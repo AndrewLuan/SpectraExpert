@@ -1,0 +1,10 @@
+{
+  "query_index": 91,
+  "model": "gpt-5",
+  "started_at": 1788964310.7762291,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd3oC22EPiWNTEpOKUHnvvRpJof\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.66\\nEXPLANATION: The spectrum shows strong aliphatic C–H stretches at 2877–2964 cm⁻¹ (GFQ-003), no O–H/N–H stretches (disfavoring 4 and a secondary amide like 2), and a prominent band at 1664 cm⁻¹ consistent with the N=O stretch of an alkyl nitrite R–O–N=O. Supporting nitrite/nitro-group vibrations appear at 826 cm⁻¹ (δ(NO₂/ONO), GFQ-022) and multiple bands in the 900–1000 cm⁻¹ region attributable to N–O/C–O modes. The CH2-dominant deformation/twist features near 1454 and 1341 cm⁻¹ are more consistent with a primary alkyl nitrite (pentyl nitrite) than a more branched isopropyl nitrite.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964313,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5327,\"completion_tokens\":5593,\"total_tokens\":10920,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":5376},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-10e6a11d-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 73.18403345902334,
+  "error": null
+}

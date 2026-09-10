@@ -1,0 +1,10 @@
+{
+  "query_index": 93,
+  "model": "o3",
+  "started_at": 1788957974.104956,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBz2v567e51TSqZg7uAS6Ytg0c7a\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.46\\nEXPLANATION: The spectrum shows (a) strong C–H stretches at 2890-2990 cm⁻¹, (b) a single intense C=O stretch at 1733 cm⁻¹ characteristic of a saturated aliphatic ester carbonyl, (c) a CH₃/CH bending band at 1458 cm⁻¹, and (d) several C–O/ C–C–O stretches for esters in the 1080-1180 cm⁻¹ and 830-930 cm⁻¹ regions. No bands appear near 1650 cm⁻¹ (amide C=O) or 2250 cm⁻¹ (N=C=O), excluding candidates 5 and 8; the required carbonyl band rules out ether (3) and carbonyl-free species (6, 10). Among the remaining esters (1, 2, 4), candidate 1 (isopropyl acetate, CCC(=O)OC(C)C) best matches the prominent ~830/876/927 cm⁻¹ doublet–triplet pattern of isopropyl esters and lacks CH₂ groups (consistent with a single 1458 cm⁻¹ CH₃ bend and no separate CH₂ scissoring near 1470 cm⁻¹). Therefore candidate 1 provides the most coherent fit to the observed Raman peaks.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957988,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5453,\"completion_tokens\":1938,\"total_tokens\":7391,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":1600},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260817132615-5bc11ab0-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 35.02448941700277,
+  "error": null
+}

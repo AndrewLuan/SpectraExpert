@@ -1,0 +1,10 @@
+{
+  "query_index": 79,
+  "model": "gpt-5",
+  "started_at": 1788964310.771303,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2WAcZvjOR63B69r1CNF3NvXCT\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 6\\nCONFIDENCE: 0.62\\nEXPLANATION: The spectrum shows a very strong phenyl ring-breathing doublet at ~1005 and 1032 cm⁻¹ typical of alkylated benzenes, plus two C–H out-of-plane bands at 821 and 749 cm⁻¹ consistent with a 1,3,4-trisubstituted ring (para + one ortho), rather than a monosubstituted pattern. The band at 624 cm⁻¹ supports an aryl C–Cl stretch, and the 1205 cm⁻¹ band is consistent with a phenolic C–O stretch. Aromatic (3064, 1609/1588 cm⁻¹) and aliphatic C–H stretches (2938, 2921, 2879 cm⁻¹) match an ethylated phenyl. Together these features best fit CCc1cc(O)ccc1Cl.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"content_filter_result\":{\"error\":{\"code\":\"content_filter_error\",\"message\":\"The contents are not filtered\"}},\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5550,\"completion_tokens\":8026,\"total_tokens\":13576,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":7808},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260819172348-e0aef28f-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 108.52034487499623,
+  "error": null
+}

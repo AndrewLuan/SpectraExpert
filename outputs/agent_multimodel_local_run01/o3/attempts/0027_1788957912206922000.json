@@ -1,0 +1,10 @@
+{
+  "query_index": 27,
+  "model": "o3",
+  "started_at": 1788957912.206924,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMBxzfNdVlypqOwqWxn3cwDa5c7ts\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.35\\nEXPLANATION: The two most intense experimental Raman bands are at 999 cm⁻¹ and 1597 cm⁻¹.  • A very strong band near 1000 cm⁻¹ and another around 1595-1600 cm⁻¹ are characteristic of the ring-breathing (ν1 ≈ 1000 cm⁻¹) and ring-stretching (ν8a ≈ 1595 cm⁻¹) modes of a pyridine ring.  • Among the candidates, only molecule 1 (NNC(=O)c1ccncc1) contains a pyridine ring; all others are benzene derivatives.  • The carbonyl stretch of an amide or hydrazide conjugated to an aromatic ring normally appears in the 1630-1670 cm⁻¹ region; the observed pair at 1639 and 1668 cm⁻¹ fits the C=O (amide I) and associated N–H bending (amide II) vibrations expected for the hydrazide group in candidate 1.  • A strong N–N single-bond stretch for hydrazides is reported near 1000 cm⁻¹, reinforcing the intense 999 cm⁻¹ line.  • Additional medium bands at 1306, 1251 and 1546 cm⁻¹ are compatible with amide III and N–H/N–N deformation modes typical of hydrazides, while the 3065 cm⁻¹ band matches aromatic C–H stretches. These features collectively favour a pyridine hydrazide structure. Therefore candidate 1 best matches the experimental spectrum.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788957923,\"model\":\"o3-2025-04-16\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5828,\"completion_tokens\":3651,\"total_tokens\":9479,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3264},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260817064417-9cd27c07-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 45.583745125011774,
+  "error": null
+}

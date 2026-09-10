@@ -1,0 +1,10 @@
+{
+  "query_index": 137,
+  "model": "gpt-5",
+  "started_at": 1788964310.794518,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2dgbih1HyG5Jq0YACec7JywG9\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 10\\nCONFIDENCE: 0.68\\nEXPLANATION: Strong aliphatic C–H stretches at 2875/2931 cm⁻¹ and CH₂/CH₃ deformations at 1443/1462 cm⁻¹ match an alkyl ether (GFQ-003). No O–H stretch in the 3200–3600 cm⁻¹ region is observed, disfavoring the many OH-bearing candidates. Bands near 1041/1058 cm⁻¹ and 907/851 cm⁻¹ are consistent with C–O–C stretching and ring modes of a cyclic ether (tetrahydropyran). The weak 2727 cm⁻¹ feature is compatible with a CH₃ Fermi resonance (SPC-002). CC1CCCCOC1C (candidate 10) best fits these features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5435,\"completion_tokens\":3269,\"total_tokens\":8704,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3072},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 42.894710708002094,
+  "error": null
+}

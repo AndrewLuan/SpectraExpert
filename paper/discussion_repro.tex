@@ -1,0 +1,43 @@
+% 功能概述：集中回应审稿人提出的失败机制、输出可靠性、复现参数与运行成本。
+% 主要职责：区分已完成证据、当前政策变更及尚未验证的假设；不补造实验结果。
+% 代码库关系：由 main.tex 引入；耗时来自 results/jj-20260909/latency_audit.json 的只读日志聚合。
+\section{Discussion and Practical Reproducibility}
+The results identify two distinct constraints on closed-library Raman identification. Domain adaptation raises mean candidate recall, but successful retrieval still leaves substantial ambiguity for the selector. Even Claude, the strongest observed selector, resolves only 56.31\% of retrievable queries under the recorded recovery policy. Improving retrieval alone therefore cannot ensure reliable final identification, while selection cannot recover identities absent from the shortlist. This distinction connects the domain-adaptation experiments to the model and knowledge comparisons without attributing all pipeline gains to LLM reasoning.
+\subsection{Why Rules and Structural Modification Can Fail}\label{sec:limits}
+The rule-coverage control reveals an ambiguity mechanism: many distinct structures satisfy the same broad vibrational assignments. In Test-200, 134 queries have ties for maximum coverage, and the mean number of matched modes is 7.385. For query 3706, the correct top-ranked structure, \texttt{COC(C)(C)CC(C)=O}, has coverage 0.375, whereas the incorrect rank-six structure \texttt{CC=C1OC1CC} scores 0.5. Maximizing broad compatibility therefore discards an exact match. This is a concrete counterexample to coverage as a sufficient decision rule, not a causal explanation of every LLM mistake.
+
+Coarse peak evidence can underdetermine a precise molecular edit, and self-reported confidence supplies no independently calibrated gate. The current experiment therefore evaluates candidate selection only, without the historical MODIFY branch.
+
+The current mitigation disables MODIFY, requires a legal candidate index and validates the selected structure independently. It prevents free-form chemical-syntax failures but cannot guarantee identification: candidate-only DeepSeek loses 12 correct retrieval predictions, while full-Agent Claude loses six. A confidence-based preserve-or-edit policy and chemical verification loop would require separate calibration before any accuracy claim.
+
+Current output failures separate two mechanisms: reasoning can exhaust the response budget, and a nonempty answer can violate the requested field syntax. Additional budget recovers empty GPT-5 and o3 answers; deterministic extraction recovers Gemini's final choices without changing their molecular selections. These repairs improve scoreability, not demonstrated reasoning accuracy, and do not explain historical unmatched direct-generation results.
+
+\subsection{Inference Contract and Reproduction Details}\label{sec:repro}
+The candidate-selector system prompt is fixed as follows; line breaks separate the requested output fields:
+\begin{quote}\small\raggedright
+You are an expert in Raman spectroscopy and molecular structure identification.
+Select exactly ONE molecule from the provided candidate list using the experimental Raman peaks.
+Candidates are ordered by decreasing retrieval similarity. This ordering is a useful prior, not a guarantee.
+Use the peak evidence and structural compatibility; theoretical and experimental Raman spectra may differ.
+Do not invent, modify, or combine candidates. Even when uncertain, choose the best available candidate.
+End your response with these fields:\\
+\texttt{SELECTED\_INDEX: <one integer from 1 to 10>}\\
+\texttt{CONFIDENCE: <number from 0 to 1>}\\
+\texttt{EXPLANATION: <brief justification referring to spectral evidence>}
+\end{quote}
+The user payload is ``Experimental Raman peaks (\{count\} peaks)'', followed by the formatted peak table; ``Ten candidate SMILES (retrieval order)'', followed by the numbered list; and ``Select exactly one candidate from this list.'' Knowledge conditions append their recorded evidence to this common input. The candidate-only condition omits it. Peak extraction uses the shared detector with relative height 0.05, relative prominence 0.02, distance 5, width 1 and z-score preprocessing. The final normalized index must be unique and lie in 1--10; no response is retried because its chemical prediction is wrong.
+
+Direct generation uses \texttt{deepseek-v4-flash}. Candidate-only runs record Flash and Flash-Ascend routes: 93 successful earlier-route responses are reused and 307 later-route responses complete the two 200-query arms. Later knowledge runs use Flash-Ascend. The routes were treated as aliases operationally, but model equivalence has not been independently established. All these runs use temperature 0.2 and a 4,096-token output limit. No server-side generation seed is fixed, so training seeds 0--4 do not make API sampling reproducible. Each stored request preserves the requested route, and each response preserves the returned model identifier.
+
+The four replacement-model Agent runs retain these frozen inputs and initially request the same temperature and output limit. Initial strict-field compliance is 50/200 for GPT-5, 122/200 for o3, 199/200 for Claude and 3/200 for Gemini. All 150 empty GPT-5 answers are retried with a 32,768-token limit. The 78 empty o3 answers are retried at 16,384 tokens, with one requiring a further 32,768-token attempt. Existing nonempty answers are retained. Gemini's 200 nonempty responses become scoreable through unambiguous final-answer extraction, without additional API calls. The same extraction rules preserve existing legal choices in the other models. Conflicts are rejected rather than resolved using ground truth. Effective validity therefore differs from initial compliance, and the repaired results do not represent independent, uniform-budget repeats.
+
+The repository, \url{https://github.com/AndrewLuan/SpectraExpert}, preserves exact prompts, requests, decoding parameters, parsers, candidates, raw responses and source hashes. SHA-256 prefixes identify the corrected data manifest (\texttt{422e6729cad919b7}) and frozen encoder (\texttt{023da9724091f58a9}). The accompanying result audit records full hashes, run paths and the repaired-model summary. This separates replayable local retrieval from inference requiring continued access to proprietary services.
+
+\subsection{Measured Resource Use and Remaining Scope}\label{sec:cost}
+The four seed-0 encoder runs each complete in approximately 501--532 seconds on the recorded server execution. This measures training under that run's hardware and load, not a universal runtime. A 10,000-by-64 float32 reference index occupies 2.56 MB before metadata and requires 640,000 multiply--accumulate terms for one dense similarity query after encoding. These operation counts characterize the small final ranking stage; they do not measure peak extraction or encoder latency.
+
+The two DeepSeek candidate-only arms report usage for all 400 received responses. Encoder and kNN candidate selection consume 1,094.19 and 1,093.26 total tokens per query, respectively. Their successful-attempt median latencies are 21.27 and 20.73 seconds, with 95th percentiles of 46.32 and 42.96 seconds. These service-call durations exclude queueing, failed attempts, retrieval and parsing; complete usage totals remain in the accompanying audit.
+
+The logs also contain 187 earlier HTTP 403 attempts without reported usage, and interrupted requests without received responses have unknown usage. The replacement-model archive includes initial and repair attempts, token totals and successful-attempt latency summaries; the reused DeepSeek full-Agent usage is unavailable. Reported tokens are not guaranteed to equal billed consumption. Monetary costs and complete end-to-end latency have not been measured; no price is inferred. Retrieval top-1 avoids API calls and obtains 41/200 exact matches, compared with 33--58 across full-Agent models. Model-dependent gains and recovery overhead therefore matter for deployment, although these measurements do not determine an optimal operating policy.
+
+All experimental observations originate from SDBS, so transfer across independent instruments or to unseen molecular identities remains untested. Five-seed test gains remain uncertain, API sampling is unreplicated, and the same-rule test ablation and matched competitor adaptation remain incomplete. A new experimental holdout would test whether retrieval gains survive further domain shifts. Repeated, equal-budget LLM runs with matched knowledge controls would distinguish reproducible selection gains from model, prompt and recovery-policy effects. The current evidence supports development retrieval gains and model-dependent identification within the fixed benchmark.

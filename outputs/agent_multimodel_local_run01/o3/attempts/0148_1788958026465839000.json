@@ -1,0 +1,10 @@
+{
+  "query_index": 148,
+  "model": "o3",
+  "started_at": 1788958026.465848,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-809LomuE14SWnfF0JwsyIDGm3dYCd\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":\"length\",\"index\":0}],\"created\":1788958092,\"model\":\"o3\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5373,\"completion_tokens\":4096,\"total_tokens\":9469,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4096},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0},\"input_tokens\":0,\"output_tokens\":0},\"system_fingerprint\":\"fp_166cb9e933\"}",
+  "elapsed_seconds": 65.28857116599102,
+  "error": null
+}

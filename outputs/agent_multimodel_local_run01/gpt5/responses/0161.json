@@ -1,0 +1,21 @@
+{
+  "query_index": 161,
+  "content": "SELECTED_INDEX: 3\nCONFIDENCE: 0.86\nEXPLANATION: Two strong C–H stretching bands at 2837 and 2946 cm⁻¹ and a CH₂/CH₃ deformation at 1454 cm⁻¹ are consistent with aliphatic alcohols (GFQ-003). The strong band at 1036 cm⁻¹ matches the typical C–O stretch of methanol (~1020–1050 cm⁻¹). Absence of N–H stretches (~3300 cm⁻¹) disfavors amines (e.g., 2, 8), and candidates with Si–Cl, P=O, nitro, or aromatic motifs would show other characteristic bands not observed. Methanol (SMILES CO) best fits the observed pattern.",
+  "usage": {
+    "prompt_tokens": 3841,
+    "completion_tokens": 2163,
+    "total_tokens": 6004,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 1984
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBzptX0HTwjJo5WJkS4Qxzi6kC74",
+  "last_attempt_file": "gpt5/attempts/0161_1788958036159581000.json"
+}

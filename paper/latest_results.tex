@@ -1,0 +1,202 @@
+% 功能概述：只保留支撑域适配、检索与候选判别主旨的最新完成结果。
+% 主要职责：统一 Test-200、五种子、机制检查和规则对照；报告缺失样本与统计不确定性。
+% 代码库关系：由 main.tex 引入；数值依据 results/jj-20260909 冻结快照，审稿逐项核对见 REVIEW_RESPONSE_AUDIT.md。
+\section{Experiments}\label{sec:latest_experiments}
+\subsection{Data, Identity Control and Evaluation Scope}\label{sec:protocol}
+The main benchmark contains 200 experimental Raman queries from SDBS~\cite{sdbsAIST} and 10,000 unique theoretical reference structures. The theoretical records come from the QME14S and fg26 sources in the cached processed SpecGPT collection; they are not all QM9S records. The corrected protocol, ensures that every test target is present under full canonical/isomeric identity. An earlier version had 21 incomplete identity matches: 13 references were repaired and eight query/reference slots were replaced deterministically without retrieval-score selection. Direct-LLM outputs were refreshed for those eight queries; the other 192 were reused after input and request equality checks.
+
+The current adaptation split has 601 experimental training spectra from 565 molecular groups and 149 development spectra from 142 groups. All 200 test groups are excluded from experimental training, proxy fitting and checkpoint selection. The original 9,500/500 theoretical partition is retained; nonprotected supplemental theoretical records extend the reference pool to 10,967 records for 10,704 identities. Development retrieval uses these 10,704 identities, each with one fixed indexed reference. Final test retrieval uses the original 10,000 identities. Theoretical records of development and test identities may be available during training: the protected item is the experimental observation, not every representation of its molecule.
+
+This is therefore closed-library transfer to unseen experimental spectra of known identities. It does not measure unseen-molecule generalization. Test-200 has been inspected in successive experiments, despite being excluded from gradient updates and checkpoint selection; it is a fixed benchmark, not a newly blinded test. The earlier QM9S--ChEMBL study used different chemical support and unmatched 211/50/20-query batches. Its historical scores are excluded from the current main comparison rather than pooled with the corrected experiment.
+
+\subsection{Metrics and Statistical Units}\label{sec:metrics}
+Exact@$K$ tests full-structure equality with any of the first $K$ predictions; the Test-200 denominator is always 200. Development selection averages repeated spectra within each molecular group before averaging groups. Molecular parsing and fingerprint calculations use RDKit~\cite{landrum2013rdkit}. Tanimoto similarity uses radius-2, 2,048-bit Morgan fingerprints with bond types and without chirality. Consequently, a high Tanimoto score need not imply stereochemically exact identity.
+
+Chemical graph edit distance (GED v2) uses atomic-number node labels and discrete bond-type edge labels. A bounded search applies a 10-second limit to each pair. Invalid or timed-out values remain missing; structural means report computable counts, and paired comparisons use common computable queries. Historical first-return GED upper bounds are excluded from the current comparison. Candidate-selection validity requires a unique legal index, whereas direct-generation validity requires a parseable SMILES. These rates therefore measure different output obligations rather than equivalent chemical-generation capabilities.
+
+Five-seed summaries report sample standard deviations. A Student-$t$ interval on paired seed differences quantifies training randomness, with the seed as the independent repetition. Query-level or molecular-group bootstrap intervals assess paired prediction differences on a fixed checkpoint; they do not replace retraining. Development ablations are exploratory because their checkpoints and settings were selected on that data. All results below are the latest completed compatible artifacts collected on 9 September 2026; newer training checkpoints are not substituted into older frozen LLM candidate lists.
+
+\subsection{Does Domain Adaptation Improve Retrieval?}\label{sec:retrieval_results}
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Mechanism checks on the same development spectra}
+\label{tab:mechanism}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Configuration}} & \PaperHead{Hits@10} & \PaperHead{Group @10}\\[1pt]
+\midrule
+\PaperGroup{3}{RetBg}{Direct cosine: common support, no encoder}
+\rowcolor{RetBg!55}Original theoretical curves & 8/149 & ---\\
+\rowcolor{RetBg!28}Fixed proxy curves & 39/149 & ---\\
+\PaperGroup{3}{AgtBg}{Paired encoder: controlled seed-0 training}
+\rowcolor{AgtBg!55}Empirical domain augmentation & 73/149 & 51.06\\
+\rowcolor{AgtBg!28}Fixed proxy + random extras & 77/149 & 52.82\\
+\rowcolor{AgtBg!55}Random proxy + random extras & 77/149 & 52.82\\
+\rowcolor{AgtBg!28}Random proxy + hard negatives & 80/149 & 54.58\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{149 spectra, 142 groups; Group @10 is a percentage. The direct-curve control isolates proxy correction; encoder rows share real pairs, architecture, initialization and training budget.}
+\end{table}
+
+\paragraph{Curve correction before representation learning.}
+Table~\ref{tab:mechanism} first compares direct cosine retrieval using original and fixed-proxy theoretical curves. Both scores use the same common support for each query--candidate pair. No development curve is fitted individually. Exact@10 rises from 8/149 to 39/149: 33 targets enter the top ten and two leave. The molecular-group-weighted gain is 21.13 percentage points (pp), with a paired bootstrap 95\% interval of $[14.08,28.87]$ pp. This is evidence that correcting the curve distribution can help identity retrieval even without a learned encoder. Its mask convention differs from the historical zero-filled cosine baseline, so those rates should not be directly subtracted.
+
+\paragraph{Controlled encoder mechanisms.}
+The four encoder arms in Table~\ref{tab:mechanism} keep the real-pair and multiple-reference protocol fixed. Fixed and random proxies each give 77/149 top-ten hits, while adding hard negatives gives 80/149. Group-weighted differences are small in this single seed: hard minus baseline is 3.52 pp with an exploratory group-bootstrap interval of $[-5.28,12.32]$ pp. Thus the table documents the effect sizes without establishing that each added mechanism independently improves generalization. The direct-curve control and encoder controls answer different questions; neither is a same-data contrastive-versus-noncontrastive loss ablation.
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Test retrieval over five paired training seeds}
+\label{tab:multiseed}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Training}} & \PaperHead{Exact@1} & \PaperHead{Exact@5} & \PaperHead{Exact@10}\\[1pt]
+\midrule
+\rowcolor{RetBg!55}Paired baseline & 15.50 $\pm$ 4.18 & 35.60 $\pm$ 4.13 & 46.30 $\pm$ 5.22\\
+\rowcolor{AgtBg!55}Proxy + hard negatives & 19.50 $\pm$ 1.70 & 43.90 $\pm$ 1.98 & 53.60 $\pm$ 2.36\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{Test-200, percentages; mean $\pm$ sample SD for seeds 0--4. The paired test @10 gain is 7.30 pp, 95\% $t$ interval $[-0.58,15.18]$ pp.}
+\end{table}
+
+\paragraph{Training randomness and source heterogeneity.}
+The latest five-seed comparison is in Table~\ref{tab:multiseed}. Proxy plus hard negatives reaches 53.60\% mean Test-200 Exact@10, versus 46.30\% for the paired baseline, winning in four of five seeds. The paired mean-gain interval includes zero. Development group Exact@10 improves in all five seeds: 54.86\% $\pm$ 2.26\% versus 43.87\% $\pm$ 4.30\%, with a paired gain interval $[4.35,17.63]$ pp. These observations support a development-level effect and a higher test mean, not a statistically established test gain across training seeds. Seed 0 illustrates the uncertainty: baseline test @10 is 52.5\% and hard is 51.5\%.
+
+Transfer also varies by theoretical source. Hard achieves 59.86\% $\pm$ 1.67\% @10 on 138 QME14S queries and 39.68\% $\pm$ 6.71\% on 62 fg26 queries. Relative to the paired baseline, the source-specific gain intervals are $[0.80,15.14]$ and $[-7.14,18.75]$ pp. The remaining gap is not explained by a single global frequency correction. Source, molecular composition and phase may be confounded, so these strata do not identify a causal physical mechanism.
+
+The frozen single-seed hard encoder used for all downstream LLM tests retrieves 41/200, 87/200 and 103/200 targets at ranks 1, 5 and 10; zero-filled raw cosine kNN retrieves 1/200, 11/200 and 22/200. The five-seed checkpoints have not been evaluated with the LLM selector. A later proxy fit improves group-weighted validation cosine from 0.5036 to 0.7665 on 207 pairs, but the encoders used the earlier frozen fit. Improved later curve fit cannot be credited to their measured retrieval performance.
+
+\subsection{Final Identification and the Remaining Selection Gap}\label{sec:selection_results}
+\begin{table*}[t]
+\centering
+\PaperTableSetup{\small}
+\caption{Overall molecular identification on corrected Test-200}
+\label{tab:latest_main}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Method}} & \PaperHead{Valid $\uparrow$} & \PaperHead{Exact $\uparrow$} & \PaperHead{Tanimoto $\uparrow$} & \PaperHead{Chemical GED $\downarrow$}\\[1pt]
+\midrule
+\PaperGroup{5}{RetBg}{Pretrained competing methods}
+\rowcolor{RetBg!55}Vib2Mol retrieval + Raman reranking & 100.0 & 0.0 & 0.0644 (200) & 12.5667 (150)\\
+\rowcolor{RetBg!28}VibraCLIP, no mass & 100.0 & 0.0 & 0.0490 (200) & 9.9457 (184)\\
+\rowcolor{RetBg!55}Vib2Mol generation + Raman reranking & 81.0 & 0.0 & 0.0582 (162) & 9.1698 (159)\\
+\rowcolor{RetBg!28}MolSpectLLM (Raman unavailable) & N/A & N/A & N/A & N/A\\
+\PaperGroup{5}{RetBg}{Retrieval}
+\rowcolor{RetBg!55}Raw cosine kNN & 100.0 & 0.5 & 0.1132 (200) & 8.1778 (180)\\
+\rowcolor{RetBg!28}Frozen hard encoder top-1 & 100.0 & 20.5 & 0.3205 (200) & 5.3057 (193)\\
+\PaperGroup{5}{DirBg}{Direct generation}
+\rowcolor{DirBg!55}Direct DeepSeek & 99.0 & 2.5 & 0.1946 (198) & 6.3011 (186)\\
+\PaperGroup{5}{AgtBg}{Candidate selection}
+\rowcolor{AgtBg!55}kNN + DeepSeek & 100.0 & 4.0 & 0.1598 (200) & 7.4213 (178)\\
+\rowcolor{AgtBg!28}Frozen hard encoder + DeepSeek & 100.0 & 22.0 & 0.3515 (200) & 5.0258 (194)\\
+\PaperGroup{5}{KnwBg}{Full Agent: frozen hard encoder + legacy KB + model}
+\rowcolor{KnwBg!55}GPT-5~\cite{gpt-5} & 100.0 & 18.5 & 0.3082 (200) & 5.4603 (189)\\
+\rowcolor{KnwBg!28}o3~\cite{o3_and_o4-mini} & 100.0 & 20.5 & 0.3352 (200) & 5.0890 (191)\\
+\rowcolor{KnwBg!55}Claude Sonnet 4.6~\cite{claude-sonnet-4-6} & 99.5 & 29.0 & 0.4207 (199) & 4.4404 (193)\\
+\rowcolor{KnwBg!28}Gemini 2.5 Flash~\cite{gemini2-5} & 100.0 & 16.5 & 0.2985 (200) & 5.4688 (192)\\
+\rowcolor{KnwBg!55}DeepSeek v4 Flash-Ascend~\cite{deepseek2026deepseek} & 100.0 & 22.0 & 0.3575 (200) & 5.0785 (191)\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{Valid and top-1 Exact are percentages; parentheses give computable counts. GED means use different subsets. All encoder-selection rows use the frozen seed-0 model. Full-Agent validity is measured after output recovery (Section~\ref{sec:repro}), not initial format compliance; token budgets differ across attempts. Competing checkpoints do not receive SpectraExpert's experimental adaptation pairs; VibraCLIP omits 85 failed conformers, none a query target. N/A denotes unavailable Raman predictions, not zero accuracy.}
+\end{table*}
+
+Table~\ref{tab:latest_main} compares final identification on the same 200 experimental queries. Candidate-only DeepSeek achieves 44 exact matches, a net gain of three over retrieval top-1. It corrects 15 predictions but loses 12 previously correct predictions; 29 remain correct and 144 remain incorrect. Table~\ref{tab:selection_gap} separates failures caused by missing candidates from failures after successful retrieval, following Eq.~\eqref{eq:ceiling}.
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Selection outcomes within the frozen top ten}
+\label{tab:selection_gap}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrr}
+\toprule
+\rowcolor{HdrBg}
+\PaperHead{Decision rule} & \PaperHead{Correct} & \PaperHead{Missed} & \PaperHead{Success \%}\\[1pt]
+\midrule
+\rowcolor{RetBg!55}Retrieval top-1 & 41 & 62 & 39.81\\
+\rowcolor{AgtBg!55}DeepSeek, no KB & 44 & 59 & 42.72\\
+\PaperGroup{4}{KnwBg}{Full Agent with legacy KB}
+\rowcolor{KnwBg!55}GPT-5 & 37 & 66 & 35.92\\
+\rowcolor{KnwBg!28}o3 & 41 & 62 & 39.81\\
+\rowcolor{KnwBg!55}Claude Sonnet 4.6 & 58 & 45 & 56.31\\
+\rowcolor{KnwBg!28}Gemini 2.5 Flash & 33 & 70 & 32.04\\
+\rowcolor{KnwBg!55}DeepSeek v4 Flash-Ascend & 44 & 59 & 42.72\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{The target is present for 103/200 queries and absent for 97/200 in every row. Correct + Missed = 103; Success = Correct/103. Missed includes any invalid choice on a retrievable query. Full-Agent results follow the output-recovery policies in Section~\ref{sec:repro}; this is a decomposition of existing predictions, not a new experiment.}
+\end{table}
+
+Against direct LLM generation, encoder plus LLM improves exact accuracy by 19.5 pp, with a paired query-bootstrap interval $[14.0,25.5]$ pp. Chemical GED improves by 1.221 on 181 common computable queries, interval $[0.547,1.901]$. This comparison establishes a benefit for the full retrieval-assisted pipeline under its available supervision. It does not isolate the reasoning module, since the pipeline supplies known candidate structures and an experimentally adapted retriever.
+
+For DeepSeek, adding matched legacy knowledge preserves 44/200 exact matches, with 13 gains and 13 losses relative to candidate-only selection. Its Tanimoto mean rises slightly while its GED means do not improve; the differing computable subsets also limit direct interpretation of these means. Thus there is no net exact-match gain from this knowledge intervention. Choosing the minimum-GED or maximum-Tanimoto candidate among all ten has not been comprehensively audited.
+
+\paragraph{Model substitution with frozen evidence.}\label{sec:agent_models}
+The five full-Agent conditions share the same queries, candidate order and matched legacy KB. After output recovery, exact accuracy ranges from 16.5\% for Gemini to 29.0\% for Claude. Claude gains 23 exact predictions and loses six relative to retrieval top-1. Its paired advantage over DeepSeek is 7.0 pp, with an exploratory query-bootstrap 95\% interval of $[2.5,12.0]$ pp. Nevertheless, Claude misses 45 retrievable targets, alongside 97 targets absent from the shortlist. The comparison measures model substitution under recorded recovery policies; it does not isolate knowledge effects or equalize inference budgets. The four replacement models lack matched direct-generation and no-knowledge controls.
+
+\subsection{Knowledge and Non-LLM Ablations}\label{sec:ablations}
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Same-query development ablations}
+\label{tab:kb}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Configuration}} & \PaperHead{Exact} & \PaperHead{Group \%} & \PaperHead{Tanimoto}\\[1pt]
+\midrule
+\PaperGroup{4}{RetBg}{Shared 15-mode controls}
+\rowcolor{RetBg!55}Retrieval top-1 & 16/149 & 10.56 & 0.3282\\
+\rowcolor{RetBg!28}Retrieval + rule coverage & 10/149 & 7.04 & 0.2585\\
+\rowcolor{AgtBg!55}Retrieval + LLM & 19/149 & 13.38 & 0.3446\\
+\rowcolor{AgtBg!28}Retrieval + modes + LLM & 21/149 & 14.08 & 0.3355\\
+\PaperGroup{4}{KnwBg}{Knowledge representation controls}
+\rowcolor{KnwBg!55}LLM, matched legacy KB & 22/149 & 14.44 & 0.3703\\
+\rowcolor{KnwBg!28}LLM, static full legacy KB & 22/149 & 14.79 & 0.3558\\
+\rowcolor{KnwBg!55}LLM, short mode evidence & 19/149 & 13.03 & 0.3382\\
+\rowcolor{KnwBg!28}LLM, filtered full modes & 17/149 & 11.62 & 0.3019\\
+\rowcolor{KnwBg!55}LLM, filtered short modes & 18/149 & 11.62 & 0.3062\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{Identical 149 spectra, 142 groups, frozen candidates and peak extraction; all LLM arms use DeepSeek. All choices are valid. Group percentages and spectrum-weighted Tanimoto use different averaging units.}
+\end{table}
+
+The first four rows of Table~\ref{tab:kb} form the requested retrieval/rules/LLM/combined comparison on common development data. Full mode evidence adds only 0.70 pp group-weighted exact accuracy to the no-KB LLM, with interval $[-5.63,6.69]$ pp. Its group-weighted Tanimoto difference is $-0.01051$, interval $[-0.06368,0.04316]$. On 138 queries with computable chemical GED in all four arms, means are 4.5725, 5.3043, 4.5362 and 4.2971, respectively. A separate paired comparison of the two LLM arms over their 140 common queries gives a group-weighted GED improvement of 0.2657 with interval $[-0.3659,0.9273]$. These intervals do not establish a stable knowledge benefit.
+
+Matched legacy and static full knowledge both obtain 22/149 exact matches. The static condition appends the full legacy Markdown without query matching or candidate filtering; it was run later using the earlier no-KB responses as a control. The short mode condition changes both wording and the number of evidence records, while candidate filtering also introduces compatibility mappings. These are joint prompt interventions, not pure prompt-length or single-factor causal experiments. Filtering decreases exact hits to 17 or 18 and therefore cannot be assumed beneficial.
+
+\begin{table}[t]
+\centering
+\PaperTableSetup{\footnotesize}
+\caption{Frozen non-LLM controls on Test-200}
+\label{tab:nonllm}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}Xrrr}
+\toprule
+\rowcolor{HdrBg}
+\multicolumn{1}{l}{\PaperHead{Method}} & \PaperHead{Exact} & \PaperHead{Tanimoto} & \PaperHead{GED ($n$)}\\[1pt]
+\midrule
+\rowcolor{RetBg!55}Retrieval top-1 & 41/200 & 0.3205 & 5.3057 (193)\\
+\rowcolor{RetBg!28}Rule coverage & 22/200 & 0.2347 & 6.6684 (187)\\
+\rowcolor{KnwBg!55}Linear rank only & 41/200 & 0.3205 & 5.3057 (193)\\
+\rowcolor{KnwBg!28}Linear rules only & 23/200 & 0.2709 & 5.8639 (191)\\
+\rowcolor{KnwBg!55}Linear rank + rules & 41/200 & 0.3205 & 5.3057 (193)\\
+\bottomrule
+\end{tabularx}\arrayrulecolor{black}
+\PaperNote{All methods choose from the same frozen top ten. GED is chemical GED v2; Tanimoto uses all 200 predictions. Linear rank and rank + rules preserve every top-1 prediction.}
+\end{table}
+
+The trained non-LLM controls in Table~\ref{tab:nonllm} use regularization selected from $\{0.01,0.1,1,10,100\}$. Rules alone degrade exact accuracy; combining them with rank leaves every retrieval top-1 decision unchanged on both development and test data. Coverage reranking changes 145 test decisions, with seven exact gains and 26 losses: a net $-9.5$ pp, interval $[-15.0,-4.0]$ pp. On the 179 queries jointly computable for retrieval, coverage, rules-only linear and rank-plus-rules linear, GED means are 5.4134, 6.8045, 5.8715 and 5.4134. These controls reject the assumption that coarse rule agreement automatically resolves the candidate set.
+
+There are two limits to this ablation. First, training candidates are not out-of-fold, and their 94.84\% top-ten coverage is much higher than development or test coverage. Second, the complete same-rule four-arm design is available on development data only. Test-200 includes a legacy-KB LLM condition, whereas the non-LLM controls use the 15-mode library; these rows do not constitute a fully matched four-arm test experiment.
+
+\subsection{Competing Methods Under the Same Query Protocol}\label{sec:competitors}
+
+
+Vib2Mol and VibraCLIP use the same query identities, candidate semantics and final scorer in the overall comparison (Table~\ref{tab:latest_main}). Model-specific preprocessing is retained: Vib2Mol resamples to 1,024 points with clip/max normalization, and VibraCLIP to 1,750 points with min--max normalization. Neither receives the true target formula or molecular mass. Vib2Mol uses its Raman--Kekul\'e-SMILES checkpoints; generation has beam size ten and reranks the first five outputs. VibraCLIP's no-mass checkpoint indexes 9,915 structures after 85 conformer failures, none involving a test target.
+
+All three competitor branches have zero top-1 exact matches. VibraCLIP retrieves one target at ten and two at 25, while Vib2Mol retrieval finds one at 25; generation has no exact match in its ten beams. Low transfer accuracy must be interpreted alongside successful native-protocol checks. Our collected reproductions obtain 97.17\% Raman top-1 for Vib2Mol retrieval without formula and with reranking, and 62.59\% native top-1 for the VibraCLIP all-pairs no-mass checkpoint. These native rates use different datasets and candidate pools and are sanity checks, not rows in the unified ranking. Removing Vib2Mol reranking or using a fixed mean-mass anchor with VibraCLIP does not improve test exact @10. The result identifies a difficult transfer setting for these available checkpoints; it does not establish that their methods cannot adapt successfully with matched training resources.
+
+No compatible MolSpectLLM Raman run is present in the collected artifacts. Its public description covers NMR, IR and MS rather than a matching Raman inference protocol. Its row in Table~\ref{tab:latest_main} is therefore N/A; zero accuracy or an original-paper score would not represent this benchmark. A complete comparison still requires a compatible implementation and equalized experimental adaptation.

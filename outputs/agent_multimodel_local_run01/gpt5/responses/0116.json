@@ -1,0 +1,21 @@
+{
+  "query_index": 116,
+  "content": "SELECTED_INDEX: 1\nCONFIDENCE: 0.68\nEXPLANATION: The spectrum shows a strong aliphatic C–H stretch at 2932 cm⁻¹ (GFQ-003) and a carbonyl near 1723 cm⁻¹ consistent with a non-amide C=O. The band at 1622 cm⁻¹ fits a C=N stretch of an imine/oxime moiety, which candidate 1 contains. Crucially, there is a cluster of bands typical for organophosphonate P(V) groups: strong features in the 1200–1250 cm⁻¹ region (P=O stretch), ~1087 and ~974 cm⁻¹ (P–O and P–O–C stretches), and bending/rocking modes around 816, 619, and 585 cm⁻¹. The 974 cm⁻¹ band also aligns with an N–O stretch expected for an oxime/nitrone fragment. Among the candidates, only 1 has a P=O with two alkoxy substituents plus an N–O/C=N fragment, explaining the 585–620, 816, 974–1087, and 1235 cm⁻¹ bands; sulfur- or amide-only structures cannot account for this combined pattern.",
+  "usage": {
+    "prompt_tokens": 5289,
+    "completion_tokens": 3679,
+    "total_tokens": 8968,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 3392
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "gpt-5-2025-08-07",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMBzAMYCyF7G4tlKmFQJwGlLvjEDW",
+  "last_attempt_file": "gpt5/attempts/0116_1788957993798079000.json"
+}

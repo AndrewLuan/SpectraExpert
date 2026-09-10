@@ -1,0 +1,10 @@
+{
+  "query_index": 30,
+  "model": "gpt-5",
+  "started_at": 1788964310.747316,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2MrlZjZCE1mErLn7in4t5ghqF\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 8\\nCONFIDENCE: 0.62\\nEXPLANATION: The spectrum is characteristic of a substituted benzene with strong ring modes and sulfonyl vibrations. Key matches: a strong ring breathing band near 1000 cm⁻¹ appears at 1033 cm⁻¹ (typical for para-disubstituted benzenes in Raman), aromatic C–H stretch at 3057 cm⁻¹ and strong ring C=C stretches at 1588 and ~1490 cm⁻¹ (GFQ-003). The pair at 1369/1386 cm⁻¹ and the band at 1176 cm⁻¹ are consistent with SO₂ asymmetric (~1320–1370) and symmetric (~1140–1180) stretches of a sulfonamide substituent, which candidate 8 uniquely contains. The intense 750 cm⁻¹ band aligns with an out-of-plane aromatic C–H deformation; its proximity to the nitro δ(NO₂) reference at ~752 cm⁻¹ (GFQ-022) supports the frequency region for heavy substituent ring deformations. Bands at 560 and 644 cm⁻¹ are compatible with ring/S–O/S–N deformations. Overall, candidate 8 (an anilide bearing a sulfonamide and benzylamine) best fits the observed aromatic and sulfonamide Raman features.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5590,\"completion_tokens\":7021,\"total_tokens\":12611,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":6720},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r1-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 85.20158995801467,
+  "error": null
+}

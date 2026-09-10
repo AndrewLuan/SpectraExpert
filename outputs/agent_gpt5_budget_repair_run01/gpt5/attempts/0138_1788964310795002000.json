@@ -1,0 +1,10 @@
+{
+  "query_index": 138,
+  "model": "gpt-5",
+  "started_at": 1788964310.795003,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2n0YnsLvAiCdXLsHJKE7aTY4J\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 8\\nCONFIDENCE: 0.64\\nEXPLANATION: The strong band at 1231 cm⁻¹ fits a ν(C=S) thiocarbonyl stretch (consistent with bond-order placement per FRQ-001), and the very intense 648 cm⁻¹ peak lies in the C–Cl/C–S heavy-atom stretching region (supported by the C–Cl ranges in GFQ-046). The prominent 805 cm⁻¹ feature is compatible with halogen-related bending modes in chlorinated aliphatics. Aliphatic C–H stretches at 2854–2972 cm⁻¹ and CH deformation at 1437 cm⁻¹ match GFQ-003. Absence of a strong ~1030 cm⁻¹ ν(S=O) (sulfoxide) or ~1700 cm⁻¹ ν(C=O) (sultone) disfavors sulfoxide/sultone candidates, and the SO₂ doublet (~1300/1150) expected for sulfones is not evident. Overall, CC(Cl)C=S best explains the observed pattern.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":5191,\"completion_tokens\":4984,\"total_tokens\":10175,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":4736},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-10e6a11d-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 64.97827895899536,
+  "error": null
+}

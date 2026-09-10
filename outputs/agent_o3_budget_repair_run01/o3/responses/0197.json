@@ -1,0 +1,21 @@
+{
+  "query_index": 197,
+  "content": "SELECTED_INDEX: 2  \nCONFIDENCE: 0.29  \nEXPLANATION: The spectrum shows very intense bands at 604 cm⁻¹ and 640 cm⁻¹, a pattern typical for halogen-containing S–Cl / C–Cl stretches (GFQ-041, GFQ-046).  Additional strong bands appear at 1192 cm⁻¹ and 1340 cm⁻¹, matching the symmetric and asymmetric ν(S=O) vibrations of a sulfonyl group (GFQ-022 analogue for SO₂, typical 1150–1200 cm⁻¹ and 1320–1360 cm⁻¹).  A medium band near 1030 cm⁻¹ is consistent with ν(S–N) of sulfonamides, and weak C–H bending at 1430 cm⁻¹ plus C–H stretches at 2916–3030 cm⁻¹ fit an aliphatic heterocycle.  Among the candidates, only molecule 2 (O=C1CN(S(=O)(=O)Cl)C1) contains a sulfonyl chloride (SO₂Cl) group together with aliphatic C–H, providing a coherent explanation for all key peaks.",
+  "usage": {
+    "prompt_tokens": 5161,
+    "completion_tokens": 2723,
+    "total_tokens": 7884,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "reasoning_tokens": 2432
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    }
+  },
+  "response_model": "o3-2025-04-16",
+  "finish_reason": "stop",
+  "response_id": "chatcmpl-EMC0TR6qKXiflOhTigBRBnT92ZvbZ",
+  "last_attempt_file": "o3/attempts/0197_1788958067664903000.json"
+}

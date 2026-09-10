@@ -1,0 +1,10 @@
+{
+  "query_index": 100,
+  "model": "gpt-5",
+  "started_at": 1788964310.778639,
+  "state": "finished",
+  "http_status": 200,
+  "response_text": "{\"id\":\"chatcmpl-EMDd2iGfcoQHz7nzb34rosoGZ8QW4\",\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"SELECTED_INDEX: 1\\nCONFIDENCE: 0.68\\nEXPLANATION: The spectrum shows a strong benzene ring breathing at 1001 cm⁻¹, aromatic C=C stretches at 1580 and 1618 cm⁻¹, and CH stretches at 2931 and 3073 cm⁻¹, consistent with an aromatic ketone. The strong band at 1665 cm⁻¹ matches a conjugated aryl ketone C=O, and the 1264 cm⁻¹ band is consistent with a phenolic C–O stretch, supporting a hydroxyacetophenone-type structure (candidate 1). Absence of NH stretches near 3300 cm⁻¹ disfavors candidate 2, and lack of S=O (~1030 cm⁻¹) or S–H (~2550–2620 cm⁻¹) bands disfavors candidates with sulfoxide or thiol functionality.\",\"refusal\":null,\"annotations\":[]},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"created\":1788964312,\"model\":\"gpt-5-2025-08-07\",\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":6112,\"completion_tokens\":3791,\"total_tokens\":9903,\"completion_tokens_details\":{\"audio_tokens\":0,\"reasoning_tokens\":3584},\"prompt_tokens_details\":{\"audio_tokens\":0,\"cached_tokens\":0}},\"routing\":{\"serving_pipereplica\":\"d20260821133932-0e11335c-default-r0-dp0-default\"},\"service_tier\":\"default\"}",
+  "elapsed_seconds": 45.213512625021394,
+  "error": null
+}
