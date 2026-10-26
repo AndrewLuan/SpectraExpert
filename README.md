@@ -255,3 +255,7 @@ export ANTHROPIC_API_KEY=sk-ant-...
 ## License
 
 See [LICENSE](LICENSE).
+
+## NMR retrieval experiments
+
+The [experimental code and reproduction guide](research/nmr_retrieval/README.md) cover the NMR forward models, pool ranking, fixed centers, controlled caps, and saved-tensor diagnostics. Source provenance and private-input boundaries are recorded with the implementation.

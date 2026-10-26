@@ -1,0 +1,43 @@
+{
+  "schema": "nmr_retrieval_source_protocol_defaults_v1",
+  "selection": {
+    "fixed_preselected": "fixedcenter_mixed_listwise_single",
+    "selection_inputs": ["train", "original_val", "tune"],
+    "test_reselection": false,
+    "formal_system_change": false
+  },
+  "seeds": [193, 211],
+  "candidate_count": 114982,
+  "natural_pool_size": 512,
+  "appended_fit_loss_size": 513,
+  "roles": ["no_aug", "aug"],
+  "features": {"X": 33, "O": 3, "combined": 36},
+  "controlled_fit": {
+    "caps": [5, 10],
+    "epochs": 64,
+    "draws_per_epoch": 8192,
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "weight_decay": 0.001,
+    "temperature": 0.5,
+    "anchor": 0.1,
+    "gradient_clip_norm": 2.0
+  },
+  "saved_output_analysis": {
+    "query_seed_pairs": 826,
+    "shards": 1652,
+    "fixed_fit_pairs": 400,
+    "original_obstructed_pairs": 87,
+    "fixed_rtol": 0.00002,
+    "fixed_atol": 0.000002,
+    "algebra_device": "cuda:0",
+    "device_fallback": false,
+    "new_NN_budget": 0,
+    "weight_loads": 0,
+    "training": false,
+    "test_read": false,
+    "external_API": false,
+    "source_NN_failure_preserved": true
+  },
+  "external_inputs": "Use private, SHA-bound frozen bundles. This file contains no query or spectral records."
+}

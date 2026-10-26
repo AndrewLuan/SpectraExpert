@@ -48,3 +48,22 @@ all_weakness.md
 paper/chinese_quick_review.md
 paper/待办.md
 paper/演示.md
+
+# Private NMR experiment inputs and run artifacts; source/config files are explicit.
+research/nmr_retrieval/**/artifacts/
+research/nmr_retrieval/**/bundles/
+research/nmr_retrieval/**/outputs/
+research/nmr_retrieval/**/runs/
+research/nmr_retrieval/**/checkpoints/
+research/nmr_retrieval/**/*.pt
+research/nmr_retrieval/**/*.pth
+research/nmr_retrieval/**/*.ckpt
+research/nmr_retrieval/**/*.safetensors
+research/nmr_retrieval/**/*.npz
+research/nmr_retrieval/**/*.npy
+research/nmr_retrieval/**/*.jsonl
+research/nmr_retrieval/**/*.log
+research/nmr_retrieval/**/*.json
+!research/nmr_retrieval/source_provenance.json
+!research/nmr_retrieval/protocol_defaults.json
+research/nmr_retrieval/**/EXIT_CODE
