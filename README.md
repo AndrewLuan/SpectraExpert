@@ -258,4 +258,4 @@ See [LICENSE](LICENSE).
 
 ## NMR retrieval experiments
 
-The [experimental code and reproduction guide](research/nmr_retrieval/README.md) cover the NMR forward models, pool ranking, fixed centers, controlled caps, and saved-tensor diagnostics. Source provenance and private-input boundaries are recorded with the implementation.
+The NMR forward models, retrieval experiments and reproduction guide are maintained in the separate [nmr-retrieval repository](https://github.com/AndrewLuan/nmr-retrieval).

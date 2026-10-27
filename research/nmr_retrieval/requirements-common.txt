@@ -1,6 +1,0 @@
-scipy==1.17.1
-rdkit==2026.3.6
-torch-geometric==2.8.1
-igraph==1.0.0
-psutil==7.2.2
-pytest==9.1.1
